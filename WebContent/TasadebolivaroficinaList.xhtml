@@ -1,0 +1,154 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasadebolivaroficinaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Tasa de Bolivar de Oficina" switchType="ajax">
+
+        <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{AdministrarTasa.fecha}" datePattern="dd/MM/yyyy"/>
+            </s:decorate>    
+            
+        <s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{AdministrarTasa.tipo}" 
+                 required="true">
+					<f:selectItem itemValue="D" itemLabel="Deposito"/>
+					<f:selectItem itemValue="E" itemLabel="Electronico"/>
+					<f:selectItem itemValue="T" itemLabel="Transferencia"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+            
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            
+            <h:commandButton id="buscar"
+                          value="Buscar"
+                         action="#{AdministrarTasa.buscarTasaBolivarOficina}"
+                         reRender="panelResultado"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false"/>
+            <s:button view="/TasadebolivaroficinaEdit.xhtml"
+           	         		id="create"
+           		   propagation="none"
+                 		 value="Crear Tasa de Bolivar de Oficina">
+            <f:param name="tasadebolivaroficinaFecha"/>
+        	</s:button>
+        </div>
+
+    </h:form>
+
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultado de la Busqueda de la Tasa de Bolivar de Oficina (#{empty tasadebolivaroficinaList.resultList ? 0 : (tasadebolivaroficinaList.paginated ? tasadebolivaroficinaList.resultCount : tasadebolivaroficinaList.resultList.size)})</f:facet>
+    <div class="results" id="tasadebolivaroficinaList">
+
+    <h:outputText value="La busqueda de la tasa de bolivar de oficina no retorno ningun resultado."
+               rendered="#{empty AdministrarTasa.listaTasadebolivaroficina}"/>
+<h:form width="400" >
+    <rich:dataTable id="tasadebolivaroficinaList"
+                var="_tasadebolivaroficina"
+              value="#{AdministrarTasa.listaTasadebolivaroficina}"
+           rendered="#{not empty tasadebolivaroficinaList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadebolivaroficinaList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="tasadebolivaroficina.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText style= "text-align:center; display:block"  value="#{_tasadebolivaroficina.id.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column width="90">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadebolivaroficinaList}"/>
+                    <ui:param name="propertyLabel" value="Tipo"/>
+                    <ui:param name="propertyPath" value="tasadebolivaroficina.id.tipo"/>
+                </ui:include>
+            </f:facet>          
+            
+            <h:outputText style= "text-align:center; display:block" value="Deposito" rendered="#{_tasadebolivaroficina.id.tipo=='D'}"/>
+           	<h:outputText style= "text-align:center; display:block" value="Transferencia" rendered="#{_tasadebolivaroficina.id.tipo=='T'}"/>
+             
+        </h:column>
+        <h:column width="60">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadebolivaroficinaList}"/>
+                    <ui:param name="propertyLabel" value="Precio Bolivar"/>
+                    <ui:param name="propertyPath" value="tasadebolivaroficina.preciobolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText style= "text-align:center; display:block" value="#{_tasadebolivaroficina.preciobolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+			
+			<h:commandLink value="" action="#{AdministrarTasa.editarTasabolivaroficina(_tasadebolivaroficina.id.fecha, _tasadebolivaroficina.id.tipo)}" >
+            	<h:graphicImage title="Editar Tasa Bolivar de Oficina" style="border-style:none;" id="verTasa" value="/img/edit.gif" />
+            </h:commandLink>
+			
+            
+        </rich:column>
+    </rich:dataTable>
+</h:form>
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TasadebolivaroficinaList.xhtml"
+            rendered="#{tasadebolivaroficinaList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera Pagina"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TasadebolivaroficinaList.xhtml"
+            rendered="#{tasadebolivaroficinaList.previousExists}"
+               value="#{messages.left} Pagina Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{tasadebolivaroficinaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TasadebolivaroficinaList.xhtml"
+            rendered="#{tasadebolivaroficinaList.nextExists}"
+               value="Proxima Pagina #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{tasadebolivaroficinaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TasadebolivaroficinaList.xhtml"
+            rendered="#{tasadebolivaroficinaList.nextExists}"
+               value="Ultima Pagina #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{tasadebolivaroficinaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+
+</ui:define>
+
+</ui:composition>

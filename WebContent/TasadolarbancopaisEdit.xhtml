@@ -1,0 +1,185 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasadolarbancopais" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tasadolarbancopaisHome.managed ? 'Edit' : 'Add'} Tasadolarbancopais</f:facet>
+
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{tasadolarbancopaisHome.managed}"
+                       required="true"
+                          value="#{tasadolarbancopaisHome.instance.id.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigopais</ui:define>
+                <h:inputText id="codigopais"
+                       disabled="#{tasadolarbancopaisHome.managed}"
+                      required="true"
+                          size="5"
+                     maxlength="5"
+                         value="#{tasadolarbancopaisHome.instance.id.codigopais}">
+                    <a:support event="onblur" reRender="codigopaisField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{tasadolarbancopaisHome.managed}"
+                      required="true"
+                          size="3"
+                     maxlength="3"
+                         value="#{tasadolarbancopaisHome.instance.id.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+            <s:decorate id="tasaclienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tasacliente</ui:define>
+                <h:inputText id="tasacliente"
+                          value="#{tasadolarbancopaisHome.instance.tasacliente}"
+                           size="13">
+                    <a:support event="onblur" reRender="tasaclienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="tasaoficinaField" template="layout/edit.xhtml">
+                <ui:define name="label">Tasaoficina</ui:define>
+                <h:inputText id="tasaoficina"
+                          value="#{tasadolarbancopaisHome.instance.tasaoficina}"
+                           size="13">
+                    <a:support event="onblur" reRender="tasaoficinaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{tasadolarbancopaisHome.persist}"
+                       disabled="#{!tasadolarbancopaisHome.wired}"
+                       rendered="#{!tasadolarbancopaisHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{tasadolarbancopaisHome.update}"
+                       rendered="#{tasadolarbancopaisHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{tasadolarbancopaisHome.remove}"
+                      immediate="true"
+                       rendered="#{tasadolarbancopaisHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Tasadolarbancopais.xhtml"
+                rendered="#{tasadolarbancopaisHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty tasadolarbancopaisFrom ? 'TasadolarbancopaisList' : tasadolarbancopaisFrom}.xhtml"
+                rendered="#{!tasadolarbancopaisHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Pais *" labelClass="required">
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this tasadolarbancopais."
+                   rendered="#{tasadolarbancopaisHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{tasadolarbancopaisHome.instance.pais}"
+                rendered="#{tasadolarbancopaisHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{tasadolarbancopaisHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarbancopaisHome.instance.pais != null ? 'Change' : 'Select'} pais"
+                       view="/PaisList.xhtml">
+                <f:param name="from" value="TasadolarbancopaisEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Banco *" labelClass="required">
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this tasadolarbancopais."
+                   rendered="#{tasadolarbancopaisHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{tasadolarbancopaisHome.instance.banco}"
+                rendered="#{tasadolarbancopaisHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{tasadolarbancopaisHome.instance.banco != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarbancopaisHome.instance.banco != null ? 'Change' : 'Select'} banco"
+                       view="/BancoList.xhtml">
+                <f:param name="from" value="TasadolarbancopaisEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

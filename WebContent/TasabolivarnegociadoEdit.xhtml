@@ -1,0 +1,133 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasabolivarnegociado" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tasabolivarnegociadoHome.managed ? 'Editar' : 'Registrar'} Tasa de Bolivar Negociado</f:facet>
+
+
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTasa.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarTasa.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTasa.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+            
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       required="true"
+                          value="#{tasabolivarnegociadoHome.instance.id.fecha}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{tasabolivarnegociadoHome.instance.id.tipo}" 
+                 required="true">
+                    <f:selectItem itemValue="" itemLabel="Seleccione"/>
+					<f:selectItem itemValue="D" itemLabel="Deposito"/>
+					<f:selectItem itemValue="T" itemLabel="Transferencia"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+
+
+
+            
+            
+            <s:decorate id="preciocompraField" template="layout/edit.xhtml">
+                <ui:define name="label">Precio Compra</ui:define>
+                <h:inputText id="preciocompra"
+                       required="true"
+                          value="#{tasabolivarnegociadoHome.instance.preciocompra}"
+                           size="11">
+                    <a:support event="onblur" reRender="preciocompraField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="precioasesorField" template="layout/edit.xhtml">
+                <ui:define name="label">Precio Asesor</ui:define>
+                <h:inputText id="precioasesor"
+                       required="true"
+                          value="#{tasabolivarnegociadoHome.instance.precioasesor}"
+                           size="11">
+                    <a:support event="onblur" reRender="precioasesorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="preciobolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Precio Bolivar</ui:define>
+                <h:inputText id="preciobolivar"
+                       required="true"
+                          value="#{tasabolivarnegociadoHome.instance.preciobolivar}"
+                           size="11">
+                    <a:support event="onblur" reRender="preciobolivarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos Requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarTasa.guardarTasaNegociada}"
+                       
+                       rendered="#{!tasabolivarnegociadoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{tasabolivarnegociadoHome.update}"
+                       rendered="#{tasabolivarnegociadoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{tasabolivarnegociadoHome.remove}"
+                      immediate="true"
+                       rendered="#{tasabolivarnegociadoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/TasabolivarnegociadoList.xhtml"
+                rendered="#{tasabolivarnegociadoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty tasabolivarnegociadoFrom ? 'TasabolivarnegociadoList' : tasabolivarnegociadoFrom}.xhtml"
+                rendered="#{!tasabolivarnegociadoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

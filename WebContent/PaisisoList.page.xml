@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{paisisoList.firstResult}"/>
+   <param name="sort" value="#{paisisoList.orderColumn}"/>
+   <param name="dir" value="#{paisisoList.orderDirection}"/>
+   <param name="logic" value="#{paisisoList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codigopais" value="#{paisisoList.paisiso.codigopais}"/>
+   <param name="nombrepaisEs" value="#{paisisoList.paisiso.nombrepaisEs}"/>
+   <param name="nombrepaisEn" value="#{paisisoList.paisiso.nombrepaisEn}"/>
+   <param name="capital" value="#{paisisoList.paisiso.capital}"/>
+   <param name="nombrecompletoEn" value="#{paisisoList.paisiso.nombrecompletoEn}"/>
+   <param name="codigopaisNumero" value="#{paisisoList.paisiso.codigopaisNumero}"/>
+   <param name="codigo31663Es" value="#{paisisoList.paisiso.codigo31663Es}"/>
+   <param name="codigomoneda" value="#{paisisoList.paisiso.codigomoneda}"/>
+   <param name="nombreMoneda" value="#{paisisoList.paisiso.nombreMoneda}"/>
+   <param name="pathBanderaRelativo" value="#{paisisoList.paisiso.pathBanderaRelativo}"/>
+   <param name="pathBanderaAbsoluta" value="#{paisisoList.paisiso.pathBanderaAbsoluta}"/>
+
+</page>

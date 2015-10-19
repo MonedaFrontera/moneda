@@ -1,0 +1,139 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="paisSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Pais Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codigopais</ui:define>
+                <h:inputText id="codigopais" value="#{paisList.pais.codigopais}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre" value="#{paisList.pais.nombre}"/>
+            </s:decorate>
+
+            
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/PaisList.xhtml"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Busqueda de resultados del Pais (#{empty paisList.resultList ? 0 : (paisList.paginated ? paisList.resultCount : paisList.resultList.size)})</f:facet>
+    <div class="results" id="paisList">
+
+    <h:outputText value="No hay resultado para esta busqueda de paises."
+               rendered="#{empty paisList.resultList}"/>
+
+    <rich:dataTable id="paisList"
+                var="_pais"
+              value="#{paisList.resultList}"
+           rendered="#{not empty paisList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paisList}"/>
+                    <ui:param name="propertyLabel" value="Codigopais"/>
+                    <ui:param name="propertyPath" value="pais.codigopais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_pais.codigopais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paisList}"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="pais.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_pais.nombre}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            <s:link view="/#{empty from ? 'Pais' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="paisViewId">
+                <f:param name="paisCodigopais"
+                        value="#{_pais.codigopais}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/PaisEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="paisEdit"
+                rendered="#{empty from}">
+                <f:param name="paisCodigopais"
+                        value="#{_pais.codigopais}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PaisList.xhtml"
+            rendered="#{paisList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PaisList.xhtml"
+            rendered="#{paisList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{paisList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PaisList.xhtml"
+            rendered="#{paisList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{paisList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PaisList.xhtml"
+            rendered="#{paisList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{paisList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PaisEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Crear Pais">
+            <f:param name="paisCodigopais"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

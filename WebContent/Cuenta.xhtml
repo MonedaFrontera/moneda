@@ -1,0 +1,330 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Cuenta Details</f:facet>
+
+        <s:decorate id="numcuenta" template="layout/display.xhtml">
+            <ui:define name="label">Numcuenta</ui:define>
+            <h:outputText value="#{cuentaHome.instance.numcuenta}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{cuentaHome.instance.nombre}"/>
+        </s:decorate>
+
+        <s:decorate id="saldo" template="layout/display.xhtml">
+            <ui:define name="label">Saldo</ui:define>
+            <h:outputText value="#{cuentaHome.instance.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CuentaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty cuentaFrom ? 'CuentaList' : cuentaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Banco</h:panelGroup>
+        </f:facet>
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this cuenta."
+                   rendered="#{cuentaHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{cuentaHome.instance.banco}"
+                rendered="#{cuentaHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewbanco"
+                     value="View"
+                      view="/Banco.xhtml">
+                    <f:param name="bancoCodbanco"
+                           value="#{_banco.codbanco}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuentacreditos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="cuentacreditosChildren">
+
+        <h:outputText value="There are no cuentacreditos associated with this cuenta."
+                   rendered="#{empty cuentaHome.cuentacreditos}"/>
+
+        <rich:dataTable value="#{cuentaHome.cuentacreditos}"
+                       var="_cuentacredito"
+                  rendered="#{not empty cuentaHome.cuentacreditos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="cuentacreditosTable">
+            <rich:column sortBy="#{_cuentacredito.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_cuentacredito.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_cuentacredito.valor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_cuentacredito.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.usuario}">
+                <f:facet name="header">Usuario</f:facet>
+                <h:outputText value="#{_cuentacredito.usuario}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_cuentacredito.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_cuentacredito.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.tipo}">
+                <f:facet name="header">Tipo</f:facet>
+                <h:outputText value="#{_cuentacredito.tipo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentacredito.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_cuentacredito.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectcuentacredito"
+                     value="Select"
+                      view="/Cuentacredito.xhtml">
+                    <f:param name="cuentacreditoConsecutivo"
+                            value="#{_cuentacredito.consecutivo}"/>
+                    <f:param name="cuentacreditoFrom" value="Cuenta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add cuentacredito"
+                view="/CuentacreditoEdit.xhtml">
+            <f:param name="cuentaNumcuenta"
+                    value="#{cuentaHome.instance.numcuenta}"/>
+            <f:param name="cuentacreditoFrom" value="Cuenta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Depositostarjetas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="depositostarjetasChildren">
+
+        <h:outputText value="There are no depositostarjetas associated with this cuenta."
+                   rendered="#{empty cuentaHome.depositostarjetas}"/>
+
+        <rich:dataTable value="#{cuentaHome.depositostarjetas}"
+                       var="_depositostarjeta"
+                  rendered="#{not empty cuentaHome.depositostarjetas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="depositostarjetasTable">
+            <rich:column sortBy="#{_depositostarjeta.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_depositostarjeta.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_depositostarjeta.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.preciobolivar}">
+                <f:facet name="header">Preciobolivar</f:facet>
+                <h:outputText value="#{_depositostarjeta.preciobolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.valordeposito}">
+                <f:facet name="header">Valordeposito</f:facet>
+                <h:outputText value="#{_depositostarjeta.valordeposito}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.tipodebolivar}">
+                <f:facet name="header">Tipodebolivar</f:facet>
+                <h:outputText value="#{_depositostarjeta.tipodebolivar}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.depositopesos}">
+                <f:facet name="header">Depositopesos</f:facet>
+                <h:outputText value="#{_depositostarjeta.depositopesos}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.tipodep}">
+                <f:facet name="header">Tipodep</f:facet>
+                <h:outputText value="#{_depositostarjeta.tipodep}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_depositostarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_depositostarjeta.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.asesor}">
+                <f:facet name="header">Asesor</f:facet>
+                <h:outputText value="#{_depositostarjeta.asesor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.promotor}">
+                <f:facet name="header">Promotor</f:facet>
+                <h:outputText value="#{_depositostarjeta.promotor}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectdepositostarjeta"
+                     value="Select"
+                      view="/Depositostarjeta.xhtml">
+                    <f:param name="depositostarjetaConsecutivo"
+                            value="#{_depositostarjeta.consecutivo}"/>
+                    <f:param name="depositostarjetaFrom" value="Cuenta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add depositostarjeta"
+                view="/DepositostarjetaEdit.xhtml">
+            <f:param name="cuentaNumcuenta"
+                    value="#{cuentaHome.instance.numcuenta}"/>
+            <f:param name="depositostarjetaFrom" value="Cuenta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Transferencias</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="transferenciasChildren">
+
+        <h:outputText value="There are no transferencias associated with this cuenta."
+                   rendered="#{empty cuentaHome.transferencias}"/>
+
+        <rich:dataTable value="#{cuentaHome.transferencias}"
+                       var="_transferencia"
+                  rendered="#{not empty cuentaHome.transferencias}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="transferenciasTable">
+            <rich:column sortBy="#{_transferencia.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_transferencia.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transferencia.preciobolivar}">
+                <f:facet name="header">Preciobolivar</f:facet>
+                <h:outputText value="#{_transferencia.preciobolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transferencia.tipobolivar}">
+                <f:facet name="header">Tipobolivar</f:facet>
+                <h:outputText value="#{_transferencia.tipobolivar}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transferencia.valorbolivar}">
+                <f:facet name="header">Valorbolivar</f:facet>
+                <h:outputText value="#{_transferencia.valorbolivar}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transferencia.preciocompra}">
+                <f:facet name="header">Preciocompra</f:facet>
+                <h:outputText value="#{_transferencia.preciocompra}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transferencia.precioasesor}">
+                <f:facet name="header">Precioasesor</f:facet>
+                <h:outputText value="#{_transferencia.precioasesor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttransferencia"
+                     value="Select"
+                      view="/Transferencia.xhtml">
+                    <f:param name="transferenciaConsecutivo"
+                            value="#{_transferencia.consecutivo}"/>
+                    <f:param name="transferenciaFrom" value="Cuenta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add transferencia"
+                view="/TransferenciaEdit.xhtml">
+            <f:param name="cuentaNumcuenta"
+                    value="#{cuentaHome.instance.numcuenta}"/>
+            <f:param name="transferenciaFrom" value="Cuenta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

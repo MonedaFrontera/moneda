@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="auditGastosFrom"/>
+   <param name="auditGastosDocumento" value="#{auditGastosHome.auditGastosId.documento}"/>
+   <param name="auditGastosFecha" value="#{auditGastosHome.auditGastosId.fecha}"/>
+   <param name="auditGastosValor" value="#{auditGastosHome.auditGastosId.valor}"/>
+   <param name="auditGastosObservacion" value="#{auditGastosHome.auditGastosId.observacion}"/>
+   <param name="auditGastosTipogasto" value="#{auditGastosHome.auditGastosId.tipogasto}"/>
+   <param name="auditGastosConsecutivo" value="#{auditGastosHome.auditGastosId.consecutivo}"/>
+   <param name="auditGastosValorbolivar" value="#{auditGastosHome.auditGastosId.valorbolivar}"/>
+   <param name="auditGastosUsuariomod" value="#{auditGastosHome.auditGastosId.usuariomod}"/>
+   <param name="auditGastosFechamod" value="#{auditGastosHome.auditGastosId.fechamod}"/>
+
+
+</page>

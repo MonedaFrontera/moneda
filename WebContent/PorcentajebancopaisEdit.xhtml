@@ -1,0 +1,185 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="porcentajebancopais" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{porcentajebancopaisHome.managed ? 'Edit' : 'Add'} Porcentajebancopais</f:facet>
+
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{porcentajebancopaisHome.managed}"
+                       required="true"
+                          value="#{porcentajebancopaisHome.instance.id.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigopais</ui:define>
+                <h:inputText id="codigopais"
+                       disabled="#{porcentajebancopaisHome.managed}"
+                      required="true"
+                          size="5"
+                     maxlength="5"
+                         value="#{porcentajebancopaisHome.instance.id.codigopais}">
+                    <a:support event="onblur" reRender="codigopaisField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{porcentajebancopaisHome.managed}"
+                      required="true"
+                          size="3"
+                     maxlength="3"
+                         value="#{porcentajebancopaisHome.instance.id.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+            <s:decorate id="porcentajeClienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje cliente</ui:define>
+                <h:inputText id="porcentajeCliente"
+                          value="#{porcentajebancopaisHome.instance.porcentajeCliente}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeClienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeOficinaField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje oficina</ui:define>
+                <h:inputText id="porcentajeOficina"
+                          value="#{porcentajebancopaisHome.instance.porcentajeOficina}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeOficinaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{porcentajebancopaisHome.persist}"
+                       disabled="#{!porcentajebancopaisHome.wired}"
+                       rendered="#{!porcentajebancopaisHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{porcentajebancopaisHome.update}"
+                       rendered="#{porcentajebancopaisHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{porcentajebancopaisHome.remove}"
+                      immediate="true"
+                       rendered="#{porcentajebancopaisHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Porcentajebancopais.xhtml"
+                rendered="#{porcentajebancopaisHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty porcentajebancopaisFrom ? 'PorcentajebancopaisList' : porcentajebancopaisFrom}.xhtml"
+                rendered="#{!porcentajebancopaisHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Pais *" labelClass="required">
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this porcentajebancopais."
+                   rendered="#{porcentajebancopaisHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{porcentajebancopaisHome.instance.pais}"
+                rendered="#{porcentajebancopaisHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajebancopaisHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{porcentajebancopaisHome.instance.pais != null ? 'Change' : 'Select'} pais"
+                       view="/PaisList.xhtml">
+                <f:param name="from" value="PorcentajebancopaisEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Banco *" labelClass="required">
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this porcentajebancopais."
+                   rendered="#{porcentajebancopaisHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{porcentajebancopaisHome.instance.banco}"
+                rendered="#{porcentajebancopaisHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajebancopaisHome.instance.banco != null ? 'changeParent' : 'selectParent'}" value="#{porcentajebancopaisHome.instance.banco != null ? 'Change' : 'Select'} banco"
+                       view="/BancoList.xhtml">
+                <f:param name="from" value="PorcentajebancopaisEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

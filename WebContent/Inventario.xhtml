@@ -1,0 +1,266 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Inventario Details</f:facet>
+
+        <s:decorate id="refproducto" template="layout/display.xhtml">
+            <ui:define name="label">Refproducto</ui:define>
+            <h:outputText value="#{inventarioHome.instance.id.refproducto}"/>
+        </s:decorate>
+        <s:decorate id="codigounico" template="layout/display.xhtml">
+            <ui:define name="label">Codigounico</ui:define>
+            <h:outputText value="#{inventarioHome.instance.id.codigounico}"/>
+        </s:decorate>
+
+        <s:decorate id="valor" template="layout/display.xhtml">
+            <ui:define name="label">Valor</ui:define>
+            <h:outputText value="#{inventarioHome.instance.valor}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="cantidad" template="layout/display.xhtml">
+            <ui:define name="label">Cantidad</ui:define>
+            <h:outputText value="#{inventarioHome.instance.cantidad}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="activo" template="layout/display.xhtml">
+            <ui:define name="label">Activo</ui:define>
+            <h:outputText value="#{inventarioHome.instance.activo}"/>
+        </s:decorate>
+
+        <s:decorate id="prioridad" template="layout/display.xhtml">
+            <ui:define name="label">Prioridad</ui:define>
+            <h:outputText value="#{inventarioHome.instance.prioridad}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/InventarioEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty inventarioFrom ? 'InventarioList' : inventarioFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Producto</h:panelGroup>
+        </f:facet>
+    <div class="association" id="productoParent">
+
+        <h:outputText value="There is no producto associated with this inventario."
+                   rendered="#{inventarioHome.instance.producto == null}"/>
+
+        <rich:dataTable var="_producto"
+                   value="#{inventarioHome.instance.producto}"
+                rendered="#{inventarioHome.instance.producto != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="productoTable">
+            <h:column>
+                <f:facet name="header">Refproducto</f:facet>
+                <h:outputText value="#{_producto.refproducto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreproducto</f:facet>
+                <h:outputText value="#{_producto.nombreproducto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Marca</f:facet>
+                <h:outputText value="#{_producto.marca}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valorminimo</f:facet>
+                <h:outputText value="#{_producto.valorminimo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valormaximo</f:facet>
+                <h:outputText value="#{_producto.valormaximo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cantminimo</f:facet>
+                <h:outputText value="#{_producto.cantminimo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cantmaximo</f:facet>
+                <h:outputText value="#{_producto.cantmaximo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_producto.porcentaje}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewproducto"
+                     value="View"
+                      view="/Producto.xhtml">
+                    <f:param name="productoRefproducto"
+                           value="#{_producto.refproducto}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Establecimiento</h:panelGroup>
+        </f:facet>
+    <div class="association" id="establecimientoParent">
+
+        <h:outputText value="There is no establecimiento associated with this inventario."
+                   rendered="#{inventarioHome.instance.establecimiento == null}"/>
+
+        <rich:dataTable var="_establecimiento"
+                   value="#{inventarioHome.instance.establecimiento}"
+                rendered="#{inventarioHome.instance.establecimiento != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="establecimientoTable">
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pais codigopais</f:facet>
+                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Empresa nit</f:facet>
+                <h:outputText value="#{_establecimiento.empresa.nit}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Bancocol codbanco</f:facet>
+                <h:outputText value="#{_establecimiento.bancocol.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewestablecimiento"
+                     value="View"
+                      view="/Establecimiento.xhtml">
+                    <f:param name="establecimientoCodigounico"
+                           value="#{_establecimiento.codigounico}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Detallefacturas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="detallefacturasChildren">
+
+        <h:outputText value="There are no detallefacturas associated with this inventario."
+                   rendered="#{empty inventarioHome.detallefacturas}"/>
+
+        <rich:dataTable value="#{inventarioHome.detallefacturas}"
+                       var="_detallefactura"
+                  rendered="#{not empty inventarioHome.detallefacturas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="detallefacturasTable">
+            <rich:column sortBy="#{_detallefactura.id.numfactura}">
+                <f:facet name="header">Numfactura</f:facet>
+                <h:outputText value="#{_detallefactura.id.numfactura}"/>
+            </rich:column>
+            <rich:column sortBy="#{_detallefactura.id.refproducto}">
+                <f:facet name="header">Refproducto</f:facet>
+                <h:outputText value="#{_detallefactura.id.refproducto}"/>
+            </rich:column>
+            <rich:column sortBy="#{_detallefactura.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_detallefactura.id.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_detallefactura.cantidad}">
+                <f:facet name="header">Cantidad</f:facet>
+                <h:outputText value="#{_detallefactura.cantidad}"/>
+            </rich:column>
+            <rich:column sortBy="#{_detallefactura.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_detallefactura.valor}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectdetallefactura"
+                     value="Select"
+                      view="/Detallefactura.xhtml">
+                    <f:param name="detallefacturaNumfactura"
+                            value="#{_detallefactura.id.numfactura}"/>
+                    <f:param name="detallefacturaRefproducto"
+                            value="#{_detallefactura.id.refproducto}"/>
+                    <f:param name="detallefacturaCodigounico"
+                            value="#{_detallefactura.id.codigounico}"/>
+                    <f:param name="detallefacturaFrom" value="Inventario"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add detallefactura"
+                view="/DetallefacturaEdit.xhtml">
+            <f:param name="inventarioId"
+                    value="#{inventarioHome.instance.id}"/>
+            <f:param name="detallefacturaFrom" value="Inventario"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

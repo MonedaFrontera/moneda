@@ -1,0 +1,519 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Transaccion Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{transaccionHome.instance.consecutivo}"/>
+        </s:decorate>
+
+        <s:decorate id="fechatx" template="layout/display.xhtml">
+            <ui:define name="label">Fechatx</ui:define>
+            <h:outputText value="#{transaccionHome.instance.fechatx}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="tipotx" template="layout/display.xhtml">
+            <ui:define name="label">Tipotx</ui:define>
+            <h:outputText value="#{transaccionHome.instance.tipotx}"/>
+        </s:decorate>
+
+        <s:decorate id="valortxpesos" template="layout/display.xhtml">
+            <ui:define name="label">Valortxpesos</ui:define>
+            <h:outputText value="#{transaccionHome.instance.valortxpesos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="valortxdolares" template="layout/display.xhtml">
+            <ui:define name="label">Valortxdolares</ui:define>
+            <h:outputText value="#{transaccionHome.instance.valortxdolares}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="numfactura" template="layout/display.xhtml">
+            <ui:define name="label">Numfactura</ui:define>
+            <h:outputText value="#{transaccionHome.instance.numfactura}"/>
+        </s:decorate>
+
+        <s:decorate id="valorcomision" template="layout/display.xhtml">
+            <ui:define name="label">Valorcomision</ui:define>
+            <h:outputText value="#{transaccionHome.instance.valorcomision}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="asesorcomision" template="layout/display.xhtml">
+            <ui:define name="label">Asesorcomision</ui:define>
+            <h:outputText value="#{transaccionHome.instance.asesorcomision}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="arrastradorcomision" template="layout/display.xhtml">
+            <ui:define name="label">Arrastradorcomision</ui:define>
+            <h:outputText value="#{transaccionHome.instance.arrastradorcomision}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="establecimientocomision" template="layout/display.xhtml">
+            <ui:define name="label">Establecimientocomision</ui:define>
+            <h:outputText value="#{transaccionHome.instance.establecimientocomision}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="porcentajecomision" template="layout/display.xhtml">
+            <ui:define name="label">Porcentajecomision</ui:define>
+            <h:outputText value="#{transaccionHome.instance.porcentajecomision}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{transaccionHome.instance.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{transaccionHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <s:decorate id="asesor" template="layout/display.xhtml">
+            <ui:define name="label">Asesor</ui:define>
+            <h:outputText value="#{transaccionHome.instance.asesor}"/>
+        </s:decorate>
+
+        <s:decorate id="promotor" template="layout/display.xhtml">
+            <ui:define name="label">Promotor</ui:define>
+            <h:outputText value="#{transaccionHome.instance.promotor}"/>
+        </s:decorate>
+
+        <s:decorate id="arrastrador" template="layout/display.xhtml">
+            <ui:define name="label">Arrastrador</ui:define>
+            <h:outputText value="#{transaccionHome.instance.arrastrador}"/>
+        </s:decorate>
+
+        <s:decorate id="digitador" template="layout/display.xhtml">
+            <ui:define name="label">Digitador</ui:define>
+            <h:outputText value="#{transaccionHome.instance.digitador}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TransaccionEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty transaccionFrom ? 'TransaccionList' : transaccionFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Establecimiento</h:panelGroup>
+        </f:facet>
+    <div class="association" id="establecimientoParent">
+
+        <h:outputText value="There is no establecimiento associated with this transaccion."
+                   rendered="#{transaccionHome.instance.establecimiento == null}"/>
+
+        <rich:dataTable var="_establecimiento"
+                   value="#{transaccionHome.instance.establecimiento}"
+                rendered="#{transaccionHome.instance.establecimiento != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="establecimientoTable">
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pais codigopais</f:facet>
+                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Empresa nit</f:facet>
+                <h:outputText value="#{_establecimiento.empresa.nit}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Bancocol codbanco</f:facet>
+                <h:outputText value="#{_establecimiento.bancocol.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewestablecimiento"
+                     value="View"
+                      view="/Establecimiento.xhtml">
+                    <f:param name="establecimientoCodigounico"
+                           value="#{_establecimiento.codigounico}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjeta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="tarjetaParent">
+
+        <h:outputText value="There is no tarjeta associated with this transaccion."
+                   rendered="#{transaccionHome.instance.tarjeta == null}"/>
+
+        <rich:dataTable var="_tarjeta"
+                   value="#{transaccionHome.instance.tarjeta}"
+                rendered="#{transaccionHome.instance.tarjeta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tarjetaTable">
+            <h:column>
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_tarjeta.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Franquicia codfranquicia</f:facet>
+                <h:outputText value="#{_tarjeta.franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_tarjeta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewtarjeta"
+                     value="View"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                           value="#{_tarjeta.numerotarjeta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Deduccioneses</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="deduccionesesChildren">
+
+        <h:outputText value="There are no deduccioneses associated with this transaccion."
+                   rendered="#{empty transaccionHome.deduccioneses}"/>
+
+        <rich:dataTable value="#{transaccionHome.deduccioneses}"
+                       var="_deducciones"
+                  rendered="#{not empty transaccionHome.deduccioneses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="deduccionesesTable">
+            <rich:column sortBy="#{_deducciones.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_deducciones.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_deducciones.id.descripcion}">
+                <f:facet name="header">Descripcion</f:facet>
+                <h:outputText value="#{_deducciones.id.descripcion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_deducciones.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_deducciones.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_deducciones.tipo}">
+                <f:facet name="header">Tipo</f:facet>
+                <h:outputText value="#{_deducciones.tipo}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectdeducciones"
+                     value="Select"
+                      view="/Deducciones.xhtml">
+                    <f:param name="deduccionesConsecutivo"
+                            value="#{_deducciones.id.consecutivo}"/>
+                    <f:param name="deduccionesDescripcion"
+                            value="#{_deducciones.id.descripcion}"/>
+                    <f:param name="deduccionesFrom" value="Transaccion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add deducciones"
+                view="/DeduccionesEdit.xhtml">
+            <f:param name="transaccionConsecutivo"
+                    value="#{transaccionHome.instance.consecutivo}"/>
+            <f:param name="deduccionesFrom" value="Transaccion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Facturas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="facturasChildren">
+
+        <h:outputText value="There are no facturas associated with this transaccion."
+                   rendered="#{empty transaccionHome.facturas}"/>
+
+        <rich:dataTable value="#{transaccionHome.facturas}"
+                       var="_factura"
+                  rendered="#{not empty transaccionHome.facturas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="facturasTable">
+            <rich:column sortBy="#{_factura.id.numfactura}">
+                <f:facet name="header">Numfactura</f:facet>
+                <h:outputText value="#{_factura.id.numfactura}"/>
+            </rich:column>
+            <rich:column sortBy="#{_factura.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_factura.id.codigounico}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectfactura"
+                     value="Select"
+                      view="/Factura.xhtml">
+                    <f:param name="facturaNumfactura"
+                            value="#{_factura.id.numfactura}"/>
+                    <f:param name="facturaCodigounico"
+                            value="#{_factura.id.codigounico}"/>
+                    <f:param name="facturaFrom" value="Transaccion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add factura"
+                view="/FacturaEdit.xhtml">
+            <f:param name="transaccionConsecutivo"
+                    value="#{transaccionHome.instance.consecutivo}"/>
+            <f:param name="facturaFrom" value="Transaccion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Facturas_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="facturas_1Children">
+
+        <h:outputText value="There are no facturas_1 associated with this transaccion."
+                   rendered="#{empty transaccionHome.facturas_1}"/>
+
+        <rich:dataTable value="#{transaccionHome.facturas_1}"
+                       var="_factura"
+                  rendered="#{not empty transaccionHome.facturas_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="facturas_1Table">
+            <rich:column sortBy="#{_factura.id.numfactura}">
+                <f:facet name="header">Numfactura</f:facet>
+                <h:outputText value="#{_factura.id.numfactura}"/>
+            </rich:column>
+            <rich:column sortBy="#{_factura.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_factura.id.codigounico}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectfactura"
+                     value="Select"
+                      view="/Factura.xhtml">
+                    <f:param name="facturaNumfactura"
+                            value="#{_factura.id.numfactura}"/>
+                    <f:param name="facturaCodigounico"
+                            value="#{_factura.id.codigounico}"/>
+                    <f:param name="facturaFrom" value="Transaccion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add factura"
+                view="/FacturaEdit.xhtml">
+            <f:param name="transaccionConsecutivo"
+                    value="#{transaccionHome.instance.consecutivo}"/>
+            <f:param name="facturaFrom" value="Transaccion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Bauchers</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="bauchersChildren">
+
+        <h:outputText value="There are no bauchers associated with this transaccion."
+                   rendered="#{empty transaccionHome.bauchers}"/>
+
+        <rich:dataTable value="#{transaccionHome.bauchers}"
+                       var="_baucher"
+                  rendered="#{not empty transaccionHome.bauchers}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="bauchersTable">
+            <rich:column sortBy="#{_baucher.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_baucher.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_baucher.id.numautorizacion}">
+                <f:facet name="header">Numautorizacion</f:facet>
+                <h:outputText value="#{_baucher.id.numautorizacion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_baucher.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_baucher.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectbaucher"
+                     value="Select"
+                      view="/Baucher.xhtml">
+                    <f:param name="baucherConsecutivo"
+                            value="#{_baucher.id.consecutivo}"/>
+                    <f:param name="baucherNumautorizacion"
+                            value="#{_baucher.id.numautorizacion}"/>
+                    <f:param name="baucherFrom" value="Transaccion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add baucher"
+                view="/BaucherEdit.xhtml">
+            <f:param name="transaccionConsecutivo"
+                    value="#{transaccionHome.instance.consecutivo}"/>
+            <f:param name="baucherFrom" value="Transaccion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

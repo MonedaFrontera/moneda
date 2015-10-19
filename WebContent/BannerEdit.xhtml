@@ -1,0 +1,125 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="banner" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{bannerHome.managed ? 'Edit' : 'Add'} Banner</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{bannerHome.managed}"
+                          value="#{bannerHome.instance.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="imagenField" template="layout/edit.xhtml">
+                <ui:define name="label">Imagen</ui:define>
+                <h:inputText id="imagen"
+                           size="30"
+                      maxlength="30"
+                          value="#{bannerHome.instance.imagen}">
+                    <a:support event="onblur" reRender="imagenField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="captionField" template="layout/edit.xhtml">
+                <ui:define name="label">Caption</ui:define>
+                <h:inputTextarea id="caption"
+                               cols="80"
+                               rows="3"
+                              value="#{bannerHome.instance.caption}"/>
+            </s:decorate>
+
+
+            <s:decorate id="estadoField" template="layout/edit.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectBooleanCheckbox id="estado"
+                                      value="#{bannerHome.instance.estado}"/>
+            </s:decorate>
+
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                          value="#{bannerHome.instance.fechainicio}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{bannerHome.instance.fechafin}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="claseField" template="layout/edit.xhtml">
+                <ui:define name="label">Clase</ui:define>
+                <h:inputText id="clase"
+                           size="20"
+                      maxlength="20"
+                          value="#{bannerHome.instance.clase}">
+                    <a:support event="onblur" reRender="claseField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{bannerHome.persist}"
+                       disabled="#{!bannerHome.wired}"
+                       rendered="#{!bannerHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{bannerHome.update}"
+                       rendered="#{bannerHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{bannerHome.remove}"
+                      immediate="true"
+                       rendered="#{bannerHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Banner.xhtml"
+                rendered="#{bannerHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty bannerFrom ? 'BannerList' : bannerFrom}.xhtml"
+                rendered="#{!bannerHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

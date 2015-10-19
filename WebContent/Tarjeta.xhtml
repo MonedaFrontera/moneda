@@ -1,0 +1,864 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Tarjeta Details</f:facet>
+
+        <s:decorate id="numerotarjeta" template="layout/display.xhtml">
+            <ui:define name="label">Numerotarjeta</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.numerotarjeta}"/>
+        </s:decorate>
+
+        <s:decorate id="limite" template="layout/display.xhtml">
+            <ui:define name="label">Limite</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.limite}"/>
+        </s:decorate>
+
+        <s:decorate id="fechainicio" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicio</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechafin" template="layout/display.xhtml">
+            <ui:define name="label">Fechafin</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechavencimiento" template="layout/display.xhtml">
+            <ui:define name="label">Fechavencimiento</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.fechavencimiento}"/>
+        </s:decorate>
+
+        <s:decorate id="codseguridad" template="layout/display.xhtml">
+            <ui:define name="label">Codseguridad</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.codseguridad}"/>
+        </s:decorate>
+
+        <s:decorate id="tarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Tarjetahabiente</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.tarjetahabiente}"/>
+        </s:decorate>
+
+        <s:decorate id="direcciontarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Direcciontarjetahabiente</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.direcciontarjetahabiente}"/>
+        </s:decorate>
+
+        <s:decorate id="cedulatarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Cedulatarjetahabiente</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.cedulatarjetahabiente}"/>
+        </s:decorate>
+
+        <s:decorate id="telefonotarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Telefonotarjetahabiente</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.telefonotarjetahabiente}"/>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{tarjetaHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TarjetaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty tarjetaFrom ? 'TarjetaList' : tarjetaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this tarjeta."
+                   rendered="#{tarjetaHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{tarjetaHome.instance.promotor}"
+                rendered="#{tarjetaHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpromotor"
+                     value="View"
+                      view="/Promotor.xhtml">
+                    <f:param name="promotorDocumento"
+                           value="#{_promotor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Franquicia</h:panelGroup>
+        </f:facet>
+    <div class="association" id="franquiciaParent">
+
+        <h:outputText value="There is no franquicia associated with this tarjeta."
+                   rendered="#{tarjetaHome.instance.franquicia == null}"/>
+
+        <rich:dataTable var="_franquicia"
+                   value="#{tarjetaHome.instance.franquicia}"
+                rendered="#{tarjetaHome.instance.franquicia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="franquiciaTable">
+            <h:column>
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrefranquicia</f:facet>
+                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewfranquicia"
+                     value="View"
+                      view="/Franquicia.xhtml">
+                    <f:param name="franquiciaCodfranquicia"
+                           value="#{_franquicia.codfranquicia}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Banco</h:panelGroup>
+        </f:facet>
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this tarjeta."
+                   rendered="#{tarjetaHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{tarjetaHome.instance.banco}"
+                rendered="#{tarjetaHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewbanco"
+                     value="View"
+                      view="/Banco.xhtml">
+                    <f:param name="bancoCodbanco"
+                           value="#{_banco.codbanco}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Solicitudtarjetas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="solicitudtarjetasChildren">
+
+        <h:outputText value="There are no solicitudtarjetas associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.solicitudtarjetas}"/>
+
+        <rich:dataTable value="#{tarjetaHome.solicitudtarjetas}"
+                       var="_solicitudtarjeta"
+                  rendered="#{not empty tarjetaHome.solicitudtarjetas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="solicitudtarjetasTable">
+            <rich:column sortBy="#{_solicitudtarjeta.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_solicitudtarjeta.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_solicitudtarjeta.id.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_solicitudtarjeta.id.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_solicitudtarjeta.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_solicitudtarjeta.valor}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectsolicitudtarjeta"
+                     value="Select"
+                      view="/Solicitudtarjeta.xhtml">
+                    <f:param name="solicitudtarjetaConsecutivo"
+                            value="#{_solicitudtarjeta.id.consecutivo}"/>
+                    <f:param name="solicitudtarjetaNumerotarjeta"
+                            value="#{_solicitudtarjeta.id.numerotarjeta}"/>
+                    <f:param name="solicitudtarjetaFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add solicitudtarjeta"
+                view="/SolicitudtarjetaEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="solicitudtarjetaFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Saldodepositoses</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="saldodepositosesChildren">
+
+        <h:outputText value="There are no saldodepositoses associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.saldodepositoses}"/>
+
+        <rich:dataTable value="#{tarjetaHome.saldodepositoses}"
+                       var="_saldodepositos"
+                  rendered="#{not empty tarjetaHome.saldodepositoses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="saldodepositosesTable">
+            <rich:column sortBy="#{_saldodepositos.id.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_saldodepositos.id.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_saldodepositos.id.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.saldo}">
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_saldodepositos.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_saldodepositos.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_saldodepositos.fechamod}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectsaldodepositos"
+                     value="Select"
+                      view="/Saldodepositos.xhtml">
+                    <f:param name="saldodepositosNumerotarjeta"
+                            value="#{_saldodepositos.id.numerotarjeta}"/>
+                    <f:param name="saldodepositosFecha"
+                            value="#{_saldodepositos.id.fecha}"/>
+                    <f:param name="saldodepositosFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add saldodepositos"
+                view="/SaldodepositosEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="saldodepositosFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Autovozs</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="autovozsChildren">
+
+        <h:outputText value="There are no autovozs associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.autovozs}"/>
+
+        <rich:dataTable value="#{tarjetaHome.autovozs}"
+                       var="_autovoz"
+                  rendered="#{not empty tarjetaHome.autovozs}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="autovozsTable">
+            <rich:column sortBy="#{_autovoz.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_autovoz.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.fechatx}">
+                <f:facet name="header">Fechatx</f:facet>
+                <h:outputText value="#{_autovoz.fechatx}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.tipotx}">
+                <f:facet name="header">Tipotx</f:facet>
+                <h:outputText value="#{_autovoz.tipotx}"/>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.valortxpesos}">
+                <f:facet name="header">Valortxpesos</f:facet>
+                <h:outputText value="#{_autovoz.valortxpesos}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_autovoz.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_autovoz.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.numtransaccion}">
+                <f:facet name="header">Numtransaccion</f:facet>
+                <h:outputText value="#{_autovoz.numtransaccion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.numautorizacion}">
+                <f:facet name="header">Numautorizacion</f:facet>
+                <h:outputText value="#{_autovoz.numautorizacion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_autovoz.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_autovoz.asesor}">
+                <f:facet name="header">Asesor</f:facet>
+                <h:outputText value="#{_autovoz.asesor}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectautovoz"
+                     value="Select"
+                      view="/Autovoz.xhtml">
+                    <f:param name="autovozConsecutivo"
+                            value="#{_autovoz.consecutivo}"/>
+                    <f:param name="autovozFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add autovoz"
+                view="/AutovozEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="autovozFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Transaccions</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="transaccionsChildren">
+
+        <h:outputText value="There are no transaccions associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.transaccions}"/>
+
+        <rich:dataTable value="#{tarjetaHome.transaccions}"
+                       var="_transaccion"
+                  rendered="#{not empty tarjetaHome.transaccions}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="transaccionsTable">
+            <rich:column sortBy="#{_transaccion.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_transaccion.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.fechatx}">
+                <f:facet name="header">Fechatx</f:facet>
+                <h:outputText value="#{_transaccion.fechatx}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.tipotx}">
+                <f:facet name="header">Tipotx</f:facet>
+                <h:outputText value="#{_transaccion.tipotx}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.valortxpesos}">
+                <f:facet name="header">Valortxpesos</f:facet>
+                <h:outputText value="#{_transaccion.valortxpesos}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.valortxdolares}">
+                <f:facet name="header">Valortxdolares</f:facet>
+                <h:outputText value="#{_transaccion.valortxdolares}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.numfactura}">
+                <f:facet name="header">Numfactura</f:facet>
+                <h:outputText value="#{_transaccion.numfactura}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.valorcomision}">
+                <f:facet name="header">Valorcomision</f:facet>
+                <h:outputText value="#{_transaccion.valorcomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.asesorcomision}">
+                <f:facet name="header">Asesorcomision</f:facet>
+                <h:outputText value="#{_transaccion.asesorcomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.arrastradorcomision}">
+                <f:facet name="header">Arrastradorcomision</f:facet>
+                <h:outputText value="#{_transaccion.arrastradorcomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.establecimientocomision}">
+                <f:facet name="header">Establecimientocomision</f:facet>
+                <h:outputText value="#{_transaccion.establecimientocomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.porcentajecomision}">
+                <f:facet name="header">Porcentajecomision</f:facet>
+                <h:outputText value="#{_transaccion.porcentajecomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_transaccion.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_transaccion.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.asesor}">
+                <f:facet name="header">Asesor</f:facet>
+                <h:outputText value="#{_transaccion.asesor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.promotor}">
+                <f:facet name="header">Promotor</f:facet>
+                <h:outputText value="#{_transaccion.promotor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.arrastrador}">
+                <f:facet name="header">Arrastrador</f:facet>
+                <h:outputText value="#{_transaccion.arrastrador}"/>
+            </rich:column>
+            <rich:column sortBy="#{_transaccion.digitador}">
+                <f:facet name="header">Digitador</f:facet>
+                <h:outputText value="#{_transaccion.digitador}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttransaccion"
+                     value="Select"
+                      view="/Transaccion.xhtml">
+                    <f:param name="transaccionConsecutivo"
+                            value="#{_transaccion.consecutivo}"/>
+                    <f:param name="transaccionFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add transaccion"
+                view="/TransaccionEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="transaccionFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Depositostarjetas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="depositostarjetasChildren">
+
+        <h:outputText value="There are no depositostarjetas associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.depositostarjetas}"/>
+
+        <rich:dataTable value="#{tarjetaHome.depositostarjetas}"
+                       var="_depositostarjeta"
+                  rendered="#{not empty tarjetaHome.depositostarjetas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="depositostarjetasTable">
+            <rich:column sortBy="#{_depositostarjeta.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_depositostarjeta.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_depositostarjeta.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.preciobolivar}">
+                <f:facet name="header">Preciobolivar</f:facet>
+                <h:outputText value="#{_depositostarjeta.preciobolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.valordeposito}">
+                <f:facet name="header">Valordeposito</f:facet>
+                <h:outputText value="#{_depositostarjeta.valordeposito}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.tipodebolivar}">
+                <f:facet name="header">Tipodebolivar</f:facet>
+                <h:outputText value="#{_depositostarjeta.tipodebolivar}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.depositopesos}">
+                <f:facet name="header">Depositopesos</f:facet>
+                <h:outputText value="#{_depositostarjeta.depositopesos}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.tipodep}">
+                <f:facet name="header">Tipodep</f:facet>
+                <h:outputText value="#{_depositostarjeta.tipodep}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_depositostarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_depositostarjeta.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.asesor}">
+                <f:facet name="header">Asesor</f:facet>
+                <h:outputText value="#{_depositostarjeta.asesor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_depositostarjeta.promotor}">
+                <f:facet name="header">Promotor</f:facet>
+                <h:outputText value="#{_depositostarjeta.promotor}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectdepositostarjeta"
+                     value="Select"
+                      view="/Depositostarjeta.xhtml">
+                    <f:param name="depositostarjetaConsecutivo"
+                            value="#{_depositostarjeta.consecutivo}"/>
+                    <f:param name="depositostarjetaFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add depositostarjeta"
+                view="/DepositostarjetaEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="depositostarjetaFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjetaviajes</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tarjetaviajesChildren">
+
+        <h:outputText value="There are no tarjetaviajes associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.tarjetaviajes}"/>
+
+        <rich:dataTable value="#{tarjetaHome.tarjetaviajes}"
+                       var="_tarjetaviaje"
+                  rendered="#{not empty tarjetaHome.tarjetaviajes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tarjetaviajesTable">
+            <rich:column sortBy="#{_tarjetaviaje.id.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjetaviaje.id.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjetaviaje.id.consecutivoviaje}">
+                <f:facet name="header">Consecutivoviaje</f:facet>
+                <h:outputText value="#{_tarjetaviaje.id.consecutivoviaje}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjetaviaje.estado}">
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_tarjetaviaje.estado}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjetaviaje.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjetaviaje.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjetaviaje.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjetaviaje.usuariomod}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttarjetaviaje"
+                     value="Select"
+                      view="/Tarjetaviaje.xhtml">
+                    <f:param name="tarjetaviajeNumerotarjeta"
+                            value="#{_tarjetaviaje.id.numerotarjeta}"/>
+                    <f:param name="tarjetaviajeConsecutivoviaje"
+                            value="#{_tarjetaviaje.id.consecutivoviaje}"/>
+                    <f:param name="tarjetaviajeFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tarjetaviaje"
+                view="/TarjetaviajeEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="tarjetaviajeFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Saldodepositoses_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="saldodepositoses_1Children">
+
+        <h:outputText value="There are no saldodepositoses_1 associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.saldodepositoses_1}"/>
+
+        <rich:dataTable value="#{tarjetaHome.saldodepositoses_1}"
+                       var="_saldodepositos"
+                  rendered="#{not empty tarjetaHome.saldodepositoses_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="saldodepositoses_1Table">
+            <rich:column sortBy="#{_saldodepositos.id.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_saldodepositos.id.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_saldodepositos.id.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.saldo}">
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_saldodepositos.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_saldodepositos.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_saldodepositos.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_saldodepositos.fechamod}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectsaldodepositos"
+                     value="Select"
+                      view="/Saldodepositos.xhtml">
+                    <f:param name="saldodepositosNumerotarjeta"
+                            value="#{_saldodepositos.id.numerotarjeta}"/>
+                    <f:param name="saldodepositosFecha"
+                            value="#{_saldodepositos.id.fecha}"/>
+                    <f:param name="saldodepositosFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add saldodepositos"
+                view="/SaldodepositosEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="saldodepositosFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Audit tarjetaviajes</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="auditTarjetaviajesChildren">
+
+        <h:outputText value="There are no auditTarjetaviajes associated with this tarjeta."
+                   rendered="#{empty tarjetaHome.auditTarjetaviajes}"/>
+
+        <rich:dataTable value="#{tarjetaHome.auditTarjetaviajes}"
+                       var="_auditTarjetaviaje"
+                  rendered="#{not empty tarjetaHome.auditTarjetaviajes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="auditTarjetaviajesTable">
+            <rich:column sortBy="#{_auditTarjetaviaje.id.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_auditTarjetaviaje.id.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_auditTarjetaviaje.id.consecutivoviaje}">
+                <f:facet name="header">Consecutivoviaje</f:facet>
+                <h:outputText value="#{_auditTarjetaviaje.id.consecutivoviaje}"/>
+            </rich:column>
+            <rich:column sortBy="#{_auditTarjetaviaje.id.estado}">
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_auditTarjetaviaje.id.estado}"/>
+            </rich:column>
+            <rich:column sortBy="#{_auditTarjetaviaje.id.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_auditTarjetaviaje.id.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_auditTarjetaviaje.id.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_auditTarjetaviaje.id.usuariomod}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectauditTarjetaviaje"
+                     value="Select"
+                      view="/AuditTarjetaviaje.xhtml">
+                    <f:param name="auditTarjetaviajeNumerotarjeta"
+                            value="#{_auditTarjetaviaje.id.numerotarjeta}"/>
+                    <f:param name="auditTarjetaviajeConsecutivoviaje"
+                            value="#{_auditTarjetaviaje.id.consecutivoviaje}"/>
+                    <f:param name="auditTarjetaviajeEstado"
+                            value="#{_auditTarjetaviaje.id.estado}"/>
+                    <f:param name="auditTarjetaviajeFechamod"
+                            value="#{_auditTarjetaviaje.id.fechamod}"/>
+                    <f:param name="auditTarjetaviajeUsuariomod"
+                            value="#{_auditTarjetaviaje.id.usuariomod}"/>
+                    <f:param name="auditTarjetaviajeFrom" value="Tarjeta"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add auditTarjetaviaje"
+                view="/AuditTarjetaviajeEdit.xhtml">
+            <f:param name="tarjetaNumerotarjeta"
+                    value="#{tarjetaHome.instance.numerotarjeta}"/>
+            <f:param name="auditTarjetaviajeFrom" value="Tarjeta"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

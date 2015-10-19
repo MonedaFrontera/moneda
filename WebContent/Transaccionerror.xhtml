@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Transaccionerror Details</f:facet>
+
+        <s:decorate id="numerotarjeta" template="layout/display.xhtml">
+            <ui:define name="label">Numerotarjeta</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.numerotarjeta}"/>
+        </s:decorate>
+        <s:decorate id="codigounico" template="layout/display.xhtml">
+            <ui:define name="label">Codigounico</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.codigounico}"/>
+        </s:decorate>
+        <s:decorate id="fechatx" template="layout/display.xhtml">
+            <ui:define name="label">Fechatx</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.fechatx}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="tipotx" template="layout/display.xhtml">
+            <ui:define name="label">Tipotx</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.tipotx}"/>
+        </s:decorate>
+        <s:decorate id="numfactura" template="layout/display.xhtml">
+            <ui:define name="label">Numfactura</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.numfactura}"/>
+        </s:decorate>
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.usuariomod}"/>
+        </s:decorate>
+        <s:decorate id="asesor" template="layout/display.xhtml">
+            <ui:define name="label">Asesor</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.asesor}"/>
+        </s:decorate>
+        <s:decorate id="promotor" template="layout/display.xhtml">
+            <ui:define name="label">Promotor</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.promotor}"/>
+        </s:decorate>
+        <s:decorate id="digitador" template="layout/display.xhtml">
+            <ui:define name="label">Digitador</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.digitador}"/>
+        </s:decorate>
+        <s:decorate id="error" template="layout/display.xhtml">
+            <ui:define name="label">Error</ui:define>
+            <h:outputText value="#{transaccionerrorHome.instance.id.error}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TransaccionerrorEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty transaccionerrorFrom ? 'TransaccionerrorList' : transaccionerrorFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

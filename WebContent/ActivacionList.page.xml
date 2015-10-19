@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+	
+	<begin-conversation join="true" flush-mode="MANUAL"/>
+	
+	<action execute="#{AdministrarActivacion.buscar()}"/>
+	
+   <param name="firstResult" value="#{AdministrarActivacion.activacions.firstResult}"/>
+   <param name="sort" value="#{AdministrarActivacion.activacions.orderColumn}"/>
+   <param name="dir" value="#{AdministrarActivacion.activacions.orderDirection}"/>
+   <param name="logic" value="#{AdministrarActivacion.activacions.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="cedula" value="#{activacionList.activacion.cedula}"/>
+   <param name="nombre" value="#{activacionList.activacion.nombre}"/>
+   <param name="codbanco" value="#{activacionList.activacion.banco.codbanco}"/>
+   <param name="usuarioreg" value="#{activacionList.activacion.usuarioreg}"/>
+   <param name="correo" value="#{activacionList.activacion.correo}"/>
+   <param name="clave" value="#{activacionList.activacion.clave}"/>
+   <param name="usuario" value="#{activacionList.activacion.usuario}"/>
+   <param name="llave" value="#{activacionList.activacion.llave}"/>
+   <param name="promotor" value="#{activacionList.activacion.promotor.documento}"/>
+   <param name="estado" value="#{activacionList.activacion.actestado.codestado}"/>
+   <param name="usuariomod" value="#{activacionList.activacion.usuariomod}"/>
+   <param name="gestor" value="#{activacionList.activacion.gestor.documento}"/>
+   
+   <navigation from-action="#{AdministrarActivacion.editar(_activacion.consecutivo)}">
+         <redirect view-id="/ActivacionEdit.xhtml"/>
+   </navigation>
+   
+   
+
+</page>

@@ -1,0 +1,196 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="establecimiento" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">Consultar Transacciones</f:facet>
+
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Establecimiento</ui:define>
+                <h:inputText value="#{AdministrarEstablecimiento.sugestion}" id="name" styleClass="textBox" size="50">
+                <a:support event="onblur" action="#{AdministrarEstablecimiento.ubicarEstablecimiento()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
+                    alt="" />
+				<rich:suggestionbox id="suggestionBoxId" for="name"
+                                        suggestionAction="#{AdministrarEstablecimiento.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>                
+            </s:decorate>
+            
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Inicio</ui:define>
+                <rich:calendar id="fechainicio"
+                          value="#{AdministrarEstablecimiento.fechainicio}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Final</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{AdministrarEstablecimiento.fechafin}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+			
+			<s:decorate id="numtarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                
+                <h:inputText id="numtarjeta"
+                           size="20"
+                      maxlength="16"
+                          value="#{AdministrarEstablecimiento.numtarjeta}">
+                    <a:support event="onblur" reRender="numtarjetaField" ajaxSingle="true"/>
+                </h:inputText>                
+            </s:decorate>
+            
+            <s:decorate id="franquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:selectOneMenu id="franquiciaSel" value="#{AdministrarEstablecimiento.franquicia}" >
+			<s:selectItems value="#{franquiciaList.resultList}" var="franquicia" label="#{franquicia.nombrefranquicia}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="franquiciaField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+            
+            <s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Transaccion</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{AdministrarEstablecimiento.tipotx}">
+					<f:selectItem itemValue="" itemLabel="Seleccione"/>
+					<f:selectItem itemValue="V" itemLabel="Viajero"/>
+					<f:selectItem itemValue="I" itemLabel="Internet"/>
+					<a:support event="onchange" reRender="tipotxField" ajaxSingle="true"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+			
+			<s:decorate id="numautorizacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Autorizacion</ui:define>
+                
+                <h:inputText id="numautorizacion"
+                           size="20"
+                      maxlength="8"
+                          value="#{AdministrarEstablecimiento.numautorizacion}">
+                    <a:support event="onblur" reRender="numautorizacionField" ajaxSingle="true"/>
+                </h:inputText>                
+            </s:decorate>
+            
+            <s:decorate id="numfacturaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Factura</ui:define>
+                
+                <h:inputText id="numfactura"
+                           size="20"
+                      maxlength="8"
+                          value="#{AdministrarEstablecimiento.numfactura}">
+                    <a:support event="onblur" reRender="numfacturaField" ajaxSingle="true"/>
+                </h:inputText>                
+            </s:decorate>
+			
+			<div style="clear:both"> </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Buscar"
+                         action="#{AdministrarEstablecimiento.buscar}"
+                         reRender="transaccionsChildren"/>
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+   
+
+    
+
+    
+
+    <rich:tab label="Transacciones">
+        <h:form styleClass="association" id="transaccionsChildren">
+
+            <h:outputText value="No hay transacciones asociadas a este establecimiento."
+                       rendered="#{empty AdministrarEstablecimiento.transacciones}"/>
+
+            <rich:dataTable value="#{AdministrarEstablecimiento.transacciones}"
+                           var="_transaccion"
+                      rendered="#{not empty AdministrarEstablecimiento.transacciones}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transaccionsTable">
+                <rich:column sortBy="#{_transaccion[0]}">
+                    <f:facet name="header">Numero Tarjeta</f:facet>
+                    <h:outputText value="#{Reporteador.formatearTarjeta(_transaccion[0])}"/>
+                    <f:facet name="footer">Totales</f:facet>
+                </rich:column>
+                
+                <rich:column sortBy="#{_transaccion[1]}"  style="text-align:center">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_transaccion[1]}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                    
+                </rich:column>
+                <rich:column sortBy="#{_transaccion[2]}" style="text-align:center">
+                    <f:facet name="header">Tipo</f:facet>
+                    <h:outputText value="#{_transaccion[2]}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion[3]}" style="text-align:right">
+                    <f:facet name="header">Valor Pesos Cliente</f:facet>
+                    <h:outputText value="#{_transaccion[3]}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                    <h:outputText style= "text-align:right; display:block" value="#{AdministrarEstablecimiento.totales[0]}">
+                        <f:convertNumber/>
+                    </h:outputText></f:facet>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion[4]}" style="text-align:right">
+                    <f:facet name="header">Valor Dolares</f:facet>
+                    <h:outputText value="#{_transaccion[4]}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                    <h:outputText style= "text-align:right; display:block" 
+                    value="#{AdministrarEstablecimiento.totales[1]}">
+                        <f:convertNumber/>
+                    </h:outputText></f:facet>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion[5]}" style="text-align:right">
+                    <f:facet name="header">Valor Pesos Establecimiento</f:facet>
+                    <h:outputText value="#{_transaccion[5]}" style="text-align:right">
+                        <f:convertNumber/>
+                    </h:outputText>
+                    <f:facet name="footer">
+                    <h:outputText style= "text-align:right; display:block" 
+                    value="#{AdministrarEstablecimiento.totales[2]}">
+                        <f:convertNumber/>
+                    </h:outputText></f:facet>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion[6]}" style="text-align:center">
+                    <f:facet name="header">Numero Factura</f:facet>
+                    <h:outputText value="#{_transaccion[6]}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

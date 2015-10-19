@@ -1,0 +1,353 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dolartodaySearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Dolartoday Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{dolartodayList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/DolartodayList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Dolartoday Search Results (#{empty dolartodayList.resultList ? 0 : (dolartodayList.paginated ? dolartodayList.resultCount : dolartodayList.resultList.size)})</f:facet>
+    <div class="results" id="dolartodayList">
+
+    <h:outputText value="The dolartoday search returned no results."
+               rendered="#{empty dolartodayList.resultList}"/>
+
+    <rich:dataTable id="dolartodayList"
+                var="_dolartoday"
+              value="#{dolartodayList.resultList}"
+           rendered="#{not empty dolartodayList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Epoch"/>
+                    <ui:param name="propertyPath" value="dolartoday.epoch"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.epoch}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdtransferencia"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdtransferencia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdtransferencia}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdefectivo"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdefectivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdefectivo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdpromedio"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdpromedio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdpromedio}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdpromedioreal"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdpromedioreal"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdpromedioreal}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdsicad2"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdsicad2"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdsicad2}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usddolartoday"/>
+                    <ui:param name="propertyPath" value="dolartoday.usddolartoday"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usddolartoday}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Eurtransferencia"/>
+                    <ui:param name="propertyPath" value="dolartoday.eurtransferencia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.eurtransferencia}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Eurefectivo"/>
+                    <ui:param name="propertyPath" value="dolartoday.eurefectivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.eurefectivo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Eurpromedio"/>
+                    <ui:param name="propertyPath" value="dolartoday.eurpromedio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.eurpromedio}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Eurpromedioreal"/>
+                    <ui:param name="propertyPath" value="dolartoday.eurpromedioreal"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.eurpromedioreal}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Eurdolartoday"/>
+                    <ui:param name="propertyPath" value="dolartoday.eurdolartoday"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.eurdolartoday}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Bscolcompra"/>
+                    <ui:param name="propertyPath" value="dolartoday.bscolcompra"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.bscolcompra}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Bscolventa"/>
+                    <ui:param name="propertyPath" value="dolartoday.bscolventa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.bscolventa}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Goldrate"/>
+                    <ui:param name="propertyPath" value="dolartoday.goldrate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.goldrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdvefrate"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdvefrate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdvefrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdcolrate"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdcolrate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdcolrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdratetrm"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdratetrm"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdratetrm}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Usdtrmfactor"/>
+                    <ui:param name="propertyPath" value="dolartoday.usdtrmfactor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.usdtrmfactor}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{dolartodayList}"/>
+                    <ui:param name="propertyLabel" value="Eurusdrate"/>
+                    <ui:param name="propertyPath" value="dolartoday.eurusdrate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_dolartoday.eurusdrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Dolartoday' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="dolartodayViewId">
+                <f:param name="dolartodayEpoch"
+                        value="#{_dolartoday.epoch}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/DolartodayEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="dolartodayEdit"
+                rendered="#{empty from}">
+                <f:param name="dolartodayEpoch"
+                        value="#{_dolartoday.epoch}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/DolartodayList.xhtml"
+            rendered="#{dolartodayList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DolartodayList.xhtml"
+            rendered="#{dolartodayList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{dolartodayList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DolartodayList.xhtml"
+            rendered="#{dolartodayList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{dolartodayList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DolartodayList.xhtml"
+            rendered="#{dolartodayList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{dolartodayList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/DolartodayEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create dolartoday">
+            <f:param name="dolartodayEpoch"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

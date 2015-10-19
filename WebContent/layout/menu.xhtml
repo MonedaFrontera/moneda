@@ -1,0 +1,441 @@
+<rich:toolBar
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:rich="http://richfaces.org/rich">
+    
+    <rich:toolBarGroup>
+        <h:outputText value="#{projectName}:"/>
+        <s:link id="menuHomeId" view="/home.xhtml" value="Inicio" propagation="none"/>
+    </rich:toolBarGroup>
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none" 
+	    rendered="#{s:hasRole('Administrar Franquicias')||s:hasRole('Administrar Cargos')||
+	    s:hasRole('Administrar Puntos de Venta')||s:hasRole('Administrar Pais')||
+	    s:hasRole('Administrar Bancos')||s:hasRole('Administrar Empresas')||
+	    s:hasRole('Administrar Establecimientos')|| s:hasRole('Cambiar Clave')|| 
+	    s:hasRole('Asesor')}">
+	        <f:facet name="label">Administrar</f:facet>	
+        
+    <rich:menuItem rendered="#{s:hasRole('Administrar Bancos')}">
+    	<s:link view="/BancoList.xhtml"
+           	value="Bancos"
+           	id="BancoId"
+           	styleClass="menutt"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>	
+     <rich:menuItem rendered="#{s:hasRole('Cambiar Clave')||s:hasRole('Asesor')}">
+    	<s:link view="/CambioClave.xhtml"
+           	value="Cambiar Clave"
+           	id="ClaveId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>	
+     <rich:menuItem rendered="#{s:hasRole('Administrar Franquicias')}">
+    	<s:link view="/CargoList.xhtml"
+           	value="Cargos"
+           	id="CargoId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Empresas')}">
+    	<s:link view="/EmpresaList.xhtml"
+           	value="Empresas"
+           	id="Empresa"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem rendered="#{s:hasRole('Administrar Establecimientos')}">
+    	<s:link view="/EstablecimientoList.xhtml"
+           	value="Establecimientos"
+           	id="EstablecimientoId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Productos')}">
+    	<s:link view="/ProductoList.xhtml"
+           	value="Productos"
+           	id="ProductoId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Cargos')}">
+    	<s:link view="/FranquiciaList.xhtml"
+           	value="Franquicias"
+           	id="FranquiciaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+        <rich:menuItem rendered="#{s:hasRole('Administrar Gravamen')}">
+    	<s:link view="/GravamenList.xhtml"
+           	value="Gravamen"
+           	id="GravamenId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Pais')}">
+    	<s:link view="/PaisList.xhtml"
+           	value="Pais"
+           	id="PaisId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Puntos de Venta')}">
+    	<s:link view="/PuntodeventaList.xhtml"
+           	value="Puntos de Venta"
+           	id="PuntodeventaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Tipo Gasto')}">
+    	<s:link view="/TipogastoList.xhtml"
+           	value="Tipo de Gasto"
+           	id="TipogastoId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Administrar Usuarios')}">
+    	<s:link view="/UsuarioList.xhtml"
+           	value="Usuarios y Privilegios"
+           	id="UsuarioId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     
+     </rich:dropDownMenu>
+     
+     
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none" rendered="#{s:hasRole('Asesor')||s:hasRole('Registrar Envios')||s:hasRole('Consultar Envios')||
+	s:hasRole('Programar Depositos')||s:hasRole('Registrar Movimiento')||s:hasRole('Registrar Transaccion')||s:hasRole('Registrar Activacion')}">
+        <f:facet name="label">Registrar</f:facet>
+        
+      <rich:menuItem rendered="#{s:hasRole('Registrar Activacion')}">
+    	<s:link view="/ActivacionEdit.xhtml"
+           	value="Activaciones"
+           	id="ActivacionesId"           	
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+      
+      <rich:menuItem rendered="#{s:hasRole('Registrar Autorizacion')||s:hasRole('Asesor')}">
+    	<s:link view="/AutovozEdit.xhtml"
+           	value="Autorizacion de Voz"
+           	id="AutovozIdEdit"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Cuentas Venezolanas')}">
+    	<s:link view="/CuentapromotorEdit.xhtml"
+           	value="Cuenta Promotor"
+           	id="CuentaProId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Cuentas Venezolanas')}">
+    	<s:link view="/CuentaEdit.xhtml"
+           	value="Cuentas Venezolanas"
+           	id="CuentaVenId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>      
+     <rich:menuItem rendered="#{s:hasRole('Registrar Envios')}">
+    	<s:link view="/EnviosProgramar.xhtml"
+           	value="Cupones Envios"
+           	id="EnviosRegistrarCuponesId"           	
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Programar Depositos')||s:hasRole('Asesor')}">
+    	<s:link view="/DepositostarjetaEdit.xhtml"
+           	value="Depositos a Tarjeta"
+           	id="DepositostarjetaEditId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Deposito')}">
+    	<s:link view="/DataDepositostarjetaConsultar.xhtml"
+           	value="Deposito a Tarjeta"
+           	id="DepositostarjetaCuentaEditId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Asesor')}">
+    	<s:link view="/EnviosEdit.xhtml"
+           	value="Envios"
+           	id="EnviosEditId"           	
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem rendered="#{s:hasRole('Registrar Envios')}">
+    	<s:link view="/EnviosProgramar.xhtml"
+           	value="Envios"
+           	id="EnviosRegistrarId"           	
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Gastos')}">
+    	<s:link view="/GastosEdit.xhtml"
+           	value="Gastos"
+           	id="GastosIdEdit"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Movimiento Cuenta Venezolana')}">
+    	<s:link view="/CuentacreditoEdit.xhtml"
+           	value="Movimiento Cuenta Venezolana"
+           	id="cuentacreditoIdEdit"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>     
+     <rich:menuItem rendered="#{s:hasRole('Registrar Promotor')}">
+    	<s:link view="/PromotorEdit.xhtml"
+           	value="Promotor"
+           	id="RegistrarPromotorId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem> 
+     <rich:menuItem rendered="#{s:hasRole('Registrar Saldo Promotor')}">
+    	<s:link view="/SaldoEdit.xhtml"
+           	value="Saldo Inicial Promotor"
+           	id="SaldoEditId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Movimiento')}">
+    	<s:link view="/GastosEdit.xhtml"
+           	value="Registrar Movimiento"
+           	id="GastosEditId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Registrar Tarjeta')}">
+    	<s:link view="/TarjetaEdit.xhtml"
+           	value="Tarjetas"
+           	id="TarjetasIdEdit"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem> 
+     <rich:menuItem rendered="#{s:hasRole('Registrar Transaccion')}">
+    	<s:link view="/TransaccionEdit.xhtml"
+           	value="Transacciones"
+           	id="TransaccionIdEdit"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem> 
+     <rich:menuItem rendered="#{s:hasRole('Registrar Transferencia')}">
+    	<s:link view="/TransferenciaEdit.xhtml"
+           	value="Transferencia a Cuenta"
+           	id="TransferenciaIdEdit"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+
+    </rich:dropDownMenu>
+      <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none" rendered="#{s:hasRole('Administrar Tasa Bolivar Oficina')||s:hasRole('Crear Tasa Dolar')}">
+        <f:facet name="label">Tasa Cambiaria</f:facet>
+        
+	<rich:menuItem rendered="#{s:hasRole('Administrar Tasa Bolivar Oficina')}">
+    	<s:link view="/TasadebolivaroficinaList.xhtml"
+           	value="Tasa Bolivar Oficina"
+           	id="TasadebolivaroficinaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>     
+     <rich:menuItem rendered="#{s:hasRole('Administrar Tasa de Bolivar Negociada')}">
+    	<s:link view="/TasabolivarnegociadoList.xhtml"
+           	value="Tasa Bolivar Negociado"
+           	id="TasadebolivarnegociadoId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>	
+	<rich:menuItem rendered="#{s:hasRole('Crear Tasa Dolar')}">
+    	<s:link view="/TasadolarList.xhtml"
+           	value="Tasa Dolar"
+           	id="TasadolarId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>	
+    </rich:dropDownMenu>    
+    
+    
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"
+		rendered="#{s:hasRole('Asesor')||s:hasRole('Consultar Transacciones')||
+		s:hasRole('Consultar Personal')||s:hasRole('Consultar Tarjetas')||	s:hasRole('Consultar Depositos')||s:hasRole('Consultar Transferencias')}">
+        <f:facet name="label" rendered="#{}">Consultar</f:facet>
+        
+        
+     <rich:menuItem rendered="#{s:hasRole('Consultar Activacion')||s:hasRole('Asesor')}">
+    	<s:link view="/ActivacionList.xhtml"
+           	value="Activaciones"
+           	id="ActivacionListId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Autorizaciones')||s:hasRole('Asesor')}">
+    	<s:link view="/AutovozList.xhtml"
+           	value="Autorizaciones de Voz"
+           	id="AutovozListId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Depositos')||s:hasRole('Asesor')}">
+    	<s:link view="/DepositostarjetaConsultar.xhtml"
+           	value="Depositos a Tarjeta"
+           	id="DepositostarjetaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Asesor')||s:hasRole('Registrar Envios')}">
+    	<s:link view="/EnviosList.xhtml"
+           	value="Envios"
+           	id="EnviosListId"           	
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Facturacion por Establecimiento')}">
+    	<s:link view="/EstablecimientoConsultar.xhtml"
+           	value="Facturacion por Establecimiento"
+           	id="FacEstablecimeintoId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     
+     <rich:menuItem rendered="#{s:hasRole('Consultar Facturas')}">
+    	<s:link view="/FacturaList.xhtml"
+           	value="Facturas"
+           	id="FacturasId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Gastos')||s:hasRole('Asesor') }">
+    	<s:link view="/GastosList.xhtml"
+           	value="Gastos"
+           	id="GatosId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Personal')||s:hasRole('Registrar Personal')}">
+    	<s:link view="/PersonalList.xhtml"
+           	value="Personal"
+           	id="PersonalId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+	<rich:menuItem rendered="#{s:hasRole('Asesor')}">
+    	<s:link view="/PromotorList.xhtml"
+           	value="Promotores"
+           	id="PromotoresId"           	
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Tarjetas')||s:hasRole('Asesor')}">
+    	<s:link view="/TarjetaaList.xhtml"
+           	value="Tarjetas"
+           	id="TarjetaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>     
+     <rich:menuItem rendered="#{s:hasRole('Consultar Transacciones')}">
+    	<s:link view="/TransaccionList.xhtml"
+           	value="Transacciones"
+           	id="TransaccionId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Transferencias')||s:hasRole('Asesor')}">
+    	<s:link view="/TransferenciaList.xhtml"
+           	value="Transferencia a Cuentas"
+           	id="TransferenciaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     <rich:menuItem rendered="#{s:hasRole('Consultar Cuentas Venezolanas')}">
+    	<s:link view="/CuentaList.xhtml"
+           	value="Cuentas Venezolanas"
+           	id="CuentaVenezolanaId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>
+     </rich:dropDownMenu>
+     
+     <!-- Menu Herramientas -->
+     <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"
+		rendered="#{s:hasRole('Utilizar Herramientas')}">
+        <f:facet name="label" rendered="#{}">Herramientas</f:facet>
+		
+		<rich:menuItem rendered="#{s:hasRole('Consultar Bin Tarjeta')}">
+    	<s:link view="/BindbList.xhtml"
+           	value="Buscar Bin Tarjeta"
+           	id="BinbaseId"           	
+			includePageParams="false" 
+     		propagation="none"/>
+        </rich:menuItem> 
+        
+        <rich:menuItem rendered="#{s:hasRole('Consultar Cedula CNE')}">
+    	<s:link view="/CneList.xhtml"
+           	value="Consultar CNE"
+           	id="CNEId"           	
+			includePageParams="false"
+			icon="img/finder.png"
+     		propagation="none"/>
+        </rich:menuItem>         
+     
+     </rich:dropDownMenu>    
+    
+    <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"
+		rendered="#{s:hasRole('Generar Reportes')}">
+        <f:facet name="label" rendered="#{}">Reportes</f:facet>
+        
+        <rich:menuItem rendered="#{!s:hasRole('Asesor')}">
+    		<s:link view="/Reportear.xhtml"
+           			value="Reportes Operativos"
+           			id="ReportesId"           	
+					includePageParams="false"
+     				propagation="none"/>
+        </rich:menuItem> 
+        
+        <rich:menuItem rendered="#{!s:hasRole('Asesor') &amp;&amp; s:hasRole('Reportes Administrativos')}">
+    		<s:link view="/ReportearAdm.xhtml"
+           			value="Reportes Adminsitrativos"
+           			id="ReportesAdmId"           	
+					includePageParams="false"
+     				propagation="none"/>
+        </rich:menuItem> 
+		
+		<rich:menuItem rendered="#{s:hasRole('Asesor')}">
+    		<s:link view="/ReportearAsesor.xhtml"
+           			value="Reportes de Asesoras"
+           			id="ReportesAsId"           	
+					includePageParams="false"
+     				propagation="none"/>
+        </rich:menuItem> 
+        
+     </rich:dropDownMenu>     
+     
+     <!-- Ayuda -->
+     <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"
+		rendered="#{s:hasRole('Ayuda')}">
+        <f:facet name="label" rendered="#{}">Ayuda</f:facet> 
+		
+		<rich:menuItem rendered="#{s:hasRole('Informe Actualizacion del Sistema')}">
+    		<s:link view="/updates.xhtml"
+           			value="Informacion Actualizaciones"
+           			id="ActualSis"           	
+					includePageParams="false"
+     				propagation="none"/>
+        </rich:menuItem> 
+        
+     </rich:dropDownMenu>     
+     
+     
+    <!-- @newMenuItem@ -->
+    
+    <rich:toolBarGroup location="right">
+        <h:outputText id="menuWelcomeId" value="Usuario: #{AdministrarVariable.nombreusuario}" rendered="#{identity.loggedIn}"/>
+        <s:link id="menuLoginId" view="/login.xhtml" value="Ingresar" rendered="#{not identity.loggedIn}" propagation="none"/>
+        
+        <s:link id="menuLogoutId" view="/home.xhtml" action="#{identity.logout}" value="Salir" rendered="#{identity.loggedIn}" propagation="none"/>
+    </rich:toolBarGroup>
+</rich:toolBar>

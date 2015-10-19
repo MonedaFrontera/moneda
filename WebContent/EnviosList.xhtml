@@ -1,0 +1,318 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml"> 
+
+<ui:define name="body">
+
+    <h:form id="enviosSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Busqueda de Envios" switchType="ajax">
+			
+			<s:decorate id="promotorField" template="layout/edit.xhtml" required="true">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarEnvios.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarEnvios.ubicarPromotorList()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png" 
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarEnvios.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+			
+			<s:div style="width:500px">
+			<s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{AdministrarEnvios.envios.fecha}" datePattern="dd/MM/yyyy" >
+                          <a:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+            
+            <s:decorate id="fechaenvioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Envio</ui:define>
+                <rich:calendar id="fechaenvio"
+                          value="#{AdministrarEnvios.envios.fechaenvio}" datePattern="dd/MM/yyyy" >
+                          <a:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+           
+			<s:div style="width:10px; float:right">
+            <h:graphicImage style="border-style:none"
+                  id="cabeceraImg" width="300px" height="55px" 
+                  value="http://www.domesa.com.ve/domesa/uploads/domesalogo_230x52.jpg" />
+            </s:div>
+			
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Envia</ui:define>
+                <h:inputText id="envia" value="#{AdministrarEnvios.envios.envia}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Recibe</ui:define>
+                <h:inputText id="recibe" value="#{AdministrarEnvios.envios.recibe}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Oficina</ui:define>
+                <h:inputText id="oficina" value="#{AdministrarEnvios.envios.oficina}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Ciudad</ui:define>
+                <h:inputText id="ciudad" value="#{AdministrarEnvios.envios.ciudad}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nro Cupon</ui:define>
+                <h:inputText id="nrocupon" value="#{AdministrarEnvios.envios.nrocupon}"/>
+            </s:decorate>
+            </s:div> 
+                      
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectOneRadio id="logic" value="#{AdministrarEnvios.estado}" styleClass="radio">
+                    <f:selectItem itemLabel="Todos" itemValue="t"/>
+                    <f:selectItem itemLabel="Programados" itemValue="p"/>
+                    <f:selectItem itemLabel="En Transito" itemValue="e"/>
+                    <f:selectItem itemLabel="Enviados MRW" itemValue="m"/>
+                    <f:selectItem itemLabel="Recibidos" itemValue="r"/>
+                </h:selectOneRadio>
+                
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="#{AdministrarEnvios.busqueda()}"/>
+            <h:commandButton id="limpiar" value="Limpiar" 
+            reRender="enviosList,enviosSearch"
+            action="#{AdministrarEnvios.reset()}"/>
+            
+            
+            <s:button id="reset" value="Limpiar" rendered="false" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultados de la Busqueda de Envios (#{empty AdministrarEnvios.envioss.resultList ? 0 : (AdministrarEnvios.envioss.paginated ? AdministrarEnvios.envioss.resultCount : AdministrarEnvios.envioss.resultList.size)})</f:facet>
+    <div class="results" id="enviosList">
+
+    <h:outputText value="La busqueda de Envios no retorno resultados."
+               rendered="#{empty AdministrarEnvios.envioss.resultList}"/>
+	<h:form>
+    <rich:dataTable id="enviosListTable"
+                var="_envios"
+              value="#{AdministrarEnvios.envioss.resultList}"
+           rendered="#{not empty AdministrarEnvios.envioss.resultList}">
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="envios.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Asesor"/>
+                    <ui:param name="propertyPath" value="envios.asesor.personal.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.asesor.personal.nombre}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="envios.promotor.personal.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.promotor.personal.nombre} #{_envios.promotor.personal.apellido}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Envia"/>
+                    <ui:param name="propertyPath" value="envios.envia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.envia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Recibe"/>
+                    <ui:param name="propertyPath" value="envios.recibe"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.recibe}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Oficina"/>
+                    <ui:param name="propertyPath" value="envios.oficina"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.oficina}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Ciudad"/>
+                    <ui:param name="propertyPath" value="envios.ciudad"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.ciudad}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Nro Cupon"/>
+                    <ui:param name="propertyPath" value="envios.nrocupon"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.nrocupon}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Fecha Envio"/>
+                    <ui:param name="propertyPath" value="envios.fechaenvio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.fechaenvio}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        <h:column >
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Estado"/>
+                    <ui:param name="propertyPath" value="envios.enviado"/>
+                </ui:include>
+            </f:facet>
+            <h:graphicImage rendered="#{_envios.enviado&amp;&amp;_envios.nrocupon==null}" 
+            title="Entregado a Mensajero" style="border-style:none;" id="verTarjeta" value="/img/send.png" />
+            <h:graphicImage rendered="#{_envios.enviado&amp;&amp;_envios.nrocupon!=null&amp;&amp;!_envios.recibido}"  
+            title="Enviado por MRW" style="border-style:none;" id="verMRW" value="/img/mrw.png" />
+            <h:graphicImage rendered="#{_envios.enviado&amp;&amp;_envios.nrocupon!=null&amp;&amp;_envios.recibido==true}"  
+            title="Recibido Promotor" style="border-style:none;" id="recibidoMRW" value="/img/recibido.png" />
+        </h:column>
+        <h:column rendered="false ">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{enviosList}"/>
+                    <ui:param name="propertyLabel" value="Recibido"/>
+                    <ui:param name="propertyPath" value="envios.recibido"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_envios.recibido}"/>
+        </h:column>
+        
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            
+            <s:link view="/EnviosEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="enviosEdit"
+               rendered="#{s:hasRole('Asesor')&amp;&amp;!_envios.enviado&amp;&amp;false}">
+                <f:param name="enviosConsecutivo"
+                        value="#{_envios.consecutivo}"/>
+            </s:link>
+            
+            <h:commandLink value="Editar" 
+            rendered="#{s:hasRole('Eliminar Envios')||(s:hasRole('Asesor')&amp;&amp;!_envios.enviado)}"
+            action="#{AdministrarEnvios.iniciarEdicionEnvio(_envios.consecutivo)}" >
+            </h:commandLink>
+            
+            <h:commandLink rendered="#{s:hasRole('Asesor')&amp;&amp;_envios.enviado&amp;&amp;!_envios.recibido&amp;&amp;_envios.nrocupon!=null}" value="Recibido" action="#{AdministrarEnvios.marcarEntrega(_envios.consecutivo)}">
+            	
+            </h:commandLink>
+        </rich:column>
+    </rich:dataTable>
+	</h:form>
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/EnviosList.xhtml"
+            rendered="#{AdministrarEnvios.envioss.previousExists}"
+               value="#{messages.left}#{messages.left} Primera"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/EnviosList.xhtml"
+            rendered="#{AdministrarEnvios.envioss.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarEnvios.envioss.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/EnviosList.xhtml"
+            rendered="#{AdministrarEnvios.envioss.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarEnvios.envioss.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/EnviosList.xhtml"
+            rendered="#{AdministrarEnvios.envioss.nextExists}"
+               value="Ultima #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarEnvios.envioss.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/EnviosEdit.xhtml"
+                    id="create"
+              rendered="#{s:hasRole('Asesor')}"
+           propagation="none"
+                 value="Programar Envio">
+            <f:param name="enviosConsecutivo"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

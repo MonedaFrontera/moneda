@@ -1,0 +1,104 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+   <div align="center">	
+   
+   
+    <h:form id="concepto" styleClass="edit">
+
+        <rich:panel id="Principal" header="Reportes" style="width: 900px; text-align:left">
+		 <div align="left">
+		 	<s:decorate id="selReporte" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Reporte</ui:define>
+			<h:selectOneMenu id="tiporeporte" value="#{Reporteador.nombrereporte}" required="true">
+                    <f:selectItem id="rep3" itemLabel="Seleccione un reporte" itemValue="" />
+                    <f:selectItem id="facsem" itemLabel="Facturacion Semanal Por Asesoras" itemValue="FacSem" />
+                    <f:selectItem id="rep1" itemLabel="Reporte de Entrega a Mensajero" itemValue="enviosmrw" />
+                    <f:selectItem id="rep2" itemLabel="Reporte de Promotores por Asesor" itemValue="reporte006" />
+                    <!--  <f:selectItem id="rep9" itemLabel="Reporte de Cuadre Establecimientos" itemValue="reporte009" />-->
+                    <!--  <f:selectItem id="rep10" itemLabel="Reporte de Transacciones por Fecha XLS" itemValue="reporte010" />-->
+                    <f:selectItem id="rep7" itemLabel="Reporte detallado de Facturacion por Establecimiento" itemValue="reporte007" />
+                    <f:selectItem id="autovoz" itemLabel="Reporte de Autorizaciones de Voz" itemValue="autovoz" />
+                    <f:selectItem id="cuadrediario" itemLabel="Reporte de Cuadre Diario" itemValue="cuadrediario" />
+                    <f:selectItem id="mrwpendientes" itemLabel="Reporte MRW Sin Cupones" itemValue="mrwpendientes" />
+                    <a4j:support event="onchange" reRender="divseltiporeporte, divButtons" ajaxSingle="true"></a4j:support>
+                </h:selectOneMenu>
+			 </s:decorate>
+		 
+		 
+		 <s:div id="divseltiporeporte">
+		 
+		 <s:div rendered="#{Reporteador.nombrereporte=='enviosmrw' || Reporteador.nombrereporte=='reporte010'
+		 || Reporteador.nombrereporte=='reporte009' || Reporteador.nombrereporte=='autovoz'
+		 || Reporteador.nombrereporte=='cuadrediario' || Reporteador.nombrereporte=='reporte007' ||Reporteador.nombrereporte=='transferenciasconsolidado'
+		 || Reporteador.nombrereporte=='FacSem'}">
+		  <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Fecha Inicio</ui:define>
+               <rich:calendar id="fechaini"
+                          value="#{Reporteador.fechainicio}" datePattern="dd/MM/yyyy" enableManualInput="true" >
+                          <a4j:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Fecha Fin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{Reporteador.fechafin}" datePattern="dd/MM/yyyy"  enableManualInput="true" >
+                          <a4j:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+            
+           		  
+		  </s:div>
+		  
+		  <s:div rendered="#{Reporteador.nombrereporte=='reporte006'}">
+		  
+		  </s:div>
+		  
+			</s:div>
+		  </div>
+         <div style="clear:both"/>
+        </rich:panel>
+ 
+        <br/>
+        <s:div id="divButtons"> 
+        <div class="actionButtons" style="width: 900px; text-align:left" >
+
+            <h:commandLink rendered="#{Reporteador.nombrereporte=='enviosmrw' || Reporteador.nombrereporte=='reporte009'
+            || Reporteador.nombrereporte=='autovoz'|| Reporteador.nombrereporte=='cuadrediario'|| Reporteador.nombrereporte=='reporte007'
+            || Reporteador.nombrereporte=='FacSem' ||Reporteador.nombrereporte=='transferenciasconsolidado'}" 
+            target="_blank" id="next003" 
+            action="#{Reporteador.generarReportePDF(Reporteador.fechainicio, Reporteador.fechafin, null, null, null)}">   
+            	<h:commandButton id="save003" value="Generar Reporte" />
+            </h:commandLink>
+            
+            <h:commandLink rendered="#{Reporteador.nombrereporte=='reporte010'}" 
+            target="_blank" id="next010" 
+            action="#{Reporteador.generarReporteXls(Reporteador.fechainicio, Reporteador.fechafin, null, null, null)}">   
+            	<h:commandButton id="save010" value="Generar Reporte" />
+            </h:commandLink>
+            <h:commandLink rendered="#{Reporteador.nombrereporte=='reporte006' ||Reporteador.nombrereporte=='mrwpendientes'}" 
+            target="_blank" id="next006" 
+            action="#{Reporteador.generarReportePDF('', null, null, null, null)}">   
+            	<h:commandButton id="save006" value="Generar Reporte" />
+            </h:commandLink>
+            
+            <s:button view="/home.xhtml" value="salir"/>
+
+            
+        </div>
+        </s:div>
+    </h:form>
+   </div> 
+</ui:define>
+
+</ui:composition>

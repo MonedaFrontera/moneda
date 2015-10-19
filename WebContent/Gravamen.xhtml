@@ -1,0 +1,184 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Gravamen Details</f:facet>
+
+        <s:decorate id="codigo" template="layout/display.xhtml">
+            <ui:define name="label">Codigo</ui:define>
+            <h:outputText value="#{gravamenHome.instance.codigo}"/>
+        </s:decorate>
+
+        <s:decorate id="iva" template="layout/display.xhtml">
+            <ui:define name="label">Iva</ui:define>
+            <h:outputText value="#{gravamenHome.instance.iva}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{gravamenHome.instance.nombre}"/>
+        </s:decorate>
+
+        <s:decorate id="porcentaje" template="layout/display.xhtml">
+            <ui:define name="label">Porcentaje</ui:define>
+            <h:outputText value="#{gravamenHome.instance.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/GravamenEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty gravamenFrom ? 'GravamenList' : gravamenFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Gravamenestablecimientos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="gravamenestablecimientosChildren">
+
+        <h:outputText value="There are no gravamenestablecimientos associated with this gravamen."
+                   rendered="#{empty gravamenHome.gravamenestablecimientos}"/>
+
+        <rich:dataTable value="#{gravamenHome.gravamenestablecimientos}"
+                       var="_gravamenestablecimiento"
+                  rendered="#{not empty gravamenHome.gravamenestablecimientos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="gravamenestablecimientosTable">
+            <rich:column sortBy="#{_gravamenestablecimiento.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.id.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.id.gravamen}">
+                <f:facet name="header">Gravamen</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.id.gravamen}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.iva}">
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.iva}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.activo}">
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.activo}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectgravamenestablecimiento"
+                     value="Select"
+                      view="/Gravamenestablecimiento.xhtml">
+                    <f:param name="gravamenestablecimientoCodigounico"
+                            value="#{_gravamenestablecimiento.id.codigounico}"/>
+                    <f:param name="gravamenestablecimientoGravamen"
+                            value="#{_gravamenestablecimiento.id.gravamen}"/>
+                    <f:param name="gravamenestablecimientoFrom" value="Gravamen"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add gravamenestablecimiento"
+                view="/GravamenestablecimientoEdit.xhtml">
+            <f:param name="gravamenCodigo"
+                    value="#{gravamenHome.instance.codigo}"/>
+            <f:param name="gravamenestablecimientoFrom" value="Gravamen"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Gravamenestablecimientos_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="gravamenestablecimientos_1Children">
+
+        <h:outputText value="There are no gravamenestablecimientos_1 associated with this gravamen."
+                   rendered="#{empty gravamenHome.gravamenestablecimientos_1}"/>
+
+        <rich:dataTable value="#{gravamenHome.gravamenestablecimientos_1}"
+                       var="_gravamenestablecimiento"
+                  rendered="#{not empty gravamenHome.gravamenestablecimientos_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="gravamenestablecimientos_1Table">
+            <rich:column sortBy="#{_gravamenestablecimiento.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.id.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.id.gravamen}">
+                <f:facet name="header">Gravamen</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.id.gravamen}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.iva}">
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.iva}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gravamenestablecimiento.activo}">
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_gravamenestablecimiento.activo}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectgravamenestablecimiento"
+                     value="Select"
+                      view="/Gravamenestablecimiento.xhtml">
+                    <f:param name="gravamenestablecimientoCodigounico"
+                            value="#{_gravamenestablecimiento.id.codigounico}"/>
+                    <f:param name="gravamenestablecimientoGravamen"
+                            value="#{_gravamenestablecimiento.id.gravamen}"/>
+                    <f:param name="gravamenestablecimientoFrom" value="Gravamen"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add gravamenestablecimiento"
+                view="/GravamenestablecimientoEdit.xhtml">
+            <f:param name="gravamenCodigo"
+                    value="#{gravamenHome.instance.codigo}"/>
+            <f:param name="gravamenestablecimientoFrom" value="Gravamen"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{vistasaldoviernesList.firstResult}"/>
+   <param name="sort" value="#{vistasaldoviernesList.orderColumn}"/>
+   <param name="dir" value="#{vistasaldoviernesList.orderDirection}"/>
+   <param name="logic" value="#{vistasaldoviernesList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="docupromo" value="#{vistasaldoviernesList.vistasaldoviernes.id.docupromo}"/>
+   <param name="nombrepromo" value="#{vistasaldoviernesList.vistasaldoviernes.id.nombrepromo}"/>
+   <param name="asesora" value="#{vistasaldoviernesList.vistasaldoviernes.id.asesora}"/>
+
+</page>

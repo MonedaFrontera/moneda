@@ -1,0 +1,87 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Audit transferencia Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.consecutivo}"/>
+        </s:decorate>
+        <s:decorate id="preciobolivar" template="layout/display.xhtml">
+            <ui:define name="label">Preciobolivar</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.preciobolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="tipobolivar" template="layout/display.xhtml">
+            <ui:define name="label">Tipobolivar</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.tipobolivar}"/>
+        </s:decorate>
+        <s:decorate id="valorbolivar" template="layout/display.xhtml">
+            <ui:define name="label">Valorbolivar</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.valorbolivar}"/>
+        </s:decorate>
+        <s:decorate id="numcuenta" template="layout/display.xhtml">
+            <ui:define name="label">Numcuenta</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.numcuenta}"/>
+        </s:decorate>
+        <s:decorate id="numcuentapromotor" template="layout/display.xhtml">
+            <ui:define name="label">Numcuentapromotor</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.numcuentapromotor}"/>
+        </s:decorate>
+        <s:decorate id="documentopromotor" template="layout/display.xhtml">
+            <ui:define name="label">Documentopromotor</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.documentopromotor}"/>
+        </s:decorate>
+        <s:decorate id="preciocompra" template="layout/display.xhtml">
+            <ui:define name="label">Preciocompra</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.preciocompra}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="precioasesor" template="layout/display.xhtml">
+            <ui:define name="label">Precioasesor</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.precioasesor}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.usuariomod}"/>
+        </s:decorate>
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{auditTransferenciaHome.instance.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/AuditTransferenciaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty auditTransferenciaFrom ? 'AuditTransferenciaList' : auditTransferenciaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

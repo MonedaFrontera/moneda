@@ -1,0 +1,274 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="paisiso" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{paisisoHome.managed ? 'Edit' : 'Add'} Paisiso</f:facet>
+
+
+            <s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigopais</ui:define>
+                <h:inputText id="codigopais"
+                       disabled="#{paisisoHome.managed}"
+                       required="true"
+                           size="5"
+                      maxlength="5"
+                          value="#{paisisoHome.instance.codigopais}">
+                    <a:support event="onblur" reRender="codigopaisField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombrepaisEsField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrepais es</ui:define>
+                <h:inputTextarea id="nombrepaisEs"
+                               cols="80"
+                               rows="2"
+                              value="#{paisisoHome.instance.nombrepaisEs}"/>
+            </s:decorate>
+
+
+            <s:decorate id="nombrepaisEnField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrepais en</ui:define>
+                <h:inputTextarea id="nombrepaisEn"
+                               cols="80"
+                               rows="2"
+                              value="#{paisisoHome.instance.nombrepaisEn}"/>
+            </s:decorate>
+
+
+            <s:decorate id="capitalField" template="layout/edit.xhtml">
+                <ui:define name="label">Capital</ui:define>
+                <h:inputTextarea id="capital"
+                               cols="80"
+                               rows="2"
+                              value="#{paisisoHome.instance.capital}"/>
+            </s:decorate>
+
+
+            <s:decorate id="nombrecompletoEnField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrecompleto en</ui:define>
+                <h:inputTextarea id="nombrecompletoEn"
+                               cols="80"
+                               rows="2"
+                              value="#{paisisoHome.instance.nombrecompletoEn}"/>
+            </s:decorate>
+
+
+            <s:decorate id="codigopaisNumeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigopais numero</ui:define>
+                <h:inputText id="codigopaisNumero"
+                           size="4"
+                      maxlength="4"
+                          value="#{paisisoHome.instance.codigopaisNumero}">
+                    <a:support event="onblur" reRender="codigopaisNumeroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="codigo31663EsField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo31663 es</ui:define>
+                <h:inputText id="codigo31663Es"
+                           size="5"
+                      maxlength="5"
+                          value="#{paisisoHome.instance.codigo31663Es}">
+                    <a:support event="onblur" reRender="codigo31663EsField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="codigomonedaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigomoneda</ui:define>
+                <h:inputText id="codigomoneda"
+                           size="5"
+                      maxlength="5"
+                          value="#{paisisoHome.instance.codigomoneda}">
+                    <a:support event="onblur" reRender="codigomonedaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombreMonedaField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre moneda</ui:define>
+                <h:inputText id="nombreMoneda"
+                           size="60"
+                      maxlength="60"
+                          value="#{paisisoHome.instance.nombreMoneda}">
+                    <a:support event="onblur" reRender="nombreMonedaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="pathBanderaRelativoField" template="layout/edit.xhtml">
+                <ui:define name="label">Path bandera relativo</ui:define>
+                <h:inputText id="pathBanderaRelativo"
+                           size="60"
+                      maxlength="60"
+                          value="#{paisisoHome.instance.pathBanderaRelativo}">
+                    <a:support event="onblur" reRender="pathBanderaRelativoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="pathBanderaAbsolutaField" template="layout/edit.xhtml">
+                <ui:define name="label">Path bandera absoluta</ui:define>
+                <h:inputText id="pathBanderaAbsoluta"
+                           size="60"
+                      maxlength="60"
+                          value="#{paisisoHome.instance.pathBanderaAbsoluta}">
+                    <a:support event="onblur" reRender="pathBanderaAbsolutaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="estadoField" template="layout/edit.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectBooleanCheckbox id="estado"
+                                      value="#{paisisoHome.instance.estado}"/>
+            </s:decorate>
+
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{paisisoHome.persist}"
+                       disabled="#{!paisisoHome.wired}"
+                       rendered="#{!paisisoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{paisisoHome.update}"
+                       rendered="#{paisisoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{paisisoHome.remove}"
+                      immediate="true"
+                       rendered="#{paisisoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Paisiso.xhtml"
+                rendered="#{paisisoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty paisisoFrom ? 'PaisisoList' : paisisoFrom}.xhtml"
+                rendered="#{!paisisoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Tasabolivartransferpaises">
+        <h:form styleClass="association" id="tasabolivartransferpaisesChildren">
+
+            <h:outputText value="There are no tasabolivartransferpaises associated with this paisiso."
+                       rendered="#{empty paisisoHome.tasabolivartransferpaises}"/>
+
+            <rich:dataTable value="#{paisisoHome.tasabolivartransferpaises}"
+                           var="_tasabolivartransferpais"
+                      rendered="#{not empty paisisoHome.tasabolivartransferpaises}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="tasabolivartransferpaisesTable">
+                <rich:column sortBy="#{_tasabolivartransferpais.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_tasabolivartransferpais.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_tasabolivartransferpais.id.codigopais}">
+                    <f:facet name="header">Codigopais</f:facet>
+                    <h:outputText value="#{_tasabolivartransferpais.id.codigopais}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tasabolivartransferpais.preciobolivar}">
+                    <f:facet name="header">Preciobolivar</f:facet>
+                    <h:outputText value="#{_tasabolivartransferpais.preciobolivar}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{paisisoHome.managed}" id="tasabolivartransferpaises">
+        <div class="actionButtons">
+            <s:button id="addtasabolivartransferpais"
+                   value="Add tasabolivartransferpais"
+                    view="/TasabolivartransferpaisEdit.xhtml"
+             propagation="none">
+                 <f:param name="paisisoCodigopais"
+                         value="#{paisisoHome.instance.codigopais}"/>
+                 <f:param name="tasabolivartransferpaisFrom" value="Paisiso"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Paises">
+        <h:form styleClass="association" id="paisesChildren">
+
+            <h:outputText value="There are no paises associated with this paisiso."
+                       rendered="#{empty paisisoHome.paises}"/>
+
+            <rich:dataTable value="#{paisisoHome.paises}"
+                           var="_pais"
+                      rendered="#{not empty paisisoHome.paises}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="paisesTable">
+                <rich:column sortBy="#{_pais.codigopais}">
+                    <f:facet name="header">Codigopais</f:facet>
+                    <h:outputText value="#{_pais.codigopais}"/>
+                </rich:column>
+                <rich:column sortBy="#{_pais.nombre}">
+                    <f:facet name="header">Nombre</f:facet>
+                    <h:outputText value="#{_pais.nombre}"/>
+                </rich:column>
+                <rich:column sortBy="#{_pais.estado}">
+                    <f:facet name="header">Estado</f:facet>
+                    <h:outputText value="#{_pais.estado}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{paisisoHome.managed}" id="paises">
+        <div class="actionButtons">
+            <s:button id="addpais"
+                   value="Add pais"
+                    view="/PaisEdit.xhtml"
+             propagation="none">
+                 <f:param name="paisisoCodigopais"
+                         value="#{paisisoHome.instance.codigopais}"/>
+                 <f:param name="paisFrom" value="Paisiso"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

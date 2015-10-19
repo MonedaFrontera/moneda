@@ -1,0 +1,138 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="puntodeventa" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{puntodeventaHome.managed ? 'Edit' : 'Add'} Puntodeventa</f:facet>
+
+
+            <s:decorate id="codpuntoventaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codpuntoventa</ui:define>
+                <h:inputText id="codpuntoventa"
+                       disabled="#{puntodeventaHome.managed}"
+                       required="true"
+                           size="1"
+                      maxlength="1"
+                          value="#{puntodeventaHome.instance.codpuntoventa}">
+                    <a:support event="onblur" reRender="codpuntoventaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                           size="50"
+                      maxlength="50"
+                          value="#{puntodeventaHome.instance.nombre}">
+                    <a:support event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{puntodeventaHome.persist}"
+                       disabled="#{!puntodeventaHome.wired}"
+                       rendered="#{!puntodeventaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{puntodeventaHome.update}"
+                       rendered="#{puntodeventaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{puntodeventaHome.remove}"
+                      immediate="true"
+                       rendered="#{puntodeventaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Puntodeventa.xhtml"
+                rendered="#{puntodeventaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty puntodeventaFrom ? 'PuntodeventaList' : puntodeventaFrom}.xhtml"
+                rendered="#{!puntodeventaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Puntoestablecimientos">
+        <h:form styleClass="association" id="puntoestablecimientosChildren">
+
+            <h:outputText value="There are no puntoestablecimientos associated with this puntodeventa."
+                       rendered="#{empty puntodeventaHome.puntoestablecimientos}"/>
+
+            <rich:dataTable value="#{puntodeventaHome.puntoestablecimientos}"
+                           var="_puntoestablecimiento"
+                      rendered="#{not empty puntodeventaHome.puntoestablecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="puntoestablecimientosTable">
+                <rich:column sortBy="#{_puntoestablecimiento.id.codigounico}">
+                    <f:facet name="header">Codigounico</f:facet>
+                    <h:outputText value="#{_puntoestablecimiento.id.codigounico}"/>
+                </rich:column>
+                <rich:column sortBy="#{_puntoestablecimiento.id.codpuntoventa}">
+                    <f:facet name="header">Codpuntoventa</f:facet>
+                    <h:outputText value="#{_puntoestablecimiento.id.codpuntoventa}"/>
+                </rich:column>
+                <rich:column sortBy="#{_puntoestablecimiento.id.fechainicio}">
+                    <f:facet name="header">Fechainicio</f:facet>
+                    <h:outputText value="#{_puntoestablecimiento.id.fechainicio}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_puntoestablecimiento.fechafin}">
+                    <f:facet name="header">Fechafin</f:facet>
+                    <h:outputText value="#{_puntoestablecimiento.fechafin}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{puntodeventaHome.managed}" id="puntoestablecimientos">
+        <div class="actionButtons">
+            <s:button id="addpuntoestablecimiento"
+                   value="Add puntoestablecimiento"
+                    view="/PuntoestablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="puntodeventaCodpuntoventa"
+                         value="#{puntodeventaHome.instance.codpuntoventa}"/>
+                 <f:param name="puntoestablecimientoFrom" value="Puntodeventa"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

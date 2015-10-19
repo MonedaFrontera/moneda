@@ -1,0 +1,157 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Promotorcomisiontx Details</f:facet>
+
+        <s:decorate id="codpais" template="layout/display.xhtml">
+            <ui:define name="label">Codpais</ui:define>
+            <h:outputText value="#{promotorcomisiontxHome.instance.id.codpais}"/>
+        </s:decorate>
+        <s:decorate id="fechainicio" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicio</ui:define>
+            <h:outputText value="#{promotorcomisiontxHome.instance.id.fechainicio}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="documento" template="layout/display.xhtml">
+            <ui:define name="label">Documento</ui:define>
+            <h:outputText value="#{promotorcomisiontxHome.instance.id.documento}"/>
+        </s:decorate>
+
+        <s:decorate id="fechafin" template="layout/display.xhtml">
+            <ui:define name="label">Fechafin</ui:define>
+            <h:outputText value="#{promotorcomisiontxHome.instance.fechafin}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="porcentaje" template="layout/display.xhtml">
+            <ui:define name="label">Porcentaje</ui:define>
+            <h:outputText value="#{promotorcomisiontxHome.instance.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PromotorcomisiontxEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty promotorcomisiontxFrom ? 'PromotorcomisiontxList' : promotorcomisiontxFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this promotorcomisiontx."
+                   rendered="#{promotorcomisiontxHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{promotorcomisiontxHome.instance.promotor}"
+                rendered="#{promotorcomisiontxHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpromotor"
+                     value="View"
+                      view="/Promotor.xhtml">
+                    <f:param name="promotorDocumento"
+                           value="#{_promotor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Pais</h:panelGroup>
+        </f:facet>
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this promotorcomisiontx."
+                   rendered="#{promotorcomisiontxHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{promotorcomisiontxHome.instance.pais}"
+                rendered="#{promotorcomisiontxHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpais"
+                     value="View"
+                      view="/Pais.xhtml">
+                    <f:param name="paisCodigopais"
+                           value="#{_pais.codigopais}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

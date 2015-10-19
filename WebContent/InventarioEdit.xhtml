@@ -1,0 +1,299 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="inventario" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{inventarioHome.managed ? 'Edit' : 'Add'} Inventario</f:facet>
+
+
+            <s:decorate id="refproductoField" template="layout/edit.xhtml">
+                <ui:define name="label">Refproducto</ui:define>
+                <h:inputText id="refproducto"
+                       disabled="#{inventarioHome.managed}"
+                      required="true"
+                          size="20"
+                     maxlength="20"
+                         value="#{inventarioHome.instance.id.refproducto}">
+                    <a:support event="onblur" reRender="refproductoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigounico</ui:define>
+                <h:inputText id="codigounico"
+                       disabled="#{inventarioHome.managed}"
+                      required="true"
+                          size="8"
+                     maxlength="8"
+                         value="#{inventarioHome.instance.id.codigounico}">
+                    <a:support event="onblur" reRender="codigounicoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{inventarioHome.instance.valor}"
+                           size="17">
+                    <a:support event="onblur" reRender="valorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cantidadField" template="layout/edit.xhtml">
+                <ui:define name="label">Cantidad</ui:define>
+                <h:inputText id="cantidad"
+                          value="#{inventarioHome.instance.cantidad}"
+                           size="17">
+                    <a:support event="onblur" reRender="cantidadField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="activoField" template="layout/edit.xhtml">
+                <ui:define name="label">Activo</ui:define>
+                <h:selectBooleanCheckbox id="activo"
+                                      value="#{inventarioHome.instance.activo}"/>
+            </s:decorate>
+
+
+            <s:decorate id="prioridadField" template="layout/edit.xhtml">
+                <ui:define name="label">Prioridad</ui:define>
+                <h:selectBooleanCheckbox id="prioridad"
+                                      value="#{inventarioHome.instance.prioridad}"/>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{inventarioHome.persist}"
+                       disabled="#{!inventarioHome.wired}"
+                       rendered="#{!inventarioHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{inventarioHome.update}"
+                       rendered="#{inventarioHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{inventarioHome.remove}"
+                      immediate="true"
+                       rendered="#{inventarioHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Inventario.xhtml"
+                rendered="#{inventarioHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty inventarioFrom ? 'InventarioList' : inventarioFrom}.xhtml"
+                rendered="#{!inventarioHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Producto *" labelClass="required">
+    <div class="association" id="productoParent">
+
+        <h:outputText value="There is no producto associated with this inventario."
+                   rendered="#{inventarioHome.instance.producto == null}"/>
+
+        <rich:dataTable var="_producto"
+                   value="#{inventarioHome.instance.producto}"
+                rendered="#{inventarioHome.instance.producto != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="productoTable">
+            <h:column>
+                <f:facet name="header">Refproducto</f:facet>
+                <h:outputText value="#{_producto.refproducto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreproducto</f:facet>
+                <h:outputText value="#{_producto.nombreproducto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Marca</f:facet>
+                <h:outputText value="#{_producto.marca}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valorminimo</f:facet>
+                <h:outputText value="#{_producto.valorminimo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valormaximo</f:facet>
+                <h:outputText value="#{_producto.valormaximo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cantminimo</f:facet>
+                <h:outputText value="#{_producto.cantminimo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cantmaximo</f:facet>
+                <h:outputText value="#{_producto.cantmaximo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_producto.porcentaje}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{inventarioHome.instance.producto != null ? 'changeParent' : 'selectParent'}" value="#{inventarioHome.instance.producto != null ? 'Change' : 'Select'} producto"
+                       view="/ProductoList.xhtml">
+                <f:param name="from" value="InventarioEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Establecimiento *" labelClass="required">
+    <div class="association" id="establecimientoParent">
+
+        <h:outputText value="There is no establecimiento associated with this inventario."
+                   rendered="#{inventarioHome.instance.establecimiento == null}"/>
+
+        <rich:dataTable var="_establecimiento"
+                   value="#{inventarioHome.instance.establecimiento}"
+                rendered="#{inventarioHome.instance.establecimiento != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="establecimientoTable">
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pais codigopais</f:facet>
+                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Empresa nit</f:facet>
+                <h:outputText value="#{_establecimiento.empresa.nit}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Bancocol codbanco</f:facet>
+                <h:outputText value="#{_establecimiento.bancocol.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{inventarioHome.instance.establecimiento != null ? 'changeParent' : 'selectParent'}" value="#{inventarioHome.instance.establecimiento != null ? 'Change' : 'Select'} establecimiento"
+                       view="/EstablecimientoList.xhtml">
+                <f:param name="from" value="InventarioEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Detallefacturas">
+        <h:form styleClass="association" id="detallefacturasChildren">
+
+            <h:outputText value="There are no detallefacturas associated with this inventario."
+                       rendered="#{empty inventarioHome.detallefacturas}"/>
+
+            <rich:dataTable value="#{inventarioHome.detallefacturas}"
+                           var="_detallefactura"
+                      rendered="#{not empty inventarioHome.detallefacturas}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="detallefacturasTable">
+                <rich:column sortBy="#{_detallefactura.id.numfactura}">
+                    <f:facet name="header">Numfactura</f:facet>
+                    <h:outputText value="#{_detallefactura.id.numfactura}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.id.refproducto}">
+                    <f:facet name="header">Refproducto</f:facet>
+                    <h:outputText value="#{_detallefactura.id.refproducto}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.id.codigounico}">
+                    <f:facet name="header">Codigounico</f:facet>
+                    <h:outputText value="#{_detallefactura.id.codigounico}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.cantidad}">
+                    <f:facet name="header">Cantidad</f:facet>
+                    <h:outputText value="#{_detallefactura.cantidad}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.valor}">
+                    <f:facet name="header">Valor</f:facet>
+                    <h:outputText value="#{_detallefactura.valor}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{inventarioHome.managed}" id="detallefacturas">
+        <div class="actionButtons">
+            <s:button id="adddetallefactura"
+                   value="Add detallefactura"
+                    view="/DetallefacturaEdit.xhtml"
+             propagation="none">
+                 <f:param name="inventarioId"
+                         value="#{inventarioHome.instance.id}"/>
+                 <f:param name="detallefacturaFrom" value="Inventario"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

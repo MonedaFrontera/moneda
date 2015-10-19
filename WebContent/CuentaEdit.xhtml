@@ -1,0 +1,244 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cuenta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{cuentaHome.managed ? 'Editar' : 'Agregar'} Cuenta Venezolana</f:facet>
+
+			
+			<s:decorate id="bancoField" template="layout/edit.xhtml" >
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{cuentaHome.instance.banco}" 
+                required="true" style=" width : 217px;">
+			<s:selectItems value="#{bancoList.resultList}" var="banco" 
+			label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	
+			
+            <s:decorate id="numcuentaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Cuenta</ui:define>
+                <h:inputText id="numcuenta"
+                       disabled="#{cuentaHome.managed}"
+                       required="true"
+                           size="25"
+                      maxlength="25"
+                          value="#{cuentaHome.instance.numcuenta}">
+                    <a:support event="onblur" reRender="numcuentaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre Cuenta</ui:define>
+                <h:inputText id="nombre"
+                           size="100"
+                      maxlength="100"
+                          value="#{cuentaHome.instance.nombre}">
+                    <a:support event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="saldoField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo</ui:define>
+                <h:inputText id="saldo"
+                          value="#{cuentaHome.instance.saldo}"
+                           size="19">
+                    <a:support event="onblur" reRender="saldoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{cuentaHome.persist}"
+                       rendered="#{!cuentaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{cuentaHome.update}"
+                       rendered="#{cuentaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{cuentaHome.remove}"
+                      immediate="true"
+                       rendered="#{cuentaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/Cuenta.xhtml"
+                rendered="#{cuentaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty cuentaFrom ? 'CuentaList' : cuentaFrom}.xhtml"
+                rendered="#{!cuentaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Movimientos">
+        <h:form styleClass="association" id="cuentacreditosChildren">
+
+            <h:outputText value="No hay movimientos asociados a esta cuenta."
+                       rendered="#{empty cuentaHome.cuentacreditos}"/>
+
+            <rich:dataTable value="#{cuentaHome.cuentacreditos}"
+                           var="_cuentacredito"
+                      rendered="#{not empty cuentaHome.cuentacreditos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="cuentacreditosTable">
+                
+                <rich:column sortBy="#{_cuentacredito.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_cuentacredito.fecha}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                
+                <rich:column sortBy="#{_cuentacredito.valor}" style="text-align:right">
+                    <f:facet name="header">Valor</f:facet>
+                    <h:outputText value="#{_cuentacredito.valor}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                
+                <rich:column sortBy="#{_cuentacredito.tipo}" style="text-align:center">
+                    <f:facet name="header">Tipo</f:facet>
+                    <h:outputText value="#{_cuentacredito.tipo}"/>
+                </rich:column>
+
+            </rich:dataTable>
+
+        </h:form>
+
+        
+    </rich:tab>
+
+    <rich:tab label="Depositos">
+        <h:form styleClass="association" id="depositostarjetasChildren">
+
+            <h:outputText value="No hay depositos asociados a esta cuenta."
+                       rendered="#{empty cuentaHome.depositostarjetas}"/>
+
+            <rich:dataTable value="#{cuentaHome.depositostarjetas}"
+                           var="_depositostarjeta"
+                      rendered="#{not empty cuentaHome.depositostarjetas}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="depositostarjetasTable">
+                <rich:column sortBy="#{_depositostarjeta.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_depositostarjeta.fecha}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.preciobolivar}" style="text-align:right">
+                    <f:facet name="header">Precio Bolivar</f:facet>
+                    <h:outputText value="#{_depositostarjeta.preciobolivar}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.valordeposito}" style="text-align:right">
+                    <f:facet name="header">Valor Deposito</f:facet>
+                    <h:outputText value="#{_depositostarjeta.valordeposito}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.tipodebolivar}" style="text-align:center" >
+                    <f:facet name="header">Tipo de Bolivar</f:facet>
+                    <h:outputText value="#{_depositostarjeta.tipodebolivar}"/>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.depositopesos}" style="text-align:right">
+                    <f:facet name="header">Deposito Pesos</f:facet>
+                    <h:outputText value="#{_depositostarjeta.depositopesos}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.tipodep}" style="text-align:center">
+                    <f:facet name="header">Tipo</f:facet>
+                    <h:outputText value="#{_depositostarjeta.tipodep}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        
+    </rich:tab>
+
+    <rich:tab label="Transferencias">
+        <h:form styleClass="association" id="transferenciasChildren">
+
+            <h:outputText value="No hay transferencias asociadas a esta cuenta."
+                       rendered="#{empty cuentaHome.transferencias}"/>
+
+            <rich:dataTable value="#{cuentaHome.transferencias}"
+                           var="_transferencia"
+                      rendered="#{not empty cuentaHome.transferencias}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transferenciasTable">
+                <rich:column sortBy="#{_transferencia.gastos.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_transferencia.gastos.fecha}">
+                    <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_transferencia.preciobolivar}">
+                    <f:facet name="header">Precio Bolivar</f:facet>
+                    <h:outputText value="#{_transferencia.preciobolivar}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_transferencia.tipobolivar}">
+                    <f:facet name="header">Tipo Bolivar</f:facet>
+                    <h:outputText value="#{_transferencia.tipobolivar}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transferencia.valorbolivar}">
+                    <f:facet name="header">Valor Bolivar</f:facet>
+                    <h:outputText value="#{_transferencia.valorbolivar}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

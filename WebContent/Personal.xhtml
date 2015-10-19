@@ -1,0 +1,640 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Personal Details</f:facet>
+
+        <s:decorate id="documento" template="layout/display.xhtml">
+            <ui:define name="label">Documento</ui:define>
+            <h:outputText value="#{personalHome.instance.documento}"/>
+        </s:decorate>
+
+        <s:decorate id="tipodocumento" template="layout/display.xhtml">
+            <ui:define name="label">Tipodocumento</ui:define>
+            <h:outputText value="#{personalHome.instance.tipodocumento}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{personalHome.instance.nombre}"/>
+        </s:decorate>
+
+        <s:decorate id="apellido" template="layout/display.xhtml">
+            <ui:define name="label">Apellido</ui:define>
+            <h:outputText value="#{personalHome.instance.apellido}"/>
+        </s:decorate>
+
+        <s:decorate id="celular" template="layout/display.xhtml">
+            <ui:define name="label">Celular</ui:define>
+            <h:outputText value="#{personalHome.instance.celular}"/>
+        </s:decorate>
+
+        <s:decorate id="telefono" template="layout/display.xhtml">
+            <ui:define name="label">Telefono</ui:define>
+            <h:outputText value="#{personalHome.instance.telefono}"/>
+        </s:decorate>
+
+        <s:decorate id="pinbb" template="layout/display.xhtml">
+            <ui:define name="label">Pinbb</ui:define>
+            <h:outputText value="#{personalHome.instance.pinbb}"/>
+        </s:decorate>
+
+        <s:decorate id="direccion" template="layout/display.xhtml">
+            <ui:define name="label">Direccion</ui:define>
+            <h:outputText value="#{personalHome.instance.direccion}"/>
+        </s:decorate>
+
+        <s:decorate id="correo" template="layout/display.xhtml">
+            <ui:define name="label">Correo</ui:define>
+            <h:outputText value="#{personalHome.instance.correo}"/>
+        </s:decorate>
+
+        <s:decorate id="correoalternativo" template="layout/display.xhtml">
+            <ui:define name="label">Correoalternativo</ui:define>
+            <h:outputText value="#{personalHome.instance.correoalternativo}"/>
+        </s:decorate>
+
+        <s:decorate id="fechanac" template="layout/display.xhtml">
+            <ui:define name="label">Fechanac</ui:define>
+            <h:outputText value="#{personalHome.instance.fechanac}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PersonalEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty personalFrom ? 'PersonalList' : personalFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Cargo</h:panelGroup>
+        </f:facet>
+    <div class="association" id="cargoParent">
+
+        <h:outputText value="There is no cargo associated with this personal."
+                   rendered="#{personalHome.instance.cargo == null}"/>
+
+        <rich:dataTable var="_cargo"
+                   value="#{personalHome.instance.cargo}"
+                rendered="#{personalHome.instance.cargo != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="cargoTable">
+            <h:column>
+                <f:facet name="header">Codcargo</f:facet>
+                <h:outputText value="#{_cargo.codcargo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrecargo</f:facet>
+                <h:outputText value="#{_cargo.nombrecargo}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcargo"
+                     value="View"
+                      view="/Cargo.xhtml">
+                    <f:param name="cargoCodcargo"
+                           value="#{_cargo.codcargo}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Gastoses</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="gastosesChildren">
+
+        <h:outputText value="There are no gastoses associated with this personal."
+                   rendered="#{empty personalHome.gastoses}"/>
+
+        <rich:dataTable value="#{personalHome.gastoses}"
+                       var="_gastos"
+                  rendered="#{not empty personalHome.gastoses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="gastosesTable">
+            <rich:column sortBy="#{_gastos.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_gastos.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_gastos.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_gastos.valor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_gastos.observacion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valorbolivar}">
+                <f:facet name="header">Valorbolivar</f:facet>
+                <h:outputText value="#{_gastos.valorbolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectgastos"
+                     value="Select"
+                      view="/Gastos.xhtml">
+                    <f:param name="gastosConsecutivo"
+                            value="#{_gastos.consecutivo}"/>
+                    <f:param name="gastosFrom" value="Personal"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add gastos"
+                view="/GastosEdit.xhtml">
+            <f:param name="personalDocumento"
+                    value="#{personalHome.instance.documento}"/>
+            <f:param name="gastosFrom" value="Personal"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Gastoses_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="gastoses_1Children">
+
+        <h:outputText value="There are no gastoses_1 associated with this personal."
+                   rendered="#{empty personalHome.gastoses_1}"/>
+
+        <rich:dataTable value="#{personalHome.gastoses_1}"
+                       var="_gastos"
+                  rendered="#{not empty personalHome.gastoses_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="gastoses_1Table">
+            <rich:column sortBy="#{_gastos.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_gastos.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_gastos.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_gastos.valor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_gastos.observacion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valorbolivar}">
+                <f:facet name="header">Valorbolivar</f:facet>
+                <h:outputText value="#{_gastos.valorbolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectgastos"
+                     value="Select"
+                      view="/Gastos.xhtml">
+                    <f:param name="gastosConsecutivo"
+                            value="#{_gastos.consecutivo}"/>
+                    <f:param name="gastosFrom" value="Personal"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add gastos"
+                view="/GastosEdit.xhtml">
+            <f:param name="personalDocumento"
+                    value="#{personalHome.instance.documento}"/>
+            <f:param name="gastosFrom" value="Personal"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Comisionhistoricos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="comisionhistoricosChildren">
+
+        <h:outputText value="There are no comisionhistoricos associated with this personal."
+                   rendered="#{empty personalHome.comisionhistoricos}"/>
+
+        <rich:dataTable value="#{personalHome.comisionhistoricos}"
+                       var="_comisionhistorico"
+                  rendered="#{not empty personalHome.comisionhistoricos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="comisionhistoricosTable">
+            <rich:column sortBy="#{_comisionhistorico.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_comisionhistorico.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_comisionhistorico.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_comisionhistorico.id.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_comisionhistorico.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_comisionhistorico.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_comisionhistorico.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_comisionhistorico.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectcomisionhistorico"
+                     value="Select"
+                      view="/Comisionhistorico.xhtml">
+                    <f:param name="comisionhistoricoDocumento"
+                            value="#{_comisionhistorico.id.documento}"/>
+                    <f:param name="comisionhistoricoFechainicio"
+                            value="#{_comisionhistorico.id.fechainicio}"/>
+                    <f:param name="comisionhistoricoFrom" value="Personal"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add comisionhistorico"
+                view="/ComisionhistoricoEdit.xhtml">
+            <f:param name="personalDocumento"
+                    value="#{personalHome.instance.documento}"/>
+            <f:param name="comisionhistoricoFrom" value="Personal"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Arrastrador</h:panelGroup>
+        </f:facet>
+    <div class="association" id="arrastradorParent">
+
+        <h:outputText value="There is no arrastrador associated with this personal."
+                   rendered="#{personalHome.instance.arrastrador == null}"/>
+
+        <rich:dataTable var="_arrastrador"
+                   value="#{personalHome.instance.arrastrador}"
+                rendered="#{personalHome.instance.arrastrador != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="arrastradorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_arrastrador.personal.documento}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewarrastrador"
+                     value="View"
+                      view="/Arrastrador.xhtml">
+                    <f:param name="arrastradorDocumento"
+                           value="#{_arrastrador.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Saldos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="saldosChildren">
+
+        <h:outputText value="There are no saldos associated with this personal."
+                   rendered="#{empty personalHome.saldos}"/>
+
+        <rich:dataTable value="#{personalHome.saldos}"
+                       var="_saldo"
+                  rendered="#{not empty personalHome.saldos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="saldosTable">
+            <rich:column sortBy="#{_saldo.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_saldo.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_saldo.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_saldo.id.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_saldo.saldo}">
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_saldo.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_saldo.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_saldo.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_saldo.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_saldo.fechamod}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectsaldo"
+                     value="Select"
+                      view="/Saldo.xhtml">
+                    <f:param name="saldoDocumento"
+                            value="#{_saldo.id.documento}"/>
+                    <f:param name="saldoFecha"
+                            value="#{_saldo.id.fecha}"/>
+                    <f:param name="saldoFrom" value="Personal"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add saldo"
+                view="/SaldoEdit.xhtml">
+            <f:param name="personalDocumento"
+                    value="#{personalHome.instance.documento}"/>
+            <f:param name="saldoFrom" value="Personal"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Administrativo</h:panelGroup>
+        </f:facet>
+    <div class="association" id="administrativoParent">
+
+        <h:outputText value="There is no administrativo associated with this personal."
+                   rendered="#{personalHome.instance.administrativo == null}"/>
+
+        <rich:dataTable var="_administrativo"
+                   value="#{personalHome.instance.administrativo}"
+                rendered="#{personalHome.instance.administrativo != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="administrativoTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_administrativo.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_administrativo.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comision</f:facet>
+                <h:outputText value="#{_administrativo.comision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cargo</f:facet>
+                <h:outputText value="#{_administrativo.cargo}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewadministrativo"
+                     value="View"
+                      view="/Administrativo.xhtml">
+                    <f:param name="administrativoDocumento"
+                           value="#{_administrativo.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Personaltipoprocesos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="personaltipoprocesosChildren">
+
+        <h:outputText value="There are no personaltipoprocesos associated with this personal."
+                   rendered="#{empty personalHome.personaltipoprocesos}"/>
+
+        <rich:dataTable value="#{personalHome.personaltipoprocesos}"
+                       var="_personaltipoproceso"
+                  rendered="#{not empty personalHome.personaltipoprocesos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="personaltipoprocesosTable">
+            <rich:column sortBy="#{_personaltipoproceso.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.id.puntodeventa}">
+                <f:facet name="header">Puntodeventa</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.puntodeventa}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.id.tipoproceso}">
+                <f:facet name="header">Tipoproceso</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.tipoproceso}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_personaltipoproceso.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_personaltipoproceso.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpersonaltipoproceso"
+                     value="Select"
+                      view="/Personaltipoproceso.xhtml">
+                    <f:param name="personaltipoprocesoDocumento"
+                            value="#{_personaltipoproceso.id.documento}"/>
+                    <f:param name="personaltipoprocesoFechainicio"
+                            value="#{_personaltipoproceso.id.fechainicio}"/>
+                    <f:param name="personaltipoprocesoPuntodeventa"
+                            value="#{_personaltipoproceso.id.puntodeventa}"/>
+                    <f:param name="personaltipoprocesoTipoproceso"
+                            value="#{_personaltipoproceso.id.tipoproceso}"/>
+                    <f:param name="personaltipoprocesoFrom" value="Personal"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add personaltipoproceso"
+                view="/PersonaltipoprocesoEdit.xhtml">
+            <f:param name="personalDocumento"
+                    value="#{personalHome.instance.documento}"/>
+            <f:param name="personaltipoprocesoFrom" value="Personal"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this personal."
+                   rendered="#{personalHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{personalHome.instance.promotor}"
+                rendered="#{personalHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpromotor"
+                     value="View"
+                      view="/Promotor.xhtml">
+                    <f:param name="promotorDocumento"
+                           value="#{_promotor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Asesor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="asesorParent">
+
+        <h:outputText value="There is no asesor associated with this personal."
+                   rendered="#{personalHome.instance.asesor == null}"/>
+
+        <rich:dataTable var="_asesor"
+                   value="#{personalHome.instance.asesor}"
+                rendered="#{personalHome.instance.asesor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="asesorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_asesor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comision</f:facet>
+                <h:outputText value="#{_asesor.comision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewasesor"
+                     value="View"
+                      view="/Asesor.xhtml">
+                    <f:param name="asesorDocumento"
+                           value="#{_asesor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,191 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="bindbSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Buscador de Bines de tarjetas de credito" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Bin</ui:define>
+                <h:inputText id="bin" value="#{bindbList.bindb.bin}"/>
+            </s:decorate>
+
+<!-- 
+            <s:decorate template="layout/display.xhtml" rendered="false">
+                <ui:define name="label">Nombrebanco</ui:define>
+                <h:inputText id="nombrebanco" value="#{bindbList.bindb.nombrebanco}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:inputText id="pais" value="#{bindbList.bindb.pais}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Ciudad</ui:define>
+                <h:inputText id="ciudad" value="#{bindbList.bindb.ciudad}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Producto</ui:define>
+                <h:inputText id="producto" value="#{bindbList.bindb.producto}"/>
+            </s:decorate>
+ 
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{bindbList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+-->
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/BindbList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Bindb Search Results (#{empty bindbList.resultList ? 0 : (bindbList.paginated ? bindbList.resultCount : bindbList.resultList.size)})</f:facet>
+    <div class="results" id="bindbList">
+
+    <h:outputText value="The bindb search returned no results."
+               rendered="#{empty bindbList.resultList}"/>
+
+    <rich:dataTable id="bindbList"
+                var="_bindb"
+              value="#{bindbList.resultList}"
+           rendered="#{not empty bindbList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bindbList}"/>
+                    <ui:param name="propertyLabel" value="Bin"/>
+                    <ui:param name="propertyPath" value="bindb.bin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bindb.bin}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bindbList}"/>
+                    <ui:param name="propertyLabel" value="Nombrebanco"/>
+                    <ui:param name="propertyPath" value="bindb.nombrebanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bindb.nombrebanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bindbList}"/>
+                    <ui:param name="propertyLabel" value="Pais"/>
+                    <ui:param name="propertyPath" value="bindb.pais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bindb.pais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bindbList}"/>
+                    <ui:param name="propertyLabel" value="Ciudad"/>
+                    <ui:param name="propertyPath" value="bindb.ciudad"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bindb.ciudad}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bindbList}"/>
+                    <ui:param name="propertyLabel" value="Producto"/>
+                    <ui:param name="propertyPath" value="bindb.producto"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bindb.producto}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Bindb' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="bindbViewId">
+                <f:param name="bindbBin"
+                        value="#{_bindb.bin}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/BindbEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="bindbEdit"
+                rendered="#{empty from}">
+                <f:param name="bindbBin"
+                        value="#{_bindb.bin}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/BindbList.xhtml"
+            rendered="#{bindbList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/BindbList.xhtml"
+            rendered="#{bindbList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{bindbList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/BindbList.xhtml"
+            rendered="#{bindbList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{bindbList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/BindbList.xhtml"
+            rendered="#{bindbList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{bindbList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{s:hasRole('Crear Bines')}">
+        <s:button view="/BindbEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create bindb">
+            <f:param name="bindbBin"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

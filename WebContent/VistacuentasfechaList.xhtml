@@ -1,0 +1,275 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistacuentasfechaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Vistacuentasfecha Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombrebanco</ui:define>
+                <h:inputText id="nombrebanco" value="#{vistacuentasfechaList.vistacuentasfecha.id.nombrebanco}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numcuenta</ui:define>
+                <h:inputText id="numcuenta" value="#{vistacuentasfechaList.vistacuentasfecha.id.numcuenta}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre" value="#{vistacuentasfechaList.vistacuentasfecha.id.nombre}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco" value="#{vistacuentasfechaList.vistacuentasfecha.id.codbanco}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{vistacuentasfechaList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/VistacuentasfechaList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Vistacuentasfecha Search Results (#{empty vistacuentasfechaList.resultList ? 0 : (vistacuentasfechaList.paginated ? vistacuentasfechaList.resultCount : vistacuentasfechaList.resultList.size)})</f:facet>
+    <div class="results" id="vistacuentasfechaList">
+
+    <h:outputText value="The vistacuentasfecha search returned no results."
+               rendered="#{empty vistacuentasfechaList.resultList}"/>
+
+    <rich:dataTable id="vistacuentasfechaList"
+                var="_vistacuentasfecha"
+              value="#{vistacuentasfechaList.resultList}"
+           rendered="#{not empty vistacuentasfechaList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Nombrebanco"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.nombrebanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.nombrebanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Numcuenta"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.numcuenta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.numcuenta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.nombre}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Saldo"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.saldo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Movimientos"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.movimientos"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.movimientos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Depositos"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.depositos"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.depositos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Transferencias"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.transferencias"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.transferencias}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Codbanco"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.codbanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasfechaList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="vistacuentasfecha.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasfecha.id.fecha}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Vistacuentasfecha' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="vistacuentasfechaViewId">
+                <f:param name="vistacuentasfechaNombrebanco"
+                        value="#{_vistacuentasfecha.id.nombrebanco}"/>
+                <f:param name="vistacuentasfechaNumcuenta"
+                        value="#{_vistacuentasfecha.id.numcuenta}"/>
+                <f:param name="vistacuentasfechaNombre"
+                        value="#{_vistacuentasfecha.id.nombre}"/>
+                <f:param name="vistacuentasfechaSaldo"
+                        value="#{_vistacuentasfecha.id.saldo}"/>
+                <f:param name="vistacuentasfechaMovimientos"
+                        value="#{_vistacuentasfecha.id.movimientos}"/>
+                <f:param name="vistacuentasfechaDepositos"
+                        value="#{_vistacuentasfecha.id.depositos}"/>
+                <f:param name="vistacuentasfechaTransferencias"
+                        value="#{_vistacuentasfecha.id.transferencias}"/>
+                <f:param name="vistacuentasfechaCodbanco"
+                        value="#{_vistacuentasfecha.id.codbanco}"/>
+                <f:param name="vistacuentasfechaFecha"
+                        value="#{_vistacuentasfecha.id.fecha}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/VistacuentasfechaEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="vistacuentasfechaEdit"
+                rendered="#{empty from}">
+                <f:param name="vistacuentasfechaNombrebanco"
+                        value="#{_vistacuentasfecha.id.nombrebanco}"/>
+                <f:param name="vistacuentasfechaNumcuenta"
+                        value="#{_vistacuentasfecha.id.numcuenta}"/>
+                <f:param name="vistacuentasfechaNombre"
+                        value="#{_vistacuentasfecha.id.nombre}"/>
+                <f:param name="vistacuentasfechaSaldo"
+                        value="#{_vistacuentasfecha.id.saldo}"/>
+                <f:param name="vistacuentasfechaMovimientos"
+                        value="#{_vistacuentasfecha.id.movimientos}"/>
+                <f:param name="vistacuentasfechaDepositos"
+                        value="#{_vistacuentasfecha.id.depositos}"/>
+                <f:param name="vistacuentasfechaTransferencias"
+                        value="#{_vistacuentasfecha.id.transferencias}"/>
+                <f:param name="vistacuentasfechaCodbanco"
+                        value="#{_vistacuentasfecha.id.codbanco}"/>
+                <f:param name="vistacuentasfechaFecha"
+                        value="#{_vistacuentasfecha.id.fecha}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/VistacuentasfechaList.xhtml"
+            rendered="#{vistacuentasfechaList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/VistacuentasfechaList.xhtml"
+            rendered="#{vistacuentasfechaList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{vistacuentasfechaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/VistacuentasfechaList.xhtml"
+            rendered="#{vistacuentasfechaList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{vistacuentasfechaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/VistacuentasfechaList.xhtml"
+            rendered="#{vistacuentasfechaList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{vistacuentasfechaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/VistacuentasfechaEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create vistacuentasfecha">
+            <f:param name="vistacuentasfechaNombrebanco"/>
+            <f:param name="vistacuentasfechaNumcuenta"/>
+            <f:param name="vistacuentasfechaNombre"/>
+            <f:param name="vistacuentasfechaSaldo"/>
+            <f:param name="vistacuentasfechaMovimientos"/>
+            <f:param name="vistacuentasfechaDepositos"/>
+            <f:param name="vistacuentasfechaTransferencias"/>
+            <f:param name="vistacuentasfechaCodbanco"/>
+            <f:param name="vistacuentasfechaFecha"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

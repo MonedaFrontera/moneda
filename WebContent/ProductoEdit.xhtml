@@ -1,0 +1,186 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="producto" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{productoHome.managed ? 'Editar' : 'Agregar'} Producto</f:facet>
+
+
+            <s:decorate id="refproductoField" template="layout/edit.xhtml">
+                <ui:define name="label">Referencia</ui:define>
+                <h:inputText id="refproducto"
+                       disabled="#{productoHome.managed}"
+                       required="true"
+                           size="20"
+                      maxlength="20"
+                          value="#{productoHome.instance.refproducto}">
+                    <a:support event="onblur" reRender="refproductoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombreproductoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombreproducto"
+                           size="50"
+                      maxlength="50"
+                          value="#{productoHome.instance.nombreproducto}">
+                    <a:support event="onblur" reRender="nombreproductoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="marcaField" template="layout/edit.xhtml">
+                <ui:define name="label">Marca</ui:define>
+                <h:inputText id="marca"
+                           size="20"
+                      maxlength="20"
+                          value="#{productoHome.instance.marca}">
+                    <a:support event="onblur" reRender="marcaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="valorminimoField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor Minimo</ui:define>
+                <h:inputText id="valorminimo"
+                          value="#{productoHome.instance.valorminimo}">
+                    <a:support event="onblur" reRender="valorminimoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="valormaximoField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor Maximo</ui:define>
+                <h:inputText id="valormaximo"
+                          value="#{productoHome.instance.valormaximo}">
+                    <a:support event="onblur" reRender="valormaximoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cantminimoField" template="layout/edit.xhtml">
+                <ui:define name="label">Cant Minima</ui:define>
+                <h:inputText id="cantminimo"
+                          value="#{productoHome.instance.cantminimo}">
+                    <a:support event="onblur" reRender="cantminimoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cantmaximoField" template="layout/edit.xhtml">
+                <ui:define name="label">Cant Maxima</ui:define>
+                <h:inputText id="cantmaximo"
+                          value="#{productoHome.instance.cantmaximo}">
+                    <a:support event="onblur" reRender="cantmaximoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{productoHome.persist}"
+                       disabled="#{!productoHome.wired}"
+                       rendered="#{!productoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{productoHome.update}"
+                       rendered="#{productoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{productoHome.remove}"
+                      immediate="true"
+                       rendered="#{productoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/Producto.xhtml"
+                rendered="#{productoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty productoFrom ? 'ProductoList' : productoFrom}.xhtml"
+                rendered="#{!productoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Inventarios">
+        <h:form styleClass="association" id="inventariosChildren">
+
+            <h:outputText value="Este producto no esta asociado al inventario de ningun establecimiento."
+                       rendered="#{empty productoHome.inventarios}"/>
+
+            <rich:dataTable value="#{productoHome.inventarios}"
+                           var="_inventario"
+                      rendered="#{not empty productoHome.inventarios}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="inventariosTable">
+                
+                <rich:column sortBy="#{_inventario.establecimiento.nombreestable}">
+                    <f:facet name="header">Establecimiento</f:facet>
+                    <h:outputText value="#{_inventario.establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_inventario.valor}">
+                    <f:facet name="header">Valor</f:facet>
+                    <h:outputText value="#{_inventario.valor}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_inventario.cantidad}">
+                    <f:facet name="header">Cantidad</f:facet>
+                    <h:outputText value="#{_inventario.cantidad}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_inventario.activo}">
+                    <f:facet name="header">Activo</f:facet>
+                    <h:outputText value="#{_inventario.activo}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{productoHome.managed}" id="inventarios">
+        <div class="actionButtons">
+            <s:button id="addinventario"
+                   value="Add inventario"
+                    view="/InventarioEdit.xhtml"
+             propagation="none">
+                 <f:param name="productoRefproducto"
+                         value="#{productoHome.instance.refproducto}"/>
+                 <f:param name="inventarioFrom" value="Producto"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

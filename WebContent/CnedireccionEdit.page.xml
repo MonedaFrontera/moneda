@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/CnedireccionList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{cnedireccionHome.wire}"/>
+
+   <param name="cnedireccionFrom"/>
+   <param name="cnedireccionCodCentro" value="#{cnedireccionHome.cnedireccionId.codCentro}"/>
+   <param name="cnedireccionTipo" value="#{cnedireccionHome.cnedireccionId.tipo}"/>
+   <param name="cnedireccionCodEstado" value="#{cnedireccionHome.cnedireccionId.codEstado}"/>
+   <param name="cnedireccionCodMunicipio" value="#{cnedireccionHome.cnedireccionId.codMunicipio}"/>
+   <param name="cnedireccionCodParroquia" value="#{cnedireccionHome.cnedireccionId.codParroquia}"/>
+   <param name="cnedireccionNombreCentro" value="#{cnedireccionHome.cnedireccionId.nombreCentro}"/>
+   <param name="cnedireccionDireccionCentro" value="#{cnedireccionHome.cnedireccionId.direccionCentro}"/>
+   <param name="cnedireccionCentroNuevo" value="#{cnedireccionHome.cnedireccionId.centroNuevo}"/>
+
+
+   <navigation from-action="#{cnedireccionHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Cnedireccion.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{cnedireccionHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Cnedireccion.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{cnedireccionHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/CnedireccionList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

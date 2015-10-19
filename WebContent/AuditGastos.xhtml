@@ -1,0 +1,77 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Audit gastos Details</f:facet>
+
+        <s:decorate id="documento" template="layout/display.xhtml">
+            <ui:define name="label">Documento</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.documento}"/>
+        </s:decorate>
+        <s:decorate id="fecha" template="layout/display.xhtml">
+            <ui:define name="label">Fecha</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="valor" template="layout/display.xhtml">
+            <ui:define name="label">Valor</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.valor}"/>
+        </s:decorate>
+        <s:decorate id="observacion" template="layout/display.xhtml">
+            <ui:define name="label">Observacion</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.observacion}"/>
+        </s:decorate>
+        <s:decorate id="tipogasto" template="layout/display.xhtml">
+            <ui:define name="label">Tipogasto</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.tipogasto}"/>
+        </s:decorate>
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.consecutivo}"/>
+        </s:decorate>
+        <s:decorate id="valorbolivar" template="layout/display.xhtml">
+            <ui:define name="label">Valorbolivar</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.valorbolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.usuariomod}"/>
+        </s:decorate>
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{auditGastosHome.instance.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/AuditGastosEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty auditGastosFrom ? 'AuditGastosList' : auditGastosFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

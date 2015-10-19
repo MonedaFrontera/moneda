@@ -1,0 +1,112 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="promotorcomisiontx" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{promotorcomisiontxHome.managed ? 'Edit' : 'Add'} Promotorcomisiontx</f:facet>
+			
+			<s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText id="documento"
+                       disabled="true"
+                         value="#{promotorcomisiontxHome.instance.promotor.personal.nombre} #{promotorcomisiontxHome.instance.promotor.personal.apellido}" style=" width : 426px;">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codpaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:selectOneMenu id="paisSel"   value="#{promotorcomisiontxHome.instance.pais}" required="true" >
+			<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="divseltipo" ajaxSingle="true"></a:support>
+			</h:selectOneMenu>
+            </s:decorate>
+            
+            
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       
+                       required="true"
+                          value="#{promotorcomisiontxHome.instance.id.fechainicio}" 
+                          datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+            
+
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{promotorcomisiontxHome.instance.fechafin}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{promotorcomisiontxHome.instance.porcentaje}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarPromotor.guardarPromotorcomision}"
+                       rendered="#{!promotorcomisiontxHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{AdministrarPromotor.guardarPromotorcomision}"
+                       rendered="#{promotorcomisiontxHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{promotorcomisiontxHome.remove}"
+                      immediate="true"
+                       rendered="#{promotorcomisiontxHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/PersonalList.xhtml"
+                rendered="#{promotorcomisiontxHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty promotorcomisiontxFrom ? 'PersonalList' : promotorcomisiontxFrom}.xhtml"
+                rendered="#{!promotorcomisiontxHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,196 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="saldodiariopromotorSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Saldodiariopromotor Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{saldodiariopromotorList.saldodiariopromotor.id.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod" value="#{saldodiariopromotorList.saldodiariopromotor.usuariomod}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{saldodiariopromotorList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/SaldodiariopromotorList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Saldodiariopromotor Search Results (#{empty saldodiariopromotorList.resultList ? 0 : (saldodiariopromotorList.paginated ? saldodiariopromotorList.resultCount : saldodiariopromotorList.resultList.size)})</f:facet>
+    <div class="results" id="saldodiariopromotorList">
+
+    <h:outputText value="The saldodiariopromotor search returned no results."
+               rendered="#{empty saldodiariopromotorList.resultList}"/>
+
+    <rich:dataTable id="saldodiariopromotorList"
+                var="_saldodiariopromotor"
+              value="#{saldodiariopromotorList.resultList}"
+           rendered="#{not empty saldodiariopromotorList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodiariopromotorList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="saldodiariopromotor.id.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodiariopromotor.id.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodiariopromotorList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="saldodiariopromotor.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodiariopromotor.id.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodiariopromotorList}"/>
+                    <ui:param name="propertyLabel" value="Promotor documento"/>
+                    <ui:param name="propertyPath" value="saldodiariopromotor.promotor.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodiariopromotor.promotor.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodiariopromotorList}"/>
+                    <ui:param name="propertyLabel" value="Saldo"/>
+                    <ui:param name="propertyPath" value="saldodiariopromotor.saldo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodiariopromotor.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodiariopromotorList}"/>
+                    <ui:param name="propertyLabel" value="Fechamod"/>
+                    <ui:param name="propertyPath" value="saldodiariopromotor.fechamod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodiariopromotor.fechamod}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodiariopromotorList}"/>
+                    <ui:param name="propertyLabel" value="Usuariomod"/>
+                    <ui:param name="propertyPath" value="saldodiariopromotor.usuariomod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodiariopromotor.usuariomod}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Saldodiariopromotor' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="saldodiariopromotorViewId">
+                <f:param name="saldodiariopromotorDocumento"
+                        value="#{_saldodiariopromotor.id.documento}"/>
+                <f:param name="saldodiariopromotorFecha"
+                        value="#{_saldodiariopromotor.id.fecha}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/SaldodiariopromotorEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="saldodiariopromotorEdit"
+                rendered="#{empty from}">
+                <f:param name="saldodiariopromotorDocumento"
+                        value="#{_saldodiariopromotor.id.documento}"/>
+                <f:param name="saldodiariopromotorFecha"
+                        value="#{_saldodiariopromotor.id.fecha}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/SaldodiariopromotorList.xhtml"
+            rendered="#{saldodiariopromotorList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/SaldodiariopromotorList.xhtml"
+            rendered="#{saldodiariopromotorList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{saldodiariopromotorList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/SaldodiariopromotorList.xhtml"
+            rendered="#{saldodiariopromotorList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{saldodiariopromotorList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/SaldodiariopromotorList.xhtml"
+            rendered="#{saldodiariopromotorList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{saldodiariopromotorList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/SaldodiariopromotorEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create saldodiariopromotor">
+            <f:param name="saldodiariopromotorDocumento"/>
+            <f:param name="saldodiariopromotorFecha"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

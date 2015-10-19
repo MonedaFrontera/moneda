@@ -1,0 +1,80 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+
+<!-- bjqs.css contains the *essential* css needed for the slider to work -->
+	<a:loadStyle src="/stylesheet/bjqs.css"/>
+
+    <!-- some pretty fonts for this demo page - not required for the slider -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro|Open+Sans:300' rel='stylesheet' type='text/css' /> 
+
+    <!-- demo.css contains additional styles used to set up this demo page - not required for the slider --> 
+    <a:loadStyle src="/stylesheet/demo.css"/>
+
+    <!-- load jQuery and the plugin -->
+    
+
+
+        <h1>Bienvenido al SIC</h1>
+        <rich:panel>
+        
+            
+			<div id="banner-fade">
+
+        		<!-- start Basic Jquery Slider -->
+        		<ul class="bjqs">
+         			<a:repeat value="#{AdministrarVista.listaBanner}" var="banner">
+          			<li><img src="banner/#{banner.imagen}" title="#{banner.caption}" /></li>
+          			</a:repeat>
+        		</ul>
+        		<!-- end Basic jQuery Slider -->
+
+      		</div>
+      <!-- End outer wrapper -->
+      <script>
+			//var $r = jQuery.noConflict();
+	  </script>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script>
+			var $j = jQuery.noConflict();
+			//var $d = jQuery.noConflict();
+			var j$ = null;
+ 		</script>
+
+
+
+<script> //var jQuery = $r; 
+</script>
+      
+    <script src="js/bjqs-1.3.min.js"></script>
+      <script class="secret-source">
+        $j(document).ready(function($) {
+
+          $('#banner-fade').bjqs({
+            height      : 300,
+            width       : 942,
+            responsive  : true,
+            showcontrols : false, // show next and prev controls
+            centercontrols : false, // center controls verically
+            nexttext : 'Sig', // Text for 'next' button (can use HTML)
+            prevtext : 'Ant', // Text for 'previous' button (can use HTML)
+            showmarkers : true, // Show individual slide markers
+            centermarkers : false // Center markers horizontally
+          });
+
+        });
+      </script>
+      
+        </rich:panel>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,271 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditGastosSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="AuditGastos Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{auditGastosList.auditGastos.id.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputText id="observacion" value="#{auditGastosList.auditGastos.id.observacion}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tipogasto</ui:define>
+                <h:inputText id="tipogasto" value="#{auditGastosList.auditGastos.id.tipogasto}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod" value="#{auditGastosList.auditGastos.id.usuariomod}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{auditGastosList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/AuditGastosList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">AuditGastos Search Results (#{empty auditGastosList.resultList ? 0 : (auditGastosList.paginated ? auditGastosList.resultCount : auditGastosList.resultList.size)})</f:facet>
+    <div class="results" id="auditGastosList">
+
+    <h:outputText value="The auditGastos search returned no results."
+               rendered="#{empty auditGastosList.resultList}"/>
+
+    <rich:dataTable id="auditGastosList"
+                var="_auditGastos"
+              value="#{auditGastosList.resultList}"
+           rendered="#{not empty auditGastosList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Valor"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.valor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.valor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Observacion"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.observacion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.observacion}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Tipogasto"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.tipogasto"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.tipogasto}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Consecutivo"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.consecutivo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Valorbolivar"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.valorbolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.valorbolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Usuariomod"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.usuariomod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.usuariomod}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditGastosList}"/>
+                    <ui:param name="propertyLabel" value="Fechamod"/>
+                    <ui:param name="propertyPath" value="auditGastos.id.fechamod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditGastos.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'AuditGastos' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="auditGastosViewId">
+                <f:param name="auditGastosDocumento"
+                        value="#{_auditGastos.id.documento}"/>
+                <f:param name="auditGastosFecha"
+                        value="#{_auditGastos.id.fecha}"/>
+                <f:param name="auditGastosValor"
+                        value="#{_auditGastos.id.valor}"/>
+                <f:param name="auditGastosObservacion"
+                        value="#{_auditGastos.id.observacion}"/>
+                <f:param name="auditGastosTipogasto"
+                        value="#{_auditGastos.id.tipogasto}"/>
+                <f:param name="auditGastosConsecutivo"
+                        value="#{_auditGastos.id.consecutivo}"/>
+                <f:param name="auditGastosValorbolivar"
+                        value="#{_auditGastos.id.valorbolivar}"/>
+                <f:param name="auditGastosUsuariomod"
+                        value="#{_auditGastos.id.usuariomod}"/>
+                <f:param name="auditGastosFechamod"
+                        value="#{_auditGastos.id.fechamod}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/AuditGastosEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="auditGastosEdit"
+                rendered="#{empty from}">
+                <f:param name="auditGastosDocumento"
+                        value="#{_auditGastos.id.documento}"/>
+                <f:param name="auditGastosFecha"
+                        value="#{_auditGastos.id.fecha}"/>
+                <f:param name="auditGastosValor"
+                        value="#{_auditGastos.id.valor}"/>
+                <f:param name="auditGastosObservacion"
+                        value="#{_auditGastos.id.observacion}"/>
+                <f:param name="auditGastosTipogasto"
+                        value="#{_auditGastos.id.tipogasto}"/>
+                <f:param name="auditGastosConsecutivo"
+                        value="#{_auditGastos.id.consecutivo}"/>
+                <f:param name="auditGastosValorbolivar"
+                        value="#{_auditGastos.id.valorbolivar}"/>
+                <f:param name="auditGastosUsuariomod"
+                        value="#{_auditGastos.id.usuariomod}"/>
+                <f:param name="auditGastosFechamod"
+                        value="#{_auditGastos.id.fechamod}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/AuditGastosList.xhtml"
+            rendered="#{auditGastosList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/AuditGastosList.xhtml"
+            rendered="#{auditGastosList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{auditGastosList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AuditGastosList.xhtml"
+            rendered="#{auditGastosList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{auditGastosList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AuditGastosList.xhtml"
+            rendered="#{auditGastosList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{auditGastosList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AuditGastosEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create auditGastos">
+            <f:param name="auditGastosDocumento"/>
+            <f:param name="auditGastosFecha"/>
+            <f:param name="auditGastosValor"/>
+            <f:param name="auditGastosObservacion"/>
+            <f:param name="auditGastosTipogasto"/>
+            <f:param name="auditGastosConsecutivo"/>
+            <f:param name="auditGastosValorbolivar"/>
+            <f:param name="auditGastosUsuariomod"/>
+            <f:param name="auditGastosFechamod"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

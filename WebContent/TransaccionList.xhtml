@@ -1,0 +1,200 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="transaccionSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Busqueda de Transacciones" switchType="ajax">
+
+            
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numero Factura</ui:define>
+                <h:inputText id="numfactura" value="#{transaccionList.transaccion.numfactura}"/>
+            </s:decorate>
+            
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{transaccionList.transaccion.fechatx}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+            
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Baucher</ui:define>
+                <h:inputText id="tipotx" value="#{transaccionList.numbaucher}"/>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/TransaccionList.xhtml"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultados de la Busqueda de Transacciones (#{empty transaccionList.resultList ? 0 : (transaccionList.paginated ? transaccionList.resultCount : transaccionList.resultList.size)})</f:facet>
+    <div class="results" id="transaccionList">
+
+    <h:outputText value="La busqueda de transacciones no retorno resultados."
+               rendered="#{empty transaccionList.resultList}"/>
+    <h:form>
+    <rich:dataTable id="transaccionList"
+                var="_transaccion"
+              value="#{transaccionList.resultList}"
+           rendered="#{not empty transaccionList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Establecimiento"/>
+                    <ui:param name="propertyPath" value="transaccion.establecimiento.nombreestable"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccion.establecimiento.nombreestable}"/>
+        </h:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Tarjeta numerotarjeta"/>
+                    <ui:param name="propertyPath" value="transaccion.tarjeta.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{Reporteador.formatearTarjeta(_transaccion.tarjeta.numerotarjeta)}"/>
+        </rich:column>
+        <rich:column style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Fechatx"/>
+                    <ui:param name="propertyPath" value="transaccion.fechatx"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccion.fechatx}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </rich:column>
+        <rich:column style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Tipotx"/>
+                    <ui:param name="propertyPath" value="transaccion.tipotx"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccion.tipotx}"/>
+        </rich:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Valortxpesos"/>
+                    <ui:param name="propertyPath" value="transaccion.valortxpesos"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccion.valortxpesos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Valortxdolares"/>
+                    <ui:param name="propertyPath" value="transaccion.valortxdolares"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccion.valortxdolares}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionList}"/>
+                    <ui:param name="propertyLabel" value="Numfactura"/>
+                    <ui:param name="propertyPath" value="transaccion.numfactura"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccion.numfactura}"/>
+        </rich:column>
+         
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            <s:link view="/TransaccionEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="transaccionEdit"
+                rendered="false">
+                <f:param name="transaccionConsecutivo"
+                        value="#{_transaccion.consecutivo}"/>
+            </s:link>
+            
+            <h:commandLink value="Editar" 
+            ajaxSingle="true"
+            action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo)}"
+            rendered="#{s:hasRole('Editar Transaccion')}">
+            </h:commandLink>
+        </rich:column>
+    </rich:dataTable>
+    </h:form>
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TransaccionList.xhtml"
+            rendered="#{transaccionList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TransaccionList.xhtml"
+            rendered="#{transaccionList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{transaccionList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TransaccionList.xhtml"
+            rendered="#{transaccionList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{transaccionList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TransaccionList.xhtml"
+            rendered="#{transaccionList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{transaccionList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TransaccionEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Registrar Transaccion">
+            <f:param name="transaccionConsecutivo"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

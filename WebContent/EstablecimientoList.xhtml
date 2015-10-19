@@ -1,0 +1,184 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="establecimientoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Busqueda de Establecimientos" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombreestable" value="#{establecimientoList.establecimiento.nombreestable}"/>
+            </s:decorate>
+
+            
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/EstablecimientoList.xhtml"/>
+            <s:button id="reset" value="Limpiar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultado de Busqueda de Establecimiento (#{empty establecimientoList.resultList ? 0 : (establecimientoList.paginated ? establecimientoList.resultCount : establecimientoList.resultList.size)})</f:facet>
+    <div class="results" id="establecimientoList">
+
+    <h:outputText value="La consulta de establecimientos no retorno resultados."
+               rendered="#{empty establecimientoList.resultList}"/>
+
+    <rich:dataTable id="establecimientoList"
+                var="_establecimiento"
+              value="#{establecimientoList.resultList}"
+           rendered="#{not empty establecimientoList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Codigo"/>
+                    <ui:param name="propertyPath" value="establecimiento.codigounico"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.codigounico}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Nombre Establecimiento"/>
+                    <ui:param name="propertyPath" value="establecimiento.nombreestable"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.nombreestable}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Pais"/>
+                    <ui:param name="propertyPath" value="establecimiento.pais.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.pais.nombre}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Empresa nit"/>
+                    <ui:param name="propertyPath" value="establecimiento.empresa.nit"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.empresa.nit}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Direccion"/>
+                    <ui:param name="propertyPath" value="establecimiento.direccion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.direccion}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Telefono"/>
+                    <ui:param name="propertyPath" value="establecimiento.telefono"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.telefono}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Porcentaje"/>
+                    <ui:param name="propertyPath" value="establecimiento.porcentaje"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimiento.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            <s:link view="/EstablecimientoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="establecimientoEdit"
+                rendered="#{empty from}">
+                <f:param name="establecimientoCodigounico"
+                        value="#{_establecimiento.codigounico}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/EstablecimientoList.xhtml"
+            rendered="#{establecimientoList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/EstablecimientoList.xhtml"
+            rendered="#{establecimientoList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{establecimientoList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/EstablecimientoList.xhtml"
+            rendered="#{establecimientoList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{establecimientoList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/EstablecimientoList.xhtml"
+            rendered="#{establecimientoList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{establecimientoList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/EstablecimientoEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Registrar Establecimiento Nuevo">
+            <f:param name="establecimientoCodigounico"/>
+        </s:button>
+        
+        <s:button view="/EstablecimientoConsultar.xhtml"
+                    id="consultarEst"
+           propagation="none"
+                 value="Consultar Establecimiento">
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

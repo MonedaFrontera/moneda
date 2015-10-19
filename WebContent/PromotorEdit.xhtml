@@ -1,0 +1,377 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="personal" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{personalHome.managed ? 'Editar Informacion ' : 'Adicionar '} Personal</f:facet>
+
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{personalHome.managed}"
+                       required="true"
+                           size="15"
+                      maxlength="15"
+                          value="#{personalHome.instance.documento}">
+                    <a:support event="onblur" reRender="documentoField" 
+                    action="#{AdministrarPromotor.verificarDocumento(personalHome.instance.documento)}" 
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="tipodocumentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Documento</ui:define>
+                <h:selectOneMenu id="tipodocumento" value="#{personalHome.instance.tipodocumento}" 
+                required="true">
+					<f:selectItem itemValue="CC" itemLabel="Cedula Ciudadania"/>
+					<f:selectItem itemValue="CE" itemLabel="Cedula Extranjeria"/>
+					<f:selectItem itemValue="NIT" itemLabel="Numero Identificacion Tributaria"/>
+					<f:selectItem itemValue="OTR" itemLabel="Otro"/>
+				</h:selectOneMenu> 
+                
+            </s:decorate>
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                       required="true"
+                           size="50"
+                      maxlength="50"
+                          value="#{personalHome.instance.nombre}">
+                    <a:support event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="apellidoField" template="layout/edit.xhtml">
+                <ui:define name="label">Apellido</ui:define>
+                <h:inputText id="apellido"
+                           size="50"
+                      maxlength="50"
+                          value="#{personalHome.instance.apellido}">
+                    <a:support event="onblur" reRender="apellidoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="celularField" template="layout/edit.xhtml">
+                <ui:define name="label">Celular</ui:define>
+                <h:inputText id="celular"
+                           size="15"
+                      maxlength="15"
+                          value="#{personalHome.instance.celular}">
+                    <a:support event="onblur" reRender="celularField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="telefonoField" template="layout/edit.xhtml">
+                <ui:define name="label">Telefono</ui:define>
+                <h:inputText id="telefono"
+                           size="15"
+                      maxlength="15"
+                          value="#{personalHome.instance.telefono}">
+                    <a:support event="onblur" reRender="telefonoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="pinbbField" template="layout/edit.xhtml">
+                <ui:define name="label">Pin BlackBerry</ui:define>
+                <h:inputText id="pinbb"
+                           size="20"
+                      maxlength="20"
+                          value="#{personalHome.instance.pinbb}">
+                    <a:support event="onblur" reRender="pinbbField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="direccionField" template="layout/edit.xhtml">
+                <ui:define name="label">Direccion</ui:define>
+                <h:inputText id="direccion"
+                           size="100"
+                      maxlength="150"
+                          value="#{personalHome.instance.direccion}">
+                    <a:support event="onblur" reRender="direccionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="correoField" template="layout/edit.xhtml">
+                <ui:define name="label">Correo</ui:define>
+                <h:inputText id="correo"
+                		    disabled="#{s:hasRole('Asesor')}"
+                           size="50"
+                      maxlength="50"
+                          value="#{personalHome.instance.correo}">
+                    <a:support event="onblur" reRender="correoField"
+                    action="#{AdministrarPersonal.validarCorreoElecronicoPrincipal(personalHome.instance.correo)}"
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="correoalternativoField" template="layout/edit.xhtml">
+                <ui:define name="label">Correo Alternativo</ui:define>
+                <h:inputText id="correoalternativo"
+                			disabled="#{s:hasRole('Asesor')}"
+                           size="50"
+                      maxlength="50"
+                          value="#{personalHome.instance.correoalternativo}">
+                    <a:support event="onblur" reRender="correoalternativoField"
+                    action="#{AdministrarPersonal.validarCorreoElecronicoAlterno(personalHome.instance.correoalternativo)}"
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="fechanacField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Nacimiento</ui:define>
+                <rich:calendar id="fechanac"
+                          value="#{personalHome.instance.fechanac}" datePattern="MM/dd/yyyy"/>
+            </s:decorate>
+
+
+			<s:decorate id="cargoField" template="layout/edit.xhtml" rendered ="#{s:hasRole('Registrar Personal')}">
+		<ui:define name="label">Cargo</ui:define>
+		<h:selectOneMenu id="cargoSel"   value="#{personalHome.instance.cargo}" required="true" >
+			<s:selectItems value="#{cargoList.resultList}" var="tno" label="#{tno.nombrecargo}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="divseltipo" ajaxSingle="true"></a:support>
+		</h:selectOneMenu>
+		</s:decorate>
+
+		  
+
+		  <s:decorate id="comisionviajeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Comision Viajero</ui:define>
+                <h:inputText id="comisionviajero"
+                          value="#{promotorHome.instance.comisionviajero}"
+                          disabled ="#{!s:hasRole('Registrar Personal')&amp;&amp;!s:hasRole('Registrar Promotor')}"
+                           size="12">
+                    <a:support event="onblur" reRender="comisionviajeroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="asesor_1Field" template="layout/edit.xhtml" rendered="#{s:hasRole('Registrar Personal')&amp;&amp;!s:hasRole('Asesor')}">
+                <ui:define name="label">Asesor</ui:define>
+                <h:selectOneMenu id="asesorSel" value="#{promotorHome.instance.asesor}" required="true" 
+                disabled ="#{!s:hasRole('Registrar Personal')}">
+			<s:selectItems value="#{asesorList.resultList}" var="asesor" label="#{asesor.personal.nombre} #{asesor.personal.apellido}"
+							
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      
+		</h:selectOneMenu>
+        </s:decorate>
+        
+        	<s:decorate id="arrastrador_1Field" template="layout/edit.xhtml"
+        	rendered="#{s:hasRole('Asociar Arrastrador')}">
+                <ui:define name="label">Arrastrador</ui:define>
+                <h:selectOneMenu id="arrastradorSel" value="#{promotorHome.instance.arrastrador}" required="true" 
+                disabled ="#{!s:hasRole('Registrar Personal')}">
+			<s:selectItems value="#{arrastradorList.resultList}" var="arrastrador" label="#{arrastrador.personal.nombre} #{arrastrador.personal.apellido}"
+							 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      
+		</h:selectOneMenu>
+        </s:decorate>
+		  
+		  <s:decorate id="arrastradorcomisionField" template="layout/edit.xhtml"
+		  rendered ="#{s:hasRole('Asociar Arrastrador')}">
+                <ui:define name="label">Comision Arrastrador</ui:define>
+                <h:inputText id="comisionarrastrador"
+                          value="#{promotorHome.instance.comisionarrastrador}"
+                           size="12">
+                    <a:support event="onblur" reRender="arrastradorcomisionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarPersonal.registrarPromotorA()}"
+                       disabled="#{!personalHome.wired}"
+                       rendered="#{!personalHome.managed&amp;&amp;s:hasRole('Registrar Promotor')}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{personalHome.update}"
+                       rendered="#{personalHome.managed&amp;&amp;(s:hasRole('Registrar Promotor')||s:hasRole('Asesor'))}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{personalHome.remove}"
+                      immediate="true"
+                       rendered="#{personalHome.managed&amp;&amp;s:hasRole('Registrar Promotor')}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/PromotorList.xhtml"
+                rendered="#{personalHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty personalFrom ? 'PromotorList' : personalFrom}.xhtml"
+                rendered="#{!personalHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax" rendered="false">
+
+    
+    <rich:tab label="Historicos de Comision">
+        <h:form styleClass="association" id="comisionhistoricosChildren">
+
+            <h:outputText value="No hay Comisiones asociadas a este Promotor."
+                       rendered="#{empty personalHome.comisionhistoricos}"/>
+
+            <rich:dataTable value="#{personalHome.comisionhistoricos}"
+                           var="_comisionhistorico"
+                      rendered="#{not empty personalHome.comisionhistoricos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="comisionhistoricosTable">
+                <rich:column sortBy="#{_comisionhistorico.id.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_comisionhistorico.id.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_comisionhistorico.id.fechainicio}">
+                    <f:facet name="header">Fecha Inicio</f:facet>
+                    <h:outputText value="#{_comisionhistorico.id.fechainicio}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_comisionhistorico.fechafin}">
+                    <f:facet name="header">Fechafin</f:facet>
+                    <h:outputText value="#{_comisionhistorico.fechafin}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_comisionhistorico.valor}">
+                    <f:facet name="header">Valor</f:facet>
+                    <h:outputText value="#{_comisionhistorico.valor}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{personalHome.managed}" id="comisionhistoricos">
+        <div class="actionButtons">
+            <s:button id="addcomisionhistorico"
+                   value="Registrar comision"
+                    view="/ComisionhistoricoEdit.xhtml"
+             propagation="none">
+                 <f:param name="personalDocumento"
+                         value="#{personalHome.instance.documento}"/>
+                 <f:param name="comisionhistoricoFrom" value="Personal"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+    
+    <rich:tab label="Historico de Comision por Pais">
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotorcomisiontxes</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotorcomisiontxesChildren">
+
+        <h:outputText value="There are no promotorcomisiontxes associated with this promotor."
+                   rendered="#{empty promotorHome.promotorcomisiontxes}"/>
+
+        <rich:dataTable value="#{promotorHome.promotorcomisiontxes}"
+                       var="_promotorcomisiontx"
+                  rendered="#{not empty promotorHome.promotorcomisiontxes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotorcomisiontxesTable">
+            <rich:column sortBy="#{_promotorcomisiontx.pais.nombre}">
+                <f:facet name="header">Pais</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.pais.nombre}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.id.fechainicio}">
+                <f:facet name="header">Fecha Inicio</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.fechainicio}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.fechafin}">
+                <f:facet name="header">Fecha Fin</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotorcomisiontx"
+                     value="Select"
+                      view="/Promotorcomisiontx.xhtml">
+                    <f:param name="promotorcomisiontxCodpais"
+                            value="#{_promotorcomisiontx.id.codpais}"/>
+                    <f:param name="promotorcomisiontxFechainicio"
+                            value="#{_promotorcomisiontx.id.fechainicio}"/>
+                    <f:param name="promotorcomisiontxDocumento"
+                            value="#{_promotorcomisiontx.id.documento}"/>
+                    <f:param name="promotorcomisiontxFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Agregar Comision de Promotor"
+                view="/PromotorcomisiontxEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="promotorcomisiontxFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

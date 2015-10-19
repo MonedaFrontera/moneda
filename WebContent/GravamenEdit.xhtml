@@ -1,0 +1,155 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="gravamen" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{gravamenHome.managed ? 'Editar' : 'Agregar'} Gravamen</f:facet>
+
+
+            <s:decorate id="codigoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo</ui:define>
+                <h:inputText id="codigo"
+                       disabled="#{gravamenHome.managed}"
+                       required="true"
+                           size="2"
+                      maxlength="2"
+                          value="#{gravamenHome.instance.codigo}">
+                    <a:support event="onblur" reRender="codigoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+           
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                           size="30"
+                      maxlength="30"
+                          value="#{gravamenHome.instance.nombre}">
+                    <a:support event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+			<s:decorate id="ivaField" template="layout/edit.xhtml">
+                <ui:define name="label">Iva</ui:define>
+                <h:selectBooleanCheckbox id="iva"
+                                      value="#{gravamenHome.instance.iva}"/>
+            </s:decorate>
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{gravamenHome.instance.porcentaje}"
+                           size="12">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{gravamenHome.persist}"
+                       disabled="#{!gravamenHome.wired}"
+                       rendered="#{!gravamenHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{gravamenHome.update}"
+                       rendered="#{gravamenHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{gravamenHome.remove}"
+                      immediate="true"
+                       rendered="#{gravamenHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelara"
+             propagation="end"
+                    view="/Gravamen.xhtml"
+                rendered="#{gravamenHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty gravamenFrom ? 'GravamenList' : gravamenFrom}.xhtml"
+                rendered="#{!gravamenHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Establecimientos que aplican el gravamen">
+        <h:form styleClass="association" id="gravamenestablecimientosChildren">
+
+            <h:outputText value="No hay establecimientos que apliquen este gravamen."
+                       rendered="#{empty gravamenHome.gravamenestablecimientos}"/>
+
+            <rich:dataTable value="#{gravamenHome.gravamenestablecimientos}"
+                           var="_gravamenestablecimiento"
+                      rendered="#{not empty gravamenHome.gravamenestablecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="gravamenestablecimientosTable">
+                
+                <rich:column sortBy="#{_gravamenestablecimiento.establecimiento.nombreestable}}">
+                    <f:facet name="header">Establecimiento</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_gravamenestablecimiento.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_gravamenestablecimiento.iva}">
+                    <f:facet name="header">Iva</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.iva}"/>
+                </rich:column>
+                <rich:column sortBy="#{_gravamenestablecimiento.activo}">
+                    <f:facet name="header">Activo</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.activo}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gravamenHome.managed}" id="gravamenestablecimientos">
+        <div class="actionButtons">
+            <s:button id="addgravamenestablecimiento"
+                   value="Agregar Establecimiento"
+                    view="/GravamenestablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="gravamenCodigo"
+                         value="#{gravamenHome.instance.codigo}"/>
+                 <f:param name="gravamenestablecimientoFrom" value="Gravamen"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

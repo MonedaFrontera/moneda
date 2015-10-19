@@ -1,0 +1,360 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+ 
+<ui:define name="body">
+
+    <h:form id="depositostarjeta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{depositostarjetaHome.managed ? 'Editar Informacion ' : 'Registrar '} Deposito</f:facet>
+<s:div style="width:60%; float:left">
+			<s:div id="infotarjeta">
+			<s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{tarjetaHome.managed}"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{tarjetaHome.instance.numerotarjeta}">
+                    <a:support event="onblur" reRender="numerotarjetaField, tarjetaHabienteField,v
+                    alordepositoField,promotorField,infoVer" 
+                    action="#{AdministrarDeposito.ubicarTarjeta()}" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+			<s:decorate id="tarjetaHabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText value="#{AdministrarDeposito.tarjetahabiente}" id="nametarjeta" 
+                disabled="#{tarjetaHome.managed}" styleClass="textBox" size="50">
+                <a:support event="onblur" reRender="numerotarjetaField,valordepositoField,
+                promotorField,infoVer" 
+                action="#{AdministrarDeposito.ubicarTarjeta()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="nametarjeta"
+                                        suggestionAction="#{AdministrarDeposito.autocompletarHabiente}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun tarjetahabiente">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+			
+			
+			
+            
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText value="#{tarjetaHome.instance.promotor.personal.nombre} #{tarjetaHome.instance.promotor.personal.apellido}" id="namepromotor" 
+                disabled="true" styleClass="textBox" size="50">
+                </h:inputText>
+            </s:decorate>
+			
+			<s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Cupo</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{depositostarjetaHome.instance.tipodep}" 
+                disabled="#{!s:hasRole('Editar Deposito')&amp;&amp;!s:hasRole('Asesor')}" required="true">
+					<f:selectItem itemValue="V" itemLabel="Viajero"/>
+					<f:selectItem itemValue="I" itemLabel="Internet"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+			
+			</s:div>
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       required="true"
+                       enableManualInput="true"
+                       disabled="#{!s:hasRole('Editar Deposito')&amp;&amp;!s:hasRole('Asesor')}"
+                          value="#{depositostarjetaHome.instance.fecha}" datePattern="MM/dd/yyyy"/>
+            </s:decorate>
+			
+			<s:decorate id="valordepositoField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor Deposito</ui:define>
+                <h:inputText id="valordeposito"
+                          value="#{depositostarjetaHome.instance.valordeposito}"
+                       disabled="#{!s:hasRole('Programar Deposito')&amp;&amp;
+                       !s:hasRole('Registrar Deposito')&amp;&amp;!s:hasRole('Asesor')}"
+                           size="13">
+                    <a:support event="onblur" reRender="valordepositoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+           
+
+            <s:decorate id="tipodebolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo de Bolivar</ui:define>
+                <h:selectOneRadio id="tipodebolivar" value="#{depositostarjetaHome.instance.tipodebolivar}" styleClass="radio">
+                    <f:selectItem itemLabel="Oficina" itemValue="OFI"/>
+                    <f:selectItem itemLabel="Negociado" itemValue="NEG"/>
+                </h:selectOneRadio>
+            </s:decorate>
+            
+            <s:decorate id="preciobolivarField" template="layout/edit.xhtml" rendered="#{s:hasRole('Registrar Deposito')&amp;&amp;tarjetaHome.managed}">
+                <ui:define name="label">Precio Bolivar</ui:define>
+                <h:inputText id="preciobolivar" disabled="#{not s:hasRole('Editar Deposito')}"
+                          value="#{depositostarjetaHome.instance.preciobolivar}"
+                           size="11">
+                    <a:support event="onblur" reRender="preciobolivarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="bancoField" template="layout/edit.xhtml" rendered="#{s:hasRole('Registrar Deposito')&amp;&amp;tarjetaHome.managed
+            &amp;&amp;depositostarjetaHome.instance.preciobolivar!=null}">
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{bancoHome.instance}" 
+                disabled="true" required="true" >
+			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="bancoField, cuentaField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="cuentaField" template="layout/edit.xhtml" rendered="#{s:hasRole('Registrar Deposito')&amp;&amp;tarjetaHome.managed
+        	&amp;&amp;depositostarjetaHome.instance.preciobolivar!=null}">
+                <ui:define name="label">Cuenta</ui:define>
+                <h:selectOneMenu id="cuentaSel" value="#{depositostarjetaHome.instance.cuenta}" required="true" >
+			<s:selectItems value="#{bancoHome.instance.cuentas}" var="cuenta" label="#{cuenta.numcuenta}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	
+        	<s:decorate template="layout/edit.xhtml" style="style: vertical-align: middle"
+        		   rendered="#{	(s:hasRole('Registrar Deposito')&amp;&amp; 
+        						tarjetaHome.managed &amp;&amp; 
+        						depositostarjetaHome.instance.depositopesos!=null &amp;&amp;
+        						depositostarjetaHome.instance.cuenta==null)||
+        						(s:hasRole('Asesor')&amp;&amp; 
+        						tarjetaHome.managed &amp;&amp; 
+        						depositostarjetaHome.instance.depositopesos!=null &amp;&amp;
+        						depositostarjetaHome.instance.cuenta==null)}">
+        		<h:graphicImage title="Falta Procesar Deposito" 
+        				rendered="#{depositostarjetaHome.instance.cuenta==null &amp;&amp;depositostarjetaHome.instance.depositopesos!=null}" 
+            	style="border-style:none; padding-right:4px; vertical-align: middle" id="alertaDepo" value="/img/warning.png" />
+        		<h:outputText  value="Deposito Liquidado SIN CUENTA ASGINADA." required="false"/>        	
+        	</s:decorate>
+        	
+			</s:div>
+	 		<s:div style="width:38%; float:left;" id="infoVer">
+			
+			<s:decorate id="totaldepositosboliviajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Depositos </ui:define>
+                <h:inputText id="totaldepositosboliviajeV"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.totalDepositosBolivaresViajeV+
+                          AdministrarDeposito.totalDepositosBolivaresViajeI}">
+                <f:convertNumber pattern="Bs #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            
+            
+			<s:decorate id="totaldepositosbolitarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo Depositos</ui:define>
+                <h:inputText id="saldodepositosboliviaje"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.saldoDepositosBolivaresViajeV}">
+                <f:convertNumber pattern="Bs #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            
+            <s:decorate rendered="false" id="totaldepositosboliviajeInternetField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Depositos Cupo Internet </ui:define>
+                <h:inputText id="totaldepositosboliviajeI"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.totalDepositosBolivaresViajeI}">
+                <f:convertNumber pattern="Bs #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="totaltransaccionesviajedolarField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo Cupo Viajero</ui:define>
+                <h:inputText id="SaldoCupoViajero"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.saldoCupoViajero}">
+                <f:convertNumber pattern="US$ #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="totaltransaccionesviajeInternetdolarField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo Cupo Internet</ui:define>
+                <h:inputText id="SaldoCupoInternet"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.saldoCupoInternet}">
+                <f:convertNumber pattern="US$ #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate rendered="false" id="totaltransaccionestarjetadolarField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Transacciones</ui:define>
+                <h:inputText id="totaltransaccionestarjetadolar"
+                       disabled="true"
+                       rendered="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.totalTransaccionDolares}">
+                <f:convertNumber pattern="US$ #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+			<s:decorate id="totaldepositostarjetaField" rendered="false" 
+			template="layout/edit.xhtml">
+                <ui:define name="label">Total Depositos</ui:define>
+                <h:inputText id="totaldepositostarjeta"
+                       disabled="true"
+                       rendered="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.totalDepositosPesos}">
+                <f:convertNumber pattern="$ #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="totaltransaccionestarjetaField" rendered="false" 
+            template="layout/edit.xhtml">
+                <ui:define name="label">Total Transacciones</ui:define>
+                <h:inputText id="totaltransaccionestarjeta"
+                       disabled="true"
+                       rendered="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.totalTransaccionPesos}">
+                <f:convertNumber pattern="$ #,###,##0"/> 
+                
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="ultimatransaccionField" template="layout/edit.xhtml">
+                <ui:define name="label">Ultima Transaccion</ui:define>
+                <h:inputText id="ultimatransaccionestarjeta"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.ultimotransaccion}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="ultimodepositoField" template="layout/edit.xhtml">
+                <ui:define name="label">Ultimo Deposito</ui:define>
+                <h:inputText id="ultimodepositotarjeta"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.ultimodeposito}">
+                          <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="valorultimodepositoField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor Ultimo Deposito</ui:define>
+                <h:inputText id="valorultimodepositotarjeta"
+                       disabled="true"
+                       required="false"
+                           size="24"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.valorUltimoDeposito}">
+                          <f:convertNumber pattern="Bs #,###,##0"/> 
+                </h:inputText>
+            </s:decorate>
+            
+            
+			</s:div>
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarDeposito.guardarDeposito}"
+                       disabled="false"
+                       rendered="#{!depositostarjetaHome.managed&amp;&amp;
+                       (s:hasRole('Programar Deposito')||s:hasRole('Asesor'))}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{AdministrarDeposito.actualizarDep}"
+                       rendered="#{depositostarjetaHome.managed&amp;&amp;
+                       (s:hasRole('Editar Deposito')||s:hasRole('Programar Deposito')
+                       ||s:hasRole('Asesor'))}"/>
+                       
+            <h:commandButton id="registrar"
+                          value="Registrar Banco"
+                         action="#{AdministrarDeposito.actualizarDeposito}"
+                       rendered="#{false&amp;&amp;depositostarjetaHome.managed&amp;&amp;
+                             depositostarjetaHome.instance.preciobolivar!=null&amp;&amp;
+                       (s:hasRole('Registrar Deposito')||s:hasRole('Programar Deposito')
+                       ||s:hasRole('Asesor'))}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{AdministrarDeposito.eliminarDeposito}"
+                      immediate="true"
+                       rendered="#{ (depositostarjetaHome.managed &amp;&amp; s:hasRole('Eliminar Deposito') ) ||
+                       			 (s:hasRole('Asesor') &amp;&amp;
+                       			  depositostarjetaHome.managed &amp;&amp;
+                       			  depositostarjetaHome.instance.depositopesos == null )}"/>
+								
+            <h:commandButton id="cancelarr"
+                          value="Cancelar"
+                         action="#{AdministrarDeposito.cancelar}"
+                       disabled="false"
+                       />
+                       
+                       <h:commandButton id="limpiar"
+                          value="Limpiar"
+                         action="#{AdministrarDeposito.limpiar}"
+                       disabled="false"
+                       reRender="depositostarjeta"
+                       ajaxSingle="true"
+                       rendered="#{!depositostarjetaHome.managed&amp;&amp;
+                       (s:hasRole('Programar Deposito')||s:hasRole('Asesor'))}"/>
+            
+            
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

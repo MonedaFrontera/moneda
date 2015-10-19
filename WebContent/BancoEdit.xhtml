@@ -1,0 +1,159 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="banco" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{bancoHome.managed ? 'Edit' : 'Add'} Banco</f:facet>
+
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{bancoHome.managed}"
+                       required="true"
+                           size="3"
+                      maxlength="3"
+                          value="#{bancoHome.instance.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombrebancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrebanco</ui:define>
+                <h:inputText id="nombrebanco"
+                       required="true"
+                           size="50"
+                      maxlength="50"
+                          value="#{bancoHome.instance.nombrebanco}">
+                    <a:support event="onblur" reRender="nombrebancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{bancoHome.persist}"
+                       disabled="#{!bancoHome.wired}"
+                       rendered="#{!bancoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{bancoHome.update}"
+                       rendered="#{bancoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{bancoHome.remove}"
+                      immediate="true"
+                       rendered="#{bancoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/BancoList.xhtml"
+                rendered="#{bancoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty bancoFrom ? 'BancoList' : bancoFrom}.xhtml"
+                rendered="#{!bancoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Tarjetas">
+        <h:form styleClass="association" id="tarjetasChildren">
+
+            <h:outputText value="There are no tarjetas associated with this banco."
+                       rendered="#{empty bancoHome.tarjetas}"/>
+
+            <rich:dataTable value="#{bancoHome.tarjetas}"
+                           var="_tarjeta"
+                      rendered="#{not empty bancoHome.tarjetas}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="tarjetasTable">
+                <rich:column sortBy="#{_tarjeta.numerotarjeta}">
+                    <f:facet name="header">Numerotarjeta</f:facet>
+                    <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.limite}">
+                    <f:facet name="header">Limite</f:facet>
+                    <h:outputText value="#{_tarjeta.limite}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.fechainicio}">
+                    <f:facet name="header">Fechainicio</f:facet>
+                    <h:outputText value="#{_tarjeta.fechainicio}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.fechafin}">
+                    <f:facet name="header">Fechafin</f:facet>
+                    <h:outputText value="#{_tarjeta.fechafin}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.fechavencimiento}">
+                    <f:facet name="header">Fechavencimiento</f:facet>
+                    <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.codseguridad}">
+                    <f:facet name="header">Codseguridad</f:facet>
+                    <h:outputText value="#{_tarjeta.codseguridad}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.tarjetahabiente}">
+                    <f:facet name="header">Tarjetahabiente</f:facet>
+                    <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.direcciontarjetahabiente}">
+                    <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                    <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjeta.cedulatarjetahabiente}">
+                    <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                    <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+                </rich:column>                
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{bancoHome.managed}" id="tarjetas">
+        <div class="actionButtons">
+            <s:button id="addtarjeta"
+                   value="Add tarjeta"
+                    view="/TarjetaEdit.xhtml"
+             propagation="none">
+                 <f:param name="bancoCodbanco"
+                         value="#{bancoHome.instance.codbanco}"/>
+                 <f:param name="tarjetaFrom" value="Banco"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

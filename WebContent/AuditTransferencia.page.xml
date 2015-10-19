@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="auditTransferenciaFrom"/>
+   <param name="auditTransferenciaConsecutivo" value="#{auditTransferenciaHome.auditTransferenciaId.consecutivo}"/>
+   <param name="auditTransferenciaPreciobolivar" value="#{auditTransferenciaHome.auditTransferenciaId.preciobolivar}"/>
+   <param name="auditTransferenciaTipobolivar" value="#{auditTransferenciaHome.auditTransferenciaId.tipobolivar}"/>
+   <param name="auditTransferenciaValorbolivar" value="#{auditTransferenciaHome.auditTransferenciaId.valorbolivar}"/>
+   <param name="auditTransferenciaNumcuenta" value="#{auditTransferenciaHome.auditTransferenciaId.numcuenta}"/>
+   <param name="auditTransferenciaNumcuentapromotor" value="#{auditTransferenciaHome.auditTransferenciaId.numcuentapromotor}"/>
+   <param name="auditTransferenciaDocumentopromotor" value="#{auditTransferenciaHome.auditTransferenciaId.documentopromotor}"/>
+   <param name="auditTransferenciaPreciocompra" value="#{auditTransferenciaHome.auditTransferenciaId.preciocompra}"/>
+   <param name="auditTransferenciaPrecioasesor" value="#{auditTransferenciaHome.auditTransferenciaId.precioasesor}"/>
+   <param name="auditTransferenciaUsuariomod" value="#{auditTransferenciaHome.auditTransferenciaId.usuariomod}"/>
+   <param name="auditTransferenciaFechamod" value="#{auditTransferenciaHome.auditTransferenciaId.fechamod}"/>
+
+
+</page>

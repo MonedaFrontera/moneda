@@ -1,0 +1,95 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="reportes" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{reportesHome.managed ? 'Edit' : 'Add'} Reportes</f:facet>
+
+
+            <s:decorate id="codreporteField" template="layout/edit.xhtml">
+                <ui:define name="label">Codreporte</ui:define>
+                <h:inputText id="codreporte"
+                       disabled="#{reportesHome.managed}"
+                       required="true"
+                           size="20"
+                      maxlength="20"
+                          value="#{reportesHome.instance.codreporte}">
+                    <a:support event="onblur" reRender="codreporteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="descripcionField" template="layout/edit.xhtml">
+                <ui:define name="label">Descripcion</ui:define>
+                <h:inputText id="descripcion"
+                           size="100"
+                      maxlength="100"
+                          value="#{reportesHome.instance.descripcion}">
+                    <a:support event="onblur" reRender="descripcionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="parametrosField" template="layout/edit.xhtml">
+                <ui:define name="label">Parametros</ui:define>
+                <h:inputText id="parametros"
+                          value="#{reportesHome.instance.parametros}">
+                    <a:support event="onblur" reRender="parametrosField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{reportesHome.persist}"
+                       disabled="#{!reportesHome.wired}"
+                       rendered="#{!reportesHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{reportesHome.update}"
+                       rendered="#{reportesHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{reportesHome.remove}"
+                      immediate="true"
+                       rendered="#{reportesHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Reportes.xhtml"
+                rendered="#{reportesHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty reportesFrom ? 'ReportesList' : reportesFrom}.xhtml"
+                rendered="#{!reportesHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

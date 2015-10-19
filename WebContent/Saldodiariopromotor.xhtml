@@ -1,0 +1,122 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Saldodiariopromotor Details</f:facet>
+
+        <s:decorate id="documento" template="layout/display.xhtml">
+            <ui:define name="label">Documento</ui:define>
+            <h:outputText value="#{saldodiariopromotorHome.instance.id.documento}"/>
+        </s:decorate>
+        <s:decorate id="fecha" template="layout/display.xhtml">
+            <ui:define name="label">Fecha</ui:define>
+            <h:outputText value="#{saldodiariopromotorHome.instance.id.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="saldo" template="layout/display.xhtml">
+            <ui:define name="label">Saldo</ui:define>
+            <h:outputText value="#{saldodiariopromotorHome.instance.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{saldodiariopromotorHome.instance.fechamod}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{saldodiariopromotorHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/SaldodiariopromotorEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty saldodiariopromotorFrom ? 'SaldodiariopromotorList' : saldodiariopromotorFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this saldodiariopromotor."
+                   rendered="#{saldodiariopromotorHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{saldodiariopromotorHome.instance.promotor}"
+                rendered="#{saldodiariopromotorHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpromotor"
+                     value="View"
+                      view="/Promotor.xhtml">
+                    <f:param name="promotorDocumento"
+                           value="#{_promotor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

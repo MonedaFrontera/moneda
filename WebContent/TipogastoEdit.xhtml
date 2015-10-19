@@ -1,0 +1,97 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tipogasto" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tipogastoHome.managed ? 'Editar' : 'Crear'} Tipo de Gasto</f:facet>
+
+
+            <s:decorate id="codtipogastoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo Tipo</ui:define>
+                <h:inputText id="codtipogasto"
+                       disabled="#{tipogastoHome.managed}"
+                       required="true"
+                           size="2"
+                      maxlength="2"
+                          value="#{tipogastoHome.instance.codtipogasto}">
+                    <a:support event="onblur" reRender="codtipogastoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="descripcionField" template="layout/edit.xhtml">
+                <ui:define name="label">Descripcion</ui:define>
+                <h:inputText id="descripcion"
+                           size="50"
+                      maxlength="50"
+                          value="#{tipogastoHome.instance.descripcion}">
+                    <a:support event="onblur" reRender="descripcionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            
+            <s:decorate id="tipogastoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Gasto</ui:define>
+                <h:selectOneMenu id="tipogasto" value="#{tipogastoHome.instance.tipo}" 
+                >
+					<f:selectItem itemValue="1" itemLabel="Credito"/>
+					<f:selectItem itemValue="2" itemLabel="Debito"/>
+				</h:selectOneMenu> 
+                
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos Requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{tipogastoHome.persist}"
+                       disabled="#{!tipogastoHome.wired}"
+                       rendered="#{!tipogastoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{tipogastoHome.update}"
+                       rendered="#{tipogastoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{tipogastoHome.remove}"
+                      immediate="true"
+                       rendered="#{tipogastoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/TipogastoList.xhtml"
+                rendered="#{tipogastoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty tipogastoFrom ? 'TipogastoList' : tipogastoFrom}.xhtml"
+                rendered="#{!tipogastoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

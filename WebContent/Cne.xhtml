@@ -1,0 +1,67 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Cne Details</f:facet>
+
+        <s:decorate id="nacionalidad" template="layout/display.xhtml">
+            <ui:define name="label">Nacionalidad</ui:define>
+            <h:outputText value="#{cneHome.instance.id.nacionalidad}"/>
+        </s:decorate>
+        <s:decorate id="cedula" template="layout/display.xhtml">
+            <ui:define name="label">Cedula</ui:define>
+            <h:outputText value="#{cneHome.instance.id.cedula}"/>
+        </s:decorate>
+        <s:decorate id="primerApellido" template="layout/display.xhtml">
+            <ui:define name="label">Primer apellido</ui:define>
+            <h:outputText value="#{cneHome.instance.id.primerApellido}"/>
+        </s:decorate>
+        <s:decorate id="segundoApellido" template="layout/display.xhtml">
+            <ui:define name="label">Segundo apellido</ui:define>
+            <h:outputText value="#{cneHome.instance.id.segundoApellido}"/>
+        </s:decorate>
+        <s:decorate id="primerNombre" template="layout/display.xhtml">
+            <ui:define name="label">Primer nombre</ui:define>
+            <h:outputText value="#{cneHome.instance.id.primerNombre}"/>
+        </s:decorate>
+        <s:decorate id="segundoNombre" template="layout/display.xhtml">
+            <ui:define name="label">Segundo nombre</ui:define>
+            <h:outputText value="#{cneHome.instance.id.segundoNombre}"/>
+        </s:decorate>
+        <s:decorate id="estado" template="layout/display.xhtml">
+            <ui:define name="label">Estado</ui:define>
+            <h:outputText value="#{cneHome.instance.id.estado}"/>
+        </s:decorate>
+        <s:decorate id="codCentro" template="layout/display.xhtml">
+            <ui:define name="label">Cod centro</ui:define>
+            <h:outputText value="#{cneHome.instance.id.codCentro}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CneEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty cneFrom ? 'CneList' : cneFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

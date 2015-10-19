@@ -1,0 +1,318 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="depositostarjetaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Busqueda de Depositos de Tarjetas" switchType="ajax">
+
+            
+            <s:decorate id="tarjetaHabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText value="#{AdministrarDeposito.tarjetahabiente}" id="nametarjeta" 
+                size="50">
+                <a:support event="onblur" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="nametarjeta"
+				                        suggestionAction="#{AdministrarDeposito.autocompletarHabiente}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4" 
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun tarjetahabiente">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+            
+            <s:decorate id="tpromotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText value="#{AdministrarDeposito.promotor}" id="namepromotor" 
+                styleClass="textBox" size="50">
+                <a:support event="onblur" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('promotorBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="promotorBoxId" for="namepromotor"
+			
+                                        suggestionAction="#{AdministrarDeposito.autocompletarPromotor}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4" 
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+            
+            <s:decorate id="tasesorField" template="layout/edit.xhtml" rendered="#{!s:hasRole('Asesor')}">
+                <ui:define name="label">Asesor</ui:define>
+                <h:inputText value="#{AdministrarDeposito.asesor}" id="nameasesor" 
+                styleClass="textBox" size="50">
+                <a:support event="onblur" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('asesorBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="asesorBoxId" for="nameasesor"
+                                        suggestionAction="#{AdministrarDeposito.autocompletarAsesor}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4" 
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun asesor">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+            
+            
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Inicio</ui:define>
+                <rich:calendar id="fechainicio"
+                		  value="#{AdministrarDeposito.fechainicio}" datePattern="dd/MM/yyyy" 
+                		  enableManualInput="true"/>
+            </s:decorate>
+            
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Final</ui:define>
+                <rich:calendar id="fechafin"
+                			
+                          value="#{AdministrarDeposito.fechafin}" datePattern="dd/MM/yyyy" 
+                          enableManualInput="true"/>
+            </s:decorate>
+			
+			<s:decorate id="numtarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                
+                <h:inputText id="numtarjeta"
+                           size="20"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.numtarjeta}">
+                    <a:support event="onblur" reRender="numtarjetaField" ajaxSingle="true"/>
+                </h:inputText>                
+            </s:decorate>
+            
+            <s:decorate id="tipotxField" template="layout/edit.xhtml" rendered="false">
+                <ui:define name="label">Tipo Transaccion</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{AdministrarDeposito.tipodep}">
+					<f:selectItem itemValue="" itemLabel="Seleccione"/>
+					<f:selectItem itemValue="V" itemLabel="Viajero"/>
+					<f:selectItem itemValue="I" itemLabel="Internet"/>
+					<a:support event="onchange" reRender="tipotxField" ajaxSingle="true"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+            
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectOneRadio id="logic" value="#{AdministrarDeposito.estado}" styleClass="radio">
+                    <f:selectItem itemLabel="Todos" itemValue="t"/>
+                    <f:selectItem itemLabel="Programados" itemValue="p"/>
+                    <f:selectItem itemLabel="Realizados" itemValue="r"/>
+                </h:selectOneRadio>
+                
+            </s:decorate>
+            
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" rendered="false" value="Buscar" action="/DepositostarjetaList.xhtml"/>
+            <h:commandButton id="buscar"
+                          value="Buscar"
+                         action="#{AdministrarDeposito.buscar}"
+                         reRender="panelResultado"/>
+                         
+            <h:commandButton id="reiniciar"
+                          value="Reiniciar"
+                         action="#{AdministrarDeposito.reiniciar}"
+                         reRender="panelResultado"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false" rendered="false"/>
+            
+            <h:commandButton id="save"
+                          value="Programar Deposito"
+                         action="#{AdministrarDeposito.programarDeposito}"
+                       disabled="false"
+                       
+                       rendered="#{false&amp;&amp;!depositostarjetaHome.managed}"/> 
+                       
+                       
+            
+        </div>
+
+    </h:form>
+	<h:form>
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultado de busqueda de depositos de tarjetas (#{empty AdministrarDeposito.depositostarjetas ? 0 : (AdministrarDeposito.depositostarjetas.size)})</f:facet>
+    <div class="results" id="depositostarjetaList">
+
+    <h:outputText value="La busqueda de deposito de tarjetas no retorno ningun resultado"
+               rendered="#{empty AdministrarDeposito.depositostarjetas}"/>
+
+    <rich:dataTable id="depositostarjetaList"
+                var="_depositostarjeta"
+              value="#{AdministrarDeposito.depositostarjetas}"
+           rendered="#{not empty AdministrarDeposito.depositostarjetas}">
+
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{depositostarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Tarjeta"/>
+                    <ui:param name="propertyPath" value="depositostarjeta.tarjeta.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.tarjeta.numerotarjeta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{depositostarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Tarjetahabiente"/>
+                    <ui:param name="propertyPath" value="depositostarjeta.tarjeta.tarjetahabiente"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.tarjeta.tarjetahabiente}"/>
+        </h:column>
+        
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{depositostarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Banco"/>
+                    <ui:param name="propertyPath" value="depositostarjeta.tarjeta.banco.nombrebanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.tarjeta.banco.nombrebanco}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">Promotor
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.tarjeta.promotor.personal.nombre} #{_depositostarjeta.tarjeta.promotor.personal.apellido}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">Asesor
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.tarjeta.promotor.asesor.personal.nombre} #{_depositostarjeta.tarjeta.promotor.asesor.personal.apellido}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{depositostarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="depositostarjeta.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{depositostarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Valor Deposito (B)"/>
+                    <ui:param name="propertyPath" value="depositostarjeta.valordeposito"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.valordeposito}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{depositostarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Bolivar"/>
+                    <ui:param name="propertyPath" value="depositostarjeta.tipodebolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta.tipodebolivar}">
+
+            </h:outputText>
+        </h:column>
+        
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            
+            <h:commandLink value="" 
+            	rendered="#{s:hasRole('Registrar Deposito')||
+            			   (s:hasRole('Asesor')&amp;&amp;(_depositostarjeta.cuenta==null || _depositostarjeta.preciobolivar == null ))}"
+            	action="#{AdministrarDeposito.registrarDeposito(_depositostarjeta.consecutivo)}" >
+            	<h:graphicImage title="Registrar Deposito" style="border-style:none;" id="regDeposito" value="/img/edit.png" />
+            </h:commandLink>
+            
+            <h:graphicImage title="Deposito Procesado" rendered="#{_depositostarjeta.cuenta!=null &amp;&amp;_depositostarjeta.depositopesos!=null}" 
+            style="border-style:none;" id="realizadoDeposito" value="/img/money_add.png" />
+                        
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+	</h:form>
+    <div class="tableControl">
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{depositostarjetaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{depositostarjetaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{depositostarjetaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="false">
+        <s:button view="/DepositostarjetaEdit.xhtml"
+                    id="create"
+           propagation="none"
+           rendered="#{s:hasRole('Programar Deposito')}"
+                 value="Registrar Deposito de Tarjetas">
+            <f:param name="depositostarjetaConsecutivo"/>
+        </s:button>
+        
+         
+        
+        
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,140 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistacuentadetalle" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{vistacuentadetalleHome.managed ? 'Edit' : 'Add'} Vistacuentadetalle</f:facet>
+
+
+            <s:decorate id="numcuentaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numcuenta</ui:define>
+                <h:inputText id="numcuenta"
+                       disabled="#{vistacuentadetalleHome.managed}"
+                          size="25"
+                     maxlength="25"
+                         value="#{vistacuentadetalleHome.instance.id.numcuenta}">
+                    <a:support event="onblur" reRender="numcuentaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                       disabled="#{vistacuentadetalleHome.managed}"
+                          size="100"
+                     maxlength="100"
+                         value="#{vistacuentadetalleHome.instance.id.nombre}">
+                    <a:support event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{vistacuentadetalleHome.instance.id.fecha}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="creditosField" template="layout/edit.xhtml">
+                <ui:define name="label">Creditos</ui:define>
+                <h:inputText id="creditos"
+                          value="#{vistacuentadetalleHome.instance.id.creditos}"
+                           size="131.096">
+                    <a:support event="onblur" reRender="creditosField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="debitosField" template="layout/edit.xhtml">
+                <ui:define name="label">Debitos</ui:define>
+                <h:inputText id="debitos"
+                          value="#{vistacuentadetalleHome.instance.id.debitos}"
+                           size="131.096">
+                    <a:support event="onblur" reRender="debitosField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="detalleField" template="layout/edit.xhtml">
+                <ui:define name="label">Detalle</ui:define>
+                <h:inputTextarea id="detalle"
+                               cols="80"
+                               rows="3"
+                           disabled="#{vistacuentadetalleHome.managed}"
+                              value="#{vistacuentadetalleHome.instance.id.detalle}"/>
+            </s:decorate>
+
+            <s:decorate id="nombrebancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrebanco</ui:define>
+                <h:inputText id="nombrebanco"
+                       disabled="#{vistacuentadetalleHome.managed}"
+                          size="50"
+                     maxlength="50"
+                         value="#{vistacuentadetalleHome.instance.id.nombrebanco}">
+                    <a:support event="onblur" reRender="nombrebancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{vistacuentadetalleHome.managed}"
+                          size="3"
+                     maxlength="3"
+                         value="#{vistacuentadetalleHome.instance.id.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{vistacuentadetalleHome.persist}"
+                       disabled="#{!vistacuentadetalleHome.wired}"
+                       rendered="#{!vistacuentadetalleHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{vistacuentadetalleHome.update}"
+                       rendered="#{vistacuentadetalleHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{vistacuentadetalleHome.remove}"
+                      immediate="true"
+                       rendered="#{vistacuentadetalleHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Vistacuentadetalle.xhtml"
+                rendered="#{vistacuentadetalleHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty vistacuentadetalleFrom ? 'VistacuentadetalleList' : vistacuentadetalleFrom}.xhtml"
+                rendered="#{!vistacuentadetalleHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

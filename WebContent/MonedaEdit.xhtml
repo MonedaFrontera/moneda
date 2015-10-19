@@ -1,0 +1,172 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="moneda" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{monedaHome.managed ? 'Edit' : 'Add'} Moneda</f:facet>
+
+
+            <s:decorate id="codigomonedaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigomoneda</ui:define>
+                <h:inputText id="codigomoneda"
+                       disabled="#{monedaHome.managed}"
+                       required="true"
+                           size="5"
+                      maxlength="5"
+                          value="#{monedaHome.instance.codigomoneda}">
+                    <a:support event="onblur" reRender="codigomonedaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombreMonedaField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre moneda</ui:define>
+                <h:inputText id="nombreMoneda"
+                           size="60"
+                      maxlength="60"
+                          value="#{monedaHome.instance.nombreMoneda}">
+                    <a:support event="onblur" reRender="nombreMonedaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{monedaHome.persist}"
+                       disabled="#{!monedaHome.wired}"
+                       rendered="#{!monedaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{monedaHome.update}"
+                       rendered="#{monedaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{monedaHome.remove}"
+                      immediate="true"
+                       rendered="#{monedaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Moneda.xhtml"
+                rendered="#{monedaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty monedaFrom ? 'MonedaList' : monedaFrom}.xhtml"
+                rendered="#{!monedaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Paridadmonedas for codmonedadestino">
+        <h:form styleClass="association" id="paridadmonedasForCodmonedadestinoChildren">
+
+            <h:outputText value="There are no paridadmonedasForCodmonedadestino associated with this moneda."
+                       rendered="#{empty monedaHome.paridadmonedasForCodmonedadestino}"/>
+
+            <rich:dataTable value="#{monedaHome.paridadmonedasForCodmonedadestino}"
+                           var="_paridadmoneda"
+                      rendered="#{not empty monedaHome.paridadmonedasForCodmonedadestino}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="paridadmonedasForCodmonedadestinoTable">
+                <rich:column sortBy="#{_paridadmoneda.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_paridadmoneda.fecha}">
+                        <s:convertDateTime type="date" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_paridadmoneda.paridad}">
+                    <f:facet name="header">Paridad</f:facet>
+                    <h:outputText value="#{_paridadmoneda.paridad}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{monedaHome.managed}" id="paridadmonedasForCodmonedadestino">
+        <div class="actionButtons">
+            <s:button id="addparidadmoneda"
+                   value="Add paridadmoneda"
+                    view="/ParidadmonedaEdit.xhtml"
+             propagation="none">
+                 <f:param name="monedaCodigomoneda"
+                         value="#{monedaHome.instance.codigomoneda}"/>
+                 <f:param name="paridadmonedaFrom" value="Moneda"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Paridadmonedas for codmonedaorigen">
+        <h:form styleClass="association" id="paridadmonedasForCodmonedaorigenChildren">
+
+            <h:outputText value="There are no paridadmonedasForCodmonedaorigen associated with this moneda."
+                       rendered="#{empty monedaHome.paridadmonedasForCodmonedaorigen}"/>
+
+            <rich:dataTable value="#{monedaHome.paridadmonedasForCodmonedaorigen}"
+                           var="_paridadmoneda"
+                      rendered="#{not empty monedaHome.paridadmonedasForCodmonedaorigen}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="paridadmonedasForCodmonedaorigenTable">
+                <rich:column sortBy="#{_paridadmoneda.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_paridadmoneda.fecha}">
+                        <s:convertDateTime type="date" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_paridadmoneda.paridad}">
+                    <f:facet name="header">Paridad</f:facet>
+                    <h:outputText value="#{_paridadmoneda.paridad}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{monedaHome.managed}" id="paridadmonedasForCodmonedaorigen">
+        <div class="actionButtons">
+            <s:button id="addparidadmoneda"
+                   value="Add paridadmoneda"
+                    view="/ParidadmonedaEdit.xhtml"
+             propagation="none">
+                 <f:param name="monedaCodigomoneda"
+                         value="#{monedaHome.instance.codigomoneda}"/>
+                 <f:param name="paridadmonedaFrom" value="Moneda"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

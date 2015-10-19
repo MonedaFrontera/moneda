@@ -1,0 +1,131 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Cargo Details</f:facet>
+
+        <s:decorate id="codcargo" template="layout/display.xhtml">
+            <ui:define name="label">Codcargo</ui:define>
+            <h:outputText value="#{cargoHome.instance.codcargo}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrecargo" template="layout/display.xhtml">
+            <ui:define name="label">Nombrecargo</ui:define>
+            <h:outputText value="#{cargoHome.instance.nombrecargo}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CargoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty cargoFrom ? 'CargoList' : cargoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Personals</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="personalsChildren">
+
+        <h:outputText value="There are no personals associated with this cargo."
+                   rendered="#{empty cargoHome.personals}"/>
+
+        <rich:dataTable value="#{cargoHome.personals}"
+                       var="_personal"
+                  rendered="#{not empty cargoHome.personals}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="personalsTable">
+            <rich:column sortBy="#{_personal.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personal.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.tipodocumento}">
+                <f:facet name="header">Tipodocumento</f:facet>
+                <h:outputText value="#{_personal.tipodocumento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.nombre}">
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_personal.nombre}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.apellido}">
+                <f:facet name="header">Apellido</f:facet>
+                <h:outputText value="#{_personal.apellido}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.celular}">
+                <f:facet name="header">Celular</f:facet>
+                <h:outputText value="#{_personal.celular}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.telefono}">
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_personal.telefono}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.pinbb}">
+                <f:facet name="header">Pinbb</f:facet>
+                <h:outputText value="#{_personal.pinbb}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.direccion}">
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_personal.direccion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.correo}">
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_personal.correo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.correoalternativo}">
+                <f:facet name="header">Correoalternativo</f:facet>
+                <h:outputText value="#{_personal.correoalternativo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personal.fechanac}">
+                <f:facet name="header">Fechanac</f:facet>
+                <h:outputText value="#{_personal.fechanac}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpersonal"
+                     value="Select"
+                      view="/Personal.xhtml">
+                    <f:param name="personalDocumento"
+                            value="#{_personal.documento}"/>
+                    <f:param name="personalFrom" value="Cargo"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add personal"
+                view="/PersonalEdit.xhtml">
+            <f:param name="cargoCodcargo"
+                    value="#{cargoHome.instance.codcargo}"/>
+            <f:param name="personalFrom" value="Cargo"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

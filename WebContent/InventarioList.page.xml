@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{inventarioList.firstResult}"/>
+   <param name="sort" value="#{inventarioList.orderColumn}"/>
+   <param name="dir" value="#{inventarioList.orderDirection}"/>
+   <param name="logic" value="#{inventarioList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="refproducto" value="#{inventarioList.inventario.id.refproducto}"/>
+   <param name="codigounico" value="#{inventarioList.inventario.id.codigounico}"/>
+
+</page>

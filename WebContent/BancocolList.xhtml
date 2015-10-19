@@ -1,0 +1,145 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="bancocolSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Bancocol Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco" value="#{bancocolList.bancocol.codbanco}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre" value="#{bancocolList.bancocol.nombre}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{bancocolList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/BancocolList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Bancocol Search Results (#{empty bancocolList.resultList ? 0 : (bancocolList.paginated ? bancocolList.resultCount : bancocolList.resultList.size)})</f:facet>
+    <div class="results" id="bancocolList">
+
+    <h:outputText value="The bancocol search returned no results."
+               rendered="#{empty bancocolList.resultList}"/>
+
+    <rich:dataTable id="bancocolList"
+                var="_bancocol"
+              value="#{bancocolList.resultList}"
+           rendered="#{not empty bancocolList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bancocolList}"/>
+                    <ui:param name="propertyLabel" value="Codbanco"/>
+                    <ui:param name="propertyPath" value="bancocol.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bancocol.codbanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{bancocolList}"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="bancocol.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_bancocol.nombre}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Bancocol' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="bancocolViewId">
+                <f:param name="bancocolCodbanco"
+                        value="#{_bancocol.codbanco}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/BancocolEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="bancocolEdit"
+                rendered="#{empty from}">
+                <f:param name="bancocolCodbanco"
+                        value="#{_bancocol.codbanco}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/BancocolList.xhtml"
+            rendered="#{bancocolList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/BancocolList.xhtml"
+            rendered="#{bancocolList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{bancocolList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/BancocolList.xhtml"
+            rendered="#{bancocolList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{bancocolList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/BancocolList.xhtml"
+            rendered="#{bancocolList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{bancocolList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/BancocolEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create bancocol">
+            <f:param name="bancocolCodbanco"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

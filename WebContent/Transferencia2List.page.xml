@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+	<action execute="#{AdministrarGasto.buscarTransferencias()}"/> 
+
+   <param name="firstResult" value="#{AdministrarGasto.qtransferencias.firstResult}"/>
+   <param name="sort" value="#{AdministrarGasto.qtransferencias.orderColumn}"/>
+   <param name="dir" value="#{AdministrarGasto.qtransferencias.orderDirection}"/>
+   <param name="logic" value="#{AdministrarGasto.qtransferencias.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="observacion" value="#{gastosList.gastos.observacion}"/>
+   <param name="fecha" value="#{gastosList.gastos.fecha}"/>
+   
+    <param name="nombre" value="#{AdministrarGasto.nombre}" />
+
+</page>

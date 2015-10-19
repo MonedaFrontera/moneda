@@ -1,0 +1,263 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="dolartoday" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{dolartodayHome.managed ? 'Edit' : 'Add'} Dolartoday</f:facet>
+
+
+            <s:decorate id="epochField" template="layout/edit.xhtml">
+                <ui:define name="label">Epoch</ui:define>
+                <h:inputText id="epoch"
+                       required="true"
+                       disabled="#{dolartodayHome.managed}"
+                          value="#{dolartodayHome.instance.epoch}">
+                    <a:support event="onblur" reRender="epochField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdtransferenciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdtransferencia</ui:define>
+                <h:inputText id="usdtransferencia"
+                          value="#{dolartodayHome.instance.usdtransferencia}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdtransferenciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdefectivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdefectivo</ui:define>
+                <h:inputText id="usdefectivo"
+                          value="#{dolartodayHome.instance.usdefectivo}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdefectivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdpromedioField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdpromedio</ui:define>
+                <h:inputText id="usdpromedio"
+                          value="#{dolartodayHome.instance.usdpromedio}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdpromedioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdpromediorealField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdpromedioreal</ui:define>
+                <h:inputText id="usdpromedioreal"
+                          value="#{dolartodayHome.instance.usdpromedioreal}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdpromediorealField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdsicad2Field" template="layout/edit.xhtml">
+                <ui:define name="label">Usdsicad2</ui:define>
+                <h:inputText id="usdsicad2"
+                          value="#{dolartodayHome.instance.usdsicad2}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdsicad2Field" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usddolartodayField" template="layout/edit.xhtml">
+                <ui:define name="label">Usddolartoday</ui:define>
+                <h:inputText id="usddolartoday"
+                          value="#{dolartodayHome.instance.usddolartoday}"
+                           size="13">
+                    <a:support event="onblur" reRender="usddolartodayField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="eurtransferenciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Eurtransferencia</ui:define>
+                <h:inputText id="eurtransferencia"
+                          value="#{dolartodayHome.instance.eurtransferencia}"
+                           size="13">
+                    <a:support event="onblur" reRender="eurtransferenciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="eurefectivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Eurefectivo</ui:define>
+                <h:inputText id="eurefectivo"
+                          value="#{dolartodayHome.instance.eurefectivo}"
+                           size="13">
+                    <a:support event="onblur" reRender="eurefectivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="eurpromedioField" template="layout/edit.xhtml">
+                <ui:define name="label">Eurpromedio</ui:define>
+                <h:inputText id="eurpromedio"
+                          value="#{dolartodayHome.instance.eurpromedio}"
+                           size="13">
+                    <a:support event="onblur" reRender="eurpromedioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="eurpromediorealField" template="layout/edit.xhtml">
+                <ui:define name="label">Eurpromedioreal</ui:define>
+                <h:inputText id="eurpromedioreal"
+                          value="#{dolartodayHome.instance.eurpromedioreal}"
+                           size="13">
+                    <a:support event="onblur" reRender="eurpromediorealField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="eurdolartodayField" template="layout/edit.xhtml">
+                <ui:define name="label">Eurdolartoday</ui:define>
+                <h:inputText id="eurdolartoday"
+                          value="#{dolartodayHome.instance.eurdolartoday}"
+                           size="13">
+                    <a:support event="onblur" reRender="eurdolartodayField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="bscolcompraField" template="layout/edit.xhtml">
+                <ui:define name="label">Bscolcompra</ui:define>
+                <h:inputText id="bscolcompra"
+                          value="#{dolartodayHome.instance.bscolcompra}"
+                           size="13">
+                    <a:support event="onblur" reRender="bscolcompraField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="bscolventaField" template="layout/edit.xhtml">
+                <ui:define name="label">Bscolventa</ui:define>
+                <h:inputText id="bscolventa"
+                          value="#{dolartodayHome.instance.bscolventa}"
+                           size="13">
+                    <a:support event="onblur" reRender="bscolventaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="goldrateField" template="layout/edit.xhtml">
+                <ui:define name="label">Goldrate</ui:define>
+                <h:inputText id="goldrate"
+                          value="#{dolartodayHome.instance.goldrate}"
+                           size="13">
+                    <a:support event="onblur" reRender="goldrateField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdvefrateField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdvefrate</ui:define>
+                <h:inputText id="usdvefrate"
+                          value="#{dolartodayHome.instance.usdvefrate}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdvefrateField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdcolrateField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdcolrate</ui:define>
+                <h:inputText id="usdcolrate"
+                          value="#{dolartodayHome.instance.usdcolrate}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdcolrateField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdratetrmField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdratetrm</ui:define>
+                <h:inputText id="usdratetrm"
+                          value="#{dolartodayHome.instance.usdratetrm}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdratetrmField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usdtrmfactorField" template="layout/edit.xhtml">
+                <ui:define name="label">Usdtrmfactor</ui:define>
+                <h:inputText id="usdtrmfactor"
+                          value="#{dolartodayHome.instance.usdtrmfactor}"
+                           size="13">
+                    <a:support event="onblur" reRender="usdtrmfactorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="eurusdrateField" template="layout/edit.xhtml">
+                <ui:define name="label">Eurusdrate</ui:define>
+                <h:inputText id="eurusdrate"
+                          value="#{dolartodayHome.instance.eurusdrate}"
+                           size="13">
+                    <a:support event="onblur" reRender="eurusdrateField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{dolartodayHome.persist}"
+                       disabled="#{!dolartodayHome.wired}"
+                       rendered="#{!dolartodayHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{dolartodayHome.update}"
+                       rendered="#{dolartodayHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{dolartodayHome.remove}"
+                      immediate="true"
+                       rendered="#{dolartodayHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Dolartoday.xhtml"
+                rendered="#{dolartodayHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty dolartodayFrom ? 'DolartodayList' : dolartodayFrom}.xhtml"
+                rendered="#{!dolartodayHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

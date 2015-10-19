@@ -1,0 +1,172 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Dolartoday Details</f:facet>
+
+        <s:decorate id="epoch" template="layout/display.xhtml">
+            <ui:define name="label">Epoch</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.epoch}"/>
+        </s:decorate>
+
+        <s:decorate id="usdtransferencia" template="layout/display.xhtml">
+            <ui:define name="label">Usdtransferencia</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdtransferencia}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdefectivo" template="layout/display.xhtml">
+            <ui:define name="label">Usdefectivo</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdefectivo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdpromedio" template="layout/display.xhtml">
+            <ui:define name="label">Usdpromedio</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdpromedio}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdpromedioreal" template="layout/display.xhtml">
+            <ui:define name="label">Usdpromedioreal</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdpromedioreal}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdsicad2" template="layout/display.xhtml">
+            <ui:define name="label">Usdsicad2</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdsicad2}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usddolartoday" template="layout/display.xhtml">
+            <ui:define name="label">Usddolartoday</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usddolartoday}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="eurtransferencia" template="layout/display.xhtml">
+            <ui:define name="label">Eurtransferencia</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.eurtransferencia}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="eurefectivo" template="layout/display.xhtml">
+            <ui:define name="label">Eurefectivo</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.eurefectivo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="eurpromedio" template="layout/display.xhtml">
+            <ui:define name="label">Eurpromedio</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.eurpromedio}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="eurpromedioreal" template="layout/display.xhtml">
+            <ui:define name="label">Eurpromedioreal</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.eurpromedioreal}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="eurdolartoday" template="layout/display.xhtml">
+            <ui:define name="label">Eurdolartoday</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.eurdolartoday}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="bscolcompra" template="layout/display.xhtml">
+            <ui:define name="label">Bscolcompra</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.bscolcompra}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="bscolventa" template="layout/display.xhtml">
+            <ui:define name="label">Bscolventa</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.bscolventa}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="goldrate" template="layout/display.xhtml">
+            <ui:define name="label">Goldrate</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.goldrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdvefrate" template="layout/display.xhtml">
+            <ui:define name="label">Usdvefrate</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdvefrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdcolrate" template="layout/display.xhtml">
+            <ui:define name="label">Usdcolrate</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdcolrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdratetrm" template="layout/display.xhtml">
+            <ui:define name="label">Usdratetrm</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdratetrm}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usdtrmfactor" template="layout/display.xhtml">
+            <ui:define name="label">Usdtrmfactor</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.usdtrmfactor}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="eurusdrate" template="layout/display.xhtml">
+            <ui:define name="label">Eurusdrate</ui:define>
+            <h:outputText value="#{dolartodayHome.instance.eurusdrate}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/DolartodayEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty dolartodayFrom ? 'DolartodayList' : dolartodayFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

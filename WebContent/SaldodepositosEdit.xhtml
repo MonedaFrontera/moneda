@@ -1,0 +1,203 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="saldodepositos" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{saldodepositosHome.managed ? 'Edit' : 'Add'} Saldodepositos</f:facet>
+
+
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{saldodepositosHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="16"
+                         value="#{saldodepositosHome.instance.id.numerotarjeta}">
+                    <a:support event="onblur" reRender="numerotarjetaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{saldodepositosHome.managed}"
+                       required="true"
+                          value="#{saldodepositosHome.instance.id.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+
+            <s:decorate id="saldoField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo</ui:define>
+                <h:inputText id="saldo"
+                          value="#{saldodepositosHome.instance.saldo}"
+                           size="22">
+                    <a:support event="onblur" reRender="saldoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                           size="15"
+                      maxlength="15"
+                          value="#{saldodepositosHome.instance.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{saldodepositosHome.instance.fechamod}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{saldodepositosHome.persist}"
+                       disabled="#{!saldodepositosHome.wired}"
+                       rendered="#{!saldodepositosHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{saldodepositosHome.update}"
+                       rendered="#{saldodepositosHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{saldodepositosHome.remove}"
+                      immediate="true"
+                       rendered="#{saldodepositosHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Saldodepositos.xhtml"
+                rendered="#{saldodepositosHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty saldodepositosFrom ? 'SaldodepositosList' : saldodepositosFrom}.xhtml"
+                rendered="#{!saldodepositosHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Tarjeta *" labelClass="required">
+    <div class="association" id="tarjetaParent">
+
+        <h:outputText value="There is no tarjeta associated with this saldodepositos."
+                   rendered="#{saldodepositosHome.instance.tarjeta == null}"/>
+
+        <rich:dataTable var="_tarjeta"
+                   value="#{saldodepositosHome.instance.tarjeta}"
+                rendered="#{saldodepositosHome.instance.tarjeta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tarjetaTable">
+            <h:column>
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_tarjeta.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Franquicia codfranquicia</f:facet>
+                <h:outputText value="#{_tarjeta.franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_tarjeta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{saldodepositosHome.instance.tarjeta != null ? 'changeParent' : 'selectParent'}" value="#{saldodepositosHome.instance.tarjeta != null ? 'Change' : 'Select'} tarjeta"
+                       view="/TarjetaList.xhtml">
+                <f:param name="from" value="SaldodepositosEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

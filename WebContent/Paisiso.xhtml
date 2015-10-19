@@ -1,0 +1,204 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Paisiso Details</f:facet>
+
+        <s:decorate id="codigopais" template="layout/display.xhtml">
+            <ui:define name="label">Codigopais</ui:define>
+            <h:outputText value="#{paisisoHome.instance.codigopais}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrepaisEs" template="layout/display.xhtml">
+            <ui:define name="label">Nombrepais es</ui:define>
+            <h:outputText value="#{paisisoHome.instance.nombrepaisEs}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrepaisEn" template="layout/display.xhtml">
+            <ui:define name="label">Nombrepais en</ui:define>
+            <h:outputText value="#{paisisoHome.instance.nombrepaisEn}"/>
+        </s:decorate>
+
+        <s:decorate id="capital" template="layout/display.xhtml">
+            <ui:define name="label">Capital</ui:define>
+            <h:outputText value="#{paisisoHome.instance.capital}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrecompletoEn" template="layout/display.xhtml">
+            <ui:define name="label">Nombrecompleto en</ui:define>
+            <h:outputText value="#{paisisoHome.instance.nombrecompletoEn}"/>
+        </s:decorate>
+
+        <s:decorate id="codigopaisNumero" template="layout/display.xhtml">
+            <ui:define name="label">Codigopais numero</ui:define>
+            <h:outputText value="#{paisisoHome.instance.codigopaisNumero}"/>
+        </s:decorate>
+
+        <s:decorate id="codigo31663Es" template="layout/display.xhtml">
+            <ui:define name="label">Codigo31663 es</ui:define>
+            <h:outputText value="#{paisisoHome.instance.codigo31663Es}"/>
+        </s:decorate>
+
+        <s:decorate id="codigomoneda" template="layout/display.xhtml">
+            <ui:define name="label">Codigomoneda</ui:define>
+            <h:outputText value="#{paisisoHome.instance.codigomoneda}"/>
+        </s:decorate>
+
+        <s:decorate id="nombreMoneda" template="layout/display.xhtml">
+            <ui:define name="label">Nombre moneda</ui:define>
+            <h:outputText value="#{paisisoHome.instance.nombreMoneda}"/>
+        </s:decorate>
+
+        <s:decorate id="pathBanderaRelativo" template="layout/display.xhtml">
+            <ui:define name="label">Path bandera relativo</ui:define>
+            <h:outputText value="#{paisisoHome.instance.pathBanderaRelativo}"/>
+        </s:decorate>
+
+        <s:decorate id="pathBanderaAbsoluta" template="layout/display.xhtml">
+            <ui:define name="label">Path bandera absoluta</ui:define>
+            <h:outputText value="#{paisisoHome.instance.pathBanderaAbsoluta}"/>
+        </s:decorate>
+
+        <s:decorate id="estado" template="layout/display.xhtml">
+            <ui:define name="label">Estado</ui:define>
+            <h:outputText value="#{paisisoHome.instance.estado}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PaisisoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty paisisoFrom ? 'PaisisoList' : paisisoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tasabolivartransferpaises</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tasabolivartransferpaisesChildren">
+
+        <h:outputText value="There are no tasabolivartransferpaises associated with this paisiso."
+                   rendered="#{empty paisisoHome.tasabolivartransferpaises}"/>
+
+        <rich:dataTable value="#{paisisoHome.tasabolivartransferpaises}"
+                       var="_tasabolivartransferpais"
+                  rendered="#{not empty paisisoHome.tasabolivartransferpaises}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tasabolivartransferpaisesTable">
+            <rich:column sortBy="#{_tasabolivartransferpais.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_tasabolivartransferpais.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivartransferpais.id.codigopais}">
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_tasabolivartransferpais.id.codigopais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivartransferpais.preciobolivar}">
+                <f:facet name="header">Preciobolivar</f:facet>
+                <h:outputText value="#{_tasabolivartransferpais.preciobolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttasabolivartransferpais"
+                     value="Select"
+                      view="/Tasabolivartransferpais.xhtml">
+                    <f:param name="tasabolivartransferpaisFecha"
+                            value="#{_tasabolivartransferpais.id.fecha}"/>
+                    <f:param name="tasabolivartransferpaisCodigopais"
+                            value="#{_tasabolivartransferpais.id.codigopais}"/>
+                    <f:param name="tasabolivartransferpaisFrom" value="Paisiso"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tasabolivartransferpais"
+                view="/TasabolivartransferpaisEdit.xhtml">
+            <f:param name="paisisoCodigopais"
+                    value="#{paisisoHome.instance.codigopais}"/>
+            <f:param name="tasabolivartransferpaisFrom" value="Paisiso"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Paises</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="paisesChildren">
+
+        <h:outputText value="There are no paises associated with this paisiso."
+                   rendered="#{empty paisisoHome.paises}"/>
+
+        <rich:dataTable value="#{paisisoHome.paises}"
+                       var="_pais"
+                  rendered="#{not empty paisisoHome.paises}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="paisesTable">
+            <rich:column sortBy="#{_pais.codigopais}">
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_pais.nombre}">
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </rich:column>
+            <rich:column sortBy="#{_pais.estado}">
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpais"
+                     value="Select"
+                      view="/Pais.xhtml">
+                    <f:param name="paisCodigopais"
+                            value="#{_pais.codigopais}"/>
+                    <f:param name="paisFrom" value="Paisiso"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add pais"
+                view="/PaisEdit.xhtml">
+            <f:param name="paisisoCodigopais"
+                    value="#{paisisoHome.instance.codigopais}"/>
+            <f:param name="paisFrom" value="Paisiso"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,155 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="factura" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{facturaHome.managed ? 'Informacion de ' : 'Informacion de '} Factura</f:facet>
+
+
+            <s:decorate id="numfacturaField" template="layout/edit.xhtml">
+                <ui:define name="label">Factura No</ui:define>
+                <h:inputText id="numfactura"
+                       disabled="#{facturaHome.managed}"
+                      required="true"
+                          size="10"
+                     maxlength="10"
+                         value="#{facturaHome.instance.id.numfactura}">
+                    <a:support event="onblur" reRender="numfacturaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Establecimiento</ui:define>
+                <h:inputText id="codigounico"
+                       disabled="#{facturaHome.managed}"
+                      required="true"
+                          size="50"
+                     maxlength="50"
+                         value="#{facturaHome.instance.establecimiento.nombreestable}">
+                    <a:support event="onblur" reRender="codigounicoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="fechatxField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Transaccion</ui:define>
+                <rich:calendar id="fechatx"
+                       required="true"
+                          value="#{facturaHome.instance.transaccion.fechatx}" 
+                          datePattern="dd/MM/yyyy" 
+                          enableManualInput="true"
+                          />
+            </s:decorate>
+            
+            <s:decorate id="totalField" template="layout/edit.xhtml">
+                <ui:define name="label">Total</ui:define>
+                <h:inputText id="total"
+                       disabled="#{facturaHome.managed}"
+                      required="true"
+                          size="12"
+                     maxlength="12"
+                         value="#{facturaHome.instance.transaccion.valortxpesos}">
+                    <a:support event="onblur" reRender="totalField" bypassUpdates="true" ajaxSingle="true"/>
+                    <f:convertNumber pattern="$ #,###,##0"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{facturaHome.persist}"
+                       disabled="#{!facturaHome.wired}"
+                       rendered="#{!facturaHome.managed&amp;&amp;false}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{facturaHome.update}"
+                       rendered="#{facturaHome.managed&amp;&amp;false}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{facturaHome.remove}"
+                      immediate="true"
+                       rendered="#{facturaHome.managed&amp;&amp;false}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/FacturaList.xhtml"
+                rendered="#{facturaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty facturaFrom ? 'FacturaList' : facturaFrom}.xhtml"
+                rendered="#{!facturaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    
+    <rich:tab label="Detalle de Productos de la Factura">
+        <h:form styleClass="association" id="detallefacturasChildren">
+
+            <h:outputText value="No hay productos asociados a esta factura."
+                       rendered="#{empty facturaHome.detallefacturas}"/>
+
+            <rich:dataTable value="#{facturaHome.detallefacturas}"
+                           var="_detallefactura"
+                      rendered="#{not empty facturaHome.detallefacturas}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="detallefacturasTable">
+                
+                <rich:column sortBy="#{_detallefactura.id.refproducto}">
+                    <f:facet name="header">Refproducto</f:facet>
+                    <h:outputText value="#{_detallefactura.id.refproducto}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.inventario.producto.nombreproducto}">
+                    <f:facet name="header">Nombre Producto</f:facet>
+                    <h:outputText value="#{_detallefactura.inventario.producto.nombreproducto}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.cantidad}">
+                    <f:facet name="header">Cantidad</f:facet>
+                    <h:outputText value="#{_detallefactura.cantidad}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.valor}">
+                    <f:facet name="header">Valor</f:facet>
+                    <h:outputText value="#{_detallefactura.valor}"/>
+                </rich:column>
+                <rich:column sortBy="#{_detallefactura.valor}">
+                    <f:facet name="header">Subtotal</f:facet>
+                    <h:outputText value="#{_detallefactura.valor*_detallefactura.cantidad}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+       
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

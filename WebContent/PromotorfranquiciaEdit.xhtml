@@ -1,0 +1,189 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="promotorfranquicia" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{promotorfranquiciaHome.managed ? 'Edit' : 'Add'} Promotorfranquicia</f:facet>
+
+
+            <s:decorate id="codfranquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codfranquicia</ui:define>
+                <h:inputText id="codfranquicia"
+                       disabled="#{promotorfranquiciaHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{promotorfranquiciaHome.instance.id.codfranquicia}">
+                    <a:support event="onblur" reRender="codfranquiciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{promotorfranquiciaHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{promotorfranquiciaHome.instance.id.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{promotorfranquiciaHome.instance.porcentaje}"
+                           size="12">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{promotorfranquiciaHome.persist}"
+                       disabled="#{!promotorfranquiciaHome.wired}"
+                       rendered="#{!promotorfranquiciaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{promotorfranquiciaHome.update}"
+                       rendered="#{promotorfranquiciaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{promotorfranquiciaHome.remove}"
+                      immediate="true"
+                       rendered="#{promotorfranquiciaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Promotorfranquicia.xhtml"
+                rendered="#{promotorfranquiciaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty promotorfranquiciaFrom ? 'PromotorfranquiciaList' : promotorfranquiciaFrom}.xhtml"
+                rendered="#{!promotorfranquiciaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Promotor *" labelClass="required">
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this promotorfranquicia."
+                   rendered="#{promotorfranquiciaHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{promotorfranquiciaHome.instance.promotor}"
+                rendered="#{promotorfranquiciaHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{promotorfranquiciaHome.instance.promotor != null ? 'changeParent' : 'selectParent'}" value="#{promotorfranquiciaHome.instance.promotor != null ? 'Change' : 'Select'} promotor"
+                       view="/PromotorList.xhtml">
+                <f:param name="from" value="PromotorfranquiciaEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Franquicia *" labelClass="required">
+    <div class="association" id="franquiciaParent">
+
+        <h:outputText value="There is no franquicia associated with this promotorfranquicia."
+                   rendered="#{promotorfranquiciaHome.instance.franquicia == null}"/>
+
+        <rich:dataTable var="_franquicia"
+                   value="#{promotorfranquiciaHome.instance.franquicia}"
+                rendered="#{promotorfranquiciaHome.instance.franquicia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="franquiciaTable">
+            <h:column>
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrefranquicia</f:facet>
+                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{promotorfranquiciaHome.instance.franquicia != null ? 'changeParent' : 'selectParent'}" value="#{promotorfranquiciaHome.instance.franquicia != null ? 'Change' : 'Select'} franquicia"
+                       view="/FranquiciaList.xhtml">
+                <f:param name="from" value="PromotorfranquiciaEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

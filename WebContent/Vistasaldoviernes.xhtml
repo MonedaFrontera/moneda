@@ -1,0 +1,53 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Vistasaldoviernes Details</f:facet>
+
+        <s:decorate id="docupromo" template="layout/display.xhtml">
+            <ui:define name="label">Docupromo</ui:define>
+            <h:outputText value="#{vistasaldoviernesHome.instance.id.docupromo}"/>
+        </s:decorate>
+        <s:decorate id="nombrepromo" template="layout/display.xhtml">
+            <ui:define name="label">Nombrepromo</ui:define>
+            <h:outputText value="#{vistasaldoviernesHome.instance.id.nombrepromo}"/>
+        </s:decorate>
+        <s:decorate id="asesora" template="layout/display.xhtml">
+            <ui:define name="label">Asesora</ui:define>
+            <h:outputText value="#{vistasaldoviernesHome.instance.id.asesora}"/>
+        </s:decorate>
+        <s:decorate id="saldoCliente" template="layout/display.xhtml">
+            <ui:define name="label">Saldo cliente</ui:define>
+            <h:outputText value="#{vistasaldoviernesHome.instance.id.saldoCliente}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/VistasaldoviernesEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty vistasaldoviernesFrom ? 'VistasaldoviernesList' : vistasaldoviernesFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

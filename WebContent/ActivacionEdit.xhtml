@@ -1,0 +1,969 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+<rich:modalPanel id="panelCadivi" width="240" height="170">
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="Envio de Correos"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        
+        
+        <s:div id="miInformacion">
+        <h:form>
+        <rich:spacer width="100%" height="10"/>
+        
+        <div>
+        Se enviara un Correo al Cliente y al Asesor.<br/>
+        Esta seguro de esta accion?        
+        </div>    
+        <div style="width:100%; clear:both; text-align:center">
+        <a:commandButton style="font-size:12px" value="Cambiar"   
+            reRender="infoViaje"
+            action="#{AdministrarTarjeta.recalcularInicial()}" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('panel');"/>
+    		
+    		<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('panel');"/>
+    		
+    		</div>
+        </h:form>
+        </s:div>
+    </rich:modalPanel>
+	
+	<rich:modalPanel id="observacionPanel" autosized="false" width="620" height="190">
+        <f:facet name="header">
+            <h:outputText value="Registro de Observacion"
+                style="padding-right:15px;" />
+        </f:facet>
+
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/img/modal/close.png"
+                    styleClass="hidelink" id="hidelink2" />
+                <rich:componentControl for="observacionPanel" attachTo="hidelink2"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        <h:form> 
+        
+        <rich:spacer width="100%" height="10"/> 
+        <h:graphicImage value="/img/comment_edit.png" alt="Observacion"
+        width="100"
+        style="display:inline-block"/>
+        <div style="display:inline-block">
+         
+        <h:inputTextarea id="observaciones" 
+                               cols="65"
+                               rows="6"
+                              value="#{observacionHome.instance.observacion}"/>
+        </div> 
+        
+        
+        <a:commandButton style="font-size:12px" value="Guardar"   
+            action="#{AdministrarActivacion.guardarObservacion()}"
+    		oncomplete="javascript:Richfaces.hideModalPanel('observacionPanel');"
+    		reRender="activagestorsChildren"/>
+    		
+    	<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('observacionPanel');"/>
+		</h:form>
+    </rich:modalPanel>
+
+	<rich:modalPanel id="gestorPanel" autosized="false" width="500" height="260">
+        <f:facet name="header">
+            <h:outputText value="Asignacion de Gestor"
+                style="padding-right:15px;" />
+        </f:facet>
+
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/img/modal/close.png"
+                    styleClass="hidelink" id="hidelink3" />
+                <rich:componentControl for="gestorPanel" attachTo="hidelink2"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        <h:form>
+        
+        <rich:spacer width="100%" height="10"/>
+        <s:decorate id="gestor2Field" template="layout/edit.xhtml">
+                <ui:define name="label">Gestor</ui:define>		
+			<h:inputText value="#{AdministrarActivacion.nombre}" id="namegestor2" size="50">
+                <a:support event="onblur" action="#{AdministrarActivacion.ubicarGestor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('gestorBoxId2')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="gestorBoxId2" for="namegestor2"
+                                        suggestionAction="#{AdministrarActivacion.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun gestor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+        <s:decorate id="fechaasig2Field" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Asignacion</ui:define>
+                <rich:calendar id="fechaasig2" 
+                          value="#{activagestorHome.instance.id.fecha}" datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+        <div style="display:inline-block">
+        
+        <h:inputTextarea id="observacionesgestor"
+                               cols="65"
+                               rows="6"
+                              value="#{activagestorHome.instance.observacion}"/>
+        </div> 
+        
+        
+        <a:commandButton style="font-size:12px" value="Guardar"   
+            action="#{AdministrarActivacion.guardarGestor()}"
+    		oncomplete="javascript:Richfaces.hideModalPanel('gestorPanel');"
+    		reRender="divfechas, activagestorsChildren"/>
+    		
+    	<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('gestorPanel');"/>
+		</h:form>
+    </rich:modalPanel>
+    
+    <rich:modalPanel id="estadoPanel" autosized="false" width="500" height="380">
+        <f:facet name="header">
+            <h:outputText value="Cambio de Estado"
+                style="padding-right:15px;" />
+        </f:facet>
+
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/img/modal/close.png"
+                    styleClass="hidelink" id="hidelink4" />
+                <rich:componentControl for="estadoPanel" attachTo="hidelink2"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        <h:form>
+        <s:decorate id="estadoact2Field" template="layout/edit.xhtml" rendered="#{activacionHome.managed}">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectOneMenu id="estadoSel2" value="#{activacionHome.instance.actestado}" >
+			<s:selectItems value="#{actestadoList.resultList}" var="actestado" label="#{actestado.descripcion}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    <a:support event="onchange" reRender="panelGest" ajaxSingle="true"/>
+			      <s:convertEntity />
+			      
+			</h:selectOneMenu>
+        	</s:decorate>
+        <rich:spacer width="100%" height="10"/>
+        <s:div id="panelGest">
+        <s:decorate id="gestor3Field" 
+        			template="layout/edit.xhtml" 
+        			rendered="#{activacionHome.instance.actestado.codestado=='EG' || 
+								activacionHome.instance.actestado.codestado=='RA' || 
+								activacionHome.instance.actestado.codestado=='PC'}">
+                <ui:define name="label">Gestor</ui:define>		
+			<h:inputText value="#{AdministrarActivacion.nombre}" id="namegestor3" size="50">
+                <a:support event="onblur" action="#{AdministrarActivacion.ubicarGestor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('gestorBoxId3')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="gestorBoxId3" for="namegestor3"
+                                        suggestionAction="#{AdministrarActivacion.autocompletar}" var="result"
+                                        tokens="," height="350" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun gestor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+        	
+        	<s:decorate id="fechaasigField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='EG'}">
+                <ui:define name="label">Fecha Asignacion</ui:define>
+                <rich:calendar id="fechaasig" 
+                          value="#{activagestorHome.instance.id.fecha}" datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+            
+            <s:decorate id="fechacambioField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado!='EG'}">
+                <ui:define name="label">Fecha Estado</ui:define>
+                <rich:calendar id="fechacambio" 
+                          value="#{estadoactivacionHome.instance.id.fecha}" 
+                          datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+            
+             <s:decorate id="fechainiviajeField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='AC' || activacionHome.instance.actestado.codestado=='CC'}">
+                <ui:define name="label">Fecha Inicio de Viaje</ui:define>
+                <rich:calendar id="fechacambio" 
+                          value="#{activacionHome.instance.fechaInicioViaje}" 
+                          datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+            
+             <s:decorate id="fechafinviajeField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='AC' || activacionHome.instance.actestado.codestado=='CC'}">
+                <ui:define name="label">Fecha Fin de Viaje</ui:define>
+                <rich:calendar id="fechacambio" 
+                          	value="#{activacionHome.instance.fechaFinViaje}" 
+                          datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+            
+             <s:decorate id="cupoaprobadoField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='AC'}">
+                <ui:define name="label">Cupo Aprobado</ui:define>
+                <h:inputText id="cupo"
+                           size="8"
+                      maxlength="8"
+                          value="#{activacionHome.instance.cupoaprobado}">
+                    <a:support event="onblur" reRender="cupoaprobadoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+        
+            </s:div>
+        	
+        <div style="display:inline-block">        
+        <h:inputTextarea id="observacionesestado"
+                               cols="65"
+                               rows="6"
+                              value="#{estadoactivacionHome.instance.observacion}"/>
+        </div> 
+                
+        <a:commandButton style="font-size:12px" value="Guardar"   
+            action="#{AdministrarActivacion.guardarEstado()}"
+    		oncomplete="javascript:Richfaces.hideModalPanel('estadoPanel');"
+    		reRender="divfechas activagestorsChildren"/>
+    		
+    	<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('estadoPanel');"/>
+		</h:form>
+    </rich:modalPanel>
+    
+    
+    <!-- ***Panel cambio de Promotor*** -->
+    
+    <rich:modalPanel id="promotorPanel" autosized="false" width="330" height="180">
+        <f:facet name="header">
+            <h:outputText value="Asignacion de Promotor"
+                style="padding-right:15px;" />
+        </f:facet>
+
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/img/modal/close.png"
+                    styleClass="hidelink" id="hidelink5" />
+                <rich:componentControl for="promotorPanel" attachTo="hidelink2"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        <h:form>        
+        <rich:spacer width="100%" height="10"/>
+        <s:decorate id="promotor2Field" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>     
+        
+        <div style="margin: 0 auto">
+        <a:commandButton style="font-size:12px" value="Guardar"   
+            action="#{AdministrarActivacion.cambiarPromotor()}"
+    		oncomplete="javascript:Richfaces.hideModalPanel('gestorPanel');"
+    		reRender="divfechas, activagestorsChildren"/>
+    		
+    	<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('promotorPanel');"/>
+		</div>
+		</h:form>
+		
+    </rich:modalPanel>
+    
+    
+    <!-- Fin panel cambio promotor -->
+
+    <h:form id="activacion" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{activacionHome.managed ? 'Editar' : 'Registrar Nueva'} Activacion</f:facet>
+            
+            <div style="width: 480px; float:left;"><!-- div Izquierdo -->
+            <fieldset>
+            <legend style="color:#000066;font-weight:bold;">Informacion General</legend>
+            
+        	
+        	<s:decorate id="anoViajeField" template="layout/edit.xhtml" >
+                <ui:define name="label">Viaje</ui:define>
+                <h:selectOneMenu id="anoViaje" value="#{activacionHome.instance.ano}" 
+                 required="true">
+                 	<f:selectItem itemValue="" itemLabel="Seleccione.."/>
+                    <f:selectItem itemValue="115" itemLabel="2015"/> 
+					<a:support event="onchange" reRender="anoViajeField" ajaxSingle="true"/>
+					<rich:toolTip>
+					<span style="white-space:nowrap">
+            			#{'Anio del viaje activado'} <br />            	
+            		</span>
+            		</rich:toolTip>
+				</h:selectOneMenu>   
+            </s:decorate>
+
+            <s:decorate id="cedulaField" template="layout/edit.xhtml">
+                <ui:define name="label">Cedula</ui:define>
+                <h:inputText id="nrocedula"
+                           size="15"
+                            required="true"
+                      		maxlength="15"
+                          value="#{activacionHome.instance.cedula}">
+                    <a:support event="onblur" reRender="cedulaField, nombreField, destinoField"  
+                    action="#{AdministrarActivacion.validarActivacion(activacionHome.instance.cedula, activacionHome.instance.ano)}"
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="destinoField" template="layout/edit.xhtml">
+                <ui:define name="label">Destino</ui:define>
+                <h:inputText id="destino"
+                           size="15"
+                            required="true"
+                            disabled="true"
+                      		maxlength="15"
+                          value="#{AdministrarActivacion.destinoAnio}">
+                    <a:support event="onblur" reRender="destinoField" 
+                    		   bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+             <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                           size="50"
+                            required="true"
+                      maxlength="50"
+                          value="#{activacionHome.instance.nombre}">
+                    <a:support event="onblur" reRender="nombreField" 
+                    action = "#{AdministrarActivacion.nombreActivacionMayuscula(activacionHome.instance.nombre)}"
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+        	
+        	<s:decorate id="promotor2Field" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+        	
+        	
+        	<s:decorate id="asesField" rendered="#{activacionHome.managed}" template="layout/edit.xhtml">
+                <ui:define name="label">Asesora</ui:define>
+                <h:inputText id="nombreases"
+                           size="50"
+                           disabled="true"
+                      maxlength="50"
+                          value="#{activacionHome.instance.promotor.asesor.personal.nombre}">
+                </h:inputText>
+               
+            </s:decorate>
+
+			<s:decorate id="bancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{activacionHome.instance.banco}" required="true" >
+			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="bancoField,claveBanco,divingresoCadivi, 
+			      	rusadField, infoBancoDiv" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="correoField" rendered= "#{!s:hasRole('Asesor')}" template="layout/edit.xhtml">
+                <ui:define name="label">Correo</ui:define>
+                <h:inputText id="correo"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.correo}">
+                    <a:support event="onblur" reRender="correoField"
+                    action="#{AdministrarActivacion.correoEspaciosBlanco(activacionHome.instance.correo)}"
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="claveField" rendered= "#{!s:hasRole('Asesor')}" template="layout/edit.xhtml">
+                <ui:define name="label">Clave Cadivi</ui:define>
+                <h:inputText id="clave"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.clave}">
+                    <a:support event="onblur" reRender="claveField" 
+                     action="#{AdministrarActivacion.claveEspaciosBlanco(activacionHome.instance.clave)}"
+                     ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+              <!--            
+             <s:decorate id="rusadField" template="layout/edit.xhtml"
+                style="color: #00CC33;">
+                <ui:define name="label">Solo Rusad</ui:define>
+                <h:selectBooleanCheckbox id="rusad" 
+                                      value="#{activacionHome.instance.rusad}"/>
+                                      <a:support event="onclick" reRender="rusadField" ajaxSingle="true"/>
+             </s:decorate>
+             -->
+            <s:decorate id="documentoscompletosField" template="layout/edit.xhtml">
+                <ui:define name="label">Documentos Completos</ui:define>
+                <h:selectBooleanCheckbox id="documentoscompletos"
+                                      value="#{activacionHome.instance.documentoscompletos}"/>
+            </s:decorate>
+        	
+            <s:decorate id="tipoviajeField" rendered="false" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Cupo</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{activacionHome.instance.tipoviaje}" 
+                required="true">
+					<f:selectItem itemValue="V" itemLabel="Viajero"/>
+					<f:selectItem itemValue="I" itemLabel="Internet"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+
+            <s:decorate id="usuarioregField" template="layout/edit.xhtml"
+            rendered="false">
+                <ui:define name="label">Usuarioreg</ui:define>
+                <h:inputText id="usuarioreg"
+                           size="20"
+                      maxlength="20"
+                          value="#{activacionHome.instance.usuarioreg}">
+                    <a:support event="onblur" reRender="usuarioregField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="usuarioField" rendered='false' template="layout/edit.xhtml">
+                <ui:define name="label">Usuario</ui:define>
+                <h:inputText id="usuario"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.usuario}">
+                    <a:support event="onblur" reRender="usuarioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+         
+          
+         <s:decorate id="registroUnicoField" template="layout/edit.xhtml">
+                <ui:define name="label">RIF</ui:define>
+                <h:selectBooleanCheckbox id="registroUnico"
+                                      value="#{activacionHome.instance.rif}"/>
+            </s:decorate>
+         
+         
+         
+
+            <s:decorate id="anoField" rendered="false" template="layout/edit.xhtml">
+                <ui:define name="label">Ano</ui:define>
+                <h:inputText id="ano"
+                          value="#{activacionHome.instance.ano}">
+                    <a:support event="onblur" reRender="anoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>          
+           
+			
+        	 
+        	
+			<s:decorate id="ingresocadiviField" template="layout/edit.xhtml">
+                <ui:define name="label">Ingreso Cadivi</ui:define>
+                <h:selectBooleanCheckbox id="ingresocadivi" 
+                                         value="#{activacionHome.instance.ingresocadivi}">		 
+                           <a:support event="onchange" reRender="errorCadivi,ingresocadiviField"  
+              			     ajaxSingle="true"/>
+              			 </h:selectBooleanCheckbox> 	 
+             </s:decorate>
+            
+            
+           <s:div id="errorCadivi"> 
+            <s:decorate id="NoingresocadiviField" template="layout/edit.xhtml" 
+            			rendered="#{activacionHome.instance.ingresocadivi == false}" 
+                		style="color:red">
+                <ui:define name="label" >Error al Ingresar al Cadivi</ui:define>
+                <h:selectBooleanCheckbox id="ingresocadivierror" 
+                                         value="#{activacionHome.instance.erroringresocadivi}">
+							<a:support event="onclick"
+								reRender="errorCadivi,ingresocadiviField"
+								onclick="javascript:if(document.getElementById('activacion:NoingresocadiviField:ingresocadivierror').checked){ if(!confirm('Se enviara un correo al Cliente. Esta seguro de esta accion?')){document.getElementById('activacion:NoingresocadiviField:ingresocadivierror').checked = false; return false;} } "
+								inmediate="true"
+								action="#{AdministrarActivacion.noIngresaCadiviCorreo(activacionHome.instance.consecutivo)}"
+								ajaxSingle="true" />
+								
+				</h:selectBooleanCheckbox>
+            </s:decorate>
+            </s:div>
+          
+
+            
+
+
+            <s:decorate id="citaasignadaField" rendered="false" template="layout/edit.xhtml">
+                <ui:define name="label">Cita Asignada</ui:define>
+                <h:selectBooleanCheckbox id="citaasignada"
+                                      value="#{activacionHome.instance.citaasignada}">
+                                      <a:support event="onclick" reRender="divfechas" ajaxSingle="true"/>
+                                      </h:selectBooleanCheckbox>
+            </s:decorate>
+
+						<s:decorate id="depositoField"  rendered="false"  template="layout/edit.xhtml">
+                <ui:define name="label">Nro. Deposito</ui:define>
+                <h:inputText id="deposito"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.deposito}">
+                    </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="fechadepField" rendered="false"  template="layout/edit.xhtml" >
+                <ui:define name="label">Fecha Deposito</ui:define>
+                <rich:calendar id="fechaact"
+                          value="#{activacionHome.instance.fechadeposito}" 
+                          datePattern="dd/MM/yyyy"/>  
+            </s:decorate>
+            
+            <s:decorate id="valorDepField" rendered="false"  template="layout/edit.xhtml">
+                <ui:define name="label">Valor Deposito</ui:define>
+                <h:inputText id="valor"
+                           size="15"
+                      maxlength="15"
+                          value="#{activacionHome.instance.valordeposito}">
+                </h:inputText>
+            </s:decorate>
+			
+			<!-- Devolucion -->
+			<s:decorate id="fechaDevoField" rendered="false"  template="layout/edit.xhtml" >
+                <ui:define name="label">Fecha Devolucion</ui:define>
+                <rich:calendar id="fechadev"
+                          value="#{activacionHome.instance.fechadevolucion}" 
+                          datePattern="dd/MM/yyyy"/>  
+            </s:decorate>
+            
+            <s:decorate id="valorDevField" rendered="false"  template="layout/edit.xhtml">
+                <ui:define name="label">Valor Devuelto</ui:define>
+                <h:inputText id="valor"
+                           size="15"
+                      maxlength="15"
+                          value="#{activacionHome.instance.valordevolucion}">
+                </h:inputText>
+            </s:decorate>
+            
+            
+			<s:decorate id="observacionReg" template="layout/edit.xhtml"
+            	rendered="#{!activacionHome.managed &amp;&amp;!s:hasRole('Asesor')}">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputTextarea id="observacionesReg"
+                               cols="40"
+                               rows="2"
+                              value="#{AdministrarActivacion.observacionReg}"/>
+            </s:decorate>     
+            </fieldset>
+            </div><!-- Fin del div Izquierdo -->
+            
+            <s:div id="infoBancoDiv" >
+            <!-- div Derecho Requisito por banco-->
+            <div class=".divDerechoAct">
+            <fieldset>
+            <legend style="color:#000066;font-weight:bold;">Requisitos Por Bancos</legend>
+            
+            <s:div id="claveBanco">
+            <s:decorate id="llaveField" template="layout/edit.xhtml" 
+                rendered="#{ !s:hasRole('Asesor') &amp;&amp; activacionHome.instance.banco.codbanco == 'MER'}" 
+                style="color:Blue;">
+                <ui:define name="label">Llave Mercantil</ui:define>
+                <h:inputText id="llave"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.llave}">
+                    <a:support event="onblur" reRender="llaveField" 
+                    action="#{AdministrarActivacion.formatoLlaveMercantil(activacionHome.instance.llave)}" 
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>                        
+            
+            <s:decorate id="claveFieldMer" template="layout/edit.xhtml" 
+                rendered="#{!s:hasRole('Asesor') &amp;&amp; activacionHome.instance.banco.codbanco == 'MER'}"  
+                style="color:Blue;">
+                <ui:define name="label">Clave Mercantil</ui:define>
+                <h:inputText id="claverMer"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.clavemercantil}">
+                    <a:support event="onblur" reRender="claveFieldMer" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate> 
+          
+			<s:decorate id="coordenadasField" template="layout/edit.xhtml"
+                rendered="#{!s:hasRole('Asesor') &amp;&amp; activacionHome.instance.banco.codbanco == 'PRO'}" 
+                style="color:#0066FF;">
+                <ui:define name="label">Coordenadas</ui:define>
+                <h:selectBooleanCheckbox id="coordenadas" 
+                                      value="#{activacionHome.instance.coordenadas}"/>
+                                      <a:support event="onclick" reRender="coordenadasField" ajaxSingle="true"/>
+                                      
+             </s:decorate>             
+            
+             <s:decorate id="provinetField" template="layout/edit.xhtml" 
+                 rendered="#{!s:hasRole('Asesor')&amp;&amp; activacionHome.instance.banco.codbanco == 'PRO'}" 
+                 style="color:#0066FF;">
+                <ui:define name="label">Provinet</ui:define>
+                <h:inputText id="provinet"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.provinet}">
+                    <a:support event="onblur" reRender="provinetField" 
+                    action="#{AdministrarActivacion.formatoProvinet(activacionHome.instance.provinet)}" 
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+             <s:decorate id="claveprovinetField" template="layout/edit.xhtml" 
+                 rendered="#{!s:hasRole('Asesor') &amp;&amp; activacionHome.instance.banco.codbanco == 'PRO'}" 
+                 style="color:#0066FF;">
+                <ui:define name="label">Clave Provinet</ui:define>
+                <h:inputText id="claveprovinet"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.claveprovinet}">
+                    <a:support event="onblur" reRender="claveprovinetField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:div><!-- Nuevos Datos de Bancos Oficiales -->            
+            <s:decorate id="tarjetaField" template="layout/edit.xhtml" 
+                 rendered="#{(activacionHome.instance.banco.codbanco == 'BB' ||
+                 				activacionHome.instance.banco.codbanco == 'BDV' )}" 
+                 style="color:#0066FF;">
+                <ui:define name="label">No. Tarjeta Debito / Credito:</ui:define>
+                <h:inputText id="tarjetaUsuario"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.provinet}">
+                    <a:support event="onblur" reRender="tarjetaField" 
+                    action="#{AdministrarActivacion.formatoProvinet(activacionHome.instance.provinet)}" 
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="usuariobancoField" template="layout/edit.xhtml" 
+                 rendered="#{ activacionHome.instance.banco.codbanco == 'BDT' ||
+                 				activacionHome.instance.banco.codbanco == 'IND'}" 
+                 style="color:#0066FF;">
+                <ui:define name="label">Usuario</ui:define>
+                <h:inputText id="usuariobanco"
+                           size="20"
+                      maxlength="20"
+                          value="#{activacionHome.instance.usuariobanco}">
+                    <a:support event="onblur" reRender="usuariobancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="clavebancoField" template="layout/edit.xhtml" 
+                 rendered="#{activacionHome.instance.banco.codbanco == 'BB' ||
+                 											activacionHome.instance.banco.codbanco == 'BDV' ||
+                 											activacionHome.instance.banco.codbanco == 'BDT' ||
+                 											activacionHome.instance.banco.codbanco == 'IND'}" 
+                 style="color:#0066FF;">
+                <ui:define name="label">Clave</ui:define>
+                <h:inputText id="claveprovinet"
+                           size="50"
+                      maxlength="50"
+                          value="#{activacionHome.instance.claveprovinet}">
+                    <a:support event="onblur" reRender="clavebancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="ingresabancaField" template="layout/edit.xhtml">
+                <ui:define name="label">Ingreso a la Banca en Linea</ui:define>
+                <h:selectBooleanCheckbox id="ingresabanca" 
+                                         value="#{activacionHome.instance.ingresobancalinea}">
+                           <a:support event="onchange" reRender="noingresabanca,ingresabancaField"  
+                             ajaxSingle="true"/>
+                         </h:selectBooleanCheckbox>      
+             </s:decorate>
+            <s:div id="noingresabanca"> 
+            <s:decorate id="noingresabancalineaField" template="layout/edit.xhtml" 
+                        rendered="#{activacionHome.instance.ingresobancalinea == false}" 
+                        style="color:red">
+                <ui:define name="label" >NO Ingreso a la Banca en Linea</ui:define>
+                <h:selectBooleanCheckbox id="noingresabancalinea" 
+                                         value="#{activacionHome.instance.noingresobancalinea}">
+                            <a:support event="onclick"
+                                reRender="noingresabanca,ingresabancaField"
+                                onclick="javascript:if(document.getElementById('activacion:noingresabancalineaField:noingresabancalinea').checked){ if(!confirm('Se enviara un correo al Cliente. Esta seguro de esta accion?')){document.getElementById('activacion:noingresabancalineaField:noingresabancalinea').checked = false; return false;} } "
+                                inmediate="true"
+                                action="#{AdministrarActivacion.noIngresaBancaLinea(activacionHome.instance.consecutivo)}"
+                                ajaxSingle="true" />
+                </h:selectBooleanCheckbox> 
+            </s:decorate>
+            </s:div>
+            </s:div><!-- Fin div Nuevos Datos de Bancos Oficiales -->
+            
+                        
+            </s:div>            
+            </fieldset>            
+            </div>
+            </s:div><!-- Fin del div Izquierdo Datos del banco-->
+            
+            <div class=".divDerechoAct;">
+            <fieldset>
+            <legend style="color:#000066;font-weight:bold;">Informacion de Estado</legend>
+            
+            <s:decorate id="estadoiniactField" template="layout/edit.xhtml" rendered="#{!activacionHome.managed}">
+                <ui:define name="label">Estado Inicial</ui:define>
+                <h:selectOneMenu id="estadoiniSel" value="#{activacionHome.instance.actestado}" required="true" >
+			<s:selectItems	value="#{AdministrarActivacion.estadosInicio()}" disabled="#{activacionHome.managed}"
+						   	var="actestado" label="#{actestado.descripcion}" 
+			                    noSelectionLabel="Seleccione..."  />
+			                    <a:support event="onchange" reRender="divfechas" ajaxSingle="true"/>
+			      <s:convertEntity />			      
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	
+        	<s:decorate id="estadoactField" template="layout/edit.xhtml" rendered="#{activacionHome.managed}">
+                <ui:define name="label">Estado Actual</ui:define>
+                <h:selectOneMenu id="estadoSel" 
+                disabled="#{!activacionHome.managed}" value="#{activacionHome.instance.actestado}" required="true" >
+			<s:selectItems value="#{actestadoList.resultList}" var="actestado" label="#{actestado.descripcion}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    <a:support event="onchange" reRender="divfechas" ajaxSingle="true"/>
+			      <s:convertEntity />
+			      
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:div id="divfechas">
+			
+			<s:decorate id="gestorField" template="layout/edit.xhtml"
+			rendered="#{activacionHome.instance.actestado.codestado=='AC' || 
+						activacionHome.instance.actestado.codestado=='EG' || 
+						activacionHome.instance.actestado.codestado=='RA' || 
+						activacionHome.instance.actestado.codestado=='PC'}"> 
+                <ui:define name="label">Gestor</ui:define>		
+			<h:inputText value="#{AdministrarActivacion.nombre}" id="namegestor" size="48">
+                <a:support event="onblur" action="#{AdministrarActivacion.ubicarGestor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('gestorBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="gestorBoxId" for="namegestor"
+                                        suggestionAction="#{AdministrarActivacion.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun gestor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+			
+			<s:decorate id="fecharegField" template="layout/edit.xhtml"
+			rendered="#{activacionHome.instance.actestado.codestado=='RE'}">
+                <ui:define name="label">Fecha Registro</ui:define>
+                <rich:calendar id="fechareg" 
+                          value="#{activacionHome.instance.fechareg}" datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+            
+            <s:decorate id="fechaasigField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='AC' || 
+			activacionHome.instance.actestado.codestado=='EG'}">
+                <ui:define name="label">Fecha Asignacion</ui:define>
+                <rich:calendar id="fechaasig" 
+                          value="#{activagestorHome.instance.id.fecha}" 
+                          datePattern="dd/MM/yyyy"/>
+            </s:decorate>			
+			
+			<s:decorate id="fechacitaField" template="layout/edit.xhtml" 
+			rendered="#{activacionHome.instance.citaasignada}">
+                <ui:define name="label">Fecha Cita</ui:define>
+                <rich:calendar id="fechacita"
+                          value="#{activacionHome.instance.fechacita}" datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+            
+            <s:decorate id="agenciaField" template="layout/edit.xhtml"
+			rendered="#{activacionHome.instance.citaasignada}">
+                <ui:define name="label">Agencia</ui:define>		
+			<h:inputText value="#{activacionHome.instance.agencia}" id="nameagencia" size="50">
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('agenciaBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="agenciaBoxId" for="nameagencia"
+                                        suggestionAction="#{AdministrarActivacion.autocompletarAgencia}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ninguna agencia con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+            
+
+            <s:decorate id="fechaactField" template="layout/edit.xhtml" 
+            rendered="#{activacionHome.instance.actestado.codestado=='AC'}">
+                <ui:define name="label">Fecha Activacion</ui:define>
+                <rich:calendar id="fechaact"
+                          value="#{activacionHome.instance.fechaact}" 
+                          datePattern="dd/MM/yyyy"/>  
+            </s:decorate>
+
+ 			<s:decorate id="fechaViajeField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='AC'}">
+                <ui:define name="label">Fecha Inicio Viaje</ui:define>
+                <rich:calendar id="fechaasig" 
+                          	   value="#{activacionHome.instance.fechaInicioViaje}" 
+                          	   datePattern="dd/MM/yyyy"/>
+            </s:decorate>    
+            
+            <s:decorate id="fechafinViajeField" template="layout/edit.xhtml"
+            rendered="#{activacionHome.instance.actestado.codestado=='AC'}">
+                <ui:define name="label">Fecha Fin Viaje</ui:define>
+                <rich:calendar id="fechaasig" 
+                          	   value="#{activacionHome.instance.fechaFinViaje}" 
+                          	   datePattern="dd/MM/yyyy"/>
+            </s:decorate> 
+			<!-- Registrar observacion al grabar activacion -->
+			</s:div>
+        	
+        	
+            
+            </fieldset>
+            </div>
+            
+            
+            
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarActivacion.guardarActivacion}"
+                       disabled="#{!activacionHome.wired}"
+                       rendered="#{!activacionHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{activacionHome.update}"
+                       rendered="#{activacionHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{activacionHome.remove}"
+                      immediate="true"
+                       rendered="#{s:hasRole('Eliminar Activacion')}"/>
+                       
+            <a:commandButton value="Registrar Observacion"
+    		oncomplete="javascript:Richfaces.showModalPanel('observacionPanel');"
+    		rendered="#{activacionHome.managed &amp;&amp; !s:hasRole('Asesor')}"/>
+    		
+    		<a:commandButton value="Cambiar Gestor" 
+    		oncomplete="javascript:Richfaces.showModalPanel('gestorPanel');"
+    		rendered="#{activacionHome.managed &amp;&amp; activacionHome.instance.gestor!=null 
+    		&amp;&amp; s:hasRole('Cambiar Gestor Activacion')}"/>
+    		
+    		<a:commandButton value="Cambiar Estado"
+    		oncomplete="javascript:Richfaces.showModalPanel('estadoPanel');"
+    		rendered="#{s:hasRole('Cambiar Estado Activacion')}"/>
+
+			<a:commandButton value="Crear Observacion.."
+    		oncomplete="javascript:Richfaces.showModalPanel('observacionPanel');"
+    		rendered="#{activacionHome.managed &amp;&amp;!s:hasRole('Asesor')}"/>
+
+            <h:commandButton id="savecancelar"
+                          value="Cancelar"
+                         action="#{AdministrarActivacion.cancelar()}"/>    
+                            
+            <a:commandButton value="Cambiar Promotor..." 
+    		oncomplete="javascript:Richfaces.showModalPanel('promotorPanel');"
+    		rendered="#{activacionHome.managed &amp;&amp; s:hasRole('Cambiar Promotor de Activacion')}"/>    
+        </div>
+    </h:form>
+    
+    
+    <rich:tabPanel switchType="ajax">
+
+    
+
+    <rich:tab label="Historico de la Activacion">
+        <h:form styleClass="association" id="activagestorsChildren">
+
+            <h:outputText value="No hay informacion asociada a esta activacion."
+                       rendered="#{empty AdministrarActivacion.obsActivacion()}"/>
+
+            <rich:dataTable value="#{AdministrarActivacion.obsActivacion()}"
+                           var="_activagestor"
+                      rendered="#{not empty AdministrarActivacion.obsActivacion()}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activagestorsTable">
+                <rich:column>
+                    <f:facet name="header">Tipo</f:facet>
+                    <h:outputText value="#{_activagestor[0]}"/>
+                </rich:column>
+                
+                
+                <rich:column>
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_activagestor[2]}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm:ss"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Observacion</f:facet>
+                    <h:outputText value="#{_activagestor[3]}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Generalidades</f:facet>
+                    <h:outputText value="#{_activagestor[4]}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+    </rich:tab>
+
+    
+</rich:tabPanel>
+
+</ui:define>
+<script type="text/javascript">
+ jQuery(document).ready(function(){
+ #{rich:element('nrocedula')}.focus();});
+ </script>
+
+</ui:composition>

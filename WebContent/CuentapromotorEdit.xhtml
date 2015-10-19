@@ -1,0 +1,171 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cuentapromotor" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{cuentapromotorHome.managed ? 'Edit' : 'Add'} Cuentapromotor</f:facet>
+			
+			<s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarGasto.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarGasto.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarGasto.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+			
+			
+			<s:decorate id="bancoField" template="layout/edit.xhtml" >
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{cuentapromotorHome.instance.banco}" 
+                required="true" style=" width : 217px;">
+			<s:selectItems value="#{bancoList.resultList}" var="banco" 
+			label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="bancoField, cuentaField, cuentaPromotorField" 
+			      ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+			
+            <s:decorate id="numcuentaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numcuenta</ui:define>
+                <h:inputText id="numcuenta"
+                       disabled="#{cuentapromotorHome.managed}"
+                      required="true"
+                          size="25"
+                     maxlength="25"
+                         value="#{cuentapromotorHome.instance.id.numcuenta}" style=" width : 262px;">
+                    <a:support event="onblur" reRender="numcuentaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+           
+
+
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                           size="100"
+                      maxlength="100"
+                          value="#{cuentapromotorHome.instance.nombre}" style=" width : 424px;">
+                    <a:support event="onblur" reRender="nombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarPromotor.guardarCuenta}"
+                      
+                       rendered="#{!cuentapromotorHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{cuentapromotorHome.update}"
+                       rendered="#{cuentapromotorHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{cuentapromotorHome.remove}"
+                      immediate="true"
+                       rendered="#{cuentapromotorHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/Cuentapromotor.xhtml"
+                rendered="#{cuentapromotorHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty cuentapromotorFrom ? 'CuentapromotorList' : cuentapromotorFrom}.xhtml"
+                rendered="#{!cuentapromotorHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    
+    <rich:tab label="Transferencias">
+        <h:form styleClass="association" id="transferenciasChildren">
+
+            <h:outputText value="There are no transferencias associated with this cuentapromotor."
+                       rendered="#{empty cuentapromotorHome.transferencias}"/>
+
+            <rich:dataTable value="#{cuentapromotorHome.transferencias}"
+                           var="_transferencia"
+                      rendered="#{not empty cuentapromotorHome.transferencias}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transferenciasTable">
+                <rich:column sortBy="#{_transferencia.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_transferencia.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transferencia.preciobolivar}">
+                    <f:facet name="header">Preciobolivar</f:facet>
+                    <h:outputText value="#{_transferencia.preciobolivar}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transferencia.tipobolivar}">
+                    <f:facet name="header">Tipobolivar</f:facet>
+                    <h:outputText value="#{_transferencia.tipobolivar}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transferencia.valorbolivar}">
+                    <f:facet name="header">Valorbolivar</f:facet>
+                    <h:outputText value="#{_transferencia.valorbolivar}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{cuentapromotorHome.managed}" id="transferencias">
+        <div class="actionButtons">
+            <s:button id="addtransferencia"
+                   value="Add transferencia"
+                    view="/TransferenciaEdit.xhtml"
+             propagation="none">
+                 <f:param name="cuentapromotorId"
+                         value="#{cuentapromotorHome.instance.id}"/>
+                 <f:param name="transferenciaFrom" value="Cuentapromotor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

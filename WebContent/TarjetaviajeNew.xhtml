@@ -1,0 +1,48 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Tarjetaviaje new Details</f:facet>
+
+        <s:decorate id="numerotarjeta" template="layout/display.xhtml">
+            <ui:define name="label">Numerotarjeta</ui:define>
+            <h:outputText value="#{tarjetaviajeNewHome.instance.id.numerotarjeta}"/>
+        </s:decorate>
+        <s:decorate id="consecutivoviaje" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivoviaje</ui:define>
+            <h:outputText value="#{tarjetaviajeNewHome.instance.id.consecutivoviaje}"/>
+        </s:decorate>
+
+        <s:decorate id="estado" template="layout/display.xhtml">
+            <ui:define name="label">Estado</ui:define>
+            <h:outputText value="#{tarjetaviajeNewHome.instance.estado}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TarjetaviajeNewEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty tarjetaviajeNewFrom ? 'TarjetaviajeNewList' : tarjetaviajeNewFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

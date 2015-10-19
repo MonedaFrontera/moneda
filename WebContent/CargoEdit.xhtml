@@ -1,0 +1,164 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cargo" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{cargoHome.managed ? 'Edit' : 'Add'} Cargo</f:facet>
+
+
+            <s:decorate id="codcargoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codcargo</ui:define>
+                <h:inputText id="codcargo"
+                       disabled="#{cargoHome.managed}"
+                       required="true"
+                           size="2"
+                      maxlength="2"
+                          value="#{cargoHome.instance.codcargo}">
+                    <a:support event="onblur" reRender="codcargoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombrecargoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrecargo</ui:define>
+                <h:inputText id="nombrecargo"
+                           size="50"
+                      maxlength="50"
+                          value="#{cargoHome.instance.nombrecargo}">
+                    <a:support event="onblur" reRender="nombrecargoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{cargoHome.persist}"
+                       disabled="#{!cargoHome.wired}"
+                       rendered="#{!cargoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{cargoHome.update}"
+                       rendered="#{cargoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{cargoHome.remove}"
+                      immediate="true"
+                       rendered="#{cargoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Cargo.xhtml"
+                rendered="#{cargoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty cargoFrom ? 'CargoList' : cargoFrom}.xhtml"
+                rendered="#{!cargoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Personals">
+        <h:form styleClass="association" id="personalsChildren">
+
+            <h:outputText value="There are no personals associated with this cargo."
+                       rendered="#{empty cargoHome.personals}"/>
+
+            <rich:dataTable value="#{cargoHome.personals}"
+                           var="_personal"
+                      rendered="#{not empty cargoHome.personals}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="personalsTable">
+                <rich:column sortBy="#{_personal.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_personal.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.tipodocumento}">
+                    <f:facet name="header">Tipodocumento</f:facet>
+                    <h:outputText value="#{_personal.tipodocumento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.nombre}">
+                    <f:facet name="header">Nombre</f:facet>
+                    <h:outputText value="#{_personal.nombre}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.apellido}">
+                    <f:facet name="header">Apellido</f:facet>
+                    <h:outputText value="#{_personal.apellido}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.celular}">
+                    <f:facet name="header">Celular</f:facet>
+                    <h:outputText value="#{_personal.celular}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.telefono}">
+                    <f:facet name="header">Telefono</f:facet>
+                    <h:outputText value="#{_personal.telefono}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.pinbb}">
+                    <f:facet name="header">Pinbb</f:facet>
+                    <h:outputText value="#{_personal.pinbb}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.direccion}">
+                    <f:facet name="header">Direccion</f:facet>
+                    <h:outputText value="#{_personal.direccion}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.correo}">
+                    <f:facet name="header">Correo</f:facet>
+                    <h:outputText value="#{_personal.correo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.correoalternativo}">
+                    <f:facet name="header">Correoalternativo</f:facet>
+                    <h:outputText value="#{_personal.correoalternativo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_personal.fechanac}">
+                    <f:facet name="header">Fechanac</f:facet>
+                    <h:outputText value="#{_personal.fechanac}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{cargoHome.managed}" id="personals">
+        <div class="actionButtons">
+            <s:button id="addpersonal"
+                   value="Add personal"
+                    view="/PersonalEdit.xhtml"
+             propagation="none">
+                 <f:param name="cargoCodcargo"
+                         value="#{cargoHome.instance.codcargo}"/>
+                 <f:param name="personalFrom" value="Cargo"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

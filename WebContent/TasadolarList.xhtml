@@ -1,0 +1,176 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasadolarSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Busqueda de Tasa de Dolar" switchType="ajax">
+
+            <s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:selectOneMenu id="codigopais"   value="#{AdministrarTasa.pais}" >
+			<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+		</h:selectOneMenu>
+            </s:decorate>
+            
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       required="false"
+                          value="#{AdministrarTasa.fecha}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+        <h:commandButton id="search" value="Search" action="/TasadolarList.xhtml"
+        rendered="false"/>
+        <h:commandButton id="buscar" 
+                          value="Buscar"
+                         action="#{AdministrarTasa.buscarTasadolar()}"
+                         reRender="panelResultado"/>
+            <h:commandButton id="limpiarn" 
+                          value="Limpiar"
+                         action="#{AdministrarTasa.limpiarTasadolar()}"
+                         reRender="panelResultado,tasadolarSearch"/>
+            
+            <s:button view="/TasadolarEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Crear Tasa de Dolar">
+            <f:param name="tasadolarCodigopais"/>
+            <f:param name="tasadolarFecha"/>
+        </s:button>
+        </div>
+
+    </h:form>
+
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultado de la Busqueda de Tasa de Dolares</f:facet>
+    <div class="results" id="tasadolarList">
+
+    <h:outputText value="La busqueda de la Tasa de Dolares no retorno resultados."
+               rendered="#{empty AdministrarTasa.listaTasadolar}"/>
+<h:form>
+    <rich:dataTable id="tasadolarList"
+                var="_tasadolar"
+              value="#{AdministrarTasa.listaTasadolar}"
+           rendered="#{not empty AdministrarTasa.listaTasadolar}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarList}"/>
+                    <ui:param name="propertyLabel" value="Pais"/>
+                    <ui:param name="propertyPath" value="tasadolar.id.codigopais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolar.id.codigopais}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarList}"/>
+                    <ui:param name="propertyLabel" value="Nombre Pais"/>
+                    <ui:param name="propertyPath" value="tasadolar.pais.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolar.pais.nombre}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="tasadolar.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolar.id.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        <rich:column style="width:100px">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarList}"/>
+                    <ui:param name="propertyLabel" value="Tasa"/>
+                    <ui:param name="propertyPath" value="tasadolar.tasa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolar.tasa}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        
+        <rich:column style="width:100px">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarList}"/>
+                    <ui:param name="propertyLabel" value="Tasa Compensacion"/>
+                    <ui:param name="propertyPath" value="tasadolar.tasadolar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolar.tasadolar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            <h:commandLink value="" action="#{AdministrarTasa.editarTasadolar(_tasadolar.id.fecha, _tasadolar.id.codigopais)}" >
+            	<h:graphicImage title="Editar Tasa Dolar" style="border-style:none;" id="verTasa" value="/img/edit.png" />
+            </h:commandLink>
+        </rich:column>
+    </rich:dataTable>
+</h:form>
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TasadolarList.xhtml"
+            rendered="#{tasadolarList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera Pagina"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TasadolarList.xhtml"
+            rendered="#{tasadolarList.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{tasadolarList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TasadolarList.xhtml"
+            rendered="#{tasadolarList.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{tasadolarList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TasadolarList.xhtml"
+            rendered="#{tasadolarList.nextExists}"
+               value="Ultima Pagina #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{tasadolarList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+
+</ui:define>
+
+</ui:composition>

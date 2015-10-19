@@ -1,0 +1,785 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Promotor Details</f:facet>
+
+
+        <s:decorate id="comisionviajero" template="layout/display.xhtml">
+            <ui:define name="label">Comisionviajero</ui:define>
+            <h:outputText value="#{promotorHome.instance.comisionviajero}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="comisionarrastrador" template="layout/display.xhtml">
+            <ui:define name="label">Comisionarrastrador</ui:define>
+            <h:outputText value="#{promotorHome.instance.comisionarrastrador}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PromotorEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty promotorFrom ? 'PromotorList' : promotorFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Personal</h:panelGroup>
+        </f:facet>
+    <div class="association" id="personalParent">
+
+        <h:outputText value="There is no personal associated with this promotor."
+                   rendered="#{promotorHome.instance.personal == null}"/>
+
+        <rich:dataTable var="_personal"
+                   value="#{promotorHome.instance.personal}"
+                rendered="#{promotorHome.instance.personal != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="personalTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cargo codcargo</f:facet>
+                <h:outputText value="#{_personal.cargo.codcargo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipodocumento</f:facet>
+                <h:outputText value="#{_personal.tipodocumento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_personal.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellido</f:facet>
+                <h:outputText value="#{_personal.apellido}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Celular</f:facet>
+                <h:outputText value="#{_personal.celular}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_personal.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pinbb</f:facet>
+                <h:outputText value="#{_personal.pinbb}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_personal.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_personal.correo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correoalternativo</f:facet>
+                <h:outputText value="#{_personal.correoalternativo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechanac</f:facet>
+                <h:outputText value="#{_personal.fechanac}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_personal.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Administrativo documento</f:facet>
+                <h:outputText value="#{_personal.administrativo.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_personal.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_personal.asesor.documento}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpersonal"
+                     value="View"
+                      view="/Personal.xhtml">
+                    <f:param name="personalDocumento"
+                           value="#{_personal.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Asesor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="asesorParent">
+
+        <h:outputText value="There is no asesor associated with this promotor."
+                   rendered="#{promotorHome.instance.asesor == null}"/>
+
+        <rich:dataTable var="_asesor"
+                   value="#{promotorHome.instance.asesor}"
+                rendered="#{promotorHome.instance.asesor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="asesorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_asesor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comision</f:facet>
+                <h:outputText value="#{_asesor.comision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewasesor"
+                     value="View"
+                      view="/Asesor.xhtml">
+                    <f:param name="asesorDocumento"
+                           value="#{_asesor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Arrastrador</h:panelGroup>
+        </f:facet>
+    <div class="association" id="arrastradorParent">
+
+        <h:outputText value="There is no arrastrador associated with this promotor."
+                   rendered="#{promotorHome.instance.arrastrador == null}"/>
+
+        <rich:dataTable var="_arrastrador"
+                   value="#{promotorHome.instance.arrastrador}"
+                rendered="#{promotorHome.instance.arrastrador != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="arrastradorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_arrastrador.personal.documento}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewarrastrador"
+                     value="View"
+                      view="/Arrastrador.xhtml">
+                    <f:param name="arrastradorDocumento"
+                           value="#{_arrastrador.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tasabolivarnegociados</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tasabolivarnegociadosChildren">
+
+        <h:outputText value="There are no tasabolivarnegociados associated with this promotor."
+                   rendered="#{empty promotorHome.tasabolivarnegociados}"/>
+
+        <rich:dataTable value="#{promotorHome.tasabolivarnegociados}"
+                       var="_tasabolivarnegociado"
+                  rendered="#{not empty promotorHome.tasabolivarnegociados}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tasabolivarnegociadosTable">
+            <rich:column sortBy="#{_tasabolivarnegociado.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivarnegociado.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivarnegociado.id.tipo}">
+                <f:facet name="header">Tipo</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.id.tipo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivarnegociado.preciobolivar}">
+                <f:facet name="header">Preciobolivar</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.preciobolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivarnegociado.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.usuariomod}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivarnegociado.preciocompra}">
+                <f:facet name="header">Preciocompra</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.preciocompra}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tasabolivarnegociado.precioasesor}">
+                <f:facet name="header">Precioasesor</f:facet>
+                <h:outputText value="#{_tasabolivarnegociado.precioasesor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttasabolivarnegociado"
+                     value="Select"
+                      view="/Tasabolivarnegociado.xhtml">
+                    <f:param name="tasabolivarnegociadoFecha"
+                            value="#{_tasabolivarnegociado.id.fecha}"/>
+                    <f:param name="tasabolivarnegociadoDocumento"
+                            value="#{_tasabolivarnegociado.id.documento}"/>
+                    <f:param name="tasabolivarnegociadoTipo"
+                            value="#{_tasabolivarnegociado.id.tipo}"/>
+                    <f:param name="tasabolivarnegociadoFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tasabolivarnegociado"
+                view="/TasabolivarnegociadoEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="tasabolivarnegociadoFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotorcomisiontxes</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotorcomisiontxesChildren">
+
+        <h:outputText value="There are no promotorcomisiontxes associated with this promotor."
+                   rendered="#{empty promotorHome.promotorcomisiontxes}"/>
+
+        <rich:dataTable value="#{promotorHome.promotorcomisiontxes}"
+                       var="_promotorcomisiontx"
+                  rendered="#{not empty promotorHome.promotorcomisiontxes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotorcomisiontxesTable">
+            <rich:column sortBy="#{_promotorcomisiontx.id.codpais}">
+                <f:facet name="header">Codpais</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.codpais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.fechainicio}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotorcomisiontx"
+                     value="Select"
+                      view="/Promotorcomisiontx.xhtml">
+                    <f:param name="promotorcomisiontxCodpais"
+                            value="#{_promotorcomisiontx.id.codpais}"/>
+                    <f:param name="promotorcomisiontxFechainicio"
+                            value="#{_promotorcomisiontx.id.fechainicio}"/>
+                    <f:param name="promotorcomisiontxDocumento"
+                            value="#{_promotorcomisiontx.id.documento}"/>
+                    <f:param name="promotorcomisiontxFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotorcomisiontx"
+                view="/PromotorcomisiontxEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="promotorcomisiontxFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjetas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tarjetasChildren">
+
+        <h:outputText value="There are no tarjetas associated with this promotor."
+                   rendered="#{empty promotorHome.tarjetas}"/>
+
+        <rich:dataTable value="#{promotorHome.tarjetas}"
+                       var="_tarjeta"
+                  rendered="#{not empty promotorHome.tarjetas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tarjetasTable">
+            <rich:column sortBy="#{_tarjeta.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.limite}">
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechavencimiento}">
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.codseguridad}">
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.tarjetahabiente}">
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.direcciontarjetahabiente}">
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.cedulatarjetahabiente}">
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.telefonotarjetahabiente}">
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttarjeta"
+                     value="Select"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                            value="#{_tarjeta.numerotarjeta}"/>
+                    <f:param name="tarjetaFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tarjeta"
+                view="/TarjetaEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="tarjetaFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuentapromotors</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="cuentapromotorsChildren">
+
+        <h:outputText value="There are no cuentapromotors associated with this promotor."
+                   rendered="#{empty promotorHome.cuentapromotors}"/>
+
+        <rich:dataTable value="#{promotorHome.cuentapromotors}"
+                       var="_cuentapromotor"
+                  rendered="#{not empty promotorHome.cuentapromotors}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="cuentapromotorsTable">
+            <rich:column sortBy="#{_cuentapromotor.id.numcuenta}">
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuentapromotor.id.numcuenta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentapromotor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_cuentapromotor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentapromotor.nombre}">
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuentapromotor.nombre}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectcuentapromotor"
+                     value="Select"
+                      view="/Cuentapromotor.xhtml">
+                    <f:param name="cuentapromotorNumcuenta"
+                            value="#{_cuentapromotor.id.numcuenta}"/>
+                    <f:param name="cuentapromotorDocumento"
+                            value="#{_cuentapromotor.id.documento}"/>
+                    <f:param name="cuentapromotorFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add cuentapromotor"
+                view="/CuentapromotorEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="cuentapromotorFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotorfranquicias</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotorfranquiciasChildren">
+
+        <h:outputText value="There are no promotorfranquicias associated with this promotor."
+                   rendered="#{empty promotorHome.promotorfranquicias}"/>
+
+        <rich:dataTable value="#{promotorHome.promotorfranquicias}"
+                       var="_promotorfranquicia"
+                  rendered="#{not empty promotorHome.promotorfranquicias}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotorfranquiciasTable">
+            <rich:column sortBy="#{_promotorfranquicia.id.codfranquicia}">
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_promotorfranquicia.id.codfranquicia}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorfranquicia.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotorfranquicia.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorfranquicia.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_promotorfranquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotorfranquicia"
+                     value="Select"
+                      view="/Promotorfranquicia.xhtml">
+                    <f:param name="promotorfranquiciaCodfranquicia"
+                            value="#{_promotorfranquicia.id.codfranquicia}"/>
+                    <f:param name="promotorfranquiciaDocumento"
+                            value="#{_promotorfranquicia.id.documento}"/>
+                    <f:param name="promotorfranquiciaFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotorfranquicia"
+                view="/PromotorfranquiciaEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="promotorfranquiciaFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Envioses</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="enviosesChildren">
+
+        <h:outputText value="There are no envioses associated with this promotor."
+                   rendered="#{empty promotorHome.envioses}"/>
+
+        <rich:dataTable value="#{promotorHome.envioses}"
+                       var="_envios"
+                  rendered="#{not empty promotorHome.envioses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="enviosesTable">
+            <rich:column sortBy="#{_envios.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_envios.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_envios.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_envios.envia}">
+                <f:facet name="header">Envia</f:facet>
+                <h:outputText value="#{_envios.envia}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.recibe}">
+                <f:facet name="header">Recibe</f:facet>
+                <h:outputText value="#{_envios.recibe}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.oficina}">
+                <f:facet name="header">Oficina</f:facet>
+                <h:outputText value="#{_envios.oficina}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.ciudad}">
+                <f:facet name="header">Ciudad</f:facet>
+                <h:outputText value="#{_envios.ciudad}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.nrocupon}">
+                <f:facet name="header">Nrocupon</f:facet>
+                <h:outputText value="#{_envios.nrocupon}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.enviado}">
+                <f:facet name="header">Enviado</f:facet>
+                <h:outputText value="#{_envios.enviado}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.recibido}">
+                <f:facet name="header">Recibido</f:facet>
+                <h:outputText value="#{_envios.recibido}"/>
+            </rich:column>
+            <rich:column sortBy="#{_envios.fechaenvio}">
+                <f:facet name="header">Fechaenvio</f:facet>
+                <h:outputText value="#{_envios.fechaenvio}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_envios.fechamrw}">
+                <f:facet name="header">Fechamrw</f:facet>
+                <h:outputText value="#{_envios.fechamrw}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectenvios"
+                     value="Select"
+                      view="/Envios.xhtml">
+                    <f:param name="enviosConsecutivo"
+                            value="#{_envios.consecutivo}"/>
+                    <f:param name="enviosFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add envios"
+                view="/EnviosEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="enviosFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotorfranquicias_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotorfranquicias_1Children">
+
+        <h:outputText value="There are no promotorfranquicias_1 associated with this promotor."
+                   rendered="#{empty promotorHome.promotorfranquicias_1}"/>
+
+        <rich:dataTable value="#{promotorHome.promotorfranquicias_1}"
+                       var="_promotorfranquicia"
+                  rendered="#{not empty promotorHome.promotorfranquicias_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotorfranquicias_1Table">
+            <rich:column sortBy="#{_promotorfranquicia.id.codfranquicia}">
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_promotorfranquicia.id.codfranquicia}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorfranquicia.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotorfranquicia.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorfranquicia.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_promotorfranquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotorfranquicia"
+                     value="Select"
+                      view="/Promotorfranquicia.xhtml">
+                    <f:param name="promotorfranquiciaCodfranquicia"
+                            value="#{_promotorfranquicia.id.codfranquicia}"/>
+                    <f:param name="promotorfranquiciaDocumento"
+                            value="#{_promotorfranquicia.id.documento}"/>
+                    <f:param name="promotorfranquiciaFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotorfranquicia"
+                view="/PromotorfranquiciaEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="promotorfranquiciaFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotortasas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotortasasChildren">
+
+        <h:outputText value="There are no promotortasas associated with this promotor."
+                   rendered="#{empty promotorHome.promotortasas}"/>
+
+        <rich:dataTable value="#{promotorHome.promotortasas}"
+                       var="_promotortasa"
+                  rendered="#{not empty promotorHome.promotortasas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotortasasTable">
+            <rich:column sortBy="#{_promotortasa.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotortasa.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.id.codigopais}">
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_promotortasa.id.codigopais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_promotortasa.id.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.tasa}">
+                <f:facet name="header">Tasa</f:facet>
+                <h:outputText value="#{_promotortasa.tasa}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.tasadolar}">
+                <f:facet name="header">Tasadolar</f:facet>
+                <h:outputText value="#{_promotortasa.tasadolar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotortasa"
+                     value="Select"
+                      view="/Promotortasa.xhtml">
+                    <f:param name="promotortasaDocumento"
+                            value="#{_promotortasa.id.documento}"/>
+                    <f:param name="promotortasaCodigopais"
+                            value="#{_promotortasa.id.codigopais}"/>
+                    <f:param name="promotortasaFecha"
+                            value="#{_promotortasa.id.fecha}"/>
+                    <f:param name="promotortasaFrom" value="Promotor"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotortasa"
+                view="/PromotortasaEdit.xhtml">
+            <f:param name="promotorDocumento"
+                    value="#{promotorHome.instance.documento}"/>
+            <f:param name="promotortasaFrom" value="Promotor"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

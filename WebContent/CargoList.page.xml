@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{cargoList.firstResult}"/>
+   <param name="sort" value="#{cargoList.orderColumn}"/>
+   <param name="dir" value="#{cargoList.orderDirection}"/>
+   <param name="logic" value="#{cargoList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codcargo" value="#{cargoList.cargo.codcargo}"/>
+   <param name="nombrecargo" value="#{cargoList.cargo.nombrecargo}"/>
+
+</page>

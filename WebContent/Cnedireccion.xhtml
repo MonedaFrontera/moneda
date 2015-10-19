@@ -1,0 +1,67 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Cnedireccion Details</f:facet>
+
+        <s:decorate id="codCentro" template="layout/display.xhtml">
+            <ui:define name="label">Cod centro</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.codCentro}"/>
+        </s:decorate>
+        <s:decorate id="tipo" template="layout/display.xhtml">
+            <ui:define name="label">Tipo</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.tipo}"/>
+        </s:decorate>
+        <s:decorate id="codEstado" template="layout/display.xhtml">
+            <ui:define name="label">Cod estado</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.codEstado}"/>
+        </s:decorate>
+        <s:decorate id="codMunicipio" template="layout/display.xhtml">
+            <ui:define name="label">Cod municipio</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.codMunicipio}"/>
+        </s:decorate>
+        <s:decorate id="codParroquia" template="layout/display.xhtml">
+            <ui:define name="label">Cod parroquia</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.codParroquia}"/>
+        </s:decorate>
+        <s:decorate id="nombreCentro" template="layout/display.xhtml">
+            <ui:define name="label">Nombre centro</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.nombreCentro}"/>
+        </s:decorate>
+        <s:decorate id="direccionCentro" template="layout/display.xhtml">
+            <ui:define name="label">Direccion centro</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.direccionCentro}"/>
+        </s:decorate>
+        <s:decorate id="centroNuevo" template="layout/display.xhtml">
+            <ui:define name="label">Centro nuevo</ui:define>
+            <h:outputText value="#{cnedireccionHome.instance.id.centroNuevo}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CnedireccionEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty cnedireccionFrom ? 'CnedireccionList' : cnedireccionFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

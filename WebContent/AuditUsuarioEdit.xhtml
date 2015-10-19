@@ -1,0 +1,100 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditUsuario" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{auditUsuarioHome.managed ? 'Edit' : 'Add'} Audit usuario</f:facet>
+
+
+            <s:decorate id="usuarioField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuario</ui:define>
+                <h:inputText id="usuario"
+                       disabled="#{auditUsuarioHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditUsuarioHome.instance.id.usuario}">
+                    <a:support event="onblur" reRender="usuarioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       required="true"
+                          value="#{auditUsuarioHome.instance.id.fecha}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="operacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Operacion</ui:define>
+                <h:inputText id="operacion"
+                       disabled="#{auditUsuarioHome.managed}"
+                          value="#{auditUsuarioHome.instance.id.operacion}">
+                    <a:support event="onblur" reRender="operacionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="descripcionField" template="layout/edit.xhtml">
+                <ui:define name="label">Descripcion</ui:define>
+                <h:inputTextarea id="descripcion"
+                               cols="80"
+                               rows="2"
+                           disabled="#{auditUsuarioHome.managed}"
+                              value="#{auditUsuarioHome.instance.id.descripcion}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{auditUsuarioHome.persist}"
+                       disabled="#{!auditUsuarioHome.wired}"
+                       rendered="#{!auditUsuarioHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{auditUsuarioHome.update}"
+                       rendered="#{auditUsuarioHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{auditUsuarioHome.remove}"
+                      immediate="true"
+                       rendered="#{auditUsuarioHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/AuditUsuario.xhtml"
+                rendered="#{auditUsuarioHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty auditUsuarioFrom ? 'AuditUsuarioList' : auditUsuarioFrom}.xhtml"
+                rendered="#{!auditUsuarioHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

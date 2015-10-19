@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{bancoList.firstResult}"/>
+   <param name="sort" value="#{bancoList.orderColumn}"/>
+   <param name="dir" value="#{bancoList.orderDirection}"/>
+   <param name="logic" value="#{bancoList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codbanco" value="#{bancoList.banco.codbanco}"/>
+   <param name="nombrebanco" value="#{bancoList.banco.nombrebanco}"/>
+
+</page>

@@ -1,0 +1,162 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="solicitudtransferencia" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{solicitudtransferenciaHome.managed ? 'Edit' : 'Add'} Solicitudtransferencia</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{solicitudtransferenciaHome.managed}"
+                          value="#{solicitudtransferenciaHome.instance.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                           size="15"
+                      maxlength="15"
+                          value="#{solicitudtransferenciaHome.instance.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{solicitudtransferenciaHome.instance.fecha}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{solicitudtransferenciaHome.instance.valor}">
+                    <a:support event="onblur" reRender="valorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="depositosField" template="layout/edit.xhtml">
+                <ui:define name="label">Depositos</ui:define>
+                <h:inputText id="depositos"
+                          value="#{solicitudtransferenciaHome.instance.depositos}">
+                    <a:support event="onblur" reRender="depositosField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="saldoanteriorField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldoanterior</ui:define>
+                <h:inputText id="saldoanterior"
+                          value="#{solicitudtransferenciaHome.instance.saldoanterior}">
+                    <a:support event="onblur" reRender="saldoanteriorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{solicitudtransferenciaHome.persist}"
+                       disabled="#{!solicitudtransferenciaHome.wired}"
+                       rendered="#{!solicitudtransferenciaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{solicitudtransferenciaHome.update}"
+                       rendered="#{solicitudtransferenciaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{solicitudtransferenciaHome.remove}"
+                      immediate="true"
+                       rendered="#{solicitudtransferenciaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Solicitudtransferencia.xhtml"
+                rendered="#{solicitudtransferenciaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty solicitudtransferenciaFrom ? 'SolicitudtransferenciaList' : solicitudtransferenciaFrom}.xhtml"
+                rendered="#{!solicitudtransferenciaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Solicitudtarjetas">
+        <h:form styleClass="association" id="solicitudtarjetasChildren">
+
+            <h:outputText value="There are no solicitudtarjetas associated with this solicitudtransferencia."
+                       rendered="#{empty solicitudtransferenciaHome.solicitudtarjetas}"/>
+
+            <rich:dataTable value="#{solicitudtransferenciaHome.solicitudtarjetas}"
+                           var="_solicitudtarjeta"
+                      rendered="#{not empty solicitudtransferenciaHome.solicitudtarjetas}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="solicitudtarjetasTable">
+                <rich:column sortBy="#{_solicitudtarjeta.id.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_solicitudtarjeta.id.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_solicitudtarjeta.id.numerotarjeta}">
+                    <f:facet name="header">Numerotarjeta</f:facet>
+                    <h:outputText value="#{_solicitudtarjeta.id.numerotarjeta}"/>
+                </rich:column>
+                <rich:column sortBy="#{_solicitudtarjeta.valor}">
+                    <f:facet name="header">Valor</f:facet>
+                    <h:outputText value="#{_solicitudtarjeta.valor}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{solicitudtransferenciaHome.managed}" id="solicitudtarjetas">
+        <div class="actionButtons">
+            <s:button id="addsolicitudtarjeta"
+                   value="Add solicitudtarjeta"
+                    view="/SolicitudtarjetaEdit.xhtml"
+             propagation="none">
+                 <f:param name="solicitudtransferenciaConsecutivo"
+                         value="#{solicitudtransferenciaHome.instance.consecutivo}"/>
+                 <f:param name="solicitudtarjetaFrom" value="Solicitudtransferencia"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

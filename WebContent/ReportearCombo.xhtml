@@ -1,0 +1,90 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+   <div align="center">	
+   
+   
+    <h:form id="concepto" styleClass="edit">
+
+        <rich:panel id="Principal" header="Reportes" style="width: 900px; text-align:left">
+		 <div align="left">
+		 	<s:decorate id="selReporte" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Reporte</ui:define>
+			<h:selectOneMenu id="tiporeporte" value="#{reportesHome.instance}" required="true">
+                    <s:selectItems value="#{reportesList.resultList}" var="reportes" label="#{reportes.descripcion}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a4j:support event="onchange" reRender="divseltiporeporte, divButtons" ajaxSingle="true"></a4j:support>
+                </h:selectOneMenu>
+			 </s:decorate>
+		 
+		 
+		 <s:div id="divseltiporeporte">
+		 
+		 <s:div>
+		  <s:decorate template="layout/display.xhtml" rendered="#{Reporteador.renderParametros(reportesHome.instance.parametros, 2)}">
+                <ui:define name="label">Fecha Inicio</ui:define>
+               <rich:calendar id="fechaini"
+                          value="#{Reporteador.fechainicio}" datePattern="dd/MM/yyyy" enableManualInput="true" >
+                          <a4j:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml" rendered="#{Reporteador.renderParametros(reportesHome.instance.parametros, 3)}">
+                <ui:define name="label">Fecha Fin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{Reporteador.fechafin}" datePattern="dd/MM/yyyy"  enableManualInput="true" >
+                          <a4j:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+		  
+		  </s:div>
+		  
+		  <s:div rendered="#{Reporteador.nombrereporte=='reporte006'}">
+		  
+		  </s:div>
+		  
+			</s:div>
+		  </div>
+         <div style="clear:both"/>
+        </rich:panel>
+ 
+        <br/>
+        <s:div id="divButtons"> 
+        <div class="actionButtons" style="width: 900px; text-align:left" >
+
+            <h:commandLink rendered="#{Reporteador.renderParametros(reportesHome.instance.parametros, 13)}" 
+            target="_blank" id="next003" 
+            action="#{Reporteador.generarReportePDF(Reporteador.fechainicio, Reporteador.fechafin, null, null, null)}">   
+            	<h:commandButton id="save003" value="Generar Reporte" />
+            </h:commandLink>
+            <h:commandLink rendered="#{Reporteador.renderParametros(reportesHome.instance.parametros, 17)}" 
+            target="_blank" id="next010" 
+            action="#{Reporteador.generarReporteXls(Reporteador.fechainicio, Reporteador.fechafin, null, null, null)}">   
+            	<h:commandButton id="save010" value="Generar Reporte" />
+            </h:commandLink>
+            <h:commandLink rendered="#{Reporteador.nombrereporte=='reporte006'}" 
+            target="_blank" id="next006" 
+            action="#{Reporteador.generarReportePDF('', null, null, null, null)}">   
+            	<h:commandButton id="save006" value="Generar Reporte" />
+            </h:commandLink>
+            
+            <s:button view="/home.xhtml" value="salir"/>
+
+            
+        </div>
+        </s:div>
+    </h:form>
+   </div> 
+</ui:define>
+
+</ui:composition>

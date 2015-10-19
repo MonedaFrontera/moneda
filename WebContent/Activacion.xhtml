@@ -1,0 +1,865 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Activacion Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{activacionHome.instance.consecutivo}"/>
+        </s:decorate>
+
+        <s:decorate id="cedula" template="layout/display.xhtml">
+            <ui:define name="label">Cedula</ui:define>
+            <h:outputText value="#{activacionHome.instance.cedula}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{activacionHome.instance.nombre}"/>
+        </s:decorate>
+
+        <s:decorate id="fechareg" template="layout/display.xhtml">
+            <ui:define name="label">Fechareg</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechareg}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuarioreg" template="layout/display.xhtml">
+            <ui:define name="label">Usuarioreg</ui:define>
+            <h:outputText value="#{activacionHome.instance.usuarioreg}"/>
+        </s:decorate>
+
+        <s:decorate id="correo" template="layout/display.xhtml">
+            <ui:define name="label">Correo</ui:define>
+            <h:outputText value="#{activacionHome.instance.correo}"/>
+        </s:decorate>
+
+        <s:decorate id="clave" template="layout/display.xhtml">
+            <ui:define name="label">Clave</ui:define>
+            <h:outputText value="#{activacionHome.instance.clave}"/>
+        </s:decorate>
+
+        <s:decorate id="usuario" template="layout/display.xhtml">
+            <ui:define name="label">Usuario</ui:define>
+            <h:outputText value="#{activacionHome.instance.usuario}"/>
+        </s:decorate>
+
+        <s:decorate id="llave" template="layout/display.xhtml">
+            <ui:define name="label">Llave</ui:define>
+            <h:outputText value="#{activacionHome.instance.llave}"/>
+        </s:decorate>
+
+        <s:decorate id="ano" template="layout/display.xhtml">
+            <ui:define name="label">Ano</ui:define>
+            <h:outputText value="#{activacionHome.instance.ano}"/>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{activacionHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <s:decorate id="fechacita" template="layout/display.xhtml">
+            <ui:define name="label">Fechacita</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechacita}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechaact" template="layout/display.xhtml">
+            <ui:define name="label">Fechaact</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechaact}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="ingresocadivi" template="layout/display.xhtml">
+            <ui:define name="label">Ingresocadivi</ui:define>
+            <h:outputText value="#{activacionHome.instance.ingresocadivi}"/>
+        </s:decorate>
+
+        <s:decorate id="documentoscompletos" template="layout/display.xhtml">
+            <ui:define name="label">Documentoscompletos</ui:define>
+            <h:outputText value="#{activacionHome.instance.documentoscompletos}"/>
+        </s:decorate>
+
+        <s:decorate id="citaasignada" template="layout/display.xhtml">
+            <ui:define name="label">Citaasignada</ui:define>
+            <h:outputText value="#{activacionHome.instance.citaasignada}"/>
+        </s:decorate>
+
+        <s:decorate id="agencia" template="layout/display.xhtml">
+            <ui:define name="label">Agencia</ui:define>
+            <h:outputText value="#{activacionHome.instance.agencia}"/>
+        </s:decorate>
+
+        <s:decorate id="tipoviaje" template="layout/display.xhtml">
+            <ui:define name="label">Tipoviaje</ui:define>
+            <h:outputText value="#{activacionHome.instance.tipoviaje}"/>
+        </s:decorate>
+
+        <s:decorate id="fechainicioviaje" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicioviaje</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechainicioviaje}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechafinviaje" template="layout/display.xhtml">
+            <ui:define name="label">Fechafinviaje</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechafinviaje}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="clavemercantil" template="layout/display.xhtml">
+            <ui:define name="label">Clavemercantil</ui:define>
+            <h:outputText value="#{activacionHome.instance.clavemercantil}"/>
+        </s:decorate>
+
+        <s:decorate id="coordenadas" template="layout/display.xhtml">
+            <ui:define name="label">Coordenadas</ui:define>
+            <h:outputText value="#{activacionHome.instance.coordenadas}"/>
+        </s:decorate>
+
+        <s:decorate id="provinet" template="layout/display.xhtml">
+            <ui:define name="label">Provinet</ui:define>
+            <h:outputText value="#{activacionHome.instance.provinet}"/>
+        </s:decorate>
+
+        <s:decorate id="claveprovinet" template="layout/display.xhtml">
+            <ui:define name="label">Claveprovinet</ui:define>
+            <h:outputText value="#{activacionHome.instance.claveprovinet}"/>
+        </s:decorate>
+
+        <s:decorate id="rusad" template="layout/display.xhtml">
+            <ui:define name="label">Rusad</ui:define>
+            <h:outputText value="#{activacionHome.instance.rusad}"/>
+        </s:decorate>
+
+        <s:decorate id="noingresacadivi" template="layout/display.xhtml">
+            <ui:define name="label">Noingresacadivi</ui:define>
+            <h:outputText value="#{activacionHome.instance.noingresacadivi}"/>
+        </s:decorate>
+
+        <s:decorate id="rif" template="layout/display.xhtml">
+            <ui:define name="label">Rif</ui:define>
+            <h:outputText value="#{activacionHome.instance.rif}"/>
+        </s:decorate>
+
+        <s:decorate id="deposito" template="layout/display.xhtml">
+            <ui:define name="label">Deposito</ui:define>
+            <h:outputText value="#{activacionHome.instance.deposito}"/>
+        </s:decorate>
+
+        <s:decorate id="fechadeposito" template="layout/display.xhtml">
+            <ui:define name="label">Fechadeposito</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechadeposito}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="valordeposito" template="layout/display.xhtml">
+            <ui:define name="label">Valordeposito</ui:define>
+            <h:outputText value="#{activacionHome.instance.valordeposito}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechadevolucion" template="layout/display.xhtml">
+            <ui:define name="label">Fechadevolucion</ui:define>
+            <h:outputText value="#{activacionHome.instance.fechadevolucion}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="valordevolucion" template="layout/display.xhtml">
+            <ui:define name="label">Valordevolucion</ui:define>
+            <h:outputText value="#{activacionHome.instance.valordevolucion}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ActivacionEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty activacionFrom ? 'ActivacionList' : activacionFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Gestor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="gestorParent">
+
+        <h:outputText value="There is no gestor associated with this activacion."
+                   rendered="#{activacionHome.instance.gestor == null}"/>
+
+        <rich:dataTable var="_gestor"
+                   value="#{activacionHome.instance.gestor}"
+                rendered="#{activacionHome.instance.gestor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="gestorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_gestor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_gestor.personal.documento}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewgestor"
+                     value="View"
+                      view="/Gestor.xhtml">
+                    <f:param name="gestorDocumento"
+                           value="#{_gestor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Actestado</h:panelGroup>
+        </f:facet>
+    <div class="association" id="actestadoParent">
+
+        <h:outputText value="There is no actestado associated with this activacion."
+                   rendered="#{activacionHome.instance.actestado == null}"/>
+
+        <rich:dataTable var="_actestado"
+                   value="#{activacionHome.instance.actestado}"
+                rendered="#{activacionHome.instance.actestado != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="actestadoTable">
+            <h:column>
+                <f:facet name="header">Codestado</f:facet>
+                <h:outputText value="#{_actestado.codestado}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Descripcion</f:facet>
+                <h:outputText value="#{_actestado.descripcion}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewactestado"
+                     value="View"
+                      view="/Actestado.xhtml">
+                    <f:param name="actestadoCodestado"
+                           value="#{_actestado.codestado}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this activacion."
+                   rendered="#{activacionHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{activacionHome.instance.promotor}"
+                rendered="#{activacionHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpromotor"
+                     value="View"
+                      view="/Promotor.xhtml">
+                    <f:param name="promotorDocumento"
+                           value="#{_promotor.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Banco</h:panelGroup>
+        </f:facet>
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this activacion."
+                   rendered="#{activacionHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{activacionHome.instance.banco}"
+                rendered="#{activacionHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewbanco"
+                     value="View"
+                      view="/Banco.xhtml">
+                    <f:param name="bancoCodbanco"
+                           value="#{_banco.codbanco}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Activagestors</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="activagestorsChildren">
+
+        <h:outputText value="There are no activagestors associated with this activacion."
+                   rendered="#{empty activacionHome.activagestors}"/>
+
+        <rich:dataTable value="#{activacionHome.activagestors}"
+                       var="_activagestor"
+                  rendered="#{not empty activacionHome.activagestors}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="activagestorsTable">
+            <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_activagestor.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_activagestor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_activagestor.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_activagestor.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectactivagestor"
+                     value="Select"
+                      view="/Activagestor.xhtml">
+                    <f:param name="activagestorConsecutivo"
+                            value="#{_activagestor.id.consecutivo}"/>
+                    <f:param name="activagestorDocumento"
+                            value="#{_activagestor.id.documento}"/>
+                    <f:param name="activagestorFecha"
+                            value="#{_activagestor.id.fecha}"/>
+                    <f:param name="activagestorFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add activagestor"
+                view="/ActivagestorEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="activagestorFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Activagestors_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="activagestors_1Children">
+
+        <h:outputText value="There are no activagestors_1 associated with this activacion."
+                   rendered="#{empty activacionHome.activagestors_1}"/>
+
+        <rich:dataTable value="#{activacionHome.activagestors_1}"
+                       var="_activagestor"
+                  rendered="#{not empty activacionHome.activagestors_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="activagestors_1Table">
+            <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_activagestor.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_activagestor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_activagestor.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_activagestor.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectactivagestor"
+                     value="Select"
+                      view="/Activagestor.xhtml">
+                    <f:param name="activagestorConsecutivo"
+                            value="#{_activagestor.id.consecutivo}"/>
+                    <f:param name="activagestorDocumento"
+                            value="#{_activagestor.id.documento}"/>
+                    <f:param name="activagestorFecha"
+                            value="#{_activagestor.id.fecha}"/>
+                    <f:param name="activagestorFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add activagestor"
+                view="/ActivagestorEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="activagestorFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Estadoactivacions</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="estadoactivacionsChildren">
+
+        <h:outputText value="There are no estadoactivacions associated with this activacion."
+                   rendered="#{empty activacionHome.estadoactivacions}"/>
+
+        <rich:dataTable value="#{activacionHome.estadoactivacions}"
+                       var="_estadoactivacion"
+                  rendered="#{not empty activacionHome.estadoactivacions}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="estadoactivacionsTable">
+            <rich:column sortBy="#{_estadoactivacion.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_estadoactivacion.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_estadoactivacion.id.estado}">
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_estadoactivacion.id.estado}"/>
+            </rich:column>
+            <rich:column sortBy="#{_estadoactivacion.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_estadoactivacion.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_estadoactivacion.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_estadoactivacion.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectestadoactivacion"
+                     value="Select"
+                      view="/Estadoactivacion.xhtml">
+                    <f:param name="estadoactivacionConsecutivo"
+                            value="#{_estadoactivacion.id.consecutivo}"/>
+                    <f:param name="estadoactivacionEstado"
+                            value="#{_estadoactivacion.id.estado}"/>
+                    <f:param name="estadoactivacionFecha"
+                            value="#{_estadoactivacion.id.fecha}"/>
+                    <f:param name="estadoactivacionFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add estadoactivacion"
+                view="/EstadoactivacionEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="estadoactivacionFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Citas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="citasChildren">
+
+        <h:outputText value="There are no citas associated with this activacion."
+                   rendered="#{empty activacionHome.citas}"/>
+
+        <rich:dataTable value="#{activacionHome.citas}"
+                       var="_cita"
+                  rendered="#{not empty activacionHome.citas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="citasTable">
+            <rich:column sortBy="#{_cita.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_cita.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cita.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_cita.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_cita.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_cita.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectcita"
+                     value="Select"
+                      view="/Cita.xhtml">
+                    <f:param name="citaConsecutivo"
+                            value="#{_cita.id.consecutivo}"/>
+                    <f:param name="citaFecha"
+                            value="#{_cita.id.fecha}"/>
+                    <f:param name="citaFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add cita"
+                view="/CitaEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="citaFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Activagestors_2</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="activagestors_2Children">
+
+        <h:outputText value="There are no activagestors_2 associated with this activacion."
+                   rendered="#{empty activacionHome.activagestors_2}"/>
+
+        <rich:dataTable value="#{activacionHome.activagestors_2}"
+                       var="_activagestor"
+                  rendered="#{not empty activacionHome.activagestors_2}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="activagestors_2Table">
+            <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_activagestor.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_activagestor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_activagestor.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_activagestor.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectactivagestor"
+                     value="Select"
+                      view="/Activagestor.xhtml">
+                    <f:param name="activagestorConsecutivo"
+                            value="#{_activagestor.id.consecutivo}"/>
+                    <f:param name="activagestorDocumento"
+                            value="#{_activagestor.id.documento}"/>
+                    <f:param name="activagestorFecha"
+                            value="#{_activagestor.id.fecha}"/>
+                    <f:param name="activagestorFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add activagestor"
+                view="/ActivagestorEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="activagestorFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Activagestors_3</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="activagestors_3Children">
+
+        <h:outputText value="There are no activagestors_3 associated with this activacion."
+                   rendered="#{empty activacionHome.activagestors_3}"/>
+
+        <rich:dataTable value="#{activacionHome.activagestors_3}"
+                       var="_activagestor"
+                  rendered="#{not empty activacionHome.activagestors_3}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="activagestors_3Table">
+            <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_activagestor.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_activagestor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_activagestor.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_activagestor.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectactivagestor"
+                     value="Select"
+                      view="/Activagestor.xhtml">
+                    <f:param name="activagestorConsecutivo"
+                            value="#{_activagestor.id.consecutivo}"/>
+                    <f:param name="activagestorDocumento"
+                            value="#{_activagestor.id.documento}"/>
+                    <f:param name="activagestorFecha"
+                            value="#{_activagestor.id.fecha}"/>
+                    <f:param name="activagestorFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add activagestor"
+                view="/ActivagestorEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="activagestorFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Activagestors_4</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="activagestors_4Children">
+
+        <h:outputText value="There are no activagestors_4 associated with this activacion."
+                   rendered="#{empty activacionHome.activagestors_4}"/>
+
+        <rich:dataTable value="#{activacionHome.activagestors_4}"
+                       var="_activagestor"
+                  rendered="#{not empty activacionHome.activagestors_4}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="activagestors_4Table">
+            <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_activagestor.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_activagestor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_activagestor.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_activagestor.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_activagestor.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectactivagestor"
+                     value="Select"
+                      view="/Activagestor.xhtml">
+                    <f:param name="activagestorConsecutivo"
+                            value="#{_activagestor.id.consecutivo}"/>
+                    <f:param name="activagestorDocumento"
+                            value="#{_activagestor.id.documento}"/>
+                    <f:param name="activagestorFecha"
+                            value="#{_activagestor.id.fecha}"/>
+                    <f:param name="activagestorFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add activagestor"
+                view="/ActivagestorEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="activagestorFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Observacions</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="observacionsChildren">
+
+        <h:outputText value="There are no observacions associated with this activacion."
+                   rendered="#{empty activacionHome.observacions}"/>
+
+        <rich:dataTable value="#{activacionHome.observacions}"
+                       var="_observacion"
+                  rendered="#{not empty activacionHome.observacions}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="observacionsTable">
+            <rich:column sortBy="#{_observacion.id.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_observacion.id.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_observacion.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_observacion.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_observacion.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_observacion.observacion}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectobservacion"
+                     value="Select"
+                      view="/Observacion.xhtml">
+                    <f:param name="observacionConsecutivo"
+                            value="#{_observacion.id.consecutivo}"/>
+                    <f:param name="observacionFecha"
+                            value="#{_observacion.id.fecha}"/>
+                    <f:param name="observacionFrom" value="Activacion"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add observacion"
+                view="/ObservacionEdit.xhtml">
+            <f:param name="activacionConsecutivo"
+                    value="#{activacionHome.instance.consecutivo}"/>
+            <f:param name="observacionFrom" value="Activacion"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

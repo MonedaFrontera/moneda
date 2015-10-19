@@ -1,0 +1,168 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="autovoz" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{autovozHome.managed ? 'Editar' : 'Agregar'} Autorizacion por Voz</f:facet>
+
+			<s:div id="datostransaccion" style="float:left; width:60%">
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{autovozHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="4"
+                         value="#{AdministrarAutovoz.tarjetafin}">
+                    <a:support event="onblur" action="#{AdministrarAutovoz.verificarTarjeta()}"  
+                    reRender="numerotarjetaField,tarjetaHabienteField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+			
+			<s:decorate id="tarjetaHabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText value="#{AdministrarAutovoz.tarjetahabiente}" id="nametarjeta" styleClass="textBox" size="50">
+                <a:support event="onblur" reRender="datostarjeta" action="#{AdministrarAutovoz.ubicarTarjeta()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png" 
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="nametarjeta"
+                                        suggestionAction="#{AdministrarAutovoz.autocompletarHabiente}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun resultado">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+			
+			<s:div id="datostarjeta">
+			</s:div>
+			
+			
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Establecimiento</ui:define>
+                <h:inputText value="#{AdministrarAutovoz.sugestion}" id="name" styleClass="textBox" size="50">
+                <a:support event="onblur" action="#{AdministrarAutovoz.ubicarEstablecimiento()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
+                    alt="" />
+				<rich:suggestionbox id="suggestionBoxId" for="name"
+                                        suggestionAction="#{AdministrarAutovoz.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+                
+            </s:decorate>
+
+
+
+
+
+            <s:decorate id="fechatxField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Transaccion</ui:define>
+                <rich:calendar id="fechatx"
+                       required="true"
+                       enableManualInput="true"
+                          value="#{autovozHome.instance.fechatx}" 
+                          datePattern="dd/MM/yyyy"/>
+            </s:decorate>
+
+
+            <s:decorate id="numautorizacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Autorizacion</ui:define>
+                <h:inputText id="numautorizacion"
+                           size="8"
+                      maxlength="8"
+                          value="#{autovozHome.instance.numautorizacion}">
+                    <a:support event="onblur" reRender="numautorizacionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{autovozHome.instance.valor}"
+                           size="17">
+                    <a:support event="onblur" reRender="valorField, totalField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            
+            <s:decorate id="totalField" template="layout/edit.xhtml">
+                <ui:define name="label" style="font-size:24px">Total</ui:define>
+                              
+               <h:inputText id="totald"
+                           size="17"
+                      maxlength="17"
+                       disabled="true"
+                       style="font-size:24px"
+                          value="#{autovozHome.instance.valor}">
+               <f:convertNumber pattern="$ #,###,##0"/>                
+               </h:inputText>
+            </s:decorate>
+            
+			</s:div>
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos Requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarAutovoz.guardarAutovoz}"
+                       
+                       rendered="#{!autovozHome.managed}"/>
+
+            <h:commandButton id="Actualizar"
+                          value="Actualizar"
+                         action="#{AdministrarAutovoz.actualizarAutovoz}"
+                       rendered="#{autovozHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{autovozHome.remove}"
+                      immediate="true"
+                       rendered="#{autovozHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/AutovozList.xhtml"
+                rendered="#{autovozHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty autovozFrom ? 'AutovozList' : autovozFrom}.xhtml"
+                rendered="#{!autovozHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

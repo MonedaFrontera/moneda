@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="variable" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{variableHome.managed ? 'Edit' : 'Add'} Variable</f:facet>
+
+
+            <s:decorate id="numregistroField" template="layout/edit.xhtml">
+                <ui:define name="label">Numregistro</ui:define>
+                <h:inputText id="numregistro"
+                       required="true"
+                       disabled="#{variableHome.managed}"
+                          value="#{variableHome.instance.numregistro}">
+                    <a:support event="onblur" reRender="numregistroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="preciodolarvenField" template="layout/edit.xhtml">
+                <ui:define name="label">Preciodolarven</ui:define>
+                <h:inputText id="preciodolarven"
+                          value="#{variableHome.instance.preciodolarven}"
+                           size="11">
+                    <a:support event="onblur" reRender="preciodolarvenField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{variableHome.persist}"
+                       disabled="#{!variableHome.wired}"
+                       rendered="#{!variableHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{variableHome.update}"
+                       rendered="#{variableHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{variableHome.remove}"
+                      immediate="true"
+                       rendered="#{variableHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Variable.xhtml"
+                rendered="#{variableHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty variableFrom ? 'VariableList' : variableFrom}.xhtml"
+                rendered="#{!variableHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

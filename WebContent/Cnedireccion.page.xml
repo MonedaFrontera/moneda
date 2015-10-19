@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="cnedireccionFrom"/>
+   <param name="cnedireccionCodCentro" value="#{cnedireccionHome.cnedireccionId.codCentro}"/>
+   <param name="cnedireccionTipo" value="#{cnedireccionHome.cnedireccionId.tipo}"/>
+   <param name="cnedireccionCodEstado" value="#{cnedireccionHome.cnedireccionId.codEstado}"/>
+   <param name="cnedireccionCodMunicipio" value="#{cnedireccionHome.cnedireccionId.codMunicipio}"/>
+   <param name="cnedireccionCodParroquia" value="#{cnedireccionHome.cnedireccionId.codParroquia}"/>
+   <param name="cnedireccionNombreCentro" value="#{cnedireccionHome.cnedireccionId.nombreCentro}"/>
+   <param name="cnedireccionDireccionCentro" value="#{cnedireccionHome.cnedireccionId.direccionCentro}"/>
+   <param name="cnedireccionCentroNuevo" value="#{cnedireccionHome.cnedireccionId.centroNuevo}"/>
+
+
+</page>

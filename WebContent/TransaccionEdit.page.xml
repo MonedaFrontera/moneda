@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{transaccionHome.wire}"/>
+   
+
+   
+
+   <param name="transaccionFrom"/>
+   
+   <param name="establecimientoFrom"/>
+   <param name="establecimientoCodigounico" value="#{establecimientoHome.establecimientoCodigounico}"/>
+   <param name="paisFrom"/>
+   <param name="paisCodigopais" value="#{paisHome.paisCodigopais}"/>
+
+   <param name="empresaFrom"/>
+   <param name="empresaNit" value="#{empresaHome.empresaNit}"/>
+
+
+   <param name="tarjetaFrom"/>
+   <param name="tarjetaNumerotarjeta" value="#{tarjetaHome.tarjetaNumerotarjeta}"/>
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+   <param name="franquiciaFrom"/>
+   <param name="franquiciaCodfranquicia" value="#{franquiciaHome.franquiciaCodfranquicia}"/>
+
+   <param name="bancoFrom"/>
+   <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
+
+
+
+
+   <navigation from-action="#{transaccionHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Transaccion.xhtml"/>
+      </rule>
+   </navigation>
+   
+   <navigation from-action="#{TestBean.guardarTransaccion()}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/TransaccionEdit.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{transaccionHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/TransaccionList.xhtml"/>
+      </rule>
+   </navigation>
+   
+   <navigation from-action="#{AdministrarTransaccion.eliminarTransaccion}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/TransaccionList.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{transaccionHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/TransaccionList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

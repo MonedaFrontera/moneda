@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="puntoestablecimientoFrom"/>
+   <param name="puntoestablecimientoCodigounico" value="#{puntoestablecimientoHome.puntoestablecimientoId.codigounico}"/>
+   <param name="puntoestablecimientoCodpuntoventa" value="#{puntoestablecimientoHome.puntoestablecimientoId.codpuntoventa}"/>
+   <param name="puntoestablecimientoFechainicio" value="#{puntoestablecimientoHome.puntoestablecimientoId.fechainicio}"/>
+   <param name="puntodeventaFrom"/>
+   <param name="puntodeventaCodpuntoventa" value="#{puntodeventaHome.puntodeventaCodpuntoventa}"/>
+
+   <param name="establecimientoFrom"/>
+   <param name="establecimientoCodigounico" value="#{establecimientoHome.establecimientoCodigounico}"/>
+   <param name="paisFrom"/>
+   <param name="paisCodigopais" value="#{paisHome.paisCodigopais}"/>
+
+   <param name="empresaFrom"/>
+   <param name="empresaNit" value="#{empresaHome.empresaNit}"/>
+
+   <param name="bancocolFrom"/>
+   <param name="bancocolCodbanco" value="#{bancocolHome.bancocolCodbanco}"/>
+
+
+
+
+</page>

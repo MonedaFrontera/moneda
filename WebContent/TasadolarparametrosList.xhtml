@@ -1,0 +1,241 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasadolarparametrosSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Tasadolarparametros Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco" value="#{tasadolarparametrosList.tasadolarparametros.id.codbanco}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codpais</ui:define>
+                <h:inputText id="codpais" value="#{tasadolarparametrosList.tasadolarparametros.id.codpais}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codfranquicia</ui:define>
+                <h:inputText id="codfranquicia" value="#{tasadolarparametrosList.tasadolarparametros.id.codfranquicia}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{tasadolarparametrosList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/TasadolarparametrosList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Tasadolarparametros Search Results (#{empty tasadolarparametrosList.resultList ? 0 : (tasadolarparametrosList.paginated ? tasadolarparametrosList.resultCount : tasadolarparametrosList.resultList.size)})</f:facet>
+    <div class="results" id="tasadolarparametrosList">
+
+    <h:outputText value="The tasadolarparametros search returned no results."
+               rendered="#{empty tasadolarparametrosList.resultList}"/>
+
+    <rich:dataTable id="tasadolarparametrosList"
+                var="_tasadolarparametros"
+              value="#{tasadolarparametrosList.resultList}"
+           rendered="#{not empty tasadolarparametrosList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Codbanco"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.id.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.id.codbanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Codpais"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.id.codpais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.id.codpais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Codfranquicia"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.id.codfranquicia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.id.codfranquicia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Fechainicio"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.id.fechainicio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Franquicia codfranquicia"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.franquicia.codfranquicia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.franquicia.codfranquicia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Pais codigopais"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.pais.codigopais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.pais.codigopais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Banco codbanco"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.banco.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.banco.codbanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Fechafin"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.fechafin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasadolarparametrosList}"/>
+                    <ui:param name="propertyLabel" value="Tasadolar"/>
+                    <ui:param name="propertyPath" value="tasadolarparametros.tasadolar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasadolarparametros.tasadolar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Tasadolarparametros' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="tasadolarparametrosViewId">
+                <f:param name="tasadolarparametrosCodbanco"
+                        value="#{_tasadolarparametros.id.codbanco}"/>
+                <f:param name="tasadolarparametrosCodpais"
+                        value="#{_tasadolarparametros.id.codpais}"/>
+                <f:param name="tasadolarparametrosCodfranquicia"
+                        value="#{_tasadolarparametros.id.codfranquicia}"/>
+                <f:param name="tasadolarparametrosFechainicio"
+                        value="#{_tasadolarparametros.id.fechainicio}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/TasadolarparametrosEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="tasadolarparametrosEdit"
+                rendered="#{empty from}">
+                <f:param name="tasadolarparametrosCodbanco"
+                        value="#{_tasadolarparametros.id.codbanco}"/>
+                <f:param name="tasadolarparametrosCodpais"
+                        value="#{_tasadolarparametros.id.codpais}"/>
+                <f:param name="tasadolarparametrosCodfranquicia"
+                        value="#{_tasadolarparametros.id.codfranquicia}"/>
+                <f:param name="tasadolarparametrosFechainicio"
+                        value="#{_tasadolarparametros.id.fechainicio}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TasadolarparametrosList.xhtml"
+            rendered="#{tasadolarparametrosList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TasadolarparametrosList.xhtml"
+            rendered="#{tasadolarparametrosList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{tasadolarparametrosList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TasadolarparametrosList.xhtml"
+            rendered="#{tasadolarparametrosList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{tasadolarparametrosList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TasadolarparametrosList.xhtml"
+            rendered="#{tasadolarparametrosList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{tasadolarparametrosList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TasadolarparametrosEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create tasadolarparametros">
+            <f:param name="tasadolarparametrosCodbanco"/>
+            <f:param name="tasadolarparametrosCodpais"/>
+            <f:param name="tasadolarparametrosCodfranquicia"/>
+            <f:param name="tasadolarparametrosFechainicio"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

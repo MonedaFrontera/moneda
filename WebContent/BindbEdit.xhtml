@@ -1,0 +1,119 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="bindb" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{bindbHome.managed ? 'Edit' : 'Add'} Bindb</f:facet>
+
+
+            <s:decorate id="binField" template="layout/edit.xhtml">
+                <ui:define name="label">Bin</ui:define>
+                <h:inputText id="bin"
+                       disabled="#{bindbHome.managed}"
+                       required="true"
+                           size="8"
+                      maxlength="8"
+                          value="#{bindbHome.instance.bin}">
+                    <a:support event="onblur" reRender="binField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombrebancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrebanco</ui:define>
+                <h:inputText id="nombrebanco"
+                           size="80"
+                      maxlength="80"
+                          value="#{bindbHome.instance.nombrebanco}">
+                    <a:support event="onblur" reRender="nombrebancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="paisField" template="layout/edit.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:inputText id="pais"
+                           size="70"
+                      maxlength="70"
+                          value="#{bindbHome.instance.pais}">
+                    <a:support event="onblur" reRender="paisField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="ciudadField" template="layout/edit.xhtml">
+                <ui:define name="label">Ciudad</ui:define>
+                <h:inputText id="ciudad"
+                           size="30"
+                      maxlength="30"
+                          value="#{bindbHome.instance.ciudad}">
+                    <a:support event="onblur" reRender="ciudadField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="productoField" template="layout/edit.xhtml">
+                <ui:define name="label">Producto</ui:define>
+                <h:inputText id="producto"
+                           size="40"
+                      maxlength="40"
+                          value="#{bindbHome.instance.producto}">
+                    <a:support event="onblur" reRender="productoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{bindbHome.persist}"
+                       disabled="#{!bindbHome.wired}"
+                       rendered="#{!bindbHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{bindbHome.update}"
+                       rendered="#{bindbHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{bindbHome.remove}"
+                      immediate="true"
+                       rendered="#{bindbHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Bindb.xhtml"
+                rendered="#{bindbHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty bindbFrom ? 'BindbList' : bindbFrom}.xhtml"
+                rendered="#{!bindbHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

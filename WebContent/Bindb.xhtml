@@ -1,0 +1,59 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Bindb Details</f:facet>
+
+        <s:decorate id="bin" template="layout/display.xhtml">
+            <ui:define name="label">Bin</ui:define>
+            <h:outputText value="#{bindbHome.instance.bin}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrebanco" template="layout/display.xhtml">
+            <ui:define name="label">Nombrebanco</ui:define>
+            <h:outputText value="#{bindbHome.instance.nombrebanco}"/>
+        </s:decorate>
+
+        <s:decorate id="pais" template="layout/display.xhtml">
+            <ui:define name="label">Pais</ui:define>
+            <h:outputText value="#{bindbHome.instance.pais}"/>
+        </s:decorate>
+
+        <s:decorate id="ciudad" template="layout/display.xhtml">
+            <ui:define name="label">Ciudad</ui:define>
+            <h:outputText value="#{bindbHome.instance.ciudad}"/>
+        </s:decorate>
+
+        <s:decorate id="producto" template="layout/display.xhtml">
+            <ui:define name="label">Producto</ui:define>
+            <h:outputText value="#{bindbHome.instance.producto}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/BindbEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty bindbFrom ? 'BindbList' : bindbFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

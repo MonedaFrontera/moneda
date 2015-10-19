@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+	<div >
+    <h:form id="modeloconcepto" styleClass="edit">
+		
+        <rich:panel id="Principal" header="Control de Privilegios de Usuario">
+		 <div align="left">
+
+			<s:decorate id="codconceptoField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuario:</ui:define>
+                <h:outputText id="codconcepto" value="#{usuarioHome.instance.usuario}" />
+            </s:decorate>
+            
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre:</ui:define>
+                <h:outputText id="nombre" value="#{usuarioHome.instance.nombre}" />
+            </s:decorate>
+
+
+			
+
+		
+			
+			
+		
+			
+			<rich:panel >
+				
+				<br/>
+				<br/>
+			<rich:listShuttle id="listShuttleModelo" sourceValue="#{AdministrarUsuario.rolesASeleccionar}"
+            targetValue="#{AdministrarUsuario.rolesSeleccionados}" var="r" sourceCaptionLabel="Listado de Privilegios" 
+					copyControlLabel="Asignar Privilegio" copyAllControlLabel="Asignar Todos"
+					removeAllControlLabel="Retirar Todos" removeControlLabel="Retirar Privilegio" 
+					upControlLabel="Arriba" downControlLabel="Abajo" 
+					style="width: 650px;" sourceListWidth="300" bottomControlLabel="Ultimo" topControlLabel="Primero"								
+					targetCaptionLabel="Privilegios Asociados al Usuario" listsHeight="200" targetListWidth="300" >
+					<s:convertEntity/>
+            
+            <rich:column>
+               <f:facet name="header">
+                        	<h:outputText value="Privilegios" />
+                		</f:facet>
+                		<h:outputText value="#{r.descripcion}"/>
+            </rich:column>
+            
+        </rich:listShuttle>
+			</rich:panel>
+			
+			
+			
+            
+
+
+
+            <div style="clear:both"/>
+		 </div>
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar" 
+                        action="#{AdministrarUsuario.asociarRolUsuario(usuarioHome.instance.usuario)}"/>
+
+           <s:button view="/UsuarioList.xhtml" value="Cancelar"/>
+        </div>
+    </h:form>
+   </div> 	
+
+</ui:define>
+
+</ui:composition>

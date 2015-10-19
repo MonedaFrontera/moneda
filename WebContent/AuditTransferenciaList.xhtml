@@ -1,0 +1,308 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditTransferenciaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="AuditTransferencia Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tipobolivar</ui:define>
+                <h:inputText id="tipobolivar" value="#{auditTransferenciaList.auditTransferencia.id.tipobolivar}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numcuenta</ui:define>
+                <h:inputText id="numcuenta" value="#{auditTransferenciaList.auditTransferencia.id.numcuenta}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numcuentapromotor</ui:define>
+                <h:inputText id="numcuentapromotor" value="#{auditTransferenciaList.auditTransferencia.id.numcuentapromotor}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documentopromotor</ui:define>
+                <h:inputText id="documentopromotor" value="#{auditTransferenciaList.auditTransferencia.id.documentopromotor}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod" value="#{auditTransferenciaList.auditTransferencia.id.usuariomod}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{auditTransferenciaList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/AuditTransferenciaList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">AuditTransferencia Search Results (#{empty auditTransferenciaList.resultList ? 0 : (auditTransferenciaList.paginated ? auditTransferenciaList.resultCount : auditTransferenciaList.resultList.size)})</f:facet>
+    <div class="results" id="auditTransferenciaList">
+
+    <h:outputText value="The auditTransferencia search returned no results."
+               rendered="#{empty auditTransferenciaList.resultList}"/>
+
+    <rich:dataTable id="auditTransferenciaList"
+                var="_auditTransferencia"
+              value="#{auditTransferenciaList.resultList}"
+           rendered="#{not empty auditTransferenciaList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Consecutivo"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.consecutivo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Preciobolivar"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.preciobolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.preciobolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Tipobolivar"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.tipobolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.tipobolivar}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Valorbolivar"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.valorbolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.valorbolivar}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Numcuenta"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.numcuenta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.numcuenta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Numcuentapromotor"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.numcuentapromotor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.numcuentapromotor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Documentopromotor"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.documentopromotor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.documentopromotor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Preciocompra"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.preciocompra"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.preciocompra}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Precioasesor"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.precioasesor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.precioasesor}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Usuariomod"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.usuariomod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.usuariomod}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTransferenciaList}"/>
+                    <ui:param name="propertyLabel" value="Fechamod"/>
+                    <ui:param name="propertyPath" value="auditTransferencia.id.fechamod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTransferencia.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'AuditTransferencia' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="auditTransferenciaViewId">
+                <f:param name="auditTransferenciaConsecutivo"
+                        value="#{_auditTransferencia.id.consecutivo}"/>
+                <f:param name="auditTransferenciaPreciobolivar"
+                        value="#{_auditTransferencia.id.preciobolivar}"/>
+                <f:param name="auditTransferenciaTipobolivar"
+                        value="#{_auditTransferencia.id.tipobolivar}"/>
+                <f:param name="auditTransferenciaValorbolivar"
+                        value="#{_auditTransferencia.id.valorbolivar}"/>
+                <f:param name="auditTransferenciaNumcuenta"
+                        value="#{_auditTransferencia.id.numcuenta}"/>
+                <f:param name="auditTransferenciaNumcuentapromotor"
+                        value="#{_auditTransferencia.id.numcuentapromotor}"/>
+                <f:param name="auditTransferenciaDocumentopromotor"
+                        value="#{_auditTransferencia.id.documentopromotor}"/>
+                <f:param name="auditTransferenciaPreciocompra"
+                        value="#{_auditTransferencia.id.preciocompra}"/>
+                <f:param name="auditTransferenciaPrecioasesor"
+                        value="#{_auditTransferencia.id.precioasesor}"/>
+                <f:param name="auditTransferenciaUsuariomod"
+                        value="#{_auditTransferencia.id.usuariomod}"/>
+                <f:param name="auditTransferenciaFechamod"
+                        value="#{_auditTransferencia.id.fechamod}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/AuditTransferenciaEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="auditTransferenciaEdit"
+                rendered="#{empty from}">
+                <f:param name="auditTransferenciaConsecutivo"
+                        value="#{_auditTransferencia.id.consecutivo}"/>
+                <f:param name="auditTransferenciaPreciobolivar"
+                        value="#{_auditTransferencia.id.preciobolivar}"/>
+                <f:param name="auditTransferenciaTipobolivar"
+                        value="#{_auditTransferencia.id.tipobolivar}"/>
+                <f:param name="auditTransferenciaValorbolivar"
+                        value="#{_auditTransferencia.id.valorbolivar}"/>
+                <f:param name="auditTransferenciaNumcuenta"
+                        value="#{_auditTransferencia.id.numcuenta}"/>
+                <f:param name="auditTransferenciaNumcuentapromotor"
+                        value="#{_auditTransferencia.id.numcuentapromotor}"/>
+                <f:param name="auditTransferenciaDocumentopromotor"
+                        value="#{_auditTransferencia.id.documentopromotor}"/>
+                <f:param name="auditTransferenciaPreciocompra"
+                        value="#{_auditTransferencia.id.preciocompra}"/>
+                <f:param name="auditTransferenciaPrecioasesor"
+                        value="#{_auditTransferencia.id.precioasesor}"/>
+                <f:param name="auditTransferenciaUsuariomod"
+                        value="#{_auditTransferencia.id.usuariomod}"/>
+                <f:param name="auditTransferenciaFechamod"
+                        value="#{_auditTransferencia.id.fechamod}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/AuditTransferenciaList.xhtml"
+            rendered="#{auditTransferenciaList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/AuditTransferenciaList.xhtml"
+            rendered="#{auditTransferenciaList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{auditTransferenciaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AuditTransferenciaList.xhtml"
+            rendered="#{auditTransferenciaList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{auditTransferenciaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AuditTransferenciaList.xhtml"
+            rendered="#{auditTransferenciaList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{auditTransferenciaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AuditTransferenciaEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create auditTransferencia">
+            <f:param name="auditTransferenciaConsecutivo"/>
+            <f:param name="auditTransferenciaPreciobolivar"/>
+            <f:param name="auditTransferenciaTipobolivar"/>
+            <f:param name="auditTransferenciaValorbolivar"/>
+            <f:param name="auditTransferenciaNumcuenta"/>
+            <f:param name="auditTransferenciaNumcuentapromotor"/>
+            <f:param name="auditTransferenciaDocumentopromotor"/>
+            <f:param name="auditTransferenciaPreciocompra"/>
+            <f:param name="auditTransferenciaPrecioasesor"/>
+            <f:param name="auditTransferenciaUsuariomod"/>
+            <f:param name="auditTransferenciaFechamod"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,62 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Clasetarjeta Details</f:facet>
+
+        <s:decorate id="codbanco" template="layout/display.xhtml">
+            <ui:define name="label">Codbanco</ui:define>
+            <h:outputText value="#{clasetarjetaHome.instance.id.codbanco}"/>
+        </s:decorate>
+        <s:decorate id="codfranquicia" template="layout/display.xhtml">
+            <ui:define name="label">Codfranquicia</ui:define>
+            <h:outputText value="#{clasetarjetaHome.instance.id.codfranquicia}"/>
+        </s:decorate>
+        <s:decorate id="clase" template="layout/display.xhtml">
+            <ui:define name="label">Clase</ui:define>
+            <h:outputText value="#{clasetarjetaHome.instance.id.clase}"/>
+        </s:decorate>
+
+        <s:decorate id="nombretipo" template="layout/display.xhtml">
+            <ui:define name="label">Nombretipo</ui:define>
+            <h:outputText value="#{clasetarjetaHome.instance.nombretipo}"/>
+        </s:decorate>
+
+        <s:decorate id="diastransaccion" template="layout/display.xhtml">
+            <ui:define name="label">Diastransaccion</ui:define>
+            <h:outputText value="#{clasetarjetaHome.instance.diastransaccion}"/>
+        </s:decorate>
+
+        <s:decorate id="diasdeposito" template="layout/display.xhtml">
+            <ui:define name="label">Diasdeposito</ui:define>
+            <h:outputText value="#{clasetarjetaHome.instance.diasdeposito}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ClasetarjetaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty clasetarjetaFrom ? 'ClasetarjetaList' : clasetarjetaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

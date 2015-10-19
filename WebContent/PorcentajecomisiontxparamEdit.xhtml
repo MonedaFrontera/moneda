@@ -1,0 +1,308 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="porcentajecomisiontxparam" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{porcentajecomisiontxparamHome.managed ? 'Edit' : 'Add'} Porcentajecomisiontxparam</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{porcentajecomisiontxparamHome.managed}"
+                          value="#{porcentajecomisiontxparamHome.instance.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+
+
+
+            <s:decorate id="tipocupoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipocupo</ui:define>
+                <h:inputText id="tipocupo"
+                           size="1"
+                      maxlength="1"
+                          value="#{porcentajecomisiontxparamHome.instance.tipocupo}">
+                    <a:support event="onblur" reRender="tipocupoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{porcentajecomisiontxparamHome.instance.porcentaje}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeTacField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje tac</ui:define>
+                <h:inputText id="porcentajeTac"
+                          value="#{porcentajecomisiontxparamHome.instance.porcentajeTac}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeTacField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                          value="#{porcentajecomisiontxparamHome.instance.fechainicio}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{porcentajecomisiontxparamHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{porcentajecomisiontxparamHome.persist}"
+                       disabled="#{!porcentajecomisiontxparamHome.wired}"
+                       rendered="#{!porcentajecomisiontxparamHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{porcentajecomisiontxparamHome.update}"
+                       rendered="#{porcentajecomisiontxparamHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{porcentajecomisiontxparamHome.remove}"
+                      immediate="true"
+                       rendered="#{porcentajecomisiontxparamHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Porcentajecomisiontxparam.xhtml"
+                rendered="#{porcentajecomisiontxparamHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty porcentajecomisiontxparamFrom ? 'PorcentajecomisiontxparamList' : porcentajecomisiontxparamFrom}.xhtml"
+                rendered="#{!porcentajecomisiontxparamHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Franquicia">
+    <div class="association" id="franquiciaParent">
+
+        <h:outputText value="There is no franquicia associated with this porcentajecomisiontxparam."
+                   rendered="#{porcentajecomisiontxparamHome.instance.franquicia == null}"/>
+
+        <rich:dataTable var="_franquicia"
+                   value="#{porcentajecomisiontxparamHome.instance.franquicia}"
+                rendered="#{porcentajecomisiontxparamHome.instance.franquicia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="franquiciaTable">
+            <h:column>
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrefranquicia</f:facet>
+                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajecomisiontxparamHome.instance.franquicia != null ? 'changeParent' : 'selectParent'}" value="#{porcentajecomisiontxparamHome.instance.franquicia != null ? 'Change' : 'Select'} franquicia"
+                       view="/FranquiciaList.xhtml">
+                <f:param name="from" value="PorcentajecomisiontxparamEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Pais">
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this porcentajecomisiontxparam."
+                   rendered="#{porcentajecomisiontxparamHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{porcentajecomisiontxparamHome.instance.pais}"
+                rendered="#{porcentajecomisiontxparamHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Paisiso codigopais</f:facet>
+                <h:outputText value="#{_pais.paisiso.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajecomisiontxparamHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{porcentajecomisiontxparamHome.instance.pais != null ? 'Change' : 'Select'} pais"
+                       view="/PaisList.xhtml">
+                <f:param name="from" value="PorcentajecomisiontxparamEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Establecimiento">
+    <div class="association" id="establecimientoParent">
+
+        <h:outputText value="There is no establecimiento associated with this porcentajecomisiontxparam."
+                   rendered="#{porcentajecomisiontxparamHome.instance.establecimiento == null}"/>
+
+        <rich:dataTable var="_establecimiento"
+                   value="#{porcentajecomisiontxparamHome.instance.establecimiento}"
+                rendered="#{porcentajecomisiontxparamHome.instance.establecimiento != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="establecimientoTable">
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pais codigopais</f:facet>
+                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Empresa nit</f:facet>
+                <h:outputText value="#{_establecimiento.empresa.nit}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Bancocol codbanco</f:facet>
+                <h:outputText value="#{_establecimiento.bancocol.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajecomisiontxparamHome.instance.establecimiento != null ? 'changeParent' : 'selectParent'}" value="#{porcentajecomisiontxparamHome.instance.establecimiento != null ? 'Change' : 'Select'} establecimiento"
+                       view="/EstablecimientoList.xhtml">
+                <f:param name="from" value="PorcentajecomisiontxparamEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Banco">
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this porcentajecomisiontxparam."
+                   rendered="#{porcentajecomisiontxparamHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{porcentajecomisiontxparamHome.instance.banco}"
+                rendered="#{porcentajecomisiontxparamHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_banco.activo}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajecomisiontxparamHome.instance.banco != null ? 'changeParent' : 'selectParent'}" value="#{porcentajecomisiontxparamHome.instance.banco != null ? 'Change' : 'Select'} banco"
+                       view="/BancoList.xhtml">
+                <f:param name="from" value="PorcentajecomisiontxparamEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

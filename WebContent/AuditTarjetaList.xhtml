@@ -1,0 +1,396 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditTarjetaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="AuditTarjeta Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta" value="#{auditTarjetaList.auditTarjeta.id.numerotarjeta}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Bancoemisor</ui:define>
+                <h:inputText id="bancoemisor" value="#{auditTarjetaList.auditTarjeta.id.bancoemisor}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:inputText id="franquicia" value="#{auditTarjetaList.auditTarjeta.id.franquicia}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{auditTarjetaList.auditTarjeta.id.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Fechavencimiento</ui:define>
+                <h:inputText id="fechavencimiento" value="#{auditTarjetaList.auditTarjeta.id.fechavencimiento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codseguridad</ui:define>
+                <h:inputText id="codseguridad" value="#{auditTarjetaList.auditTarjeta.id.codseguridad}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText id="tarjetahabiente" value="#{auditTarjetaList.auditTarjeta.id.tarjetahabiente}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Direcciontarjetahabiente</ui:define>
+                <h:inputText id="direcciontarjetahabiente" value="#{auditTarjetaList.auditTarjeta.id.direcciontarjetahabiente}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cedulatarjetahabiente</ui:define>
+                <h:inputText id="cedulatarjetahabiente" value="#{auditTarjetaList.auditTarjeta.id.cedulatarjetahabiente}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Telefonotarjetahabiente</ui:define>
+                <h:inputText id="telefonotarjetahabiente" value="#{auditTarjetaList.auditTarjeta.id.telefonotarjetahabiente}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod" value="#{auditTarjetaList.auditTarjeta.id.usuariomod}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{auditTarjetaList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/AuditTarjetaList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">AuditTarjeta Search Results (#{empty auditTarjetaList.resultList ? 0 : (auditTarjetaList.paginated ? auditTarjetaList.resultCount : auditTarjetaList.resultList.size)})</f:facet>
+    <div class="results" id="auditTarjetaList">
+
+    <h:outputText value="The auditTarjeta search returned no results."
+               rendered="#{empty auditTarjetaList.resultList}"/>
+
+    <rich:dataTable id="auditTarjetaList"
+                var="_auditTarjeta"
+              value="#{auditTarjetaList.resultList}"
+           rendered="#{not empty auditTarjetaList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Numerotarjeta"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.numerotarjeta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Bancoemisor"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.bancoemisor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.bancoemisor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Franquicia"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.franquicia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.franquicia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Limite"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.limite"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.limite}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Fechainicio"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.fechainicio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Fechafin"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.fechafin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Fechavencimiento"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.fechavencimiento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.fechavencimiento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Codseguridad"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.codseguridad"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.codseguridad}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Tarjetahabiente"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.tarjetahabiente"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.tarjetahabiente}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Direcciontarjetahabiente"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.direcciontarjetahabiente"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.direcciontarjetahabiente}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Cedulatarjetahabiente"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.cedulatarjetahabiente"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.cedulatarjetahabiente}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Telefonotarjetahabiente"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.telefonotarjetahabiente"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.telefonotarjetahabiente}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Fechamod"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.fechamod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{auditTarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Usuariomod"/>
+                    <ui:param name="propertyPath" value="auditTarjeta.id.usuariomod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_auditTarjeta.id.usuariomod}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'AuditTarjeta' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="auditTarjetaViewId">
+                <f:param name="auditTarjetaNumerotarjeta"
+                        value="#{_auditTarjeta.id.numerotarjeta}"/>
+                <f:param name="auditTarjetaBancoemisor"
+                        value="#{_auditTarjeta.id.bancoemisor}"/>
+                <f:param name="auditTarjetaFranquicia"
+                        value="#{_auditTarjeta.id.franquicia}"/>
+                <f:param name="auditTarjetaDocumento"
+                        value="#{_auditTarjeta.id.documento}"/>
+                <f:param name="auditTarjetaLimite"
+                        value="#{_auditTarjeta.id.limite}"/>
+                <f:param name="auditTarjetaFechainicio"
+                        value="#{_auditTarjeta.id.fechainicio}"/>
+                <f:param name="auditTarjetaFechafin"
+                        value="#{_auditTarjeta.id.fechafin}"/>
+                <f:param name="auditTarjetaFechavencimiento"
+                        value="#{_auditTarjeta.id.fechavencimiento}"/>
+                <f:param name="auditTarjetaCodseguridad"
+                        value="#{_auditTarjeta.id.codseguridad}"/>
+                <f:param name="auditTarjetaTarjetahabiente"
+                        value="#{_auditTarjeta.id.tarjetahabiente}"/>
+                <f:param name="auditTarjetaDirecciontarjetahabiente"
+                        value="#{_auditTarjeta.id.direcciontarjetahabiente}"/>
+                <f:param name="auditTarjetaCedulatarjetahabiente"
+                        value="#{_auditTarjeta.id.cedulatarjetahabiente}"/>
+                <f:param name="auditTarjetaTelefonotarjetahabiente"
+                        value="#{_auditTarjeta.id.telefonotarjetahabiente}"/>
+                <f:param name="auditTarjetaFechamod"
+                        value="#{_auditTarjeta.id.fechamod}"/>
+                <f:param name="auditTarjetaUsuariomod"
+                        value="#{_auditTarjeta.id.usuariomod}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/AuditTarjetaEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="auditTarjetaEdit"
+                rendered="#{empty from}">
+                <f:param name="auditTarjetaNumerotarjeta"
+                        value="#{_auditTarjeta.id.numerotarjeta}"/>
+                <f:param name="auditTarjetaBancoemisor"
+                        value="#{_auditTarjeta.id.bancoemisor}"/>
+                <f:param name="auditTarjetaFranquicia"
+                        value="#{_auditTarjeta.id.franquicia}"/>
+                <f:param name="auditTarjetaDocumento"
+                        value="#{_auditTarjeta.id.documento}"/>
+                <f:param name="auditTarjetaLimite"
+                        value="#{_auditTarjeta.id.limite}"/>
+                <f:param name="auditTarjetaFechainicio"
+                        value="#{_auditTarjeta.id.fechainicio}"/>
+                <f:param name="auditTarjetaFechafin"
+                        value="#{_auditTarjeta.id.fechafin}"/>
+                <f:param name="auditTarjetaFechavencimiento"
+                        value="#{_auditTarjeta.id.fechavencimiento}"/>
+                <f:param name="auditTarjetaCodseguridad"
+                        value="#{_auditTarjeta.id.codseguridad}"/>
+                <f:param name="auditTarjetaTarjetahabiente"
+                        value="#{_auditTarjeta.id.tarjetahabiente}"/>
+                <f:param name="auditTarjetaDirecciontarjetahabiente"
+                        value="#{_auditTarjeta.id.direcciontarjetahabiente}"/>
+                <f:param name="auditTarjetaCedulatarjetahabiente"
+                        value="#{_auditTarjeta.id.cedulatarjetahabiente}"/>
+                <f:param name="auditTarjetaTelefonotarjetahabiente"
+                        value="#{_auditTarjeta.id.telefonotarjetahabiente}"/>
+                <f:param name="auditTarjetaFechamod"
+                        value="#{_auditTarjeta.id.fechamod}"/>
+                <f:param name="auditTarjetaUsuariomod"
+                        value="#{_auditTarjeta.id.usuariomod}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/AuditTarjetaList.xhtml"
+            rendered="#{auditTarjetaList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/AuditTarjetaList.xhtml"
+            rendered="#{auditTarjetaList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{auditTarjetaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AuditTarjetaList.xhtml"
+            rendered="#{auditTarjetaList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{auditTarjetaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/AuditTarjetaList.xhtml"
+            rendered="#{auditTarjetaList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{auditTarjetaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AuditTarjetaEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create auditTarjeta">
+            <f:param name="auditTarjetaNumerotarjeta"/>
+            <f:param name="auditTarjetaBancoemisor"/>
+            <f:param name="auditTarjetaFranquicia"/>
+            <f:param name="auditTarjetaDocumento"/>
+            <f:param name="auditTarjetaLimite"/>
+            <f:param name="auditTarjetaFechainicio"/>
+            <f:param name="auditTarjetaFechafin"/>
+            <f:param name="auditTarjetaFechavencimiento"/>
+            <f:param name="auditTarjetaCodseguridad"/>
+            <f:param name="auditTarjetaTarjetahabiente"/>
+            <f:param name="auditTarjetaDirecciontarjetahabiente"/>
+            <f:param name="auditTarjetaCedulatarjetahabiente"/>
+            <f:param name="auditTarjetaTelefonotarjetahabiente"/>
+            <f:param name="auditTarjetaFechamod"/>
+            <f:param name="auditTarjetaUsuariomod"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

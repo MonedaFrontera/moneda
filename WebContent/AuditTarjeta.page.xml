@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="auditTarjetaFrom"/>
+   <param name="auditTarjetaNumerotarjeta" value="#{auditTarjetaHome.auditTarjetaId.numerotarjeta}"/>
+   <param name="auditTarjetaBancoemisor" value="#{auditTarjetaHome.auditTarjetaId.bancoemisor}"/>
+   <param name="auditTarjetaFranquicia" value="#{auditTarjetaHome.auditTarjetaId.franquicia}"/>
+   <param name="auditTarjetaDocumento" value="#{auditTarjetaHome.auditTarjetaId.documento}"/>
+   <param name="auditTarjetaLimite" value="#{auditTarjetaHome.auditTarjetaId.limite}"/>
+   <param name="auditTarjetaFechainicio" value="#{auditTarjetaHome.auditTarjetaId.fechainicio}"/>
+   <param name="auditTarjetaFechafin" value="#{auditTarjetaHome.auditTarjetaId.fechafin}"/>
+   <param name="auditTarjetaFechavencimiento" value="#{auditTarjetaHome.auditTarjetaId.fechavencimiento}"/>
+   <param name="auditTarjetaCodseguridad" value="#{auditTarjetaHome.auditTarjetaId.codseguridad}"/>
+   <param name="auditTarjetaTarjetahabiente" value="#{auditTarjetaHome.auditTarjetaId.tarjetahabiente}"/>
+   <param name="auditTarjetaDirecciontarjetahabiente" value="#{auditTarjetaHome.auditTarjetaId.direcciontarjetahabiente}"/>
+   <param name="auditTarjetaCedulatarjetahabiente" value="#{auditTarjetaHome.auditTarjetaId.cedulatarjetahabiente}"/>
+   <param name="auditTarjetaTelefonotarjetahabiente" value="#{auditTarjetaHome.auditTarjetaId.telefonotarjetahabiente}"/>
+   <param name="auditTarjetaFechamod" value="#{auditTarjetaHome.auditTarjetaId.fechamod}"/>
+   <param name="auditTarjetaUsuariomod" value="#{auditTarjetaHome.auditTarjetaId.usuariomod}"/>
+
+
+</page>

@@ -1,0 +1,103 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="franquiciaestablecimiento" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{franquiciaestablecimientoHome.managed ? 'Editar' : 'Agregar'} Franquicia a Establecimiento</f:facet>
+
+<s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Establecimiento</ui:define>
+                <h:inputText value="#{AdministrarGravamen.sugestion}" id="name" 
+                disabled="#{gravamenestablecimientoFrom=='EstablecimientoEdit'}"
+                styleClass="textBox" size="50" >
+                <a:support event="onblur" action="#{AdministrarGravamen.ubicarEstablecimiento()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                rendered="#{gravamenestablecimientoFrom!='Establecimiento'}"
+                    onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
+                    alt="" />
+				<rich:suggestionbox id="suggestionBoxId" for="name"
+                                        suggestionAction="#{AdministrarGravamen.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+                
+            </s:decorate>
+
+            <s:decorate id="franquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:selectOneMenu id="franquiciaSel" value="#{franquiciaestablecimientoHome.instance.franquicia}" required="true" >
+			<s:selectItems value="#{franquiciaList.resultList}" var="franquicia" label="#{franquicia.nombrefranquicia}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="franquiciaField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{franquiciaestablecimientoHome.instance.porcentaje}"
+                           size="10">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarGravamen.guardarFranquiciaEst()}"
+                       rendered="#{!franquiciaestablecimientoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{franquiciaestablecimientoHome.update}"
+                       rendered="#{franquiciaestablecimientoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{franquiciaestablecimientoHome.remove}"
+                      immediate="true"
+                       rendered="#{franquiciaestablecimientoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/EstablecimientoEdit.xhtml"
+                rendered="#{franquiciaestablecimientoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty franquiciaestablecimientoFrom ? 'EstablecimientoEdit' : franquiciaestablecimientoFrom}.xhtml"
+                rendered="#{!franquiciaestablecimientoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

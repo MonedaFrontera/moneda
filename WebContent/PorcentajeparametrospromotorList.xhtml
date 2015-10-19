@@ -1,0 +1,271 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="porcentajeparametrospromotorSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Porcentajeparametrospromotor Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{porcentajeparametrospromotorList.porcentajeparametrospromotor.id.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco" value="#{porcentajeparametrospromotorList.porcentajeparametrospromotor.id.codbanco}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codpais</ui:define>
+                <h:inputText id="codpais" value="#{porcentajeparametrospromotorList.porcentajeparametrospromotor.id.codpais}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codfranquicia</ui:define>
+                <h:inputText id="codfranquicia" value="#{porcentajeparametrospromotorList.porcentajeparametrospromotor.id.codfranquicia}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{porcentajeparametrospromotorList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/PorcentajeparametrospromotorList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Porcentajeparametrospromotor Search Results (#{empty porcentajeparametrospromotorList.resultList ? 0 : (porcentajeparametrospromotorList.paginated ? porcentajeparametrospromotorList.resultCount : porcentajeparametrospromotorList.resultList.size)})</f:facet>
+    <div class="results" id="porcentajeparametrospromotorList">
+
+    <h:outputText value="The porcentajeparametrospromotor search returned no results."
+               rendered="#{empty porcentajeparametrospromotorList.resultList}"/>
+
+    <rich:dataTable id="porcentajeparametrospromotorList"
+                var="_porcentajeparametrospromotor"
+              value="#{porcentajeparametrospromotorList.resultList}"
+           rendered="#{not empty porcentajeparametrospromotorList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.id.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.id.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Codbanco"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.id.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.id.codbanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Codpais"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.id.codpais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.id.codpais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Codfranquicia"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.id.codfranquicia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.id.codfranquicia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Fechainicio"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.id.fechainicio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Promotor documento"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.promotor.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.promotor.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Franquicia codfranquicia"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.franquicia.codfranquicia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.franquicia.codfranquicia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Pais codigopais"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.pais.codigopais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.pais.codigopais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Banco codbanco"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.banco.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.banco.codbanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Fechafin"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.fechafin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{porcentajeparametrospromotorList}"/>
+                    <ui:param name="propertyLabel" value="Porcentaje"/>
+                    <ui:param name="propertyPath" value="porcentajeparametrospromotor.porcentaje"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_porcentajeparametrospromotor.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Porcentajeparametrospromotor' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="porcentajeparametrospromotorViewId">
+                <f:param name="porcentajeparametrospromotorDocumento"
+                        value="#{_porcentajeparametrospromotor.id.documento}"/>
+                <f:param name="porcentajeparametrospromotorCodbanco"
+                        value="#{_porcentajeparametrospromotor.id.codbanco}"/>
+                <f:param name="porcentajeparametrospromotorCodpais"
+                        value="#{_porcentajeparametrospromotor.id.codpais}"/>
+                <f:param name="porcentajeparametrospromotorCodfranquicia"
+                        value="#{_porcentajeparametrospromotor.id.codfranquicia}"/>
+                <f:param name="porcentajeparametrospromotorFechainicio"
+                        value="#{_porcentajeparametrospromotor.id.fechainicio}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/PorcentajeparametrospromotorEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="porcentajeparametrospromotorEdit"
+                rendered="#{empty from}">
+                <f:param name="porcentajeparametrospromotorDocumento"
+                        value="#{_porcentajeparametrospromotor.id.documento}"/>
+                <f:param name="porcentajeparametrospromotorCodbanco"
+                        value="#{_porcentajeparametrospromotor.id.codbanco}"/>
+                <f:param name="porcentajeparametrospromotorCodpais"
+                        value="#{_porcentajeparametrospromotor.id.codpais}"/>
+                <f:param name="porcentajeparametrospromotorCodfranquicia"
+                        value="#{_porcentajeparametrospromotor.id.codfranquicia}"/>
+                <f:param name="porcentajeparametrospromotorFechainicio"
+                        value="#{_porcentajeparametrospromotor.id.fechainicio}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PorcentajeparametrospromotorList.xhtml"
+            rendered="#{porcentajeparametrospromotorList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PorcentajeparametrospromotorList.xhtml"
+            rendered="#{porcentajeparametrospromotorList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{porcentajeparametrospromotorList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PorcentajeparametrospromotorList.xhtml"
+            rendered="#{porcentajeparametrospromotorList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{porcentajeparametrospromotorList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PorcentajeparametrospromotorList.xhtml"
+            rendered="#{porcentajeparametrospromotorList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{porcentajeparametrospromotorList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PorcentajeparametrospromotorEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create porcentajeparametrospromotor">
+            <f:param name="porcentajeparametrospromotorDocumento"/>
+            <f:param name="porcentajeparametrospromotorCodbanco"/>
+            <f:param name="porcentajeparametrospromotorCodpais"/>
+            <f:param name="porcentajeparametrospromotorCodfranquicia"/>
+            <f:param name="porcentajeparametrospromotorFechainicio"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

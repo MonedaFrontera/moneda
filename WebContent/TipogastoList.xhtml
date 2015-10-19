@@ -1,0 +1,140 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tipogastoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Buqueda de Tipo de Gasto" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cod Tipo Gasto</ui:define>
+                <h:inputText id="codtipogasto" value="#{tipogastoList.tipogasto.codtipogasto}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Descripcion</ui:define>
+                <h:inputText id="descripcion" value="#{tipogastoList.tipogasto.descripcion}"/>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/TipogastoList.xhtml"/>
+            <s:button id="reset" value="Limpiar" includePageParams="false"/>
+            <s:button view="/TipogastoEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Crear Tipo de Gasto">
+            <f:param name="tipogastoCodtipogasto"/>
+        </s:button>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultado de la Busqueda del Tipo de Gasto (#{empty tipogastoList.resultList ? 0 : (tipogastoList.paginated ? tipogastoList.resultCount : tipogastoList.resultList.size)})</f:facet>
+    <div class="results" id="tipogastoList">
+
+    <h:outputText value="El tipo de gasto no retorno ningun resultado."
+               rendered="#{empty tipogastoList.resultList}"/>
+
+    <rich:dataTable id="tipogastoList"
+                var="_tipogasto"
+              value="#{tipogastoList.resultList}"
+           rendered="#{not empty tipogastoList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tipogastoList}"/>
+                    <ui:param name="propertyLabel" value="Cod Tipo de Gasto"/>
+                    <ui:param name="propertyPath" value="tipogasto.codtipogasto"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tipogasto.codtipogasto}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tipogastoList}"/>
+                    <ui:param name="propertyLabel" value="Descripcion"/>
+                    <ui:param name="propertyPath" value="tipogasto.descripcion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tipogasto.descripcion}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tipogastoList}"/>
+                    <ui:param name="propertyLabel" value="Tipo"/>
+                    <ui:param name="propertyPath" value="tipogasto.tipo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText style= "text-aling:center; display:block" value="Credito" rendered= "#{_tipogasto.tipo == '1'}"/>
+            <h:outputText style= "text-aling:center; display:block" value="Debito"  rendered= "#{_tipogasto.tipo == '2'}" />
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            
+            <s:link view="/TipogastoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="tipogastoEdit"
+                rendered="#{empty from}">
+                <f:param name="tipogastoCodtipogasto"
+                        value="#{_tipogasto.codtipogasto}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TipogastoList.xhtml"
+            rendered="#{tipogastoList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TipogastoList.xhtml"
+            rendered="#{tipogastoList.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{tipogastoList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TipogastoList.xhtml"
+            rendered="#{tipogastoList.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{tipogastoList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TipogastoList.xhtml"
+            rendered="#{tipogastoList.nextExists}"
+               value="Ultima #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{tipogastoList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    
+
+</ui:define>
+
+</ui:composition>

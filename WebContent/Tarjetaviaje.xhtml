@@ -1,0 +1,230 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Tarjetaviaje Details</f:facet>
+
+        <s:decorate id="numerotarjeta" template="layout/display.xhtml">
+            <ui:define name="label">Numerotarjeta</ui:define>
+            <h:outputText value="#{tarjetaviajeHome.instance.id.numerotarjeta}"/>
+        </s:decorate>
+        <s:decorate id="consecutivoviaje" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivoviaje</ui:define>
+            <h:outputText value="#{tarjetaviajeHome.instance.id.consecutivoviaje}"/>
+        </s:decorate>
+
+        <s:decorate id="estado" template="layout/display.xhtml">
+            <ui:define name="label">Estado</ui:define>
+            <h:outputText value="#{tarjetaviajeHome.instance.estado}"/>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{tarjetaviajeHome.instance.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{tarjetaviajeHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TarjetaviajeEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty tarjetaviajeFrom ? 'TarjetaviajeList' : tarjetaviajeFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Viaje</h:panelGroup>
+        </f:facet>
+    <div class="association" id="viajeParent">
+
+        <h:outputText value="There is no viaje associated with this tarjetaviaje."
+                   rendered="#{tarjetaviajeHome.instance.viaje == null}"/>
+
+        <rich:dataTable var="_viaje"
+                   value="#{tarjetaviajeHome.instance.viaje}"
+                rendered="#{tarjetaviajeHome.instance.viaje != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="viajeTable">
+            <h:column>
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_viaje.consecutivo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_viaje.fechainicio}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_viaje.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cupoinicialviajero</f:facet>
+                <h:outputText value="#{_viaje.cupoinicialviajero}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cupoinicialinternet</f:facet>
+                <h:outputText value="#{_viaje.cupoinicialinternet}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cupoviajero</f:facet>
+                <h:outputText value="#{_viaje.cupoviajero}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cupointernet</f:facet>
+                <h:outputText value="#{_viaje.cupointernet}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_viaje.cedulatarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_viaje.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_viaje.usuariomod}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewviaje"
+                     value="View"
+                      view="/Viaje.xhtml">
+                    <f:param name="viajeConsecutivo"
+                           value="#{_viaje.consecutivo}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjeta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="tarjetaParent">
+
+        <h:outputText value="There is no tarjeta associated with this tarjetaviaje."
+                   rendered="#{tarjetaviajeHome.instance.tarjeta == null}"/>
+
+        <rich:dataTable var="_tarjeta"
+                   value="#{tarjetaviajeHome.instance.tarjeta}"
+                rendered="#{tarjetaviajeHome.instance.tarjeta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tarjetaTable">
+            <h:column>
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_tarjeta.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Franquicia codfranquicia</f:facet>
+                <h:outputText value="#{_tarjeta.franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_tarjeta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewtarjeta"
+                     value="View"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                           value="#{_tarjeta.numerotarjeta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

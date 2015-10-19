@@ -1,0 +1,86 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="bancobin" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{bancobinHome.managed ? 'Edit' : 'Add'} Bancobin</f:facet>
+
+
+            <s:decorate id="binField" template="layout/edit.xhtml">
+                <ui:define name="label">Bin</ui:define>
+                <h:inputText id="bin"
+                       disabled="#{bancobinHome.managed}"
+                       required="true"
+                           size="8"
+                      maxlength="8"
+                          value="#{bancobinHome.instance.bin}">
+                    <a:support event="onblur" reRender="binField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                           size="3"
+                      maxlength="3"
+                          value="#{bancobinHome.instance.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{bancobinHome.persist}"
+                       disabled="#{!bancobinHome.wired}"
+                       rendered="#{!bancobinHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{bancobinHome.update}"
+                       rendered="#{bancobinHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{bancobinHome.remove}"
+                      immediate="true"
+                       rendered="#{bancobinHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Bancobin.xhtml"
+                rendered="#{bancobinHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty bancobinFrom ? 'BancobinList' : bancobinFrom}.xhtml"
+                rendered="#{!bancobinHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

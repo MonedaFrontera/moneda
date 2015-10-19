@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="gestorFrom"/>
+   <param name="gestorDocumento" value="#{gestorHome.gestorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+
+
+</page>

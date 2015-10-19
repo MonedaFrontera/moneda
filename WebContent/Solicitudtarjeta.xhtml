@@ -1,0 +1,198 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Solicitudtarjeta Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{solicitudtarjetaHome.instance.id.consecutivo}"/>
+        </s:decorate>
+        <s:decorate id="numerotarjeta" template="layout/display.xhtml">
+            <ui:define name="label">Numerotarjeta</ui:define>
+            <h:outputText value="#{solicitudtarjetaHome.instance.id.numerotarjeta}"/>
+        </s:decorate>
+
+        <s:decorate id="valor" template="layout/display.xhtml">
+            <ui:define name="label">Valor</ui:define>
+            <h:outputText value="#{solicitudtarjetaHome.instance.valor}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/SolicitudtarjetaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty solicitudtarjetaFrom ? 'SolicitudtarjetaList' : solicitudtarjetaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Solicitudtransferencia</h:panelGroup>
+        </f:facet>
+    <div class="association" id="solicitudtransferenciaParent">
+
+        <h:outputText value="There is no solicitudtransferencia associated with this solicitudtarjeta."
+                   rendered="#{solicitudtarjetaHome.instance.solicitudtransferencia == null}"/>
+
+        <rich:dataTable var="_solicitudtransferencia"
+                   value="#{solicitudtarjetaHome.instance.solicitudtransferencia}"
+                rendered="#{solicitudtarjetaHome.instance.solicitudtransferencia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="solicitudtransferenciaTable">
+            <h:column>
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_solicitudtransferencia.consecutivo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Depositos</f:facet>
+                <h:outputText value="#{_solicitudtransferencia.depositos}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_solicitudtransferencia.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_solicitudtransferencia.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Saldoanterior</f:facet>
+                <h:outputText value="#{_solicitudtransferencia.saldoanterior}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_solicitudtransferencia.valor}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewsolicitudtransferencia"
+                     value="View"
+                      view="/Solicitudtransferencia.xhtml">
+                    <f:param name="solicitudtransferenciaConsecutivo"
+                           value="#{_solicitudtransferencia.consecutivo}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjeta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="tarjetaParent">
+
+        <h:outputText value="There is no tarjeta associated with this solicitudtarjeta."
+                   rendered="#{solicitudtarjetaHome.instance.tarjeta == null}"/>
+
+        <rich:dataTable var="_tarjeta"
+                   value="#{solicitudtarjetaHome.instance.tarjeta}"
+                rendered="#{solicitudtarjetaHome.instance.tarjeta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tarjetaTable">
+            <h:column>
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_tarjeta.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Franquicia codfranquicia</f:facet>
+                <h:outputText value="#{_tarjeta.franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_tarjeta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewtarjeta"
+                     value="View"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                           value="#{_tarjeta.numerotarjeta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

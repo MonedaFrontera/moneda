@@ -1,0 +1,222 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditTarjeta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{auditTarjetaHome.managed ? 'Edit' : 'Add'} Audit tarjeta</f:facet>
+
+
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="16"
+                         value="#{auditTarjetaHome.instance.id.numerotarjeta}">
+                    <a:support event="onblur" reRender="numerotarjetaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="bancoemisorField" template="layout/edit.xhtml">
+                <ui:define name="label">Bancoemisor</ui:define>
+                <h:inputText id="bancoemisor"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="3"
+                     maxlength="3"
+                         value="#{auditTarjetaHome.instance.id.bancoemisor}">
+                    <a:support event="onblur" reRender="bancoemisorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="franquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:inputText id="franquicia"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{auditTarjetaHome.instance.id.franquicia}">
+                    <a:support event="onblur" reRender="franquiciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditTarjetaHome.instance.id.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="limiteField" template="layout/edit.xhtml">
+                <ui:define name="label">Limite</ui:define>
+                <h:inputText id="limite"
+                       required="true"
+                       disabled="#{auditTarjetaHome.managed}"
+                          value="#{auditTarjetaHome.instance.id.limite}">
+                    <a:support event="onblur" reRender="limiteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                          value="#{auditTarjetaHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{auditTarjetaHome.instance.id.fechafin}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="fechavencimientoField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechavencimiento</ui:define>
+                <h:inputText id="fechavencimiento"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="5"
+                     maxlength="5"
+                         value="#{auditTarjetaHome.instance.id.fechavencimiento}">
+                    <a:support event="onblur" reRender="fechavencimientoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codseguridadField" template="layout/edit.xhtml">
+                <ui:define name="label">Codseguridad</ui:define>
+                <h:inputText id="codseguridad"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="4"
+                     maxlength="4"
+                         value="#{auditTarjetaHome.instance.id.codseguridad}">
+                    <a:support event="onblur" reRender="codseguridadField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="tarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText id="tarjetahabiente"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="50"
+                     maxlength="50"
+                         value="#{auditTarjetaHome.instance.id.tarjetahabiente}">
+                    <a:support event="onblur" reRender="tarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="direcciontarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Direcciontarjetahabiente</ui:define>
+                <h:inputText id="direcciontarjetahabiente"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="100"
+                     maxlength="150"
+                         value="#{auditTarjetaHome.instance.id.direcciontarjetahabiente}">
+                    <a:support event="onblur" reRender="direcciontarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="cedulatarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Cedulatarjetahabiente</ui:define>
+                <h:inputText id="cedulatarjetahabiente"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditTarjetaHome.instance.id.cedulatarjetahabiente}">
+                    <a:support event="onblur" reRender="cedulatarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="telefonotarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Telefonotarjetahabiente</ui:define>
+                <h:inputText id="telefonotarjetahabiente"
+                       disabled="#{auditTarjetaHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditTarjetaHome.instance.id.telefonotarjetahabiente}">
+                    <a:support event="onblur" reRender="telefonotarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{auditTarjetaHome.instance.id.fechamod}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                       disabled="#{auditTarjetaHome.managed}"
+                          size="20"
+                     maxlength="20"
+                         value="#{auditTarjetaHome.instance.id.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{auditTarjetaHome.persist}"
+                       disabled="#{!auditTarjetaHome.wired}"
+                       rendered="#{!auditTarjetaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{auditTarjetaHome.update}"
+                       rendered="#{auditTarjetaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{auditTarjetaHome.remove}"
+                      immediate="true"
+                       rendered="#{auditTarjetaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/AuditTarjeta.xhtml"
+                rendered="#{auditTarjetaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty auditTarjetaFrom ? 'AuditTarjetaList' : auditTarjetaFrom}.xhtml"
+                rendered="#{!auditTarjetaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

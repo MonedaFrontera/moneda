@@ -1,0 +1,360 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="depositostarjetaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Busqueda de Depositos de Tarjetas" switchType="ajax">
+
+            
+            <s:decorate id="tarjetaHabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText value="#{AdministrarDeposito.tarjetahabiente}" id="nametarjeta" 
+                size="50">
+                <a:support event="onblur" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="nametarjeta"
+				                        suggestionAction="#{AdministrarDeposito.autocompletarHabiente}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4" 
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun tarjetahabiente">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+            
+            <s:decorate id="tpromotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText value="#{AdministrarDeposito.promotor}" id="namepromotor" 
+                styleClass="textBox" size="50">
+                <a:support event="onblur" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('promotorBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="promotorBoxId" for="namepromotor"
+			
+                                        suggestionAction="#{AdministrarDeposito.autocompletarPromotor}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4" 
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+            
+            <s:decorate id="tasesorField" template="layout/edit.xhtml"
+            rendered="#{!s:hasRole('Asesor')}">
+                <ui:define name="label">Asesor</ui:define>
+                <h:inputText value="#{AdministrarDeposito.asesor}" id="nameasesor" 
+                styleClass="textBox" size="50">
+                <a:support event="onblur" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('asesorBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="asesorBoxId" for="nameasesor"
+                                        suggestionAction="#{AdministrarDeposito.autocompletarAsesor}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4" 
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun asesor">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+            </s:decorate>
+            
+            
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Inicio</ui:define>
+                <rich:calendar id="fechainicio"
+                          value="#{AdministrarDeposito.fechainicio}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Final</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{AdministrarDeposito.fechafin}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+			
+			<s:decorate id="numtarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                
+                <h:inputText id="numtarjeta"
+                           size="20"
+                      maxlength="16"
+                          value="#{AdministrarDeposito.numtarjeta}">
+                    <a:support event="onblur" reRender="numtarjetaField" ajaxSingle="true"/>
+                </h:inputText>                
+            </s:decorate>
+            
+            <s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Transaccion</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{AdministrarDeposito.tipodep}">
+					<f:selectItem itemValue="" itemLabel="Seleccione"/>
+					<f:selectItem itemValue="V" itemLabel="Viajero"/>
+					<f:selectItem itemValue="I" itemLabel="Internet"/>
+					<a:support event="onchange" reRender="tipotxField" ajaxSingle="true"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+        
+        <rich:simpleTogglePanel label="Datos para automatizacion de los Depositos de Tarjeta" switchType="ajax">
+
+        	<s:decorate id="fechaprogramarField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Deposito</ui:define>
+                <rich:calendar id="fechadeposito"
+                          value="#{AdministrarDeposito.fechadeposito}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+        	
+            <s:decorate id="tipodebolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo de Bolivar</ui:define>
+                <h:selectOneRadio id="tipodebolivar" value="#{AdministrarDeposito.tipobolivar}" styleClass="radio">
+                    <f:selectItem itemLabel="Oficina" itemValue="OFI"/>
+                    <f:selectItem itemLabel="Negociado" itemValue="NEG"/>
+                </h:selectOneRadio>
+            </s:decorate>
+        </rich:simpleTogglePanel>
+        <div class="actionButtons">
+            <h:commandButton id="search" rendered="false" value="Buscar" action="/DepositostarjetaList.xhtml"/>
+            <h:commandButton id="buscar"
+                          value="Buscar"
+                         action="#{AdministrarDeposito.consultarDepositos}"
+                         reRender="panelResultado"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false"/>
+            
+            <h:commandButton id="save"
+                          value="Programar Deposito"
+                         action="#{AdministrarDeposito.programarDeposito}"
+                       disabled="false"
+                       rendered="#{!depositostarjetaHome.managed}"/> 
+                       
+             <h:commandButton id="generardepo"
+                          value="Generar Depositos"
+                         action="#{AdministrarDeposito.generarDepositos(AdministrarDeposito.depositosProgramar)}"
+                       />
+                       
+                       
+            
+        </div>
+
+    </h:form>
+	<h:form>
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultado de busqueda de depositos de tarjetas (#{empty AdministrarDeposito.depositostarjetas ? 0 : (AdministrarDeposito.depositostarjetas.size)})</f:facet>
+    <div class="results" id="depositostarjetaList">
+
+    <h:outputText value="La busqueda de deposito de tarjetas no retorno ningun resultado"
+               rendered="#{empty AdministrarDeposito.depositosProgramar}"/>
+
+    <rich:scrollableDataTable id="depositostarjetaList"
+                var="_depositostarjeta" height="150px" 
+                width="930px" 
+              value="#{AdministrarDeposito.depositosProgramar}"
+           rendered="#{not empty AdministrarDeposito.depositosProgramar}">
+
+        
+        <h:column width="200px">
+            <f:facet name="header">
+                Tarjetahabiente
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[7]}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Valor Deposito
+            </f:facet>
+            <h:inputText   size="12"
+                      maxlength="10"
+                          value="#{_depositostarjeta[4]}">
+                          <a:support event="onblur" ajaxSingle="true"/>
+                          </h:inputText>  
+        </h:column>
+        
+        <h:column style="text-align:center">
+            <f:facet name="header">
+                Programar
+            </f:facet>
+            <h:selectBooleanCheckbox value="#{_depositostarjeta[24]}" >
+            <a:support event="onclick" ajaxSingle="true"/>
+            </h:selectBooleanCheckbox>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Fecha Ultima Transaccion
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[12]}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Valor Ultima Transaccion
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[14]}">
+            <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Valor Ultimo Deposito
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[16]}">
+            <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Fecha Ultimo Deposito
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[18]}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Deposito total
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[21]}">
+            <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Saldo Internet
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[10]}">
+            <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Saldo Viajero
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[11]}">
+            <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Proximo Deposito
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[22]}"/>
+        </h:column>
+        
+
+        
+        <h:column>
+            <f:facet name="header">
+                Numero Tarjeta
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[0]}"/> 
+        </h:column> 
+        
+        <h:column>
+            <f:facet name="header">
+                Banco
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[1]}">
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Franquicia
+            </f:facet>
+            <h:outputText value="#{_depositostarjeta[3]}">
+            </h:outputText>
+        </h:column>
+        
+        
+        <rich:column styleClass="action" rendered="false">
+            <f:facet name="header">Acciones</f:facet>
+            <s:link view="/DepositostarjetaEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="depositostarjetaEdit"
+                rendered="#{s:hasRole('Editar Deposito')}">
+                <f:param name="depositostarjetaConsecutivo"
+                        value="#{_depositostarjeta[0]}"/>
+            </s:link>
+            <h:commandLink value="" 
+            	rendered="#{s:hasRole('Registrar Deposito')}"
+            	action="#{AdministrarDeposito.registrarDeposito(_depositostarjeta[0])}" >
+            	<h:graphicImage title="Registrar Deposito" style="border-style:none;" id="regDeposito" value="/img/edit.gif" />
+            </h:commandLink>
+        </rich:column>
+    </rich:scrollableDataTable>
+
+    </div>
+    </rich:panel>
+	</h:form>
+    <div class="tableControl">
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{depositostarjetaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{depositostarjetaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/DepositostarjetaList.xhtml"
+            rendered="#{depositostarjetaList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{depositostarjetaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="false">
+        <s:button view="/DepositostarjetaEdit.xhtml"
+                    id="create"
+           propagation="none"
+           rendered="#{s:hasRole('Programar Deposito')}"
+                 value="Registrar Deposito de Tarjetas">
+            <f:param name="depositostarjetaConsecutivo"/>
+        </s:button>
+        
+         
+        
+        
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

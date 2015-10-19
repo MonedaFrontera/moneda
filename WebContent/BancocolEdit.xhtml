@@ -1,0 +1,150 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="bancocol" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{bancocolHome.managed ? 'Edit' : 'Add'} Bancocol</f:facet>
+
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{bancocolHome.managed}"
+                       required="true"
+                           size="3"
+                      maxlength="3"
+                          value="#{bancocolHome.instance.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputTextarea id="nombre"
+                               cols="80"
+                               rows="3"
+                              value="#{bancocolHome.instance.nombre}"/>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{bancocolHome.persist}"
+                       disabled="#{!bancocolHome.wired}"
+                       rendered="#{!bancocolHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{bancocolHome.update}"
+                       rendered="#{bancocolHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{bancocolHome.remove}"
+                      immediate="true"
+                       rendered="#{bancocolHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Bancocol.xhtml"
+                rendered="#{bancocolHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty bancocolFrom ? 'BancocolList' : bancocolFrom}.xhtml"
+                rendered="#{!bancocolHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Establecimientos">
+        <h:form styleClass="association" id="establecimientosChildren">
+
+            <h:outputText value="There are no establecimientos associated with this bancocol."
+                       rendered="#{empty bancocolHome.establecimientos}"/>
+
+            <rich:dataTable value="#{bancocolHome.establecimientos}"
+                           var="_establecimiento"
+                      rendered="#{not empty bancocolHome.establecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="establecimientosTable">
+                <rich:column sortBy="#{_establecimiento.codigounico}">
+                    <f:facet name="header">Codigounico</f:facet>
+                    <h:outputText value="#{_establecimiento.codigounico}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.nombreestable}">
+                    <f:facet name="header">Nombreestable</f:facet>
+                    <h:outputText value="#{_establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.direccion}">
+                    <f:facet name="header">Direccion</f:facet>
+                    <h:outputText value="#{_establecimiento.direccion}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.telefono}">
+                    <f:facet name="header">Telefono</f:facet>
+                    <h:outputText value="#{_establecimiento.telefono}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_establecimiento.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.iva}">
+                    <f:facet name="header">Iva</f:facet>
+                    <h:outputText value="#{_establecimiento.iva}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.numcuenta}">
+                    <f:facet name="header">Numcuenta</f:facet>
+                    <h:outputText value="#{_establecimiento.numcuenta}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.facturar}">
+                    <f:facet name="header">Facturar</f:facet>
+                    <h:outputText value="#{_establecimiento.facturar}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{bancocolHome.managed}" id="establecimientos">
+        <div class="actionButtons">
+            <s:button id="addestablecimiento"
+                   value="Add establecimiento"
+                    view="/EstablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="bancocolCodbanco"
+                         value="#{bancocolHome.instance.codbanco}"/>
+                 <f:param name="establecimientoFrom" value="Bancocol"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

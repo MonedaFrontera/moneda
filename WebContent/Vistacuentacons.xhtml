@@ -1,0 +1,83 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Vistacuentacons Details</f:facet>
+
+        <s:decorate id="numcuenta" template="layout/display.xhtml">
+            <ui:define name="label">Numcuenta</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.numcuenta}"/>
+        </s:decorate>
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.nombre}"/>
+        </s:decorate>
+        <s:decorate id="fecha" template="layout/display.xhtml">
+            <ui:define name="label">Fecha</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.fecha}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="creditos" template="layout/display.xhtml">
+            <ui:define name="label">Creditos</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.creditos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="debitos" template="layout/display.xhtml">
+            <ui:define name="label">Debitos</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.debitos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="detalle" template="layout/display.xhtml">
+            <ui:define name="label">Detalle</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.detalle}"/>
+        </s:decorate>
+        <s:decorate id="nombrebanco" template="layout/display.xhtml">
+            <ui:define name="label">Nombrebanco</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.nombrebanco}"/>
+        </s:decorate>
+        <s:decorate id="codbanco" template="layout/display.xhtml">
+            <ui:define name="label">Codbanco</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.codbanco}"/>
+        </s:decorate>
+        <s:decorate id="saldo" template="layout/display.xhtml">
+            <ui:define name="label">Saldo</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="item" template="layout/display.xhtml">
+            <ui:define name="label">Item</ui:define>
+            <h:outputText value="#{vistacuentaconsHome.instance.id.item}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/VistacuentaconsEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty vistacuentaconsFrom ? 'VistacuentaconsList' : vistacuentaconsFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

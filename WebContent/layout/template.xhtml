@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:a="http://richfaces.org/a4j"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:rich="http://richfaces.org/rich"
+   contentType="text/html">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <title>Moneda Frontera - Asesoramiento Financiero Integral</title>
+      <link rel="shortcut icon" href="#{request.contextPath}/img/favicon.ico"/>
+      <a:loadStyle src="resource:///stylesheet/theme.xcss"/>
+      <a:loadStyle src="/stylesheet/theme.css"/>
+      <a:loadStyle src="/stylesheet/li-scroller.css"/>
+      <a:loadStyle src="/stylesheet/humanmsg.css"/>
+	  <a:loadScript src="js/jquery.js" />
+	  <a:loadScript src="js/humanmsg.js" />	  
+      <a:loadScript src="js/jquery.maskedinput.min.js" />
+	  <ui:insert name="head"/>
+      <style>
+      html{overflow:auto;}
+      </style>	
+   </head>
+   <body style="background: url(img/grd-bg-sprite.jpg) repeat-x scroll 0px -1000px #999999 "   
+        onload="#{rich:element('numerotarjeta')}.focus()">   
+   <rich:jQuery id="mskData" selector=".rich-calendar-input-o" timing="onload"
+         query="mask('99/99/9999',{placeholder:'_'})" />       
+   
+    <div style="width:1024px; border-size: 2px; background-color:#FFFFFF; margin:0 auto">
+       <div style="background-color:#FFFFFF; height:120px; font-size:14px; color:#fff; font-family:Arial; font-weight:bolder; ">
+   		<h:graphicImage style="border-style:none"
+                  id="cabeceraImg" width="1024px" height="120px" value="/img/banner.jpg" />	 
+   		</div><!-- end div banner -->
+      <ui:include src="menu.xhtml">
+         <ui:param name="projectName" value="MonedaFrontera"/>
+      </ui:include>
+      
+      <div class="body">
+      
+         <h:messages id="messages" globalOnly="true" styleClass="message"
+            errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg"
+            rendered="#{showGlobalMessages != 'false'}"/>
+
+         <ui:insert name="body"/>
+         
+      </div>
+      <div class="footer"> 
+      
+      <p>Calle 6A N 14-01 Loma de Bolivar. San José de Cúcuta - Colombia. Teléfono (057)(7) 5822620<br/>
+			Copyright © Todos los derechos reservados Terminos del Servicio Moneda Frontera<br/>
+			Contacto:contacto@monedafrontera.com</p>
+      </div><!-- end div footer -->
+      </div>
+      
+   </body>
+</html>
+</f:view>

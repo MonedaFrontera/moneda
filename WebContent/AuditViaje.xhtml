@@ -1,0 +1,81 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Audit viaje Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.consecutivo}"/>
+        </s:decorate>
+        <s:decorate id="fechainicio" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicio</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.fechainicio}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="fechafin" template="layout/display.xhtml">
+            <ui:define name="label">Fechafin</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.fechafin}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="cupoinicialviajero" template="layout/display.xhtml">
+            <ui:define name="label">Cupoinicialviajero</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.cupoinicialviajero}"/>
+        </s:decorate>
+        <s:decorate id="cupoinicialinternet" template="layout/display.xhtml">
+            <ui:define name="label">Cupoinicialinternet</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.cupoinicialinternet}"/>
+        </s:decorate>
+        <s:decorate id="cupoviajero" template="layout/display.xhtml">
+            <ui:define name="label">Cupoviajero</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.cupoviajero}"/>
+        </s:decorate>
+        <s:decorate id="cupointernet" template="layout/display.xhtml">
+            <ui:define name="label">Cupointernet</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.cupointernet}"/>
+        </s:decorate>
+        <s:decorate id="cedulatarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Cedulatarjetahabiente</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.cedulatarjetahabiente}"/>
+        </s:decorate>
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{auditViajeHome.instance.id.usuariomod}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/AuditViajeEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty auditViajeFrom ? 'AuditViajeList' : auditViajeFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

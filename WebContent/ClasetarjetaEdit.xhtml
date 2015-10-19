@@ -1,0 +1,128 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="clasetarjeta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{clasetarjetaHome.managed ? 'Edit' : 'Add'} Clasetarjeta</f:facet>
+
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{clasetarjetaHome.managed}"
+                      required="true"
+                          size="3"
+                     maxlength="3"
+                         value="#{clasetarjetaHome.instance.id.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codfranquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codfranquicia</ui:define>
+                <h:inputText id="codfranquicia"
+                       disabled="#{clasetarjetaHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{clasetarjetaHome.instance.id.codfranquicia}">
+                    <a:support event="onblur" reRender="codfranquiciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="claseField" template="layout/edit.xhtml">
+                <ui:define name="label">Clase</ui:define>
+                <h:inputText id="clase"
+                       disabled="#{clasetarjetaHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{clasetarjetaHome.instance.id.clase}">
+                    <a:support event="onblur" reRender="claseField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombretipoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombretipo</ui:define>
+                <h:inputText id="nombretipo"
+                           size="50"
+                      maxlength="50"
+                          value="#{clasetarjetaHome.instance.nombretipo}">
+                    <a:support event="onblur" reRender="nombretipoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="diastransaccionField" template="layout/edit.xhtml">
+                <ui:define name="label">Diastransaccion</ui:define>
+                <h:inputText id="diastransaccion"
+                          value="#{clasetarjetaHome.instance.diastransaccion}">
+                    <a:support event="onblur" reRender="diastransaccionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="diasdepositoField" template="layout/edit.xhtml">
+                <ui:define name="label">Diasdeposito</ui:define>
+                <h:inputText id="diasdeposito"
+                          value="#{clasetarjetaHome.instance.diasdeposito}">
+                    <a:support event="onblur" reRender="diasdepositoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{clasetarjetaHome.persist}"
+                       disabled="#{!clasetarjetaHome.wired}"
+                       rendered="#{!clasetarjetaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{clasetarjetaHome.update}"
+                       rendered="#{clasetarjetaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{clasetarjetaHome.remove}"
+                      immediate="true"
+                       rendered="#{clasetarjetaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Clasetarjeta.xhtml"
+                rendered="#{clasetarjetaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty clasetarjetaFrom ? 'ClasetarjetaList' : clasetarjetaFrom}.xhtml"
+                rendered="#{!clasetarjetaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

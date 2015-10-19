@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/AdministrativoList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{administrativoHome.wire}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+
+
+   <navigation from-action="#{administrativoHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Administrativo.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{administrativoHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Administrativo.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{administrativoHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/AdministrativoList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

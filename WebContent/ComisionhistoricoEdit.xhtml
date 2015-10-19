@@ -1,0 +1,187 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="comisionhistorico" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{comisionhistoricoHome.managed ? 'Edit' : 'Add'} Comisionhistorico</f:facet>
+
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{comisionhistoricoHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{comisionhistoricoHome.instance.id.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="true"
+                          value="#{comisionhistoricoHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{comisionhistoricoHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{comisionhistoricoHome.instance.valor}"
+                           size="12">
+                    <a:support event="onblur" reRender="valorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{comisionhistoricoHome.persist}"
+                       disabled="#{!comisionhistoricoHome.wired}"
+                       rendered="#{!comisionhistoricoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{comisionhistoricoHome.update}"
+                       rendered="#{comisionhistoricoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{comisionhistoricoHome.remove}"
+                      immediate="true"
+                       rendered="#{comisionhistoricoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Comisionhistorico.xhtml"
+                rendered="#{comisionhistoricoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty comisionhistoricoFrom ? 'ComisionhistoricoList' : comisionhistoricoFrom}.xhtml"
+                rendered="#{!comisionhistoricoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Personal *" labelClass="required">
+    <div class="association" id="personalParent">
+
+        <h:outputText value="There is no personal associated with this comisionhistorico."
+                   rendered="#{comisionhistoricoHome.instance.personal == null}"/>
+
+        <rich:dataTable var="_personal"
+                   value="#{comisionhistoricoHome.instance.personal}"
+                rendered="#{comisionhistoricoHome.instance.personal != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="personalTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cargo codcargo</f:facet>
+                <h:outputText value="#{_personal.cargo.codcargo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipodocumento</f:facet>
+                <h:outputText value="#{_personal.tipodocumento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_personal.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellido</f:facet>
+                <h:outputText value="#{_personal.apellido}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Celular</f:facet>
+                <h:outputText value="#{_personal.celular}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_personal.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pinbb</f:facet>
+                <h:outputText value="#{_personal.pinbb}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_personal.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_personal.correo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correoalternativo</f:facet>
+                <h:outputText value="#{_personal.correoalternativo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechanac</f:facet>
+                <h:outputText value="#{_personal.fechanac}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Administrativo documento</f:facet>
+                <h:outputText value="#{_personal.administrativo.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_personal.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_personal.asesor.documento}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{comisionhistoricoHome.instance.personal != null ? 'changeParent' : 'selectParent'}" value="#{comisionhistoricoHome.instance.personal != null ? 'Change' : 'Select'} personal"
+                       view="/PersonalList.xhtml">
+                <f:param name="from" value="ComisionhistoricoEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>
