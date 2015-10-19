@@ -185,10 +185,10 @@
             </s:decorate>
 		  <s:decorate id="claveField" template="layout/edit.xhtml">
                 <ui:define name="label">Clave</ui:define>
-                <h:inputSecret id="clave" size="16" disabled ="#{!s:hasRole('Registrar Personal')}" 
-                value="#{usuarioHome.instance.clave}">
-                    <a:support event="onblur" reRender="claveField" ajaxSingle="true"/>
-                </h:inputSecret>
+                <h:inputText id="clave" size="16" disabled ="#{!s:hasRole('Registrar Personal')}" 
+                			   value="#{usuarioHome.instance.clave}">
+                    <a:support event="onblur" reRender="claveField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
             </s:decorate>
             
             <s:decorate id="telefonooficinaField" template="layout/edit.xhtml">
