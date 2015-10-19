@@ -65,11 +65,6 @@ import org.jboss.seam.security.Identity;
 public class AdministrarActivacion {
 	@Logger
 	private Log log;
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> ac04e37... Commit Inicial de Luis Fernando
 	
 	@In  
 	StatusMessages statusMessages;
