@@ -7,7 +7,9 @@
    <local-tx-datasource>
       <jndi-name>monedaDatasource</jndi-name>
       <use-java-context>true</use-java-context>
-      <connection-url>jdbc:postgresql://192.168.1.5:5432/monedaerika</connection-url>
+
+      <connection-url>jdbc:postgresql://192.168.1.5:5432/monedafront</connection-url>
+
       <driver-class>org.postgresql.Driver</driver-class>
       <user-name>postgres</user-name>
       <password>Carlos0411</password>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
+
 <components xmlns="http://jboss.com/products/seam/components"
             xmlns:core="http://jboss.com/products/seam/core"
             xmlns:persistence="http://jboss.com/products/seam/persistence"
@@ -16,7 +17,8 @@
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
                  http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
                  http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
-                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd"> 
+
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd">
 
    <core:init debug="true" jndi-pattern="@jndiPattern@"/>
 
