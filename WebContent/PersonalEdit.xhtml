@@ -179,7 +179,7 @@
                 <ui:define name="label">Comision</ui:define>
                 <h:inputText id="comision" disabled ="#{!s:hasRole('Registrar Personal')}"
                           value="#{asesorHome.instance.comision}"
-                           size="11">
+                           size="11" style=" width : 161px;">
                     <a:support event="onblur" reRender="comisionField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
