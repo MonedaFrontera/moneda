@@ -33,7 +33,8 @@ public class Asesor implements java.io.Serializable {
 	private String documento;
 	private Personal personal;
 	private BigDecimal comision;
-	private Integer extension;
+	private String extension;
+	private String telefonooficina;
 	private Set<Promotor> promotors = new HashSet<Promotor>(0);
 	private Set<Envios> envioses = new HashSet<Envios>(0);
 
@@ -44,13 +45,14 @@ public class Asesor implements java.io.Serializable {
 		this.personal = personal;
 	}
 
-	public Asesor(Personal personal, BigDecimal comision, Integer extension,
-			Set<Promotor> promotors, Set<Envios> envioses) {
+	public Asesor(Personal personal, BigDecimal comision, String extension,
+			Set<Promotor> promotors, Set<Envios> envioses, String telefonooficina) {
 		this.personal = personal;
 		this.comision = comision;
 		this.extension = extension;
 		this.promotors = promotors;
 		this.envioses = envioses;
+		this.telefonooficina=telefonooficina;
 	}
 
 	//@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "personal"))
@@ -87,13 +89,24 @@ public class Asesor implements java.io.Serializable {
 		this.comision = comision;
 	}
 	
-	@Column(name = "extension", precision = 6, scale = 0)
-	public Integer getExtension() {
+	@Column(name = "extension", length = 6)
+	@Length(max = 6)
+	public String getExtension() {
 		return this.extension;
 	}
 
-	public void setExtension(Integer extension) {
+	public void setExtension(String extension) {
 		this.extension = extension;
+	}
+	
+	@Column(name = "telefonooficina", length = 15)
+	@Length(max = 15)
+	public String getTelefonoOficina() {
+		return this.telefonooficina;
+	}
+
+	public void setTelefonoOficina(String telefonoOficina) {
+		this.telefonooficina = telefonoOficina;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "asesor")
