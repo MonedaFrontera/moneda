@@ -190,13 +190,15 @@
                     <a:support event="onblur" reRender="claveField" ajaxSingle="true"/>
                 </h:inputSecret>
             </s:decorate>
-              <s:decorate id="telefonooficinaField" template="layout/edit.xhtml">
+            
+            <s:decorate id="telefonooficinaField" template="layout/edit.xhtml">
                 <ui:define name="label">Telefono de Oficina</ui:define>
                 <h:inputText id="telefonooficina" size="15" disabled ="#{!s:hasRole('Registrar Personal')}" 
-                value="#{asesorHome.instance.telefonooficina}">
+                value="#{asesorHome.instance.telefonoOficina}">
                     <a:support event="onblur" reRender="telefonooficinaField" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
+            
             <s:decorate id="extensionField" template="layout/edit.xhtml">
                 <ui:define name="label">Extension</ui:define>
                 <h:inputText id="extension" size="6" disabled ="#{!s:hasRole('Registrar Personal')}" 
