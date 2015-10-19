@@ -258,7 +258,10 @@ public class AdministrarPersonal {
 		a.setDocumento(p.getDocumento().trim());
 		a.setPersonal(p);
 		a.setComision(asesorHome.getInstance().getComision());		
+		a.setTelefonoOficina(asesorHome.getInstance().getTelefonoOficina());
+		a.setExtension(asesorHome.getInstance().getExtension());
 		entityManager.persist(a);
+		
 		
 		Usuario userAsesor = entityManager.find(Usuario.class, personalHome.getInstance().getDocumento());
 		
@@ -271,6 +274,7 @@ public class AdministrarPersonal {
 					personalHome.getInstance().getNombre() + " "
 							+ personalHome.getInstance().getApellido());
 			usuarioHome.getInstance().setUsuario(p.getDocumento());
+			usuarioHome.getInstance().setClave(usuarioHome.getInstance().getClave());
 			entityManager.persist(usuarioHome.getInstance());
 			entityManager.flush();
 			entityManager.clear();

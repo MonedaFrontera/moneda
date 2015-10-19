@@ -105,8 +105,8 @@ public class Asesor implements java.io.Serializable {
 		return this.telefonooficina;
 	}
 
-	public void setTelefonoOficina(String telefonoOficina) {
-		this.telefonooficina = telefonoOficina;
+	public void setTelefonoOficina(String telefonooficina) {
+		this.telefonooficina = telefonooficina;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "asesor")
