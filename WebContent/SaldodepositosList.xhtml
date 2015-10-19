@@ -1,0 +1,196 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="saldodepositosSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Saldodepositos Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta" value="#{saldodepositosList.saldodepositos.id.numerotarjeta}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod" value="#{saldodepositosList.saldodepositos.usuariomod}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{saldodepositosList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/SaldodepositosList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Saldodepositos Search Results (#{empty saldodepositosList.resultList ? 0 : (saldodepositosList.paginated ? saldodepositosList.resultCount : saldodepositosList.resultList.size)})</f:facet>
+    <div class="results" id="saldodepositosList">
+
+    <h:outputText value="The saldodepositos search returned no results."
+               rendered="#{empty saldodepositosList.resultList}"/>
+
+    <rich:dataTable id="saldodepositosList"
+                var="_saldodepositos"
+              value="#{saldodepositosList.resultList}"
+           rendered="#{not empty saldodepositosList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodepositosList}"/>
+                    <ui:param name="propertyLabel" value="Numerotarjeta"/>
+                    <ui:param name="propertyPath" value="saldodepositos.id.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodepositos.id.numerotarjeta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodepositosList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="saldodepositos.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodepositos.id.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodepositosList}"/>
+                    <ui:param name="propertyLabel" value="Tarjeta numerotarjeta"/>
+                    <ui:param name="propertyPath" value="saldodepositos.tarjeta.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodepositos.tarjeta.numerotarjeta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodepositosList}"/>
+                    <ui:param name="propertyLabel" value="Saldo"/>
+                    <ui:param name="propertyPath" value="saldodepositos.saldo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodepositos.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodepositosList}"/>
+                    <ui:param name="propertyLabel" value="Usuariomod"/>
+                    <ui:param name="propertyPath" value="saldodepositos.usuariomod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodepositos.usuariomod}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{saldodepositosList}"/>
+                    <ui:param name="propertyLabel" value="Fechamod"/>
+                    <ui:param name="propertyPath" value="saldodepositos.fechamod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_saldodepositos.fechamod}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Saldodepositos' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="saldodepositosViewId">
+                <f:param name="saldodepositosNumerotarjeta"
+                        value="#{_saldodepositos.id.numerotarjeta}"/>
+                <f:param name="saldodepositosFecha"
+                        value="#{_saldodepositos.id.fecha}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/SaldodepositosEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="saldodepositosEdit"
+                rendered="#{empty from}">
+                <f:param name="saldodepositosNumerotarjeta"
+                        value="#{_saldodepositos.id.numerotarjeta}"/>
+                <f:param name="saldodepositosFecha"
+                        value="#{_saldodepositos.id.fecha}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/SaldodepositosList.xhtml"
+            rendered="#{saldodepositosList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/SaldodepositosList.xhtml"
+            rendered="#{saldodepositosList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{saldodepositosList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/SaldodepositosList.xhtml"
+            rendered="#{saldodepositosList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{saldodepositosList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/SaldodepositosList.xhtml"
+            rendered="#{saldodepositosList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{saldodepositosList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/SaldodepositosEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create saldodepositos">
+            <f:param name="saldodepositosNumerotarjeta"/>
+            <f:param name="saldodepositosFecha"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

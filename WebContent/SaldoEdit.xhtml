@@ -1,0 +1,104 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="saldo" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{saldoHome.managed ? 'Editar' : 'Agregar Nuevo'} Saldo</f:facet>
+
+
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarPromotor.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarPromotor.ubicarPersonal()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarPromotor.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+            
+            
+
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{saldoHome.managed}"
+                       required="true"
+                          value="#{saldoHome.instance.id.fecha}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+
+
+            <s:decorate id="saldoField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo</ui:define>
+                <h:inputText id="saldo"
+                          value="#{saldoHome.instance.saldo}"
+                           size="22">
+                    <a:support event="onblur" reRender="saldoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{saldoHome.persist}"
+                       rendered="#{!saldoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{saldoHome.update}"
+                       rendered="#{saldoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{saldoHome.remove}"
+                      immediate="true"
+                       rendered="#{saldoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/Saldo.xhtml"
+                rendered="#{saldoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty saldoFrom ? 'SaldoList' : saldoFrom}.xhtml"
+                rendered="#{!saldoHome.managed}"/>
+
+        </div>
+    </h:form>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,187 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="productoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Producto Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Referencia</ui:define>
+                <h:inputText id="refproducto" value="#{productoList.producto.refproducto}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre Producto</ui:define>
+                <h:inputText id="nombreproducto" value="#{productoList.producto.nombreproducto}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Marca</ui:define>
+                <h:inputText id="marca" value="#{productoList.producto.marca}"/>
+            </s:decorate>
+
+            
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/ProductoList.xhtml"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Producto Search Results (#{empty productoList.resultList ? 0 : (productoList.paginated ? productoList.resultCount : productoList.resultList.size)})</f:facet>
+    <div class="results" id="productoList">
+
+    <h:outputText value="The producto search returned no results."
+               rendered="#{empty productoList.resultList}"/>
+
+    <rich:dataTable id="productoList"
+                var="_producto"
+              value="#{productoList.resultList}"
+           rendered="#{not empty productoList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Referencia"/>
+                    <ui:param name="propertyPath" value="producto.refproducto"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.refproducto}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Nombre Producto"/>
+                    <ui:param name="propertyPath" value="producto.nombreproducto"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.nombreproducto}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Marca"/>
+                    <ui:param name="propertyPath" value="producto.marca"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.marca}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Valor Minimo"/>
+                    <ui:param name="propertyPath" value="producto.valorminimo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.valorminimo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Valor Maximo"/>
+                    <ui:param name="propertyPath" value="producto.valormaximo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.valormaximo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Cant Minima"/>
+                    <ui:param name="propertyPath" value="producto.cantminimo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.cantminimo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productoList}"/>
+                    <ui:param name="propertyLabel" value="Cant Maxima"/>
+                    <ui:param name="propertyPath" value="producto.cantmaximo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_producto.cantmaximo}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Accion</f:facet>
+            
+            <s:link view="/ProductoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="productoEdit"
+                rendered="#{empty from}">
+                <f:param name="productoRefproducto"
+                        value="#{_producto.refproducto}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/ProductoList.xhtml"
+            rendered="#{productoList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera Pagina"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/ProductoList.xhtml"
+            rendered="#{productoList.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{productoList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ProductoList.xhtml"
+            rendered="#{productoList.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{productoList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ProductoList.xhtml"
+            rendered="#{productoList.nextExists}"
+               value="Ultima Pagina #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{productoList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/ProductoEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Crear Producto">
+            <f:param name="productoRefproducto"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

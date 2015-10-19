@@ -1,0 +1,80 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistacuenta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{vistacuentaHome.managed ? 'Edit' : 'Add'} Vistacuenta</f:facet>
+
+
+            <s:decorate id="numcuentaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numcuenta</ui:define>
+                <h:inputText id="numcuenta"
+                       disabled="#{vistacuentaHome.managed}"
+                          size="25"
+                     maxlength="25"
+                         value="#{vistacuentaHome.instance.id.numcuenta}">
+                    <a:support event="onblur" reRender="numcuentaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{vistacuentaHome.instance.id.fecha}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{vistacuentaHome.persist}"
+                       disabled="#{!vistacuentaHome.wired}"
+                       rendered="#{!vistacuentaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{vistacuentaHome.update}"
+                       rendered="#{vistacuentaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{vistacuentaHome.remove}"
+                      immediate="true"
+                       rendered="#{vistacuentaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Vistacuenta.xhtml"
+                rendered="#{vistacuentaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty vistacuentaFrom ? 'VistacuentaList' : vistacuentaFrom}.xhtml"
+                rendered="#{!vistacuentaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

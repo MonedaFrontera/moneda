@@ -1,0 +1,122 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Paridadmoneda Details</f:facet>
+
+        <s:decorate id="fecha" template="layout/display.xhtml">
+            <ui:define name="label">Fecha</ui:define>
+            <h:outputText value="#{paridadmonedaHome.instance.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="paridad" template="layout/display.xhtml">
+            <ui:define name="label">Paridad</ui:define>
+            <h:outputText value="#{paridadmonedaHome.instance.paridad}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ParidadmonedaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty paridadmonedaFrom ? 'ParidadmonedaList' : paridadmonedaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Moneda by codmonedadestino</h:panelGroup>
+        </f:facet>
+    <div class="association" id="monedaByCodmonedadestinoParent">
+
+        <h:outputText value="There is no monedaByCodmonedadestino associated with this paridadmoneda."
+                   rendered="#{paridadmonedaHome.instance.monedaByCodmonedadestino == null}"/>
+
+        <rich:dataTable var="_moneda"
+                   value="#{paridadmonedaHome.instance.monedaByCodmonedadestino}"
+                rendered="#{paridadmonedaHome.instance.monedaByCodmonedadestino != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="monedaByCodmonedadestinoTable">
+            <h:column>
+                <f:facet name="header">Codigomoneda</f:facet>
+                <h:outputText value="#{_moneda.codigomoneda}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre moneda</f:facet>
+                <h:outputText value="#{_moneda.nombreMoneda}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewmoneda"
+                     value="View"
+                      view="/Moneda.xhtml">
+                    <f:param name="monedaCodigomoneda"
+                           value="#{_moneda.codigomoneda}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Moneda by codmonedaorigen</h:panelGroup>
+        </f:facet>
+    <div class="association" id="monedaByCodmonedaorigenParent">
+
+        <h:outputText value="There is no monedaByCodmonedaorigen associated with this paridadmoneda."
+                   rendered="#{paridadmonedaHome.instance.monedaByCodmonedaorigen == null}"/>
+
+        <rich:dataTable var="_moneda"
+                   value="#{paridadmonedaHome.instance.monedaByCodmonedaorigen}"
+                rendered="#{paridadmonedaHome.instance.monedaByCodmonedaorigen != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="monedaByCodmonedaorigenTable">
+            <h:column>
+                <f:facet name="header">Codigomoneda</f:facet>
+                <h:outputText value="#{_moneda.codigomoneda}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre moneda</f:facet>
+                <h:outputText value="#{_moneda.nombreMoneda}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewmoneda"
+                     value="View"
+                      view="/Moneda.xhtml">
+                    <f:param name="monedaCodigomoneda"
+                           value="#{_moneda.codigomoneda}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,95 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+    <ui:define name="body">
+    <rich:panel> 
+    <div>
+    
+        <h2>Actualizaciones Sismtema Integral de Clientes</h2>
+    <br/>
+        
+    <h3>Actualizacion 25 de Agosto 2015.</h3>
+    <ul>
+    <li>Se incorporo el campo Destino para permitir mas de un viaje a una cedula en el mismo anio.</li>
+    <li>Actualizaciones de auditorias para Activaciones.</li>
+    <li>Ajustes de bugs menores.</li>
+    </ul>
+    <h3>Actualizacion 25 de Julio 2015.</h3>
+    <ul>
+    <li>Se habilito la asignacion de gestores para algunos estados de activaciones.</li>
+    <li>Mejoras en el proceso de grabado de transacciones.</li>
+    <li>Solucion de algunos Bugs por cambio del servidor de correo.</li>
+    
+    </ul>
+    <h3>Actualizacion 05 de Junio 2015.</h3>
+    <ul>
+    <li>Se ajusto bug en activaciones al enviar correos y grabar observaciones.</li>
+    <li>Se habilito la vista de los atributos de banca en linea de Activaciones para las asesoras.</li>
+    </ul>
+    <h3>Actualizacion 28 de Mayo 2015.</h3>
+    <ul>
+    <li>Correccion de errores menores.</li>
+    <li>Se adicionaron campos nuevos para las activaciones (Usuario y Clave para bancos oficiales).</li>
+    <li>Se incorporo para activaciones el envio de correo electronico al cliente y asesor, cuando no se ingresa a la banca en linea.</li>
+    <li>Se habilito la posibilidad de grabar tarejetas debito Visa y MasterCard.</li>
+    </ul>
+    <h3>Actualizacion 19 de Mayo 2015.</h3>
+    <ul>
+    <li>Modificacion en el algoritmo de validar tarjeta para incluir tarjetas debito.</li>
+    <li>Correccion de Bugs para modulo de envios.</li>
+    <li>Optimizacion de algunas consultas en la base de datos.</li>    
+    </ul>
+    <h3>Actualizacion 26 de Septiembre 2014.</h3>
+    <ul>
+    <li>Correcciones de Bug's menores y ajuste de presentacion.</li>
+    <li>Se adiciono el campo de cupo aprobado para las activaciones.</li>
+    <li>Se adiciono un cuadro de dialogo para confirmar si una activacion no ingresa a Cadivi.</li>
+    </ul>
+    <h3>Actualizacion 10 de Septiembre 2014.</h3>
+    <ul>
+    <li>Se incorporo la funcionalidad de notificacion para las activaciones que no ingresan a CADIVI.<br/>
+    	Envia un correo electronico a la asesora y al promotor.</li>
+    <li>Se corrigio problemas con la actualizacion de datos de establecimientos.</li>
+    <li>En los datos personales del promotor indica la ultima fecha de actualizacion de datos.</li>
+    <li>Se actualizo el componente de PersonalEdit, con mejoras de auditoria en la actualizacion de datos personales</li>
+    </ul>
+    <h3>Actualizacion 26 de Agosto 2014.</h3>
+    <ul>
+    <li>Se desahabilito la creacion de tarjetas en el rol de asesor.</li>
+    <li>Se desahabilito la edicion de datos personales para promotores en el rol de asesor.</li>    
+    <li>Se actualizo el reporte en pdf de activaciones para las asesoras, en la columna no ingresa a cadivi.</li>
+    <li>Correcion de problemas</li>
+    </ul>
+    <h3>Actualizacion 25 de Julio 2014.</h3>
+    <ul>
+    <li>Se anadio reporte consolidado de operaciones de la oficina.</li>
+    <li>Se incorporo la busqueda inteligente del nombre de promotor para depositos de tarjetas.</li>
+    <li>Se actulizo el cuadro combinado de Asesor, solo aparece asesores activos.</li>
+    <li>Correccion de problemas y mejoras de rendiemiento para TransaccionEdit.</li>
+    </ul>    
+    <h3>Actualizacion 10 de Julio 2014.</h3>
+    <ul>
+    <li>Mejoras de rendimiento para grabar transacciones, y se corrigio el Bug HTTP 503 de Transacciones.</li>
+    <li>Se actualizo el algoritmo de validar tarjetas, se optimizo la conexion con el Web Services de Binlist.net</li>
+    <li>Correcion de ajustes menores.</li>
+    </ul>
+    <h3>Actualizacion 08 de Julio 2014.</h3>
+    <ul>
+    <li>Se reestablecio el metodo de busqueda de nobres en TransaccionEdit.xhtml para promotores.</li>
+    <li>Correccion de algunos bugs.</li>
+    </ul>
+    
+      
+    </div>
+    </rich:panel>
+
+    </ui:define>
+</ui:composition>

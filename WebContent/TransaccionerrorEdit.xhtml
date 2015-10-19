@@ -1,0 +1,175 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="transaccionerror" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{transaccionerrorHome.managed ? 'Edit' : 'Add'} Transaccionerror</f:facet>
+
+
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{transaccionerrorHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="16"
+                         value="#{transaccionerrorHome.instance.id.numerotarjeta}">
+                    <a:support event="onblur" reRender="numerotarjetaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigounico</ui:define>
+                <h:inputText id="codigounico"
+                       disabled="#{transaccionerrorHome.managed}"
+                      required="true"
+                          size="8"
+                     maxlength="8"
+                         value="#{transaccionerrorHome.instance.id.codigounico}">
+                    <a:support event="onblur" reRender="codigounicoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechatxField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechatx</ui:define>
+                <rich:calendar id="fechatx"
+                       required="true"
+                          value="#{transaccionerrorHome.instance.id.fechatx}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipotx</ui:define>
+                <h:inputText id="tipotx"
+                       disabled="#{transaccionerrorHome.managed}"
+                          size="1"
+                     maxlength="1"
+                         value="#{transaccionerrorHome.instance.id.tipotx}">
+                    <a:support event="onblur" reRender="tipotxField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="numfacturaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numfactura</ui:define>
+                <h:inputText id="numfactura"
+                       disabled="#{transaccionerrorHome.managed}"
+                          size="10"
+                     maxlength="10"
+                         value="#{transaccionerrorHome.instance.id.numfactura}">
+                    <a:support event="onblur" reRender="numfacturaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{transaccionerrorHome.instance.id.fechamod}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                       disabled="#{transaccionerrorHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{transaccionerrorHome.instance.id.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="asesorField" template="layout/edit.xhtml">
+                <ui:define name="label">Asesor</ui:define>
+                <h:inputText id="asesor"
+                       disabled="#{transaccionerrorHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{transaccionerrorHome.instance.id.asesor}">
+                    <a:support event="onblur" reRender="asesorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText id="promotor"
+                       disabled="#{transaccionerrorHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{transaccionerrorHome.instance.id.promotor}">
+                    <a:support event="onblur" reRender="promotorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="digitadorField" template="layout/edit.xhtml">
+                <ui:define name="label">Digitador</ui:define>
+                <h:inputText id="digitador"
+                       disabled="#{transaccionerrorHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{transaccionerrorHome.instance.id.digitador}">
+                    <a:support event="onblur" reRender="digitadorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="errorField" template="layout/edit.xhtml">
+                <ui:define name="label">Error</ui:define>
+                <h:inputTextarea id="error"
+                               cols="80"
+                               rows="3"
+                           disabled="#{transaccionerrorHome.managed}"
+                              value="#{transaccionerrorHome.instance.id.error}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{transaccionerrorHome.persist}"
+                       disabled="#{!transaccionerrorHome.wired}"
+                       rendered="#{!transaccionerrorHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{transaccionerrorHome.update}"
+                       rendered="#{transaccionerrorHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{transaccionerrorHome.remove}"
+                      immediate="true"
+                       rendered="#{transaccionerrorHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Transaccionerror.xhtml"
+                rendered="#{transaccionerrorHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty transaccionerrorFrom ? 'TransaccionerrorList' : transaccionerrorFrom}.xhtml"
+                rendered="#{!transaccionerrorHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{gravamenList.firstResult}"/>
+   <param name="sort" value="#{gravamenList.orderColumn}"/>
+   <param name="dir" value="#{gravamenList.orderDirection}"/>
+   <param name="logic" value="#{gravamenList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codigo" value="#{gravamenList.gravamen.codigo}"/>
+   <param name="nombre" value="#{gravamenList.gravamen.nombre}"/>
+
+</page>

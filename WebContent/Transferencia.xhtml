@@ -1,0 +1,228 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Transferencia Details</f:facet>
+
+
+        <s:decorate id="preciobolivar" template="layout/display.xhtml">
+            <ui:define name="label">Preciobolivar</ui:define>
+            <h:outputText value="#{transferenciaHome.instance.preciobolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="tipobolivar" template="layout/display.xhtml">
+            <ui:define name="label">Tipobolivar</ui:define>
+            <h:outputText value="#{transferenciaHome.instance.tipobolivar}"/>
+        </s:decorate>
+
+        <s:decorate id="valorbolivar" template="layout/display.xhtml">
+            <ui:define name="label">Valorbolivar</ui:define>
+            <h:outputText value="#{transferenciaHome.instance.valorbolivar}"/>
+        </s:decorate>
+
+        <s:decorate id="preciocompra" template="layout/display.xhtml">
+            <ui:define name="label">Preciocompra</ui:define>
+            <h:outputText value="#{transferenciaHome.instance.preciocompra}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="precioasesor" template="layout/display.xhtml">
+            <ui:define name="label">Precioasesor</ui:define>
+            <h:outputText value="#{transferenciaHome.instance.precioasesor}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TransferenciaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty transferenciaFrom ? 'TransferenciaList' : transferenciaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Gastos</h:panelGroup>
+        </f:facet>
+    <div class="association" id="gastosParent">
+
+        <h:outputText value="There is no gastos associated with this transferencia."
+                   rendered="#{transferenciaHome.instance.gastos == null}"/>
+
+        <rich:dataTable var="_gastos"
+                   value="#{transferenciaHome.instance.gastos}"
+                rendered="#{transferenciaHome.instance.gastos != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="gastosTable">
+            <h:column>
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_gastos.consecutivo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_gastos.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipogasto codtipogasto</f:facet>
+                <h:outputText value="#{_gastos.tipogasto.codtipogasto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_gastos.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_gastos.valor}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_gastos.observacion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valorbolivar</f:facet>
+                <h:outputText value="#{_gastos.valorbolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Transferencia consecutivo</f:facet>
+                <h:outputText value="#{_gastos.transferencia.consecutivo}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewgastos"
+                     value="View"
+                      view="/Gastos.xhtml">
+                    <f:param name="gastosConsecutivo"
+                           value="#{_gastos.consecutivo}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuenta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="cuentaParent">
+
+        <h:outputText value="There is no cuenta associated with this transferencia."
+                   rendered="#{transferenciaHome.instance.cuenta == null}"/>
+
+        <rich:dataTable var="_cuenta"
+                   value="#{transferenciaHome.instance.cuenta}"
+                rendered="#{transferenciaHome.instance.cuenta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="cuentaTable">
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuenta.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_cuenta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuenta.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_cuenta.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcuenta"
+                     value="View"
+                      view="/Cuenta.xhtml">
+                    <f:param name="cuentaNumcuenta"
+                           value="#{_cuenta.numcuenta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuentapromotor</h:panelGroup>
+        </f:facet>
+    <div class="association" id="cuentapromotorParent">
+
+        <h:outputText value="There is no cuentapromotor associated with this transferencia."
+                   rendered="#{transferenciaHome.instance.cuentapromotor == null}"/>
+
+        <rich:dataTable var="_cuentapromotor"
+                   value="#{transferenciaHome.instance.cuentapromotor}"
+                rendered="#{transferenciaHome.instance.cuentapromotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="cuentapromotorTable">
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuentapromotor.id.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_cuentapromotor.id.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_cuentapromotor.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_cuentapromotor.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuentapromotor.nombre}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcuentapromotor"
+                     value="View"
+                      view="/Cuentapromotor.xhtml">
+                    <f:param name="cuentapromotorNumcuenta"
+                            value="#{_cuentapromotor.id.numcuenta}"/>
+                    <f:param name="cuentapromotorDocumento"
+                            value="#{_cuentapromotor.id.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

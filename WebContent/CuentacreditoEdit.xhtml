@@ -1,0 +1,126 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cuentacredito" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{cuentacreditoHome.managed ? 'Editar' : 'Agregar'} Movimiento a las Cuentas Venezolanas</f:facet>
+
+
+           <s:decorate id="bancoField" template="layout/edit.xhtml" >
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{bancoHome.instance}" 
+                required="true" style=" width : 217px;">
+			<s:selectItems value="#{bancoList.resultList}" var="banco" 
+			label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="bancoField, cuentaField, cuentaPromotorField" 
+			      ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="cuentaField" template="layout/edit.xhtml" >
+                <ui:define name="label">Cuenta</ui:define>
+                <h:selectOneMenu id="cuentaSel" value="#{cuentacreditoHome.instance.cuenta}" 
+                required="true" style=" width : 314px;">
+			<s:selectItems value="#{bancoHome.instance.cuentas}" var="cuenta" 
+			label="#{cuenta.nombre}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="cuentaField" 
+			      ajaxSingle="true"/>
+	
+			</h:selectOneMenu>
+			<h:inputText id="numcuentassss"
+                          value="#{cuentacreditoHome.instance.cuenta.numcuenta}" style=" width : 214px;"
+                          disabled="true"></h:inputText>
+        	</s:decorate>
+
+			<s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{cuentacreditoHome.instance.tipo}" required="true">
+					<f:selectItem itemValue="1" itemLabel="Credito"/>
+					<f:selectItem itemValue="-1" itemLabel="Debito"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+			
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{cuentacreditoHome.instance.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{cuentacreditoHome.instance.valor}">
+                    <a:support event="onblur" reRender="valorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+			
+			
+			<s:decorate id="observacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputTextarea id="observacion"
+                               cols="80"
+                               rows="2"
+                              value="#{cuentacreditoHome.instance.observacion}"/>
+            </s:decorate>
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarCuenta.guardarMovimiento}"
+                       disabled="#{!cuentacreditoHome.wired}"
+                       rendered="#{!cuentacreditoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{cuentacreditoHome.update}"
+                       rendered="#{cuentacreditoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{cuentacreditoHome.remove}"
+                      immediate="true"
+                       rendered="#{cuentacreditoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/CuentacreditoList.xhtml"
+                rendered="#{cuentacreditoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty cuentacreditoFrom ? 'CuentacreditoList' : cuentacreditoFrom}.xhtml"
+                rendered="#{!cuentacreditoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

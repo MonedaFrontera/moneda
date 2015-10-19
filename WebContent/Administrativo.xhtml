@@ -1,0 +1,143 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Administrativo Details</f:facet>
+
+
+        <s:decorate id="comision" template="layout/display.xhtml">
+            <ui:define name="label">Comision</ui:define>
+            <h:outputText value="#{administrativoHome.instance.comision}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="cargo" template="layout/display.xhtml">
+            <ui:define name="label">Cargo</ui:define>
+            <h:outputText value="#{administrativoHome.instance.cargo}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/AdministrativoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty administrativoFrom ? 'AdministrativoList' : administrativoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Personal</h:panelGroup>
+        </f:facet>
+    <div class="association" id="personalParent">
+
+        <h:outputText value="There is no personal associated with this administrativo."
+                   rendered="#{administrativoHome.instance.personal == null}"/>
+
+        <rich:dataTable var="_personal"
+                   value="#{administrativoHome.instance.personal}"
+                rendered="#{administrativoHome.instance.personal != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="personalTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cargo codcargo</f:facet>
+                <h:outputText value="#{_personal.cargo.codcargo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipodocumento</f:facet>
+                <h:outputText value="#{_personal.tipodocumento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_personal.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellido</f:facet>
+                <h:outputText value="#{_personal.apellido}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Celular</f:facet>
+                <h:outputText value="#{_personal.celular}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_personal.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pinbb</f:facet>
+                <h:outputText value="#{_personal.pinbb}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_personal.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_personal.correo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correoalternativo</f:facet>
+                <h:outputText value="#{_personal.correoalternativo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechanac</f:facet>
+                <h:outputText value="#{_personal.fechanac}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_personal.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Administrativo documento</f:facet>
+                <h:outputText value="#{_personal.administrativo.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_personal.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_personal.asesor.documento}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpersonal"
+                     value="View"
+                      view="/Personal.xhtml">
+                    <f:param name="personalDocumento"
+                           value="#{_personal.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

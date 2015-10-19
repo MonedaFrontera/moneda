@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/SaldodiariopromotorList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{saldodiariopromotorHome.wire}"/>
+
+   <param name="saldodiariopromotorFrom"/>
+   <param name="saldodiariopromotorDocumento" value="#{saldodiariopromotorHome.saldodiariopromotorId.documento}"/>
+   <param name="saldodiariopromotorFecha" value="#{saldodiariopromotorHome.saldodiariopromotorId.fecha}"/>
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="gestorFrom"/>
+   <param name="gestorDocumento" value="#{gestorHome.gestorDocumento}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+
+
+   <navigation from-action="#{saldodiariopromotorHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Saldodiariopromotor.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{saldodiariopromotorHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Saldodiariopromotor.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{saldodiariopromotorHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/SaldodiariopromotorList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

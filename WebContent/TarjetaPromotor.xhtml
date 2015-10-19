@@ -1,0 +1,194 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+    <h:form id="tarjeta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tarjetaHome.managed ? 'Realizar Cambio de Promotor de ' : 'Agregar '} Tarjeta</f:facet>
+		<s:div style="width:60%; float:left">
+			
+            <s:decorate id="promotoractualField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTarjeta.promotoractual}" 
+			id="namepromotoractual" size="50"
+			disabled="true">
+                </h:inputText>
+			
+        	</s:decorate>
+            
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="true"
+                           size="20"
+                      maxlength="16"
+                          value="#{tarjetaHome.instance.numerotarjeta}">
+               </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="franquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:inputText id="franquiciatarjeta"
+                       disabled="true"
+                           size="20"
+                      maxlength="16"
+                          value="#{tarjetaHome.instance.franquicia.nombrefranquicia}">
+               </h:inputText>
+        	</s:decorate>
+        	
+        	<s:decorate id="bancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Banco</ui:define>
+                <h:inputText id="bancotarjeta"
+                       disabled="true"
+                           size="20"
+                      maxlength="16"
+                          value="#{tarjetaHome.instance.banco.nombrebanco}">
+               </h:inputText>
+        	</s:decorate>
+
+            <s:decorate id="fechavencimientoField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Vencimiento</ui:define>
+                <h:inputText id="fechavencimiento"
+                 disabled="true"
+                           size="5"
+                      maxlength="5"
+                          value="#{tarjetaHome.instance.fechavencimiento}">
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="codseguridadField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo Seguridad</ui:define>
+                <h:inputText id="codseguridad"
+					   disabled="true"
+                           size="4"
+                      maxlength="4"
+                          value="#{tarjetaHome.instance.codseguridad}">
+                </h:inputText>
+            </s:decorate>
+
+<s:decorate id="limiteField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupo Limite</ui:define>
+                <h:inputText id="limite"
+                       required="false"
+                       disabled="true"
+                          value="#{tarjetaHome.instance.limite}">
+                </h:inputText>
+            </s:decorate>
+
+			<s:div id="datosTarjetahabiente">
+            <s:decorate id="cedulatarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Cedula</ui:define>
+                <h:inputText id="cedulatarjetahabiente"
+                       required="false"
+                       disabled="true"
+                           size="15"
+                      maxlength="15"
+                          value="#{tarjetaHome.instance.cedulatarjetahabiente}">
+                </h:inputText>
+
+	                </s:decorate>
+			
+            <s:decorate id="tarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjeta Habiente</ui:define>
+                <h:inputText id="tarjetahabiente"
+                       required="false"
+                       disabled="true"
+                           size="50"
+                      maxlength="50"
+                          value="#{tarjetaHome.instance.tarjetahabiente}">
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="direcciontarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Direccion</ui:define>
+                <h:inputText id="direcciontarjetahabiente"
+                       disabled="true"
+                           size="50"
+                      maxlength="150"
+                          value="#{tarjetaHome.instance.direcciontarjetahabiente}">
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="telefonotarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Telefono</ui:define> 
+                <h:inputText id="telefonotarjetahabiente"
+                       disabled="true"
+                           size="15"
+                      maxlength="15"
+                          value="#{tarjetaHome.instance.telefonotarjetahabiente}">
+                </h:inputText>
+            </s:decorate>
+            </s:div>
+            
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+            
+            <s:decorate id="promotortrasladarField" template="layout/edit.xhtml">
+            <ui:define name="label">Trasladar Transacciones Antiguas</ui:define>
+		 	<h:selectBooleanCheckbox id="trasladaar"
+                                      value="#{AdministrarTarjeta.trasladar}">
+			</h:selectBooleanCheckbox>
+            </s:decorate>
+
+		</s:div>
+		
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Cambiar Promotor"
+                         action="#{AdministrarTarjeta.cambiarPromotor()}"
+                       rendered="true"/>
+
+            
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/TarjetaaList.xhtml"
+                rendered="true"/>
+
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+
+
+
+
+</ui:composition>

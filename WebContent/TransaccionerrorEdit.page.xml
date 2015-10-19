@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/TransaccionerrorList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{transaccionerrorHome.wire}"/>
+
+   <param name="transaccionerrorFrom"/>
+   <param name="transaccionerrorNumerotarjeta" value="#{transaccionerrorHome.transaccionerrorId.numerotarjeta}"/>
+   <param name="transaccionerrorCodigounico" value="#{transaccionerrorHome.transaccionerrorId.codigounico}"/>
+   <param name="transaccionerrorFechatx" value="#{transaccionerrorHome.transaccionerrorId.fechatx}"/>
+   <param name="transaccionerrorTipotx" value="#{transaccionerrorHome.transaccionerrorId.tipotx}"/>
+   <param name="transaccionerrorNumfactura" value="#{transaccionerrorHome.transaccionerrorId.numfactura}"/>
+   <param name="transaccionerrorFechamod" value="#{transaccionerrorHome.transaccionerrorId.fechamod}"/>
+   <param name="transaccionerrorUsuariomod" value="#{transaccionerrorHome.transaccionerrorId.usuariomod}"/>
+   <param name="transaccionerrorAsesor" value="#{transaccionerrorHome.transaccionerrorId.asesor}"/>
+   <param name="transaccionerrorPromotor" value="#{transaccionerrorHome.transaccionerrorId.promotor}"/>
+   <param name="transaccionerrorDigitador" value="#{transaccionerrorHome.transaccionerrorId.digitador}"/>
+   <param name="transaccionerrorError" value="#{transaccionerrorHome.transaccionerrorId.error}"/>
+
+
+   <navigation from-action="#{transaccionerrorHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Transaccionerror.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{transaccionerrorHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Transaccionerror.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{transaccionerrorHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/TransaccionerrorList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

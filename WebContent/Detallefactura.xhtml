@@ -1,0 +1,171 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Detallefactura Details</f:facet>
+
+        <s:decorate id="numfactura" template="layout/display.xhtml">
+            <ui:define name="label">Numfactura</ui:define>
+            <h:outputText value="#{detallefacturaHome.instance.id.numfactura}"/>
+        </s:decorate>
+        <s:decorate id="refproducto" template="layout/display.xhtml">
+            <ui:define name="label">Refproducto</ui:define>
+            <h:outputText value="#{detallefacturaHome.instance.id.refproducto}"/>
+        </s:decorate>
+        <s:decorate id="codigounico" template="layout/display.xhtml">
+            <ui:define name="label">Codigounico</ui:define>
+            <h:outputText value="#{detallefacturaHome.instance.id.codigounico}"/>
+        </s:decorate>
+
+        <s:decorate id="cantidad" template="layout/display.xhtml">
+            <ui:define name="label">Cantidad</ui:define>
+            <h:outputText value="#{detallefacturaHome.instance.cantidad}"/>
+        </s:decorate>
+
+        <s:decorate id="valor" template="layout/display.xhtml">
+            <ui:define name="label">Valor</ui:define>
+            <h:outputText value="#{detallefacturaHome.instance.valor}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/DetallefacturaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty detallefacturaFrom ? 'DetallefacturaList' : detallefacturaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Inventario</h:panelGroup>
+        </f:facet>
+    <div class="association" id="inventarioParent">
+
+        <h:outputText value="There is no inventario associated with this detallefactura."
+                   rendered="#{detallefacturaHome.instance.inventario == null}"/>
+
+        <rich:dataTable var="_inventario"
+                   value="#{detallefacturaHome.instance.inventario}"
+                rendered="#{detallefacturaHome.instance.inventario != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="inventarioTable">
+            <h:column>
+                <f:facet name="header">Refproducto</f:facet>
+                <h:outputText value="#{_inventario.id.refproducto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_inventario.id.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Producto refproducto</f:facet>
+                <h:outputText value="#{_inventario.producto.refproducto}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Establecimiento codigounico</f:facet>
+                <h:outputText value="#{_inventario.establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_inventario.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cantidad</f:facet>
+                <h:outputText value="#{_inventario.cantidad}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_inventario.activo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Prioridad</f:facet>
+                <h:outputText value="#{_inventario.prioridad}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewinventario"
+                     value="View"
+                      view="/Inventario.xhtml">
+                    <f:param name="inventarioRefproducto"
+                            value="#{_inventario.id.refproducto}"/>
+                    <f:param name="inventarioCodigounico"
+                            value="#{_inventario.id.codigounico}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Factura</h:panelGroup>
+        </f:facet>
+    <div class="association" id="facturaParent">
+
+        <h:outputText value="There is no factura associated with this detallefactura."
+                   rendered="#{detallefacturaHome.instance.factura == null}"/>
+
+        <rich:dataTable var="_factura"
+                   value="#{detallefacturaHome.instance.factura}"
+                rendered="#{detallefacturaHome.instance.factura != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="facturaTable">
+            <h:column>
+                <f:facet name="header">Numfactura</f:facet>
+                <h:outputText value="#{_factura.id.numfactura}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_factura.id.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Transaccion consecutivo</f:facet>
+                <h:outputText value="#{_factura.transaccion.consecutivo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Establecimiento codigounico</f:facet>
+                <h:outputText value="#{_factura.establecimiento.codigounico}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewfactura"
+                     value="View"
+                      view="/Factura.xhtml">
+                    <f:param name="facturaNumfactura"
+                            value="#{_factura.id.numfactura}"/>
+                    <f:param name="facturaCodigounico"
+                            value="#{_factura.id.codigounico}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

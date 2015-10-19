@@ -1,0 +1,119 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Bancocol Details</f:facet>
+
+        <s:decorate id="codbanco" template="layout/display.xhtml">
+            <ui:define name="label">Codbanco</ui:define>
+            <h:outputText value="#{bancocolHome.instance.codbanco}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{bancocolHome.instance.nombre}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/BancocolEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty bancocolFrom ? 'BancocolList' : bancocolFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Establecimientos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="establecimientosChildren">
+
+        <h:outputText value="There are no establecimientos associated with this bancocol."
+                   rendered="#{empty bancocolHome.establecimientos}"/>
+
+        <rich:dataTable value="#{bancocolHome.establecimientos}"
+                       var="_establecimiento"
+                  rendered="#{not empty bancocolHome.establecimientos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="establecimientosTable">
+            <rich:column sortBy="#{_establecimiento.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.nombreestable}">
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.direccion}">
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.telefono}">
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.iva}">
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.numcuenta}">
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.facturar}">
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectestablecimiento"
+                     value="Select"
+                      view="/Establecimiento.xhtml">
+                    <f:param name="establecimientoCodigounico"
+                            value="#{_establecimiento.codigounico}"/>
+                    <f:param name="establecimientoFrom" value="Bancocol"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add establecimiento"
+                view="/EstablecimientoEdit.xhtml">
+            <f:param name="bancocolCodbanco"
+                    value="#{bancocolHome.instance.codbanco}"/>
+            <f:param name="establecimientoFrom" value="Bancocol"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

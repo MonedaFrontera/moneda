@@ -1,0 +1,141 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="calendario" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{calendarioHome.managed ? 'Edit' : 'Add'} Calendario</f:facet>
+
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{calendarioHome.managed}"
+                       required="true"
+                          value="#{calendarioHome.instance.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="anioField" template="layout/edit.xhtml">
+                <ui:define name="label">Anio</ui:define>
+                <h:inputText id="anio"
+                       required="true"
+                          value="#{calendarioHome.instance.anio}">
+                    <a:support event="onblur" reRender="anioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="mesField" template="layout/edit.xhtml">
+                <ui:define name="label">Mes</ui:define>
+                <h:inputText id="mes"
+                       required="true"
+                          value="#{calendarioHome.instance.mes}">
+                    <a:support event="onblur" reRender="mesField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="diaField" template="layout/edit.xhtml">
+                <ui:define name="label">Dia</ui:define>
+                <h:inputText id="dia"
+                       required="true"
+                          value="#{calendarioHome.instance.dia}">
+                    <a:support event="onblur" reRender="diaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="trimestreField" template="layout/edit.xhtml">
+                <ui:define name="label">Trimestre</ui:define>
+                <h:inputText id="trimestre"
+                       required="true"
+                          value="#{calendarioHome.instance.trimestre}">
+                    <a:support event="onblur" reRender="trimestreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="diaDeSemanaField" template="layout/edit.xhtml">
+                <ui:define name="label">Dia de semana</ui:define>
+                <h:inputText id="diaDeSemana"
+                       required="true"
+                          value="#{calendarioHome.instance.diaDeSemana}">
+                    <a:support event="onblur" reRender="diaDeSemanaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="diaDeAnioField" template="layout/edit.xhtml">
+                <ui:define name="label">Dia de anio</ui:define>
+                <h:inputText id="diaDeAnio"
+                       required="true"
+                          value="#{calendarioHome.instance.diaDeAnio}">
+                    <a:support event="onblur" reRender="diaDeAnioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="semanaDeAnioField" template="layout/edit.xhtml">
+                <ui:define name="label">Semana de anio</ui:define>
+                <h:inputText id="semanaDeAnio"
+                       required="true"
+                          value="#{calendarioHome.instance.semanaDeAnio}">
+                    <a:support event="onblur" reRender="semanaDeAnioField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{calendarioHome.persist}"
+                       disabled="#{!calendarioHome.wired}"
+                       rendered="#{!calendarioHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{calendarioHome.update}"
+                       rendered="#{calendarioHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{calendarioHome.remove}"
+                      immediate="true"
+                       rendered="#{calendarioHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Calendario.xhtml"
+                rendered="#{calendarioHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty calendarioFrom ? 'CalendarioList' : calendarioFrom}.xhtml"
+                rendered="#{!calendarioHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

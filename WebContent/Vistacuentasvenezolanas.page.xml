@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="vistacuentasvenezolanasFrom"/>
+   <param name="vistacuentasvenezolanasNombrebanco" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.nombrebanco}"/>
+   <param name="vistacuentasvenezolanasNumcuenta" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.numcuenta}"/>
+   <param name="vistacuentasvenezolanasNombre" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.nombre}"/>
+   <param name="vistacuentasvenezolanasSaldo" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.saldo}"/>
+   <param name="vistacuentasvenezolanasMovimientos" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.movimientos}"/>
+   <param name="vistacuentasvenezolanasDepositos" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.depositos}"/>
+   <param name="vistacuentasvenezolanasTransferencias" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.transferencias}"/>
+   <param name="vistacuentasvenezolanasCodbanco" value="#{vistacuentasvenezolanasHome.vistacuentasvenezolanasId.codbanco}"/>
+
+
+</page>

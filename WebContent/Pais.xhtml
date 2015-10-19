@@ -1,0 +1,383 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Pais Details</f:facet>
+
+        <s:decorate id="codigopais" template="layout/display.xhtml">
+            <ui:define name="label">Codigopais</ui:define>
+            <h:outputText value="#{paisHome.instance.codigopais}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{paisHome.instance.nombre}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PaisEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty paisFrom ? 'PaisList' : paisFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotorcomisiontxes</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotorcomisiontxesChildren">
+
+        <h:outputText value="There are no promotorcomisiontxes associated with this pais."
+                   rendered="#{empty paisHome.promotorcomisiontxes}"/>
+
+        <rich:dataTable value="#{paisHome.promotorcomisiontxes}"
+                       var="_promotorcomisiontx"
+                  rendered="#{not empty paisHome.promotorcomisiontxes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotorcomisiontxesTable">
+            <rich:column sortBy="#{_promotorcomisiontx.id.codpais}">
+                <f:facet name="header">Codpais</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.codpais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.fechainicio}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotorcomisiontx.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_promotorcomisiontx.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotorcomisiontx"
+                     value="Select"
+                      view="/Promotorcomisiontx.xhtml">
+                    <f:param name="promotorcomisiontxCodpais"
+                            value="#{_promotorcomisiontx.id.codpais}"/>
+                    <f:param name="promotorcomisiontxFechainicio"
+                            value="#{_promotorcomisiontx.id.fechainicio}"/>
+                    <f:param name="promotorcomisiontxDocumento"
+                            value="#{_promotorcomisiontx.id.documento}"/>
+                    <f:param name="promotorcomisiontxFrom" value="Pais"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotorcomisiontx"
+                view="/PromotorcomisiontxEdit.xhtml">
+            <f:param name="paisCodigopais"
+                    value="#{paisHome.instance.codigopais}"/>
+            <f:param name="promotorcomisiontxFrom" value="Pais"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotortasas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotortasasChildren">
+
+        <h:outputText value="There are no promotortasas associated with this pais."
+                   rendered="#{empty paisHome.promotortasas}"/>
+
+        <rich:dataTable value="#{paisHome.promotortasas}"
+                       var="_promotortasa"
+                  rendered="#{not empty paisHome.promotortasas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotortasasTable">
+            <rich:column sortBy="#{_promotortasa.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotortasa.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.id.codigopais}">
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_promotortasa.id.codigopais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_promotortasa.id.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.tasa}">
+                <f:facet name="header">Tasa</f:facet>
+                <h:outputText value="#{_promotortasa.tasa}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_promotortasa.tasadolar}">
+                <f:facet name="header">Tasadolar</f:facet>
+                <h:outputText value="#{_promotortasa.tasadolar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotortasa"
+                     value="Select"
+                      view="/Promotortasa.xhtml">
+                    <f:param name="promotortasaDocumento"
+                            value="#{_promotortasa.id.documento}"/>
+                    <f:param name="promotortasaCodigopais"
+                            value="#{_promotortasa.id.codigopais}"/>
+                    <f:param name="promotortasaFecha"
+                            value="#{_promotortasa.id.fecha}"/>
+                    <f:param name="promotortasaFrom" value="Pais"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotortasa"
+                view="/PromotortasaEdit.xhtml">
+            <f:param name="paisCodigopais"
+                    value="#{paisHome.instance.codigopais}"/>
+            <f:param name="promotortasaFrom" value="Pais"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Porcentajecomisiontxes</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="porcentajecomisiontxesChildren">
+
+        <h:outputText value="There are no porcentajecomisiontxes associated with this pais."
+                   rendered="#{empty paisHome.porcentajecomisiontxes}"/>
+
+        <rich:dataTable value="#{paisHome.porcentajecomisiontxes}"
+                       var="_porcentajecomisiontx"
+                  rendered="#{not empty paisHome.porcentajecomisiontxes}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="porcentajecomisiontxesTable">
+            <rich:column sortBy="#{_porcentajecomisiontx.id.codpais}">
+                <f:facet name="header">Codpais</f:facet>
+                <h:outputText value="#{_porcentajecomisiontx.id.codpais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_porcentajecomisiontx.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_porcentajecomisiontx.id.fechainicio}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_porcentajecomisiontx.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_porcentajecomisiontx.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_porcentajecomisiontx.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_porcentajecomisiontx.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectporcentajecomisiontx"
+                     value="Select"
+                      view="/Porcentajecomisiontx.xhtml">
+                    <f:param name="porcentajecomisiontxCodpais"
+                            value="#{_porcentajecomisiontx.id.codpais}"/>
+                    <f:param name="porcentajecomisiontxFechainicio"
+                            value="#{_porcentajecomisiontx.id.fechainicio}"/>
+                    <f:param name="porcentajecomisiontxFrom" value="Pais"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add porcentajecomisiontx"
+                view="/PorcentajecomisiontxEdit.xhtml">
+            <f:param name="paisCodigopais"
+                    value="#{paisHome.instance.codigopais}"/>
+            <f:param name="porcentajecomisiontxFrom" value="Pais"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Establecimientos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="establecimientosChildren">
+
+        <h:outputText value="There are no establecimientos associated with this pais."
+                   rendered="#{empty paisHome.establecimientos}"/>
+
+        <rich:dataTable value="#{paisHome.establecimientos}"
+                       var="_establecimiento"
+                  rendered="#{not empty paisHome.establecimientos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="establecimientosTable">
+            <rich:column sortBy="#{_establecimiento.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.nombreestable}">
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.direccion}">
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.telefono}">
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.iva}">
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.numcuenta}">
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_establecimiento.facturar}">
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectestablecimiento"
+                     value="Select"
+                      view="/Establecimiento.xhtml">
+                    <f:param name="establecimientoCodigounico"
+                            value="#{_establecimiento.codigounico}"/>
+                    <f:param name="establecimientoFrom" value="Pais"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add establecimiento"
+                view="/EstablecimientoEdit.xhtml">
+            <f:param name="paisCodigopais"
+                    value="#{paisHome.instance.codigopais}"/>
+            <f:param name="establecimientoFrom" value="Pais"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tasadolars</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tasadolarsChildren">
+
+        <h:outputText value="There are no tasadolars associated with this pais."
+                   rendered="#{empty paisHome.tasadolars}"/>
+
+        <rich:dataTable value="#{paisHome.tasadolars}"
+                       var="_tasadolar"
+                  rendered="#{not empty paisHome.tasadolars}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tasadolarsTable">
+            <rich:column sortBy="#{_tasadolar.id.codigopais}">
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_tasadolar.id.codigopais}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tasadolar.id.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_tasadolar.id.fecha}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tasadolar.tasa}">
+                <f:facet name="header">Tasa</f:facet>
+                <h:outputText value="#{_tasadolar.tasa}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tasadolar.tasadolar}">
+                <f:facet name="header">Tasadolar</f:facet>
+                <h:outputText value="#{_tasadolar.tasadolar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttasadolar"
+                     value="Select"
+                      view="/Tasadolar.xhtml">
+                    <f:param name="tasadolarCodigopais"
+                            value="#{_tasadolar.id.codigopais}"/>
+                    <f:param name="tasadolarFecha"
+                            value="#{_tasadolar.id.fecha}"/>
+                    <f:param name="tasadolarFrom" value="Pais"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tasadolar"
+                view="/TasadolarEdit.xhtml">
+            <f:param name="paisCodigopais"
+                    value="#{paisHome.instance.codigopais}"/>
+            <f:param name="tasadolarFrom" value="Pais"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

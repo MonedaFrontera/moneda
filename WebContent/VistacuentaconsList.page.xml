@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{vistacuentaconsList.firstResult}"/>
+   <param name="sort" value="#{vistacuentaconsList.orderColumn}"/>
+   <param name="dir" value="#{vistacuentaconsList.orderDirection}"/>
+   <param name="logic" value="#{vistacuentaconsList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="numcuenta" value="#{vistacuentaconsList.vistacuentacons.id.numcuenta}"/>
+   <param name="nombre" value="#{vistacuentaconsList.vistacuentacons.id.nombre}"/>
+   <param name="detalle" value="#{vistacuentaconsList.vistacuentacons.id.detalle}"/>
+   <param name="nombrebanco" value="#{vistacuentaconsList.vistacuentacons.id.nombrebanco}"/>
+   <param name="codbanco" value="#{vistacuentaconsList.vistacuentacons.id.codbanco}"/>
+
+</page>

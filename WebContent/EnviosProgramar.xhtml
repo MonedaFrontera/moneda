@@ -1,0 +1,239 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml"> 
+
+<ui:define name="body">
+
+    <h:form id="enviosSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Busqueda de Envios" switchType="ajax">
+			
+			<s:div style="width:500px">
+			<s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{AdministrarEnvios.envios.fecha}" datePattern="dd/MM/yyyy" >
+                          <a:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+            
+            <s:decorate id="fechaenvioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Envio</ui:define>
+                <rich:calendar id="fechaenvio"
+                          value="#{AdministrarEnvios.envios.fechaenvio}" datePattern="dd/MM/yyyy" >
+                          <a:support event="onblur" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+			<s:div style="width:10px; float:right">
+            <h:graphicImage style="border-style:none"
+                  id="cabeceraImg" width="300px" height="55px" 
+                  value="http://www.domesa.com.ve/domesa/uploads/domesalogo_230x52.jpg" />
+            </s:div>
+			
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Envia</ui:define>
+                <h:inputText id="envia" value="#{AdministrarEnvios.envios.envia}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Recibe</ui:define>
+                <h:inputText id="recibe" value="#{AdministrarEnvios.envios.recibe}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Oficina</ui:define>
+                <h:inputText id="oficina" value="#{AdministrarEnvios.envios.oficina}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Ciudad</ui:define>
+                <h:inputText id="ciudad" value="#{AdministrarEnvios.envios.ciudad}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nro Cupon</ui:define>
+                <h:inputText id="nrocupon" value="#{AdministrarEnvios.envios.nrocupon}"/>
+            </s:decorate>
+            </s:div> 
+                      
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectOneRadio id="logic" value="#{AdministrarEnvios.estado}" styleClass="radio">
+                    <f:selectItem itemLabel="Todos" itemValue="t"/>
+                    <f:selectItem itemLabel="Programados" itemValue="p"/>
+                    <f:selectItem itemLabel="En Transito" itemValue="e"/>
+                    <f:selectItem itemLabel="Enviados MRW" itemValue="m"/>
+                    <f:selectItem itemLabel="Recibidos" itemValue="r"/>
+                </h:selectOneRadio>
+                
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+	<s:div id="Buttons">
+        <div class="actionButtons">
+        	<h:commandButton id="buscar"
+                          value="Buscar"
+                         action="#{AdministrarEnvios.buscar}"
+                         reRender="panelResultado"/>
+            
+            
+            
+            <h:commandButton id="limpiar"
+                          value="Limpiar"
+                         action="#{AdministrarEnvios.reset}"
+                         reRender="enviosSearch, panelResultado"/>
+                         
+            <h:commandButton id="generarentrega" 
+            rendered="#{s:hasRole('Registrar Envios')&amp;&amp;AdministrarEnvios.estado=='p'}"
+                          value="Realizar Entrega"
+                         action="#{AdministrarEnvios.programarEnvios(AdministrarEnvios.enviosDataModel)}"
+                       />
+                       
+            <h:commandButton id="generarcupones" 
+            rendered="#{s:hasRole('Registrar Cupones')&amp;&amp; AdministrarEnvios.estado=='e'}"
+                          value="Registrar Cupones"
+                         action="#{AdministrarEnvios.programarCupones(AdministrarEnvios.enviosDataModel)}"
+                       />
+        </div>
+	</s:div>
+    </h:form>
+	<h:form>
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultado de la Busqueda de Envios (#{empty AdministrarEnvios.enviosDataModel ? 0 : AdministrarEnvios.enviosDataModel.size})</f:facet>
+    <div class="results" id="enviosList">
+
+    <h:outputText value="La busqueda no retorno envios."
+               rendered="#{empty AdministrarEnvios.enviosDataModel}"/>
+
+    <rich:dataTable id="enviosList"
+                var="_envios"
+              value="#{AdministrarEnvios.enviosDataModel}"
+           rendered="#{not empty AdministrarEnvios.enviosDataModel}">
+        
+        <h:column>
+            <f:facet name="header">
+                Fecha
+            </f:facet>
+            <h:outputText value="#{_envios.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Asesor
+            </f:facet>
+            <h:outputText value="#{_envios.asesor.personal.nombre}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                Promotor
+            </f:facet>
+            <h:outputText value="#{_envios.promotor.personal.nombre} #{_envios.promotor.personal.apellido}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                Envia
+            </f:facet>
+            <h:outputText value="#{_envios.envia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                Recibe
+            </f:facet>
+            <h:outputText value="#{_envios.recibe}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                Oficina
+            </f:facet>
+            <h:outputText value="#{_envios.oficina}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                Ciudad
+            </f:facet>
+            <h:outputText value="#{_envios.ciudad}"/>
+        </h:column>
+        
+        <h:column rendered="#{AdministrarEnvios.estado!='p'}">
+            <f:facet name="header">
+                Fecha Envio
+            </f:facet>
+            <h:outputText value="#{_envios.fechaenvio}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        <h:column rendered="#{AdministrarEnvios.estado=='p'||AdministrarEnvios.estado=='t'}">
+            <f:facet name="header">
+                Enviado
+            </f:facet>
+            <h:selectBooleanCheckbox value="#{_envios.enviado}"  rendered="#{AdministrarEnvios.estado=='p'}" >
+            <a:support event="onclick" ajaxSingle="true"/>
+            </h:selectBooleanCheckbox>
+        </h:column>
+        
+        <h:column rendered="#{AdministrarEnvios.estado!='p'}">
+            <f:facet name="header">
+                Cupon MRW
+            </f:facet>
+            <h:outputText value="#{_envios.nrocupon}" 
+            rendered="#{AdministrarEnvios.estado!='e'}"/>
+            
+            
+            
+            <h:inputText size="10" maxlength="15" id="nrocupon" value="#{_envios.nrocupon}" 
+            rendered="#{(s:hasRole('Registrar Cupones')&amp;&amp;_envios.enviado)&amp;&amp;AdministrarEnvios.estado=='e'}">
+            <a:support event="onblur" action="#{AdministrarEnvios.registrarFecha(_envios)}" ajaxSingle="true"/>
+            </h:inputText>
+        </h:column>
+        
+        
+        <h:column rendered="#{AdministrarEnvios.estado!='p'}">
+            <f:facet name="header">
+                Fecha MRW
+            </f:facet>
+            <h:outputText value="#{_envios.fechamrw}" rendered="#{AdministrarEnvios.estado!='e'}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+            <rich:calendar id="fechamrw" 
+                          value="#{_envios.fechamrw}" datePattern="dd/MM/yyyy" 
+                          enableManualInput="true" 
+                          immediate="true"
+                          rendered="#{(s:hasRole('Registrar Cupones')&amp;&amp;_envios.enviado)&amp;&amp;
+                          (AdministrarEnvios.estado=='e')}">
+                         <a:support event="onchanged" action="#{AdministrarEnvios.registrarFecha(_envios)}" ajaxSingle="true"/>
+                        
+                         </rich:calendar>
+            
+        </h:column>
+        
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            
+            
+            <h:commandLink value="Editar" 
+            rendered="#{s:hasRole('Eliminar Envios')}"
+            action="#{AdministrarEnvios.iniciarEdicionEnvio(_envios.consecutivo)}" >
+            </h:commandLink>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+	</h:form>
+     
+
+
+
+</ui:define>
+
+</ui:composition>

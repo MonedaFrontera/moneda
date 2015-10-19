@@ -1,0 +1,101 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Audit tarjeta Details</f:facet>
+
+        <s:decorate id="numerotarjeta" template="layout/display.xhtml">
+            <ui:define name="label">Numerotarjeta</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.numerotarjeta}"/>
+        </s:decorate>
+        <s:decorate id="bancoemisor" template="layout/display.xhtml">
+            <ui:define name="label">Bancoemisor</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.bancoemisor}"/>
+        </s:decorate>
+        <s:decorate id="franquicia" template="layout/display.xhtml">
+            <ui:define name="label">Franquicia</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.franquicia}"/>
+        </s:decorate>
+        <s:decorate id="documento" template="layout/display.xhtml">
+            <ui:define name="label">Documento</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.documento}"/>
+        </s:decorate>
+        <s:decorate id="limite" template="layout/display.xhtml">
+            <ui:define name="label">Limite</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.limite}"/>
+        </s:decorate>
+        <s:decorate id="fechainicio" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicio</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="fechafin" template="layout/display.xhtml">
+            <ui:define name="label">Fechafin</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="fechavencimiento" template="layout/display.xhtml">
+            <ui:define name="label">Fechavencimiento</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.fechavencimiento}"/>
+        </s:decorate>
+        <s:decorate id="codseguridad" template="layout/display.xhtml">
+            <ui:define name="label">Codseguridad</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.codseguridad}"/>
+        </s:decorate>
+        <s:decorate id="tarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Tarjetahabiente</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.tarjetahabiente}"/>
+        </s:decorate>
+        <s:decorate id="direcciontarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Direcciontarjetahabiente</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.direcciontarjetahabiente}"/>
+        </s:decorate>
+        <s:decorate id="cedulatarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Cedulatarjetahabiente</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.cedulatarjetahabiente}"/>
+        </s:decorate>
+        <s:decorate id="telefonotarjetahabiente" template="layout/display.xhtml">
+            <ui:define name="label">Telefonotarjetahabiente</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.telefonotarjetahabiente}"/>
+        </s:decorate>
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{auditTarjetaHome.instance.id.usuariomod}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/AuditTarjetaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty auditTarjetaFrom ? 'AuditTarjetaList' : auditTarjetaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

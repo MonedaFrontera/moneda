@@ -1,0 +1,272 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="establecimiento" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{establecimientoHome.managed ? 'Editar Informacion' : 'Registrar'} Establecimiento</f:facet>
+			
+			<div style="clear:both; color:blue">                
+                <p>Seleccione primero el pais del establecimiento</p>               
+            </div>
+
+			<s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:selectOneMenu id="paisSel"   value="#{establecimientoHome.instance.pais}" required="true" >
+			<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
+			                    noSelectionLabel="Seleccione..." />
+			     <s:convertEntity />
+			     <a:support event="onchange" reRender="codigopaisField" ajaxSingle="true"/>			     
+		    </h:selectOneMenu>
+            </s:decorate>
+            
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo Unico</ui:define>
+                <h:inputText id="codigounico"
+                       disabled="#{establecimientoHome.managed}"
+                       required="true"
+                           size="8"
+                      maxlength="8"
+                          value="#{establecimientoHome.instance.codigounico}">
+                    <a:support event="onblur" reRender="codigounicoField" 
+                    action="#{AdministrarEstablecimiento.validarCodigoUnico()}"
+                     ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="nombreestableField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre Establecimiento</ui:define>
+                <h:inputText id="nombreestable"
+                       required="true"
+                           size="30"
+                      maxlength="30"
+                          value="#{establecimientoHome.instance.nombreestable}">
+                    <a:support event="onblur" reRender="nombreestableField" 
+                    action="#{AdministrarEstablecimiento.establecerEstablecimiento(establecimientoHome.instance.nombreestable)}"
+                     ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="direccionField" template="layout/edit.xhtml">
+                <ui:define name="label">Direccion</ui:define>
+                <h:inputText id="direccion"
+                           size="50"
+                      maxlength="50"
+                          value="#{establecimientoHome.instance.direccion}">
+                    <a:support event="onblur" reRender="direccionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="telefonoField" template="layout/edit.xhtml">
+                <ui:define name="label">Telefono</ui:define>
+                <h:inputText id="telefono"
+                           size="15"
+                      maxlength="15"
+                          value="#{establecimientoHome.instance.telefono}">
+                    <a:support event="onblur" reRender="telefonoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{establecimientoHome.instance.porcentaje}"
+                           size="12">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+			<s:decorate id="cuentaField" template="layout/edit.xhtml">
+                <ui:define name="label">Cuenta</ui:define>
+                <h:inputText id="cuenta"                       
+                       required="false"
+                           size="20"
+                      maxlength="20"
+                          value="#{establecimientoHome.instance.numcuenta}">
+                    <a:support event="onblur" reRender="cuentaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{establecimientoHome.persist}"
+                       disabled="#{!establecimientoHome.wired}"
+                       rendered="#{!establecimientoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{establecimientoHome.update}"
+                       rendered="#{establecimientoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{establecimientoHome.remove}"
+                      immediate="true"
+                       rendered="#{establecimientoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"             
+                    view="/EstablecimientoList.xhtml"
+                rendered="#{establecimientoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty establecimientoFrom ? 'EstablecimientoList' : EstablecimientoList}.xhtml"
+                rendered="#{!establecimientoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    
+
+    
+<rich:tab label="Gravamenes">
+        <h:form styleClass="association" id="gravamenestablecimientosChildren">
+
+            <h:outputText value="No hay Gravamenes asociados con este Establecimiento"
+                       rendered="#{empty establecimientoHome.gravamenestablecimientos}"/>
+
+            <rich:dataTable value="#{establecimientoHome.gravamenestablecimientos}"
+                           var="_gravamenestablecimiento"
+                      rendered="#{not empty establecimientoHome.gravamenestablecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="gravamenestablecimientosTable">
+                
+                <rich:column sortBy="#{_gravamenestablecimiento.gravamen.nombre}">
+                    <f:facet name="header">Gravamen</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.gravamen.nombre}"/>
+                </rich:column>
+                <rich:column sortBy="#{_gravamenestablecimiento.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_gravamenestablecimiento.iva}">
+                    <f:facet name="header">Iva</f:facet>
+                    <h:outputText value="#{_gravamenestablecimiento.iva}"/>
+                </rich:column>
+                <rich:column sortBy="#{_gravamenestablecimiento.activo}">
+                    <f:facet name="header">Activo</f:facet>
+                    <h:outputText value="activo" rendered="#{_gravamenestablecimiento.activo}"/>
+                    <h:outputText value="inactivo" rendered="#{!_gravamenestablecimiento.activo}"/>
+                </rich:column>
+                <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            <s:link view="/GravamenestablecimientoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="gravamenestablecimientoEdit"
+                rendered="#{empty from}">
+                <f:param name="gravamenestablecimientoCodigounico"
+                        value="#{_gravamenestablecimiento.id.codigounico}"/>
+                <f:param name="gravamenestablecimientoGravamen"
+                        value="#{_gravamenestablecimiento.id.gravamen}"/>
+            </s:link>
+        </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{establecimientoHome.managed}" id="gravamenestablecimientos">
+        <div class="actionButtons">
+            <s:button id="addgravamenestablecimiento"
+                   value="Agregar Gravamen"
+                    view="/GravamenestablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="establecimientoCodigounico"
+                         value="#{establecimientoHome.instance.codigounico}"/>
+                 <f:param name="gravamenestablecimientoFrom" value="EstablecimientoEdit"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+    <rich:tab label="Franquicias">
+        <h:form styleClass="association" id="franquiciaestablecimientosChildren">
+
+            <h:outputText value="No hay descuentos de franquicias asociadas a este establecimiento."
+                       rendered="#{empty establecimientoHome.franquiciaestablecimientos}"/>
+
+            <rich:dataTable value="#{establecimientoHome.franquiciaestablecimientos}"
+                           var="_franquiciaestablecimiento"
+                      rendered="#{not empty establecimientoHome.franquiciaestablecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="franquiciaestablecimientosTable">
+                
+                <rich:column sortBy="#{_franquiciaestablecimiento.franquicia.nombrefranquicia}">
+                    <f:facet name="header">Franquicia</f:facet>
+                    <h:outputText value="#{_franquiciaestablecimiento.franquicia.nombrefranquicia}"/>
+                </rich:column>
+                <rich:column sortBy="#{_franquiciaestablecimiento.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_franquiciaestablecimiento.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            
+            <s:link view="/FranquiciaestablecimientoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="franquiciaestablecimientoEdit"
+                rendered="#{empty from}">
+                <f:param name="franquiciaestablecimientoFranquicia"
+                        value="#{_franquiciaestablecimiento.id.franquicia}"/>
+                <f:param name="franquiciaestablecimientoEstablecimiento"
+                        value="#{_franquiciaestablecimiento.id.establecimiento}"/>
+            </s:link>
+        </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{establecimientoHome.managed}" id="franquiciaestablecimientos">
+        <div class="actionButtons">
+            <s:button id="addfranquiciaestablecimiento"
+                   value="Agregar Franquicia"
+                    view="/FranquiciaestablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="establecimientoCodigounico"
+                         value="#{establecimientoHome.instance.codigounico}"/>
+                 <f:param name="franquiciaestablecimientoFrom" value="EstablecimientoEdit"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+    
+
+    
+    
+    
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

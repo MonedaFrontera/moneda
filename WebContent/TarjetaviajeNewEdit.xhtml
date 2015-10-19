@@ -1,0 +1,92 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tarjetaviajeNew" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tarjetaviajeNewHome.managed ? 'Edit' : 'Add'} Tarjetaviaje new</f:facet>
+
+
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{tarjetaviajeNewHome.managed}"
+                      required="true"
+                          size="16"
+                     maxlength="16"
+                         value="#{tarjetaviajeNewHome.instance.id.numerotarjeta}">
+                    <a:support event="onblur" reRender="numerotarjetaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="consecutivoviajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivoviaje</ui:define>
+                <h:inputText id="consecutivoviaje"
+                       required="true"
+                       disabled="#{tarjetaviajeNewHome.managed}"
+                          value="#{tarjetaviajeNewHome.instance.id.consecutivoviaje}">
+                    <a:support event="onblur" reRender="consecutivoviajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="estadoField" template="layout/edit.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectBooleanCheckbox id="estado"
+                                      value="#{tarjetaviajeNewHome.instance.estado}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{tarjetaviajeNewHome.persist}"
+                       disabled="#{!tarjetaviajeNewHome.wired}"
+                       rendered="#{!tarjetaviajeNewHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{tarjetaviajeNewHome.update}"
+                       rendered="#{tarjetaviajeNewHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{tarjetaviajeNewHome.remove}"
+                      immediate="true"
+                       rendered="#{tarjetaviajeNewHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/TarjetaviajeNew.xhtml"
+                rendered="#{tarjetaviajeNewHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty tarjetaviajeNewFrom ? 'TarjetaviajeNewList' : tarjetaviajeNewFrom}.xhtml"
+                rendered="#{!tarjetaviajeNewHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

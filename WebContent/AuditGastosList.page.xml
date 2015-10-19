@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{auditGastosList.firstResult}"/>
+   <param name="sort" value="#{auditGastosList.orderColumn}"/>
+   <param name="dir" value="#{auditGastosList.orderDirection}"/>
+   <param name="logic" value="#{auditGastosList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="documento" value="#{auditGastosList.auditGastos.id.documento}"/>
+   <param name="observacion" value="#{auditGastosList.auditGastos.id.observacion}"/>
+   <param name="tipogasto" value="#{auditGastosList.auditGastos.id.tipogasto}"/>
+   <param name="usuariomod" value="#{auditGastosList.auditGastos.id.usuariomod}"/>
+
+</page>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{tasadolarparametrosList.firstResult}"/>
+   <param name="sort" value="#{tasadolarparametrosList.orderColumn}"/>
+   <param name="dir" value="#{tasadolarparametrosList.orderDirection}"/>
+   <param name="logic" value="#{tasadolarparametrosList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codbanco" value="#{tasadolarparametrosList.tasadolarparametros.id.codbanco}"/>
+   <param name="codpais" value="#{tasadolarparametrosList.tasadolarparametros.id.codpais}"/>
+   <param name="codfranquicia" value="#{tasadolarparametrosList.tasadolarparametros.id.codfranquicia}"/>
+
+</page>

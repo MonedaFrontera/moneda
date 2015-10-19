@@ -1,0 +1,214 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Producto Details</f:facet>
+
+        <s:decorate id="refproducto" template="layout/display.xhtml">
+            <ui:define name="label">Refproducto</ui:define>
+            <h:outputText value="#{productoHome.instance.refproducto}"/>
+        </s:decorate>
+
+        <s:decorate id="nombreproducto" template="layout/display.xhtml">
+            <ui:define name="label">Nombreproducto</ui:define>
+            <h:outputText value="#{productoHome.instance.nombreproducto}"/>
+        </s:decorate>
+
+        <s:decorate id="marca" template="layout/display.xhtml">
+            <ui:define name="label">Marca</ui:define>
+            <h:outputText value="#{productoHome.instance.marca}"/>
+        </s:decorate>
+
+        <s:decorate id="valorminimo" template="layout/display.xhtml">
+            <ui:define name="label">Valorminimo</ui:define>
+            <h:outputText value="#{productoHome.instance.valorminimo}"/>
+        </s:decorate>
+
+        <s:decorate id="valormaximo" template="layout/display.xhtml">
+            <ui:define name="label">Valormaximo</ui:define>
+            <h:outputText value="#{productoHome.instance.valormaximo}"/>
+        </s:decorate>
+
+        <s:decorate id="cantminimo" template="layout/display.xhtml">
+            <ui:define name="label">Cantminimo</ui:define>
+            <h:outputText value="#{productoHome.instance.cantminimo}"/>
+        </s:decorate>
+
+        <s:decorate id="cantmaximo" template="layout/display.xhtml">
+            <ui:define name="label">Cantmaximo</ui:define>
+            <h:outputText value="#{productoHome.instance.cantmaximo}"/>
+        </s:decorate>
+
+        <s:decorate id="porcentaje" template="layout/display.xhtml">
+            <ui:define name="label">Porcentaje</ui:define>
+            <h:outputText value="#{productoHome.instance.porcentaje}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ProductoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty productoFrom ? 'ProductoList' : productoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Inventarios</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="inventariosChildren">
+
+        <h:outputText value="There are no inventarios associated with this producto."
+                   rendered="#{empty productoHome.inventarios}"/>
+
+        <rich:dataTable value="#{productoHome.inventarios}"
+                       var="_inventario"
+                  rendered="#{not empty productoHome.inventarios}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="inventariosTable">
+            <rich:column sortBy="#{_inventario.id.refproducto}">
+                <f:facet name="header">Refproducto</f:facet>
+                <h:outputText value="#{_inventario.id.refproducto}"/>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_inventario.id.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_inventario.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.cantidad}">
+                <f:facet name="header">Cantidad</f:facet>
+                <h:outputText value="#{_inventario.cantidad}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.activo}">
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_inventario.activo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.prioridad}">
+                <f:facet name="header">Prioridad</f:facet>
+                <h:outputText value="#{_inventario.prioridad}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectinventario"
+                     value="Select"
+                      view="/Inventario.xhtml">
+                    <f:param name="inventarioRefproducto"
+                            value="#{_inventario.id.refproducto}"/>
+                    <f:param name="inventarioCodigounico"
+                            value="#{_inventario.id.codigounico}"/>
+                    <f:param name="inventarioFrom" value="Producto"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add inventario"
+                view="/InventarioEdit.xhtml">
+            <f:param name="productoRefproducto"
+                    value="#{productoHome.instance.refproducto}"/>
+            <f:param name="inventarioFrom" value="Producto"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Inventarios_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="inventarios_1Children">
+
+        <h:outputText value="There are no inventarios_1 associated with this producto."
+                   rendered="#{empty productoHome.inventarios_1}"/>
+
+        <rich:dataTable value="#{productoHome.inventarios_1}"
+                       var="_inventario"
+                  rendered="#{not empty productoHome.inventarios_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="inventarios_1Table">
+            <rich:column sortBy="#{_inventario.id.refproducto}">
+                <f:facet name="header">Refproducto</f:facet>
+                <h:outputText value="#{_inventario.id.refproducto}"/>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_inventario.id.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_inventario.valor}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.cantidad}">
+                <f:facet name="header">Cantidad</f:facet>
+                <h:outputText value="#{_inventario.cantidad}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.activo}">
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_inventario.activo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_inventario.prioridad}">
+                <f:facet name="header">Prioridad</f:facet>
+                <h:outputText value="#{_inventario.prioridad}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectinventario"
+                     value="Select"
+                      view="/Inventario.xhtml">
+                    <f:param name="inventarioRefproducto"
+                            value="#{_inventario.id.refproducto}"/>
+                    <f:param name="inventarioCodigounico"
+                            value="#{_inventario.id.codigounico}"/>
+                    <f:param name="inventarioFrom" value="Producto"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add inventario"
+                view="/InventarioEdit.xhtml">
+            <f:param name="productoRefproducto"
+                    value="#{productoHome.instance.refproducto}"/>
+            <f:param name="inventarioFrom" value="Producto"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

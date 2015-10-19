@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+	<begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <param name="firstResult" value="#{autovozList.firstResult}"/>
+   <param name="sort" value="#{autovozList.orderColumn}"/>
+   <param name="dir" value="#{autovozList.orderDirection}"/>
+   <param name="logic" value="#{autovozList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="tipotx" value="#{autovozList.autovoz.tipotx}"/>
+   <param name="fecha" value="#{autovozList.autovoz.fechatx}"/>
+   <param name="numtarjeta" value="#{autovozList.numtarjeta}"/>
+   <param name="usuariomod" value="#{autovozList.autovoz.usuariomod}"/>
+   <param name="numautorizacion" value="#{autovozList.autovoz.numautorizacion}"/>
+   <param name="numtransaccion" value="#{autovozList.autovoz.numtransaccion}"/>
+   <param name="estado" value="#{autovozList.estado}"/>
+	
+   <navigation from-action="#{AdministrarTransaccion.generarTransaccion(_autovoz.consecutivo)}">
+         <redirect view-id="/TransaccionEdit.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{AdministrarAutovoz.editarAutovoz(_autovoz.consecutivo)}">
+         <redirect view-id="/AutovozEdit.xhtml"/>
+   </navigation>
+	
+</page>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/TarjetaList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{tarjetaHome.wire}"/>
+   
+    <param name="tarjetaFrom"/>
+
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+   <param name="franquiciaFrom"/>
+   <param name="franquiciaCodfranquicia" value="#{franquiciaHome.franquiciaCodfranquicia}"/>
+
+   <param name="bancoFrom"/>
+   <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
+
+
+
+   <navigation from-action="#{AdministrarTarjeta.guardarTarjeta}">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{AdministrarTarjeta.actualizarTarjeta()}">
+   <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+   </rule>
+   </navigation>
+   
+   <navigation from-action="#{AdministrarTarjeta.liberarTarjeta()}">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+   </navigation>
+   
+   
+   <navigation from-action="#{AdministrarTarjeta.bloquearViajeTarjeta()}">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{AdministrarTarjeta.desbloquearViajeTarjeta()}">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+   </navigation>
+   
+
+   <navigation from-action="#{tarjetaHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{tarjetaHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/TarjetaaList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

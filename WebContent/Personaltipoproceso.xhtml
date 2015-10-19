@@ -1,0 +1,235 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Personaltipoproceso Details</f:facet>
+
+        <s:decorate id="documento" template="layout/display.xhtml">
+            <ui:define name="label">Documento</ui:define>
+            <h:outputText value="#{personaltipoprocesoHome.instance.id.documento}"/>
+        </s:decorate>
+        <s:decorate id="fechainicio" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicio</ui:define>
+            <h:outputText value="#{personaltipoprocesoHome.instance.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="puntodeventa" template="layout/display.xhtml">
+            <ui:define name="label">Puntodeventa</ui:define>
+            <h:outputText value="#{personaltipoprocesoHome.instance.id.puntodeventa}"/>
+        </s:decorate>
+        <s:decorate id="tipoproceso" template="layout/display.xhtml">
+            <ui:define name="label">Tipoproceso</ui:define>
+            <h:outputText value="#{personaltipoprocesoHome.instance.id.tipoproceso}"/>
+        </s:decorate>
+
+        <s:decorate id="fechafin" template="layout/display.xhtml">
+            <ui:define name="label">Fechafin</ui:define>
+            <h:outputText value="#{personaltipoprocesoHome.instance.fechafin}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="porcentaje" template="layout/display.xhtml">
+            <ui:define name="label">Porcentaje</ui:define>
+            <h:outputText value="#{personaltipoprocesoHome.instance.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PersonaltipoprocesoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty personaltipoprocesoFrom ? 'PersonaltipoprocesoList' : personaltipoprocesoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Personal</h:panelGroup>
+        </f:facet>
+    <div class="association" id="personalParent">
+
+        <h:outputText value="There is no personal associated with this personaltipoproceso."
+                   rendered="#{personaltipoprocesoHome.instance.personal == null}"/>
+
+        <rich:dataTable var="_personal"
+                   value="#{personaltipoprocesoHome.instance.personal}"
+                rendered="#{personaltipoprocesoHome.instance.personal != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="personalTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cargo codcargo</f:facet>
+                <h:outputText value="#{_personal.cargo.codcargo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipodocumento</f:facet>
+                <h:outputText value="#{_personal.tipodocumento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_personal.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellido</f:facet>
+                <h:outputText value="#{_personal.apellido}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Celular</f:facet>
+                <h:outputText value="#{_personal.celular}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_personal.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pinbb</f:facet>
+                <h:outputText value="#{_personal.pinbb}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_personal.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_personal.correo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correoalternativo</f:facet>
+                <h:outputText value="#{_personal.correoalternativo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechanac</f:facet>
+                <h:outputText value="#{_personal.fechanac}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_personal.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Administrativo documento</f:facet>
+                <h:outputText value="#{_personal.administrativo.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_personal.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_personal.asesor.documento}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpersonal"
+                     value="View"
+                      view="/Personal.xhtml">
+                    <f:param name="personalDocumento"
+                           value="#{_personal.documento}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Puntodeventa</h:panelGroup>
+        </f:facet>
+    <div class="association" id="puntodeventaParent">
+
+        <h:outputText value="There is no puntodeventa associated with this personaltipoproceso."
+                   rendered="#{personaltipoprocesoHome.instance.puntodeventa == null}"/>
+
+        <rich:dataTable var="_puntodeventa"
+                   value="#{personaltipoprocesoHome.instance.puntodeventa}"
+                rendered="#{personaltipoprocesoHome.instance.puntodeventa != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="puntodeventaTable">
+            <h:column>
+                <f:facet name="header">Codpuntoventa</f:facet>
+                <h:outputText value="#{_puntodeventa.codpuntoventa}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_puntodeventa.nombre}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpuntodeventa"
+                     value="View"
+                      view="/Puntodeventa.xhtml">
+                    <f:param name="puntodeventaCodpuntoventa"
+                           value="#{_puntodeventa.codpuntoventa}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Tipoproceso</h:panelGroup>
+        </f:facet>
+    <div class="association" id="tipoprocesoParent">
+
+        <h:outputText value="There is no tipoproceso associated with this personaltipoproceso."
+                   rendered="#{personaltipoprocesoHome.instance.tipoproceso == null}"/>
+
+        <rich:dataTable var="_tipoproceso"
+                   value="#{personaltipoprocesoHome.instance.tipoproceso}"
+                rendered="#{personaltipoprocesoHome.instance.tipoproceso != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tipoprocesoTable">
+            <h:column>
+                <f:facet name="header">Tipo</f:facet>
+                <h:outputText value="#{_tipoproceso.tipo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Descripcion</f:facet>
+                <h:outputText value="#{_tipoproceso.descripcion}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewtipoproceso"
+                     value="View"
+                      view="/Tipoproceso.xhtml">
+                    <f:param name="tipoprocesoTipo"
+                           value="#{_tipoproceso.tipo}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

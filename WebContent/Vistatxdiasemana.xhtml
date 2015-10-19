@@ -1,0 +1,63 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Vistatxdiasemana Details</f:facet>
+
+        <s:decorate id="codigodia" template="layout/display.xhtml">
+            <ui:define name="label">Codigodia</ui:define>
+            <h:outputText value="#{vistatxdiasemanaHome.instance.id.codigodia}"/>
+        </s:decorate>
+        <s:decorate id="codigomes" template="layout/display.xhtml">
+            <ui:define name="label">Codigomes</ui:define>
+            <h:outputText value="#{vistatxdiasemanaHome.instance.id.codigomes}"/>
+        </s:decorate>
+        <s:decorate id="fechatx" template="layout/display.xhtml">
+            <ui:define name="label">Fechatx</ui:define>
+            <h:outputText value="#{vistatxdiasemanaHome.instance.id.fechatx}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="valortxpesos" template="layout/display.xhtml">
+            <ui:define name="label">Valortxpesos</ui:define>
+            <h:outputText value="#{vistatxdiasemanaHome.instance.id.valortxpesos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+        <s:decorate id="promotor" template="layout/display.xhtml">
+            <ui:define name="label">Promotor</ui:define>
+            <h:outputText value="#{vistatxdiasemanaHome.instance.id.promotor}"/>
+        </s:decorate>
+        <s:decorate id="asesor" template="layout/display.xhtml">
+            <ui:define name="label">Asesor</ui:define>
+            <h:outputText value="#{vistatxdiasemanaHome.instance.id.asesor}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/VistatxdiasemanaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty vistatxdiasemanaFrom ? 'VistatxdiasemanaList' : vistatxdiasemanaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+</ui:define>
+
+</ui:composition>

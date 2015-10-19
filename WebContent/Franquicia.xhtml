@@ -1,0 +1,256 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Franquicia Details</f:facet>
+
+        <s:decorate id="codfranquicia" template="layout/display.xhtml">
+            <ui:define name="label">Codfranquicia</ui:define>
+            <h:outputText value="#{franquiciaHome.instance.codfranquicia}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrefranquicia" template="layout/display.xhtml">
+            <ui:define name="label">Nombrefranquicia</ui:define>
+            <h:outputText value="#{franquiciaHome.instance.nombrefranquicia}"/>
+        </s:decorate>
+
+        <s:decorate id="porcentaje" template="layout/display.xhtml">
+            <ui:define name="label">Porcentaje</ui:define>
+            <h:outputText value="#{franquiciaHome.instance.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/FranquiciaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty franquiciaFrom ? 'FranquiciaList' : franquiciaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjetas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tarjetasChildren">
+
+        <h:outputText value="There are no tarjetas associated with this franquicia."
+                   rendered="#{empty franquiciaHome.tarjetas}"/>
+
+        <rich:dataTable value="#{franquiciaHome.tarjetas}"
+                       var="_tarjeta"
+                  rendered="#{not empty franquiciaHome.tarjetas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tarjetasTable">
+            <rich:column sortBy="#{_tarjeta.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.limite}">
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechavencimiento}">
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.codseguridad}">
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.tarjetahabiente}">
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.direcciontarjetahabiente}">
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.cedulatarjetahabiente}">
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.telefonotarjetahabiente}">
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttarjeta"
+                     value="Select"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                            value="#{_tarjeta.numerotarjeta}"/>
+                    <f:param name="tarjetaFrom" value="Franquicia"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tarjeta"
+                view="/TarjetaEdit.xhtml">
+            <f:param name="franquiciaCodfranquicia"
+                    value="#{franquiciaHome.instance.codfranquicia}"/>
+            <f:param name="tarjetaFrom" value="Franquicia"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Promotorfranquicias</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="promotorfranquiciasChildren">
+
+        <h:outputText value="There are no promotorfranquicias associated with this franquicia."
+                   rendered="#{empty franquiciaHome.promotorfranquicias}"/>
+
+        <rich:dataTable value="#{franquiciaHome.promotorfranquicias}"
+                       var="_promotorfranquicia"
+                  rendered="#{not empty franquiciaHome.promotorfranquicias}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="promotorfranquiciasTable">
+            <rich:column sortBy="#{_promotorfranquicia.id.codfranquicia}">
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_promotorfranquicia.id.codfranquicia}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorfranquicia.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotorfranquicia.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_promotorfranquicia.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_promotorfranquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpromotorfranquicia"
+                     value="Select"
+                      view="/Promotorfranquicia.xhtml">
+                    <f:param name="promotorfranquiciaCodfranquicia"
+                            value="#{_promotorfranquicia.id.codfranquicia}"/>
+                    <f:param name="promotorfranquiciaDocumento"
+                            value="#{_promotorfranquicia.id.documento}"/>
+                    <f:param name="promotorfranquiciaFrom" value="Franquicia"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add promotorfranquicia"
+                view="/PromotorfranquiciaEdit.xhtml">
+            <f:param name="franquiciaCodfranquicia"
+                    value="#{franquiciaHome.instance.codfranquicia}"/>
+            <f:param name="promotorfranquiciaFrom" value="Franquicia"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Franquiciaestablecimientos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="franquiciaestablecimientosChildren">
+
+        <h:outputText value="There are no franquiciaestablecimientos associated with this franquicia."
+                   rendered="#{empty franquiciaHome.franquiciaestablecimientos}"/>
+
+        <rich:dataTable value="#{franquiciaHome.franquiciaestablecimientos}"
+                       var="_franquiciaestablecimiento"
+                  rendered="#{not empty franquiciaHome.franquiciaestablecimientos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="franquiciaestablecimientosTable">
+            <rich:column sortBy="#{_franquiciaestablecimiento.id.establecimiento}">
+                <f:facet name="header">Establecimiento</f:facet>
+                <h:outputText value="#{_franquiciaestablecimiento.id.establecimiento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_franquiciaestablecimiento.id.franquicia}">
+                <f:facet name="header">Franquicia</f:facet>
+                <h:outputText value="#{_franquiciaestablecimiento.id.franquicia}"/>
+            </rich:column>
+            <rich:column sortBy="#{_franquiciaestablecimiento.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquiciaestablecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectfranquiciaestablecimiento"
+                     value="Select"
+                      view="/Franquiciaestablecimiento.xhtml">
+                    <f:param name="franquiciaestablecimientoEstablecimiento"
+                            value="#{_franquiciaestablecimiento.id.establecimiento}"/>
+                    <f:param name="franquiciaestablecimientoFranquicia"
+                            value="#{_franquiciaestablecimiento.id.franquicia}"/>
+                    <f:param name="franquiciaestablecimientoFrom" value="Franquicia"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add franquiciaestablecimiento"
+                view="/FranquiciaestablecimientoEdit.xhtml">
+            <f:param name="franquiciaCodfranquicia"
+                    value="#{franquiciaHome.instance.codfranquicia}"/>
+            <f:param name="franquiciaestablecimientoFrom" value="Franquicia"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

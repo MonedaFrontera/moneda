@@ -1,0 +1,189 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="puntoestablecimiento" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{puntoestablecimientoHome.managed ? 'Edit' : 'Add'} Puntoestablecimiento</f:facet>
+
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigounico</ui:define>
+                <h:inputText id="codigounico"
+                       disabled="#{puntoestablecimientoHome.managed}"
+                      required="true"
+                          size="8"
+                     maxlength="8"
+                         value="#{puntoestablecimientoHome.instance.id.codigounico}">
+                    <a:support event="onblur" reRender="codigounicoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codpuntoventaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codpuntoventa</ui:define>
+                <h:inputText id="codpuntoventa"
+                       disabled="#{puntoestablecimientoHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{puntoestablecimientoHome.instance.id.codpuntoventa}">
+                    <a:support event="onblur" reRender="codpuntoventaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="true"
+                          value="#{puntoestablecimientoHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{puntoestablecimientoHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{puntoestablecimientoHome.persist}"
+                       disabled="#{!puntoestablecimientoHome.wired}"
+                       rendered="#{!puntoestablecimientoHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{puntoestablecimientoHome.update}"
+                       rendered="#{puntoestablecimientoHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{puntoestablecimientoHome.remove}"
+                      immediate="true"
+                       rendered="#{puntoestablecimientoHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Puntoestablecimiento.xhtml"
+                rendered="#{puntoestablecimientoHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty puntoestablecimientoFrom ? 'PuntoestablecimientoList' : puntoestablecimientoFrom}.xhtml"
+                rendered="#{!puntoestablecimientoHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Puntodeventa *" labelClass="required">
+    <div class="association" id="puntodeventaParent">
+
+        <h:outputText value="There is no puntodeventa associated with this puntoestablecimiento."
+                   rendered="#{puntoestablecimientoHome.instance.puntodeventa == null}"/>
+
+        <rich:dataTable var="_puntodeventa"
+                   value="#{puntoestablecimientoHome.instance.puntodeventa}"
+                rendered="#{puntoestablecimientoHome.instance.puntodeventa != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="puntodeventaTable">
+            <h:column>
+                <f:facet name="header">Codpuntoventa</f:facet>
+                <h:outputText value="#{_puntodeventa.codpuntoventa}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_puntodeventa.nombre}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{puntoestablecimientoHome.instance.puntodeventa != null ? 'changeParent' : 'selectParent'}" value="#{puntoestablecimientoHome.instance.puntodeventa != null ? 'Change' : 'Select'} puntodeventa"
+                       view="/PuntodeventaList.xhtml">
+                <f:param name="from" value="PuntoestablecimientoEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Establecimiento *" labelClass="required">
+    <div class="association" id="establecimientoParent">
+
+        <h:outputText value="There is no establecimiento associated with this puntoestablecimiento."
+                   rendered="#{puntoestablecimientoHome.instance.establecimiento == null}"/>
+
+        <rich:dataTable var="_establecimiento"
+                   value="#{puntoestablecimientoHome.instance.establecimiento}"
+                rendered="#{puntoestablecimientoHome.instance.establecimiento != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="establecimientoTable">
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pais codigopais</f:facet>
+                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Empresa nit</f:facet>
+                <h:outputText value="#{_establecimiento.empresa.nit}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{puntoestablecimientoHome.instance.establecimiento != null ? 'changeParent' : 'selectParent'}" value="#{puntoestablecimientoHome.instance.establecimiento != null ? 'Change' : 'Select'} establecimiento"
+                       view="/EstablecimientoList.xhtml">
+                <f:param name="from" value="PuntoestablecimientoEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

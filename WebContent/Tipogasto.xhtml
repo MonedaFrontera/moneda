@@ -1,0 +1,177 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Tipogasto Details</f:facet>
+
+        <s:decorate id="codtipogasto" template="layout/display.xhtml">
+            <ui:define name="label">Codtipogasto</ui:define>
+            <h:outputText value="#{tipogastoHome.instance.codtipogasto}"/>
+        </s:decorate>
+
+        <s:decorate id="descripcion" template="layout/display.xhtml">
+            <ui:define name="label">Descripcion</ui:define>
+            <h:outputText value="#{tipogastoHome.instance.descripcion}"/>
+        </s:decorate>
+
+        <s:decorate id="tipo" template="layout/display.xhtml">
+            <ui:define name="label">Tipo</ui:define>
+            <h:outputText value="#{tipogastoHome.instance.tipo}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TipogastoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty tipogastoFrom ? 'TipogastoList' : tipogastoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Gastoses</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="gastosesChildren">
+
+        <h:outputText value="There are no gastoses associated with this tipogasto."
+                   rendered="#{empty tipogastoHome.gastoses}"/>
+
+        <rich:dataTable value="#{tipogastoHome.gastoses}"
+                       var="_gastos"
+                  rendered="#{not empty tipogastoHome.gastoses}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="gastosesTable">
+            <rich:column sortBy="#{_gastos.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_gastos.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_gastos.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_gastos.valor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_gastos.observacion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valorbolivar}">
+                <f:facet name="header">Valorbolivar</f:facet>
+                <h:outputText value="#{_gastos.valorbolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectgastos"
+                     value="Select"
+                      view="/Gastos.xhtml">
+                    <f:param name="gastosConsecutivo"
+                            value="#{_gastos.consecutivo}"/>
+                    <f:param name="gastosFrom" value="Tipogasto"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add gastos"
+                view="/GastosEdit.xhtml">
+            <f:param name="tipogastoCodtipogasto"
+                    value="#{tipogastoHome.instance.codtipogasto}"/>
+            <f:param name="gastosFrom" value="Tipogasto"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Gastoses_1</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="gastoses_1Children">
+
+        <h:outputText value="There are no gastoses_1 associated with this tipogasto."
+                   rendered="#{empty tipogastoHome.gastoses_1}"/>
+
+        <rich:dataTable value="#{tipogastoHome.gastoses_1}"
+                       var="_gastos"
+                  rendered="#{not empty tipogastoHome.gastoses_1}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="gastoses_1Table">
+            <rich:column sortBy="#{_gastos.consecutivo}">
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_gastos.consecutivo}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_gastos.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valor}">
+                <f:facet name="header">Valor</f:facet>
+                <h:outputText value="#{_gastos.valor}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.observacion}">
+                <f:facet name="header">Observacion</f:facet>
+                <h:outputText value="#{_gastos.observacion}"/>
+            </rich:column>
+            <rich:column sortBy="#{_gastos.valorbolivar}">
+                <f:facet name="header">Valorbolivar</f:facet>
+                <h:outputText value="#{_gastos.valorbolivar}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectgastos"
+                     value="Select"
+                      view="/Gastos.xhtml">
+                    <f:param name="gastosConsecutivo"
+                            value="#{_gastos.consecutivo}"/>
+                    <f:param name="gastosFrom" value="Tipogasto"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add gastos"
+                view="/GastosEdit.xhtml">
+            <f:param name="tipogastoCodtipogasto"
+                    value="#{tipogastoHome.instance.codtipogasto}"/>
+            <f:param name="gastosFrom" value="Tipogasto"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

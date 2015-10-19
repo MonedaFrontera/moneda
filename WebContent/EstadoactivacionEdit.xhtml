@@ -1,0 +1,327 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="estadoactivacion" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{estadoactivacionHome.managed ? 'Edit' : 'Add'} Estadoactivacion</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{estadoactivacionHome.managed}"
+                          value="#{estadoactivacionHome.instance.id.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="estadoField" template="layout/edit.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:inputText id="estado"
+                       disabled="#{estadoactivacionHome.managed}"
+                      required="true"
+                          size="2"
+                     maxlength="2"
+                         value="#{estadoactivacionHome.instance.id.estado}">
+                    <a:support event="onblur" reRender="estadoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       required="true"
+                          value="#{estadoactivacionHome.instance.id.fecha}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+
+            <s:decorate id="observacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputTextarea id="observacion"
+                               cols="80"
+                               rows="10"
+                              value="#{estadoactivacionHome.instance.observacion}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{estadoactivacionHome.persist}"
+                       disabled="#{!estadoactivacionHome.wired}"
+                       rendered="#{!estadoactivacionHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{estadoactivacionHome.update}"
+                       rendered="#{estadoactivacionHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{estadoactivacionHome.remove}"
+                      immediate="true"
+                       rendered="#{estadoactivacionHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Estadoactivacion.xhtml"
+                rendered="#{estadoactivacionHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty estadoactivacionFrom ? 'EstadoactivacionList' : estadoactivacionFrom}.xhtml"
+                rendered="#{!estadoactivacionHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Activacion *" labelClass="required">
+    <div class="association" id="activacionParent">
+
+        <h:outputText value="There is no activacion associated with this estadoactivacion."
+                   rendered="#{estadoactivacionHome.instance.activacion == null}"/>
+
+        <rich:dataTable var="_activacion"
+                   value="#{estadoactivacionHome.instance.activacion}"
+                rendered="#{estadoactivacionHome.instance.activacion != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="activacionTable">
+            <h:column>
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_activacion.consecutivo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Gestor documento</f:facet>
+                <h:outputText value="#{_activacion.gestor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actestado codestado</f:facet>
+                <h:outputText value="#{_activacion.actestado.codestado}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_activacion.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_activacion.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedula</f:facet>
+                <h:outputText value="#{_activacion.cedula}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_activacion.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechareg</f:facet>
+                <h:outputText value="#{_activacion.fechareg}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuarioreg</f:facet>
+                <h:outputText value="#{_activacion.usuarioreg}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_activacion.correo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Clave</f:facet>
+                <h:outputText value="#{_activacion.clave}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuario</f:facet>
+                <h:outputText value="#{_activacion.usuario}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Llave</f:facet>
+                <h:outputText value="#{_activacion.llave}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Ano</f:facet>
+                <h:outputText value="#{_activacion.ano}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_activacion.usuariomod}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechacita</f:facet>
+                <h:outputText value="#{_activacion.fechacita}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechaact</f:facet>
+                <h:outputText value="#{_activacion.fechaact}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_activacion.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Ingresocadivi</f:facet>
+                <h:outputText value="#{_activacion.ingresocadivi}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Documentoscompletos</f:facet>
+                <h:outputText value="#{_activacion.documentoscompletos}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Citaasignada</f:facet>
+                <h:outputText value="#{_activacion.citaasignada}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Agencia</f:facet>
+                <h:outputText value="#{_activacion.agencia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipoviaje</f:facet>
+                <h:outputText value="#{_activacion.tipoviaje}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicioviaje</f:facet>
+                <h:outputText value="#{_activacion.fechainicioviaje}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafinviaje</f:facet>
+                <h:outputText value="#{_activacion.fechafinviaje}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Clavemercantil</f:facet>
+                <h:outputText value="#{_activacion.clavemercantil}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Coordenadas</f:facet>
+                <h:outputText value="#{_activacion.coordenadas}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Provinet</f:facet>
+                <h:outputText value="#{_activacion.provinet}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Claveprovinet</f:facet>
+                <h:outputText value="#{_activacion.claveprovinet}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Rusad</f:facet>
+                <h:outputText value="#{_activacion.rusad}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Noingresacadivi</f:facet>
+                <h:outputText value="#{_activacion.noingresacadivi}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Rif</f:facet>
+                <h:outputText value="#{_activacion.rif}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Deposito</f:facet>
+                <h:outputText value="#{_activacion.deposito}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechadeposito</f:facet>
+                <h:outputText value="#{_activacion.fechadeposito}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valordeposito</f:facet>
+                <h:outputText value="#{_activacion.valordeposito}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechadevolucion</f:facet>
+                <h:outputText value="#{_activacion.fechadevolucion}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valordevolucion</f:facet>
+                <h:outputText value="#{_activacion.valordevolucion}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{estadoactivacionHome.instance.activacion != null ? 'changeParent' : 'selectParent'}" value="#{estadoactivacionHome.instance.activacion != null ? 'Change' : 'Select'} activacion"
+                       view="/ActivacionList.xhtml">
+                <f:param name="from" value="EstadoactivacionEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Actestado *" labelClass="required">
+    <div class="association" id="actestadoParent">
+
+        <h:outputText value="There is no actestado associated with this estadoactivacion."
+                   rendered="#{estadoactivacionHome.instance.actestado == null}"/>
+
+        <rich:dataTable var="_actestado"
+                   value="#{estadoactivacionHome.instance.actestado}"
+                rendered="#{estadoactivacionHome.instance.actestado != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="actestadoTable">
+            <h:column>
+                <f:facet name="header">Codestado</f:facet>
+                <h:outputText value="#{_actestado.codestado}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Descripcion</f:facet>
+                <h:outputText value="#{_actestado.descripcion}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{estadoactivacionHome.instance.actestado != null ? 'changeParent' : 'selectParent'}" value="#{estadoactivacionHome.instance.actestado != null ? 'Change' : 'Select'} actestado"
+                       view="/ActestadoList.xhtml">
+                <f:param name="from" value="EstadoactivacionEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

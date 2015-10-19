@@ -1,0 +1,396 @@
+ <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="personal" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">Analisis de Riesgo </f:facet>
+            <s:div style="width:64%; float:left">
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{personalHome.managed}"
+                           size="15"
+                      maxlength="15"
+                          value="#{personalHome.instance.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombres y Apellidos</ui:define>
+                <h:inputText id="nombre"
+                	   disabled="#{personalHome.managed}"
+                           size="100"
+                      maxlength="100"
+                          value="#{personalHome.instance.nombre} #{personalHome.instance.apellido}" style=" width : 404px;">
+                </h:inputText>
+            </s:decorate>
+           
+           <s:decorate id="fechatxField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Transaccion</ui:define>
+                <rich:calendar id="fechatx"
+                       required="true"
+                          value="#{AdministrarPromotor.fecha}" 
+                          datePattern="dd/MM/yyyy" 
+                          enableManualInput="true"
+                          >
+                          <a:support event="onblur" reRender="fechatxField" ajaxSingle="true"/>
+                          </rich:calendar>
+            </s:decorate>
+            <s:decorate id="preciobolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Precio Bolivar</ui:define>
+                <h:inputText id="preciobolivar" disabled="true"
+                          value="#{AdministrarPromotor.tasabolivar}">
+                    <f:convertNumber pattern="Bs #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="dolardiaField" template="layout/edit.xhtml">
+                <ui:define name="label">Dolar Dia</ui:define>
+                <h:inputText id="dolardia" disabled="true"
+                          value="#{AdministrarPromotor.tasa}"
+                           >
+                           <f:convertNumber pattern="D$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje" disabled="true"
+                          value="#{promotorHome.instance.comisionviajero/100}"          >
+                           <f:convertNumber pattern="#,###.00 %"/>
+                </h:inputText>
+            </s:decorate> 
+            </s:div>
+            
+            <s:div style="width:34%; float:left">
+            <s:decorate id="totaltarjetasField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Tarjetas</ui:define>
+                <h:inputText id="totaltarjetas"  disabled="true"
+                style="text-align:right" 
+                          value="#{AdministrarPromotor.balancesprestamo[0]}">
+                    
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="totaltarjetasdolaresField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Dolares</ui:define>
+                <h:inputText id="totaltarjetasdolares" disabled="true"
+                style="text-align:right" 
+                          value="#{AdministrarPromotor.balancesprestamo[1]}">
+                    <f:convertNumber pattern="D$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="totaltarjetaspesosField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Pesos</ui:define>
+                <h:inputText id="totaltarjetaspesos" disabled="true"
+                style="text-align:right" 
+                          value="#{AdministrarPromotor.balancesprestamo[2]}">
+                    <f:convertNumber pattern="$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="totalfavorcleintepesosField" template="layout/edit.xhtml">
+                <ui:define name="label">Total a Favor</ui:define>
+                <h:inputText id="totalfavorclientepesos" disabled="true"
+                style="text-align:right" 
+                          value="#{AdministrarPromotor.balancesprestamo[2]*
+                          ((100-promotorHome.instance.comisionviajero)/100)}">
+                    <f:convertNumber pattern="$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="totaltarjetasbolivaresField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Depositos</ui:define>
+                <h:inputText id="totaltarjetasbolivares" disabled="true"
+                			style="text-align:right" 
+                          value="#{AdministrarPromotor.balancesprestamo[3]}">
+                    <f:convertNumber pattern="$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="totalfavorpesosField" template="layout/edit.xhtml">
+                <ui:define name="label">Monto a Favor</ui:define>
+                <h:inputText id="totalfavorpesos" disabled="true"
+                style="text-align:right" 
+                          value="#{AdministrarPromotor.balancesprestamo[2]*
+                          ((100-promotorHome.instance.comisionviajero)/100)-
+                          AdministrarPromotor.balancesprestamo[3]}">
+                    <f:convertNumber pattern="$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="capacidadField" template="layout/edit.xhtml">
+                <ui:define name="label">Capacidad Endeudamiento</ui:define>
+                <h:inputText id="capacidadpesos" disabled="true"
+                style="text-align:right" 
+                          value="#{(AdministrarPromotor.balancesprestamo[2]*
+                          ((100-promotorHome.instance.comisionviajero)/100)-
+                          AdministrarPromotor.balancesprestamo[3])*0.5}">
+                    <f:convertNumber pattern="$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="saldoinformeField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo Informe</ui:define>
+                <h:inputText id="saldoinformepesos"
+                style="text-align:right" 
+                          value="#{AdministrarPromotor.saldoinforme}">
+                    <a:support event="onblur" reRender="montomaximoField" 
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            <s:decorate id="montomaximoField" template="layout/edit.xhtml">
+                <ui:define name="label">Monto Maximo Prestamo</ui:define>
+                <h:inputText id="montomaximopesos" disabled="true"
+                style="text-align:right" 
+                          value="#{(AdministrarPromotor.balancesprestamo[2]*
+                          ((100-promotorHome.instance.comisionviajero)/100)-
+                          AdministrarPromotor.balancesprestamo[3])*0.5 + AdministrarPromotor.saldoinforme}">
+                    <f:convertNumber pattern="$ #,###"/>
+                </h:inputText>
+            </s:decorate> 
+            
+            
+            </s:div>
+            
+            
+            
+           <div style="clear:both"></div>
+           
+           <h:commandButton id="buscar"
+                          value="Ver Balance Fecha"
+                         action="#{AdministrarPromotor.balanceTarjetas(personalHome.instance.documento)}"
+                         ajaxSingle="true"
+                         reRender="tabBalance, divAnt"/>
+                         
+			<h:commandButton id="save"
+                          value="Generar Balance en PDF"
+                         action="#{Reporteador.generarReportePDFNombre6(AdministrarPromotor.fecha,
+                         personalHome.instance.documento,
+                         AdministrarPromotor.saldoini+
+AdministrarPromotor.balancesfecha[4]-AdministrarPromotor.balancesfecha[1]
++AdministrarPromotor.gastosfecha[1]-AdministrarPromotor.gastosfecha[0],
+AdministrarPromotor.saldoini+
+AdministrarPromotor.balancesfecha[4]-AdministrarPromotor.balancesfecha[1]+
+AdministrarPromotor.balancestotal[4]-AdministrarPromotor.balancestotal[1]+
+AdministrarPromotor.gastostotal[1]-AdministrarPromotor.gastostotal[0]
++AdministrarPromotor.gastosfecha[1]-AdministrarPromotor.gastosfecha[0],
+AdministrarPromotor.balancestotal[4],AdministrarPromotor.balancestotal[1],'reporte014')}"
+                       
+                       rendered="#{!tarjetaHome.managed}"/>
+			
+			
+			
+			
+        </rich:panel>
+
+    </h:form>
+
+<rich:tabPanel id="tabBalance" switchType="ajax">
+
+    
+    <rich:tab label="Balance de Viajes">
+        <h:form styleClass="association" id="comisionhistoricosChildren">
+
+            <h:outputText value="No hay tarjetas asociadas a este Promotor."
+                       rendered="#{empty AdministrarPromotor.balances}"/>
+
+            <rich:dataTable value="#{AdministrarPromotor.balances}"
+                           var="_balance"
+                      rendered="#{not empty AdministrarPromotor.balances}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="comisionhistoricosTable">
+                <rich:column sortBy="#{_balance[0]}">
+                    <f:facet name="header">Nombre Tarjetahabiente</f:facet>
+                    <h:outputText value="#{_balance[0]}"/>
+                    <f:facet name="footer">
+					Totales
+					</f:facet>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Banco</f:facet>
+                    <h:outputText value="#{_balance[1]}">
+					</h:outputText>
+					
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Cupo Viajero</f:facet>
+                    <h:outputText value="#{_balance[2]}">
+					<f:convertNumber pattern="D$ #,###"/> </h:outputText>
+					
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Ultima Transaccion</f:facet>
+                    <h:outputText value="#{_balance[3]}">
+					 </h:outputText>
+					
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Por Pasar</f:facet>
+                    <h:outputText value="#{_balance[4]}">
+					<f:convertNumber pattern="$ #,###"/> </h:outputText>
+					
+                </rich:column>
+                
+                
+            </rich:dataTable>
+
+        </h:form>
+
+        
+    </rich:tab>
+    
+    
+    <rich:tab label="Viajes sin Transaccion">
+        <h:form styleClass="association" id="comisionhistoricosChildrenst">
+
+            <h:outputText value="No hay tarjetas asociadas a este Promotor."
+                       rendered="#{empty AdministrarPromotor.balancesst}"/>
+
+            <rich:dataTable value="#{AdministrarPromotor.balancesst}"
+                           var="_balance"
+                      rendered="#{not empty AdministrarPromotor.balancesst}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="comisionhistoricosTablest">
+                <rich:column sortBy="#{_balance[0]}">
+                    <f:facet name="header">Nombre Tarjetahabiente</f:facet>
+                    <h:outputText value="#{_balance[0]}"/>
+                    <f:facet name="footer">
+					Totales
+					</f:facet>
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Banco</f:facet>
+                    <h:outputText value="#{_balance[1]}">
+					</h:outputText>
+					
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Cupo Viajero</f:facet>
+                    <h:outputText value="#{_balance[2]}">
+					<f:convertNumber pattern="D$ #,###"/> </h:outputText>
+					
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Inicio Viaje</f:facet>
+                    <h:outputText value="#{_balance[3]}">
+					 </h:outputText>
+					
+                </rich:column>
+                
+                <rich:column>
+                    <f:facet name="header">Por Pasar</f:facet>
+                    <h:outputText value="#{_balance[4]}">
+					<f:convertNumber pattern="$ #,###"/> </h:outputText>
+					
+                </rich:column>
+                
+                
+            </rich:dataTable>
+
+        </h:form>
+
+        
+    </rich:tab>
+    <rich:tab label="Balance de Movimientos y Transferencias">
+        <h:form styleClass="association" id="movimientosChildren">
+
+            <h:outputText value="No hay movimientos asociadas a este Promotor."
+                       rendered="#{empty AdministrarPromotor.gastosLista}"/>
+                       
+                       
+              <rich:dataTable value="#{AdministrarPromotor.gastosLista}"
+                           var="_gastos"
+                      rendered="#{not empty AdministrarPromotor.gastosLista}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="comisionhistoricosTable">
+                <rich:column sortBy="#{_gastos.tipogasto.descripcion}">
+                    <f:facet name="header">Tipo de Movimiento</f:facet>
+                    <h:outputText value="#{_gastos.tipogasto.descripcion}"/>
+                    <f:facet name="footer">
+					Totales
+					</f:facet>
+                </rich:column>
+                
+                <rich:column >
+                    <f:facet name="header">Debito</f:facet>
+                    <h:outputText value="#{_gastos.valor}"
+                    rendered="#{_gastos.tipogasto.tipo=='2'}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText value="#{AdministrarPromotor.gastostotal[1]}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                
+                <rich:column >
+                    <f:facet name="header">Credito</f:facet>
+                    <h:outputText value="#{_gastos.valor}"
+                    rendered="#{_gastos.tipogasto.tipo=='1'}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText value="#{AdministrarPromotor.gastostotal[0]}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                
+                <rich:column >
+                    <f:facet name="header">Tasa Bolivar</f:facet>
+                    <h:outputText value="#{_gastos.transferencia.preciobolivar}"
+                    rendered="#{_gastos.tipogasto.codtipogasto=='TR'}">
+                        
+                    </h:outputText>
+                    <f:facet name="footer">
+					
+					</f:facet>
+                </rich:column>
+                
+                <rich:column >
+                    <f:facet name="header">Bolivares</f:facet>
+                    <h:outputText value="#{_gastos.transferencia.valorbolivar}"
+                    rendered="#{_gastos.tipogasto.codtipogasto=='TR'}">
+                        <f:convertNumber pattern="B$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText value="#{AdministrarPromotor.gastostotal[2]}">
+                        <f:convertNumber pattern="B$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                
+                </rich:dataTable>
+                       
+                       
+                       
+                       
+                       </h:form>
+                       </rich:tab>
+
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

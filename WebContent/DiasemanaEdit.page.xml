@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/DiasemanaList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{diasemanaHome.wire}"/>
+
+   <param name="diasemanaFrom"/>
+   <param name="diasemanaCodigodia" value="#{diasemanaHome.diasemanaId.codigodia}"/>
+   <param name="diasemanaNombredia" value="#{diasemanaHome.diasemanaId.nombredia}"/>
+
+
+   <navigation from-action="#{diasemanaHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Diasemana.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{diasemanaHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Diasemana.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{diasemanaHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/DiasemanaList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

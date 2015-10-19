@@ -1,0 +1,155 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tarjetaviajeNewSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="TarjetaviajeNew Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta" value="#{tarjetaviajeNewList.tarjetaviajeNew.id.numerotarjeta}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{tarjetaviajeNewList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/TarjetaviajeNewList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">TarjetaviajeNew Search Results (#{empty tarjetaviajeNewList.resultList ? 0 : (tarjetaviajeNewList.paginated ? tarjetaviajeNewList.resultCount : tarjetaviajeNewList.resultList.size)})</f:facet>
+    <div class="results" id="tarjetaviajeNewList">
+
+    <h:outputText value="The tarjetaviajeNew search returned no results."
+               rendered="#{empty tarjetaviajeNewList.resultList}"/>
+
+    <rich:dataTable id="tarjetaviajeNewList"
+                var="_tarjetaviajeNew"
+              value="#{tarjetaviajeNewList.resultList}"
+           rendered="#{not empty tarjetaviajeNewList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaviajeNewList}"/>
+                    <ui:param name="propertyLabel" value="Numerotarjeta"/>
+                    <ui:param name="propertyPath" value="tarjetaviajeNew.id.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjetaviajeNew.id.numerotarjeta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaviajeNewList}"/>
+                    <ui:param name="propertyLabel" value="Consecutivoviaje"/>
+                    <ui:param name="propertyPath" value="tarjetaviajeNew.id.consecutivoviaje"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjetaviajeNew.id.consecutivoviaje}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaviajeNewList}"/>
+                    <ui:param name="propertyLabel" value="Estado"/>
+                    <ui:param name="propertyPath" value="tarjetaviajeNew.estado"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjetaviajeNew.estado}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'TarjetaviajeNew' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="tarjetaviajeNewViewId">
+                <f:param name="tarjetaviajeNewNumerotarjeta"
+                        value="#{_tarjetaviajeNew.id.numerotarjeta}"/>
+                <f:param name="tarjetaviajeNewConsecutivoviaje"
+                        value="#{_tarjetaviajeNew.id.consecutivoviaje}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/TarjetaviajeNewEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="tarjetaviajeNewEdit"
+                rendered="#{empty from}">
+                <f:param name="tarjetaviajeNewNumerotarjeta"
+                        value="#{_tarjetaviajeNew.id.numerotarjeta}"/>
+                <f:param name="tarjetaviajeNewConsecutivoviaje"
+                        value="#{_tarjetaviajeNew.id.consecutivoviaje}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TarjetaviajeNewList.xhtml"
+            rendered="#{tarjetaviajeNewList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TarjetaviajeNewList.xhtml"
+            rendered="#{tarjetaviajeNewList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{tarjetaviajeNewList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TarjetaviajeNewList.xhtml"
+            rendered="#{tarjetaviajeNewList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{tarjetaviajeNewList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TarjetaviajeNewList.xhtml"
+            rendered="#{tarjetaviajeNewList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{tarjetaviajeNewList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TarjetaviajeNewEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create tarjetaviajeNew">
+            <f:param name="tarjetaviajeNewNumerotarjeta"/>
+            <f:param name="tarjetaviajeNewConsecutivoviaje"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

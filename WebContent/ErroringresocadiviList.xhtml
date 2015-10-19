@@ -1,0 +1,152 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="erroringresocadiviSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Erroringresocadivi Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{erroringresocadiviList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/ErroringresocadiviList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Erroringresocadivi Search Results (#{empty erroringresocadiviList.resultList ? 0 : (erroringresocadiviList.paginated ? erroringresocadiviList.resultCount : erroringresocadiviList.resultList.size)})</f:facet>
+    <div class="results" id="erroringresocadiviList">
+
+    <h:outputText value="The erroringresocadivi search returned no results."
+               rendered="#{empty erroringresocadiviList.resultList}"/>
+
+    <rich:dataTable id="erroringresocadiviList"
+                var="_erroringresocadivi"
+              value="#{erroringresocadiviList.resultList}"
+           rendered="#{not empty erroringresocadiviList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{erroringresocadiviList}"/>
+                    <ui:param name="propertyLabel" value="Consecutivo"/>
+                    <ui:param name="propertyPath" value="erroringresocadivi.id.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_erroringresocadivi.id.consecutivo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{erroringresocadiviList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="erroringresocadivi.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_erroringresocadivi.id.fecha}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{erroringresocadiviList}"/>
+                    <ui:param name="propertyLabel" value="Activacion consecutivo"/>
+                    <ui:param name="propertyPath" value="erroringresocadivi.activacion.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_erroringresocadivi.activacion.consecutivo}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Erroringresocadivi' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="erroringresocadiviViewId">
+                <f:param name="erroringresocadiviConsecutivo"
+                        value="#{_erroringresocadivi.id.consecutivo}"/>
+                <f:param name="erroringresocadiviFecha"
+                        value="#{_erroringresocadivi.id.fecha}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/ErroringresocadiviEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="erroringresocadiviEdit"
+                rendered="#{empty from}">
+                <f:param name="erroringresocadiviConsecutivo"
+                        value="#{_erroringresocadivi.id.consecutivo}"/>
+                <f:param name="erroringresocadiviFecha"
+                        value="#{_erroringresocadivi.id.fecha}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/ErroringresocadiviList.xhtml"
+            rendered="#{erroringresocadiviList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/ErroringresocadiviList.xhtml"
+            rendered="#{erroringresocadiviList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{erroringresocadiviList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ErroringresocadiviList.xhtml"
+            rendered="#{erroringresocadiviList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{erroringresocadiviList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ErroringresocadiviList.xhtml"
+            rendered="#{erroringresocadiviList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{erroringresocadiviList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/ErroringresocadiviEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create erroringresocadivi">
+            <f:param name="erroringresocadiviConsecutivo"/>
+            <f:param name="erroringresocadiviFecha"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

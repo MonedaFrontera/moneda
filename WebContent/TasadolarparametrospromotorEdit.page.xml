@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/TasadolarparametrospromotorList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{tasadolarparametrospromotorHome.wire}"/>
+
+   <param name="tasadolarparametrospromotorFrom"/>
+   <param name="tasadolarparametrospromotorDocumento" value="#{tasadolarparametrospromotorHome.tasadolarparametrospromotorId.documento}"/>
+   <param name="tasadolarparametrospromotorCodbanco" value="#{tasadolarparametrospromotorHome.tasadolarparametrospromotorId.codbanco}"/>
+   <param name="tasadolarparametrospromotorCodpais" value="#{tasadolarparametrospromotorHome.tasadolarparametrospromotorId.codpais}"/>
+   <param name="tasadolarparametrospromotorCodfranquicia" value="#{tasadolarparametrospromotorHome.tasadolarparametrospromotorId.codfranquicia}"/>
+   <param name="tasadolarparametrospromotorFechainicio" value="#{tasadolarparametrospromotorHome.tasadolarparametrospromotorId.fechainicio}"/>
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="gestorFrom"/>
+   <param name="gestorDocumento" value="#{gestorHome.gestorDocumento}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+   <param name="franquiciaFrom"/>
+   <param name="franquiciaCodfranquicia" value="#{franquiciaHome.franquiciaCodfranquicia}"/>
+
+   <param name="paisFrom"/>
+   <param name="paisCodigopais" value="#{paisHome.paisCodigopais}"/>
+   <param name="paisisoFrom"/>
+   <param name="paisisoCodigopais" value="#{paisisoHome.paisisoCodigopais}"/>
+
+
+   <param name="bancoFrom"/>
+   <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
+
+
+
+   <navigation from-action="#{tasadolarparametrospromotorHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Tasadolarparametrospromotor.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{tasadolarparametrospromotorHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Tasadolarparametrospromotor.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{tasadolarparametrospromotorHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/TasadolarparametrospromotorList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

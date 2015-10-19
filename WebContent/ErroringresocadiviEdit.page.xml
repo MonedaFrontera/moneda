@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/ErroringresocadiviList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{erroringresocadiviHome.wire}"/>
+
+   <param name="erroringresocadiviFrom"/>
+   <param name="erroringresocadiviConsecutivo" value="#{erroringresocadiviHome.erroringresocadiviId.consecutivo}"/>
+   <param name="erroringresocadiviFecha" value="#{erroringresocadiviHome.erroringresocadiviId.fecha}"/>
+   <param name="activacionFrom"/>
+   <param name="activacionConsecutivo" value="#{activacionHome.activacionConsecutivo}"/>
+   <param name="gestorFrom"/>
+   <param name="gestorDocumento" value="#{gestorHome.gestorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+
+   <param name="actestadoFrom"/>
+   <param name="actestadoCodestado" value="#{actestadoHome.actestadoCodestado}"/>
+
+   <param name="bancoFrom"/>
+   <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
+
+
+
+
+   <navigation from-action="#{erroringresocadiviHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Erroringresocadivi.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{erroringresocadiviHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Erroringresocadivi.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{erroringresocadiviHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/ErroringresocadiviList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

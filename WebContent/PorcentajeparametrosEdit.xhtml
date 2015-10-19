@@ -1,0 +1,239 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="porcentajeparametros" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{porcentajeparametrosHome.managed ? 'Edit' : 'Add'} Porcentajeparametros</f:facet>
+
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{porcentajeparametrosHome.managed}"
+                      required="true"
+                          size="3"
+                     maxlength="3"
+                         value="#{porcentajeparametrosHome.instance.id.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codpaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codpais</ui:define>
+                <h:inputText id="codpais"
+                       disabled="#{porcentajeparametrosHome.managed}"
+                      required="true"
+                          size="5"
+                     maxlength="5"
+                         value="#{porcentajeparametrosHome.instance.id.codpais}">
+                    <a:support event="onblur" reRender="codpaisField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codfranquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codfranquicia</ui:define>
+                <h:inputText id="codfranquicia"
+                       disabled="#{porcentajeparametrosHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{porcentajeparametrosHome.instance.id.codfranquicia}">
+                    <a:support event="onblur" reRender="codfranquiciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="true"
+                          value="#{porcentajeparametrosHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{porcentajeparametrosHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{porcentajeparametrosHome.instance.porcentaje}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{porcentajeparametrosHome.persist}"
+                       disabled="#{!porcentajeparametrosHome.wired}"
+                       rendered="#{!porcentajeparametrosHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{porcentajeparametrosHome.update}"
+                       rendered="#{porcentajeparametrosHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{porcentajeparametrosHome.remove}"
+                      immediate="true"
+                       rendered="#{porcentajeparametrosHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Porcentajeparametros.xhtml"
+                rendered="#{porcentajeparametrosHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty porcentajeparametrosFrom ? 'PorcentajeparametrosList' : porcentajeparametrosFrom}.xhtml"
+                rendered="#{!porcentajeparametrosHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Franquicia *" labelClass="required">
+    <div class="association" id="franquiciaParent">
+
+        <h:outputText value="There is no franquicia associated with this porcentajeparametros."
+                   rendered="#{porcentajeparametrosHome.instance.franquicia == null}"/>
+
+        <rich:dataTable var="_franquicia"
+                   value="#{porcentajeparametrosHome.instance.franquicia}"
+                rendered="#{porcentajeparametrosHome.instance.franquicia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="franquiciaTable">
+            <h:column>
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrefranquicia</f:facet>
+                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajeparametrosHome.instance.franquicia != null ? 'changeParent' : 'selectParent'}" value="#{porcentajeparametrosHome.instance.franquicia != null ? 'Change' : 'Select'} franquicia"
+                       view="/FranquiciaList.xhtml">
+                <f:param name="from" value="PorcentajeparametrosEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Pais *" labelClass="required">
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this porcentajeparametros."
+                   rendered="#{porcentajeparametrosHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{porcentajeparametrosHome.instance.pais}"
+                rendered="#{porcentajeparametrosHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Paisiso codigopais</f:facet>
+                <h:outputText value="#{_pais.paisiso.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajeparametrosHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{porcentajeparametrosHome.instance.pais != null ? 'Change' : 'Select'} pais"
+                       view="/PaisList.xhtml">
+                <f:param name="from" value="PorcentajeparametrosEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Banco *" labelClass="required">
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this porcentajeparametros."
+                   rendered="#{porcentajeparametrosHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{porcentajeparametrosHome.instance.banco}"
+                rendered="#{porcentajeparametrosHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajeparametrosHome.instance.banco != null ? 'changeParent' : 'selectParent'}" value="#{porcentajeparametrosHome.instance.banco != null ? 'Change' : 'Select'} banco"
+                       view="/BancoList.xhtml">
+                <f:param name="from" value="PorcentajeparametrosEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,126 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Cuentacredito Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.consecutivo}"/>
+        </s:decorate>
+
+        <s:decorate id="valor" template="layout/display.xhtml">
+            <ui:define name="label">Valor</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.valor}"/>
+        </s:decorate>
+
+        <s:decorate id="fecha" template="layout/display.xhtml">
+            <ui:define name="label">Fecha</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuario" template="layout/display.xhtml">
+            <ui:define name="label">Usuario</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.usuario}"/>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <s:decorate id="tipo" template="layout/display.xhtml">
+            <ui:define name="label">Tipo</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.tipo}"/>
+        </s:decorate>
+
+        <s:decorate id="observacion" template="layout/display.xhtml">
+            <ui:define name="label">Observacion</ui:define>
+            <h:outputText value="#{cuentacreditoHome.instance.observacion}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CuentacreditoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty cuentacreditoFrom ? 'CuentacreditoList' : cuentacreditoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuenta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="cuentaParent">
+
+        <h:outputText value="There is no cuenta associated with this cuentacredito."
+                   rendered="#{cuentacreditoHome.instance.cuenta == null}"/>
+
+        <rich:dataTable var="_cuenta"
+                   value="#{cuentacreditoHome.instance.cuenta}"
+                rendered="#{cuentacreditoHome.instance.cuenta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="cuentaTable">
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuenta.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_cuenta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuenta.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_cuenta.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcuenta"
+                     value="View"
+                      view="/Cuenta.xhtml">
+                    <f:param name="cuentaNumcuenta"
+                           value="#{_cuenta.numcuenta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

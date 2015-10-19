@@ -1,0 +1,148 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Moneda Details</f:facet>
+
+        <s:decorate id="codigomoneda" template="layout/display.xhtml">
+            <ui:define name="label">Codigomoneda</ui:define>
+            <h:outputText value="#{monedaHome.instance.codigomoneda}"/>
+        </s:decorate>
+
+        <s:decorate id="nombreMoneda" template="layout/display.xhtml">
+            <ui:define name="label">Nombre moneda</ui:define>
+            <h:outputText value="#{monedaHome.instance.nombreMoneda}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/MonedaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty monedaFrom ? 'MonedaList' : monedaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Paridadmonedas for codmonedadestino</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="paridadmonedasForCodmonedadestinoChildren">
+
+        <h:outputText value="There are no paridadmonedasForCodmonedadestino associated with this moneda."
+                   rendered="#{empty monedaHome.paridadmonedasForCodmonedadestino}"/>
+
+        <rich:dataTable value="#{monedaHome.paridadmonedasForCodmonedadestino}"
+                       var="_paridadmoneda"
+                  rendered="#{not empty monedaHome.paridadmonedasForCodmonedadestino}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="paridadmonedasForCodmonedadestinoTable">
+            <rich:column sortBy="#{_paridadmoneda.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_paridadmoneda.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_paridadmoneda.paridad}">
+                <f:facet name="header">Paridad</f:facet>
+                <h:outputText value="#{_paridadmoneda.paridad}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectparidadmoneda"
+                     value="Select"
+                      view="/Paridadmoneda.xhtml">
+                    <f:param name="paridadmonedaFecha"
+                            value="#{_paridadmoneda.fecha}"/>
+                    <f:param name="paridadmonedaFrom" value="Moneda"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add paridadmoneda"
+                view="/ParidadmonedaEdit.xhtml">
+            <f:param name="monedaCodigomoneda"
+                    value="#{monedaHome.instance.codigomoneda}"/>
+            <f:param name="paridadmonedaFrom" value="Moneda"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Paridadmonedas for codmonedaorigen</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="paridadmonedasForCodmonedaorigenChildren">
+
+        <h:outputText value="There are no paridadmonedasForCodmonedaorigen associated with this moneda."
+                   rendered="#{empty monedaHome.paridadmonedasForCodmonedaorigen}"/>
+
+        <rich:dataTable value="#{monedaHome.paridadmonedasForCodmonedaorigen}"
+                       var="_paridadmoneda"
+                  rendered="#{not empty monedaHome.paridadmonedasForCodmonedaorigen}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="paridadmonedasForCodmonedaorigenTable">
+            <rich:column sortBy="#{_paridadmoneda.fecha}">
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{_paridadmoneda.fecha}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_paridadmoneda.paridad}">
+                <f:facet name="header">Paridad</f:facet>
+                <h:outputText value="#{_paridadmoneda.paridad}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectparidadmoneda"
+                     value="Select"
+                      view="/Paridadmoneda.xhtml">
+                    <f:param name="paridadmonedaFecha"
+                            value="#{_paridadmoneda.fecha}"/>
+                    <f:param name="paridadmonedaFrom" value="Moneda"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add paridadmoneda"
+                view="/ParidadmonedaEdit.xhtml">
+            <f:param name="monedaCodigomoneda"
+                    value="#{monedaHome.instance.codigomoneda}"/>
+            <f:param name="paridadmonedaFrom" value="Moneda"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

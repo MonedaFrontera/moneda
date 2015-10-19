@@ -1,0 +1,118 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistatxdiasemana" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{vistatxdiasemanaHome.managed ? 'Edit' : 'Add'} Vistatxdiasemana</f:facet>
+
+
+            <s:decorate id="codigodiaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigodia</ui:define>
+                <h:inputText id="codigodia"
+                       disabled="#{vistatxdiasemanaHome.managed}"
+                          value="#{vistatxdiasemanaHome.instance.id.codigodia}">
+                    <a:support event="onblur" reRender="codigodiaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codigomesField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigomes</ui:define>
+                <h:inputText id="codigomes"
+                       disabled="#{vistatxdiasemanaHome.managed}"
+                          value="#{vistatxdiasemanaHome.instance.id.codigomes}">
+                    <a:support event="onblur" reRender="codigomesField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechatxField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechatx</ui:define>
+                <rich:calendar id="fechatx"
+                          value="#{vistatxdiasemanaHome.instance.id.fechatx}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="valortxpesosField" template="layout/edit.xhtml">
+                <ui:define name="label">Valortxpesos</ui:define>
+                <h:inputText id="valortxpesos"
+                          value="#{vistatxdiasemanaHome.instance.id.valortxpesos}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxpesosField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText id="promotor"
+                       disabled="#{vistatxdiasemanaHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{vistatxdiasemanaHome.instance.id.promotor}">
+                    <a:support event="onblur" reRender="promotorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="asesorField" template="layout/edit.xhtml">
+                <ui:define name="label">Asesor</ui:define>
+                <h:inputText id="asesor"
+                       disabled="#{vistatxdiasemanaHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{vistatxdiasemanaHome.instance.id.asesor}">
+                    <a:support event="onblur" reRender="asesorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{vistatxdiasemanaHome.persist}"
+                       disabled="#{!vistatxdiasemanaHome.wired}"
+                       rendered="#{!vistatxdiasemanaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{vistatxdiasemanaHome.update}"
+                       rendered="#{vistatxdiasemanaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{vistatxdiasemanaHome.remove}"
+                      immediate="true"
+                       rendered="#{vistatxdiasemanaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Vistatxdiasemana.xhtml"
+                rendered="#{vistatxdiasemanaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty vistatxdiasemanaFrom ? 'VistatxdiasemanaList' : vistatxdiasemanaFrom}.xhtml"
+                rendered="#{!vistatxdiasemanaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

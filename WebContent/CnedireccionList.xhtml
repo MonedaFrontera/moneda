@@ -1,0 +1,270 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cnedireccionSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Cnedireccion Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cod centro</ui:define>
+                <h:inputText id="codCentro" value="#{cnedireccionList.cnedireccion.id.codCentro}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:inputText id="tipo" value="#{cnedireccionList.cnedireccion.id.tipo}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cod estado</ui:define>
+                <h:inputText id="codEstado" value="#{cnedireccionList.cnedireccion.id.codEstado}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cod municipio</ui:define>
+                <h:inputText id="codMunicipio" value="#{cnedireccionList.cnedireccion.id.codMunicipio}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cod parroquia</ui:define>
+                <h:inputText id="codParroquia" value="#{cnedireccionList.cnedireccion.id.codParroquia}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre centro</ui:define>
+                <h:inputText id="nombreCentro" value="#{cnedireccionList.cnedireccion.id.nombreCentro}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Direccion centro</ui:define>
+                <h:inputText id="direccionCentro" value="#{cnedireccionList.cnedireccion.id.direccionCentro}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Centro nuevo</ui:define>
+                <h:inputText id="centroNuevo" value="#{cnedireccionList.cnedireccion.id.centroNuevo}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{cnedireccionList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/CnedireccionList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Cnedireccion Search Results (#{empty cnedireccionList.resultList ? 0 : (cnedireccionList.paginated ? cnedireccionList.resultCount : cnedireccionList.resultList.size)})</f:facet>
+    <div class="results" id="cnedireccionList">
+
+    <h:outputText value="The cnedireccion search returned no results."
+               rendered="#{empty cnedireccionList.resultList}"/>
+
+    <rich:dataTable id="cnedireccionList"
+                var="_cnedireccion"
+              value="#{cnedireccionList.resultList}"
+           rendered="#{not empty cnedireccionList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Cod centro"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.codCentro"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.codCentro}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Tipo"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.tipo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.tipo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Cod estado"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.codEstado"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.codEstado}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Cod municipio"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.codMunicipio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.codMunicipio}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Cod parroquia"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.codParroquia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.codParroquia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Nombre centro"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.nombreCentro"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.nombreCentro}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Direccion centro"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.direccionCentro"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.direccionCentro}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cnedireccionList}"/>
+                    <ui:param name="propertyLabel" value="Centro nuevo"/>
+                    <ui:param name="propertyPath" value="cnedireccion.id.centroNuevo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cnedireccion.id.centroNuevo}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Cnedireccion' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="cnedireccionViewId">
+                <f:param name="cnedireccionCodCentro"
+                        value="#{_cnedireccion.id.codCentro}"/>
+                <f:param name="cnedireccionTipo"
+                        value="#{_cnedireccion.id.tipo}"/>
+                <f:param name="cnedireccionCodEstado"
+                        value="#{_cnedireccion.id.codEstado}"/>
+                <f:param name="cnedireccionCodMunicipio"
+                        value="#{_cnedireccion.id.codMunicipio}"/>
+                <f:param name="cnedireccionCodParroquia"
+                        value="#{_cnedireccion.id.codParroquia}"/>
+                <f:param name="cnedireccionNombreCentro"
+                        value="#{_cnedireccion.id.nombreCentro}"/>
+                <f:param name="cnedireccionDireccionCentro"
+                        value="#{_cnedireccion.id.direccionCentro}"/>
+                <f:param name="cnedireccionCentroNuevo"
+                        value="#{_cnedireccion.id.centroNuevo}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/CnedireccionEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="cnedireccionEdit"
+                rendered="#{empty from}">
+                <f:param name="cnedireccionCodCentro"
+                        value="#{_cnedireccion.id.codCentro}"/>
+                <f:param name="cnedireccionTipo"
+                        value="#{_cnedireccion.id.tipo}"/>
+                <f:param name="cnedireccionCodEstado"
+                        value="#{_cnedireccion.id.codEstado}"/>
+                <f:param name="cnedireccionCodMunicipio"
+                        value="#{_cnedireccion.id.codMunicipio}"/>
+                <f:param name="cnedireccionCodParroquia"
+                        value="#{_cnedireccion.id.codParroquia}"/>
+                <f:param name="cnedireccionNombreCentro"
+                        value="#{_cnedireccion.id.nombreCentro}"/>
+                <f:param name="cnedireccionDireccionCentro"
+                        value="#{_cnedireccion.id.direccionCentro}"/>
+                <f:param name="cnedireccionCentroNuevo"
+                        value="#{_cnedireccion.id.centroNuevo}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/CnedireccionList.xhtml"
+            rendered="#{cnedireccionList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/CnedireccionList.xhtml"
+            rendered="#{cnedireccionList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{cnedireccionList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/CnedireccionList.xhtml"
+            rendered="#{cnedireccionList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{cnedireccionList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/CnedireccionList.xhtml"
+            rendered="#{cnedireccionList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{cnedireccionList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/CnedireccionEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create cnedireccion">
+            <f:param name="cnedireccionCodCentro"/>
+            <f:param name="cnedireccionTipo"/>
+            <f:param name="cnedireccionCodEstado"/>
+            <f:param name="cnedireccionCodMunicipio"/>
+            <f:param name="cnedireccionCodParroquia"/>
+            <f:param name="cnedireccionNombreCentro"/>
+            <f:param name="cnedireccionDireccionCentro"/>
+            <f:param name="cnedireccionCentroNuevo"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

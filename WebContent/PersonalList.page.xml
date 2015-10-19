@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page action="#{AdministrarPersonal.busqueda()}"
+ xmlns="http://jboss.com/products/seam/pages"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+ <!-- metod de busqueda para el resulist -->
+ 
+ <begin-conversation join="true" flush-mode="MANUAL"/><!-- investigar sobre esta propiedad -->
+ 
+ <action execute="#{AdministrarPersonal.busqueda()}"/>
+ <param name="firstResult" value="#{AdministrarPersonal.personal.firstResult}"/>
+ <param name="sort" value="#{AdministrarPersonal.personal.orderColumn}"/>
+ <param name="dir" value="#{AdministrarPersonal.personal.orderDirection}"/>
+ <param name="logic" value="#{AdministrarPersonal.personal.restrictionLogicOperator}"/>
+ 
+ <param name="from"/>
+ <param name="documento" value="#{personalList.personal.documento}"/>
+ <param name="tipodocumento" value="#{personalList.personal.tipodocumento}"/>
+ <param name="nombre" value="#{personalList.personal.nombre}"/>
+ <param name="apellido" value="#{personalList.personal.apellido}"/>
+ <param name="celular" value="#{personalList.personal.celular}"/>
+ <param name="telefono" value="#{personalList.personal.telefono}"/>
+ <param name="pinbb" value="#{personalList.personal.pinbb}"/>
+ <param name="direccion" value="#{personalList.personal.direccion}"/>
+ <param name="correo" value="#{personalList.personal.correo}"/>
+ <param name="correoalternativo" value="#{personalList.personal.correoalternativo}"/>
+ <navigation from-action="#{AdministrarPersonal.editarPersonal(_personal.documento)}">
+ 
+  <redirect view-id="/PersonalEdit.xhtml"/>
+ </navigation>
+ <navigation from-action="#{AdministrarPromotor.balanceTarjetas(_personal.documento)}">
+  <redirect view-id="/PromotorResumen.xhtml"/>
+ </navigation>
+ <navigation from-action="#{AdministrarPromotor.revisarPrestamo(_promotor.documento)}">
+  <redirect view-id="/PromotorPrestamo.xhtml"/>
+ </navigation>
+</page>

@@ -1,0 +1,181 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="establecimientoprecio" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{establecimientoprecioHome.managed ? 'Edit' : 'Add'} Establecimientoprecio</f:facet>
+
+
+            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigounico</ui:define>
+                <h:inputText id="codigounico"
+                       disabled="#{establecimientoprecioHome.managed}"
+                      required="true"
+                          size="8"
+                     maxlength="8"
+                         value="#{establecimientoprecioHome.instance.id.codigounico}">
+                    <a:support event="onblur" reRender="codigounicoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="true"
+                          value="#{establecimientoprecioHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{establecimientoprecioHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="dolaroficinaField" template="layout/edit.xhtml">
+                <ui:define name="label">Dolaroficina</ui:define>
+                <h:inputText id="dolaroficina"
+                          value="#{establecimientoprecioHome.instance.dolaroficina}"
+                           size="13">
+                    <a:support event="onblur" reRender="dolaroficinaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeoficinaField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentajeoficina</ui:define>
+                <h:inputText id="porcentajeoficina"
+                          value="#{establecimientoprecioHome.instance.porcentajeoficina}"
+                           size="12">
+                    <a:support event="onblur" reRender="porcentajeoficinaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{establecimientoprecioHome.persist}"
+                       disabled="#{!establecimientoprecioHome.wired}"
+                       rendered="#{!establecimientoprecioHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{establecimientoprecioHome.update}"
+                       rendered="#{establecimientoprecioHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{establecimientoprecioHome.remove}"
+                      immediate="true"
+                       rendered="#{establecimientoprecioHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Establecimientoprecio.xhtml"
+                rendered="#{establecimientoprecioHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty establecimientoprecioFrom ? 'EstablecimientoprecioList' : establecimientoprecioFrom}.xhtml"
+                rendered="#{!establecimientoprecioHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Establecimiento *" labelClass="required">
+    <div class="association" id="establecimientoParent">
+
+        <h:outputText value="There is no establecimiento associated with this establecimientoprecio."
+                   rendered="#{establecimientoprecioHome.instance.establecimiento == null}"/>
+
+        <rich:dataTable var="_establecimiento"
+                   value="#{establecimientoprecioHome.instance.establecimiento}"
+                rendered="#{establecimientoprecioHome.instance.establecimiento != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="establecimientoTable">
+            <h:column>
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pais codigopais</f:facet>
+                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Empresa nit</f:facet>
+                <h:outputText value="#{_establecimiento.empresa.nit}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Bancocol codbanco</f:facet>
+                <h:outputText value="#{_establecimiento.bancocol.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombreestable</f:facet>
+                <h:outputText value="#{_establecimiento.nombreestable}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_establecimiento.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_establecimiento.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_establecimiento.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Iva</f:facet>
+                <h:outputText value="#{_establecimiento.iva}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_establecimiento.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Facturar</f:facet>
+                <h:outputText value="#{_establecimiento.facturar}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{establecimientoprecioHome.instance.establecimiento != null ? 'changeParent' : 'selectParent'}" value="#{establecimientoprecioHome.instance.establecimiento != null ? 'Change' : 'Select'} establecimiento"
+                       view="/EstablecimientoList.xhtml">
+                <f:param name="from" value="EstablecimientoprecioEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

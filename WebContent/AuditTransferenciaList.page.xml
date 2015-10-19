@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{auditTransferenciaList.firstResult}"/>
+   <param name="sort" value="#{auditTransferenciaList.orderColumn}"/>
+   <param name="dir" value="#{auditTransferenciaList.orderDirection}"/>
+   <param name="logic" value="#{auditTransferenciaList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="tipobolivar" value="#{auditTransferenciaList.auditTransferencia.id.tipobolivar}"/>
+   <param name="numcuenta" value="#{auditTransferenciaList.auditTransferencia.id.numcuenta}"/>
+   <param name="numcuentapromotor" value="#{auditTransferenciaList.auditTransferencia.id.numcuentapromotor}"/>
+   <param name="documentopromotor" value="#{auditTransferenciaList.auditTransferencia.id.documentopromotor}"/>
+   <param name="usuariomod" value="#{auditTransferenciaList.auditTransferencia.id.usuariomod}"/>
+
+</page>

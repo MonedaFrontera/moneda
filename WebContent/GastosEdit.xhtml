@@ -1,0 +1,131 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="gastos" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{gastosHome.managed ? 'Editar' : 'Agregar'} Movimientos</f:facet>
+
+
+            
+			<s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarGasto.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarGasto.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarGasto.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="6" shadowDepth="5"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+			
+			<s:decorate id="tipogastoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:selectOneMenu id="tipogastoSel" value="#{gastosHome.instance.tipogasto}" required="true" >
+			<s:selectItems value="#{tipogastoList.resultList}" var="gasto" label="#{gasto.descripcion} (#{gasto.tipo=='2'?'-':'+'})" 
+			rendered ="#{gasto.codtipogasto!='TR'}"
+			                    noSelectionLabel="Seleccione..." /> 
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="tipogastoField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                enableManualInput="true"
+                          value="#{gastosHome.instance.fecha}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{gastosHome.instance.valor}">
+                    <a:support event="onblur" reRender="valorField, totalField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+			
+			<s:decorate id="totalField" template="layout/edit.xhtml">
+                <ui:define name="label" style="font-size:24px">Total</ui:define>
+                              
+               <h:inputText id="totald"
+                           size="17"
+                      maxlength="17"
+                       disabled="true"
+                       style="font-size:24px"
+                          value="#{gastosHome.instance.valor}">
+               <f:convertNumber pattern="$ #,###,##0"/>                
+               </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="observacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputTextarea id="observacion"
+                               cols="80"
+                               rows="2"
+                              value="#{gastosHome.instance.observacion}"/>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarGasto.registrar()}"
+                       disabled="#{!gastosHome.wired}"
+                       rendered="#{s:hasRole('Registrar Transferencia')&amp;&amp;!gastosHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{gastosHome.update}"
+                        rendered="#{s:hasRole('Registrar Transferencia')&amp;&amp;gastosHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{AdministrarGasto.eliminarGastos}"
+                       immediate="true"
+                       rendered="#{s:hasRole('Registrar Transferencia')&amp;&amp;gastosHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/GastosList.xhtml"
+                rendered="#{gastosHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty gastosFrom ? 'GastosList' : gastosFrom}.xhtml"
+                rendered="#{!gastosHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{tipogastoList.firstResult}"/>
+   <param name="sort" value="#{tipogastoList.orderColumn}"/>
+   <param name="dir" value="#{tipogastoList.orderDirection}"/>
+   <param name="logic" value="#{tipogastoList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codtipogasto" value="#{tipogastoList.tipogasto.codtipogasto}"/>
+   <param name="descripcion" value="#{tipogastoList.tipogasto.descripcion}"/>
+
+</page>

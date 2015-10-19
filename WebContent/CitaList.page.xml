@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{citaList.firstResult}"/>
+   <param name="sort" value="#{citaList.orderColumn}"/>
+   <param name="dir" value="#{citaList.orderDirection}"/>
+   <param name="logic" value="#{citaList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="observacion" value="#{citaList.cita.observacion}"/>
+
+</page>

@@ -1,0 +1,581 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="gestor" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{gestorHome.managed ? 'Edit' : 'Add'} Gestor</f:facet>
+
+
+
+
+
+
+
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{gestorHome.persist}"
+                       disabled="#{!gestorHome.wired}"
+                       rendered="#{!gestorHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{gestorHome.update}"
+                       rendered="#{gestorHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{gestorHome.remove}"
+                      immediate="true"
+                       rendered="#{gestorHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Gestor.xhtml"
+                rendered="#{gestorHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty gestorFrom ? 'GestorList' : gestorFrom}.xhtml"
+                rendered="#{!gestorHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Personal *" labelClass="required">
+    <div class="association" id="personalParent">
+
+        <h:outputText value="There is no personal associated with this gestor."
+                   rendered="#{gestorHome.instance.personal == null}"/>
+
+        <rich:dataTable var="_personal"
+                   value="#{gestorHome.instance.personal}"
+                rendered="#{gestorHome.instance.personal != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="personalTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cargo codcargo</f:facet>
+                <h:outputText value="#{_personal.cargo.codcargo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipodocumento</f:facet>
+                <h:outputText value="#{_personal.tipodocumento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_personal.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Apellido</f:facet>
+                <h:outputText value="#{_personal.apellido}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Celular</f:facet>
+                <h:outputText value="#{_personal.celular}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefono</f:facet>
+                <h:outputText value="#{_personal.telefono}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Pinbb</f:facet>
+                <h:outputText value="#{_personal.pinbb}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                <h:outputText value="#{_personal.direccion}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correo</f:facet>
+                <h:outputText value="#{_personal.correo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Correoalternativo</f:facet>
+                <h:outputText value="#{_personal.correoalternativo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechanac</f:facet>
+                <h:outputText value="#{_personal.fechanac}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Gestor documento</f:facet>
+                <h:outputText value="#{_personal.gestor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_personal.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Administrativo documento</f:facet>
+                <h:outputText value="#{_personal.administrativo.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_personal.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_personal.asesor.documento}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{gestorHome.instance.personal != null ? 'changeParent' : 'selectParent'}" value="#{gestorHome.instance.personal != null ? 'Change' : 'Select'} personal"
+                       view="/PersonalList.xhtml">
+                <f:param name="from" value="GestorEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Activagestors">
+        <h:form styleClass="association" id="activagestorsChildren">
+
+            <h:outputText value="There are no activagestors associated with this gestor."
+                       rendered="#{empty gestorHome.activagestors}"/>
+
+            <rich:dataTable value="#{gestorHome.activagestors}"
+                           var="_activagestor"
+                      rendered="#{not empty gestorHome.activagestors}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activagestorsTable">
+                <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_activagestor.id.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_activagestor.id.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_activagestor.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.observacion}">
+                    <f:facet name="header">Observacion</f:facet>
+                    <h:outputText value="#{_activagestor.observacion}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gestorHome.managed}" id="activagestors">
+        <div class="actionButtons">
+            <s:button id="addactivagestor"
+                   value="Add activagestor"
+                    view="/ActivagestorEdit.xhtml"
+             propagation="none">
+                 <f:param name="gestorDocumento"
+                         value="#{gestorHome.instance.documento}"/>
+                 <f:param name="activagestorFrom" value="Gestor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Activagestors_1">
+        <h:form styleClass="association" id="activagestors_1Children">
+
+            <h:outputText value="There are no activagestors_1 associated with this gestor."
+                       rendered="#{empty gestorHome.activagestors_1}"/>
+
+            <rich:dataTable value="#{gestorHome.activagestors_1}"
+                           var="_activagestor"
+                      rendered="#{not empty gestorHome.activagestors_1}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activagestors_1Table">
+                <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_activagestor.id.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_activagestor.id.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_activagestor.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.observacion}">
+                    <f:facet name="header">Observacion</f:facet>
+                    <h:outputText value="#{_activagestor.observacion}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gestorHome.managed}" id="activagestors_1">
+        <div class="actionButtons">
+            <s:button id="addactivagestor"
+                   value="Add activagestor"
+                    view="/ActivagestorEdit.xhtml"
+             propagation="none">
+                 <f:param name="gestorDocumento"
+                         value="#{gestorHome.instance.documento}"/>
+                 <f:param name="activagestorFrom" value="Gestor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Activagestors_2">
+        <h:form styleClass="association" id="activagestors_2Children">
+
+            <h:outputText value="There are no activagestors_2 associated with this gestor."
+                       rendered="#{empty gestorHome.activagestors_2}"/>
+
+            <rich:dataTable value="#{gestorHome.activagestors_2}"
+                           var="_activagestor"
+                      rendered="#{not empty gestorHome.activagestors_2}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activagestors_2Table">
+                <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_activagestor.id.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_activagestor.id.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_activagestor.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.observacion}">
+                    <f:facet name="header">Observacion</f:facet>
+                    <h:outputText value="#{_activagestor.observacion}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gestorHome.managed}" id="activagestors_2">
+        <div class="actionButtons">
+            <s:button id="addactivagestor"
+                   value="Add activagestor"
+                    view="/ActivagestorEdit.xhtml"
+             propagation="none">
+                 <f:param name="gestorDocumento"
+                         value="#{gestorHome.instance.documento}"/>
+                 <f:param name="activagestorFrom" value="Gestor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Activagestors_3">
+        <h:form styleClass="association" id="activagestors_3Children">
+
+            <h:outputText value="There are no activagestors_3 associated with this gestor."
+                       rendered="#{empty gestorHome.activagestors_3}"/>
+
+            <rich:dataTable value="#{gestorHome.activagestors_3}"
+                           var="_activagestor"
+                      rendered="#{not empty gestorHome.activagestors_3}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activagestors_3Table">
+                <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_activagestor.id.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_activagestor.id.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_activagestor.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.observacion}">
+                    <f:facet name="header">Observacion</f:facet>
+                    <h:outputText value="#{_activagestor.observacion}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gestorHome.managed}" id="activagestors_3">
+        <div class="actionButtons">
+            <s:button id="addactivagestor"
+                   value="Add activagestor"
+                    view="/ActivagestorEdit.xhtml"
+             propagation="none">
+                 <f:param name="gestorDocumento"
+                         value="#{gestorHome.instance.documento}"/>
+                 <f:param name="activagestorFrom" value="Gestor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Activagestors_4">
+        <h:form styleClass="association" id="activagestors_4Children">
+
+            <h:outputText value="There are no activagestors_4 associated with this gestor."
+                       rendered="#{empty gestorHome.activagestors_4}"/>
+
+            <rich:dataTable value="#{gestorHome.activagestors_4}"
+                           var="_activagestor"
+                      rendered="#{not empty gestorHome.activagestors_4}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activagestors_4Table">
+                <rich:column sortBy="#{_activagestor.id.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_activagestor.id.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.documento}">
+                    <f:facet name="header">Documento</f:facet>
+                    <h:outputText value="#{_activagestor.id.documento}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_activagestor.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activagestor.observacion}">
+                    <f:facet name="header">Observacion</f:facet>
+                    <h:outputText value="#{_activagestor.observacion}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gestorHome.managed}" id="activagestors_4">
+        <div class="actionButtons">
+            <s:button id="addactivagestor"
+                   value="Add activagestor"
+                    view="/ActivagestorEdit.xhtml"
+             propagation="none">
+                 <f:param name="gestorDocumento"
+                         value="#{gestorHome.instance.documento}"/>
+                 <f:param name="activagestorFrom" value="Gestor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Activacions">
+        <h:form styleClass="association" id="activacionsChildren">
+
+            <h:outputText value="There are no activacions associated with this gestor."
+                       rendered="#{empty gestorHome.activacions}"/>
+
+            <rich:dataTable value="#{gestorHome.activacions}"
+                           var="_activacion"
+                      rendered="#{not empty gestorHome.activacions}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="activacionsTable">
+                <rich:column sortBy="#{_activacion.consecutivo}">
+                    <f:facet name="header">Consecutivo</f:facet>
+                    <h:outputText value="#{_activacion.consecutivo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.cedula}">
+                    <f:facet name="header">Cedula</f:facet>
+                    <h:outputText value="#{_activacion.cedula}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.nombre}">
+                    <f:facet name="header">Nombre</f:facet>
+                    <h:outputText value="#{_activacion.nombre}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechareg}">
+                    <f:facet name="header">Fechareg</f:facet>
+                    <h:outputText value="#{_activacion.fechareg}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.usuarioreg}">
+                    <f:facet name="header">Usuarioreg</f:facet>
+                    <h:outputText value="#{_activacion.usuarioreg}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.correo}">
+                    <f:facet name="header">Correo</f:facet>
+                    <h:outputText value="#{_activacion.correo}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.clave}">
+                    <f:facet name="header">Clave</f:facet>
+                    <h:outputText value="#{_activacion.clave}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.usuario}">
+                    <f:facet name="header">Usuario</f:facet>
+                    <h:outputText value="#{_activacion.usuario}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.llave}">
+                    <f:facet name="header">Llave</f:facet>
+                    <h:outputText value="#{_activacion.llave}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.ano}">
+                    <f:facet name="header">Ano</f:facet>
+                    <h:outputText value="#{_activacion.ano}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.usuariomod}">
+                    <f:facet name="header">Usuariomod</f:facet>
+                    <h:outputText value="#{_activacion.usuariomod}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechacita}">
+                    <f:facet name="header">Fechacita</f:facet>
+                    <h:outputText value="#{_activacion.fechacita}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechaact}">
+                    <f:facet name="header">Fechaact</f:facet>
+                    <h:outputText value="#{_activacion.fechaact}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechamod}">
+                    <f:facet name="header">Fechamod</f:facet>
+                    <h:outputText value="#{_activacion.fechamod}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.ingresocadivi}">
+                    <f:facet name="header">Ingresocadivi</f:facet>
+                    <h:outputText value="#{_activacion.ingresocadivi}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.documentoscompletos}">
+                    <f:facet name="header">Documentoscompletos</f:facet>
+                    <h:outputText value="#{_activacion.documentoscompletos}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.citaasignada}">
+                    <f:facet name="header">Citaasignada</f:facet>
+                    <h:outputText value="#{_activacion.citaasignada}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.agencia}">
+                    <f:facet name="header">Agencia</f:facet>
+                    <h:outputText value="#{_activacion.agencia}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.tipoviaje}">
+                    <f:facet name="header">Tipoviaje</f:facet>
+                    <h:outputText value="#{_activacion.tipoviaje}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechainicioviaje}">
+                    <f:facet name="header">Fechainicioviaje</f:facet>
+                    <h:outputText value="#{_activacion.fechainicioviaje}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechafinviaje}">
+                    <f:facet name="header">Fechafinviaje</f:facet>
+                    <h:outputText value="#{_activacion.fechafinviaje}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.clavemercantil}">
+                    <f:facet name="header">Clavemercantil</f:facet>
+                    <h:outputText value="#{_activacion.clavemercantil}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.coordenadas}">
+                    <f:facet name="header">Coordenadas</f:facet>
+                    <h:outputText value="#{_activacion.coordenadas}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.provinet}">
+                    <f:facet name="header">Provinet</f:facet>
+                    <h:outputText value="#{_activacion.provinet}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.claveprovinet}">
+                    <f:facet name="header">Claveprovinet</f:facet>
+                    <h:outputText value="#{_activacion.claveprovinet}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.rusad}">
+                    <f:facet name="header">Rusad</f:facet>
+                    <h:outputText value="#{_activacion.rusad}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.noingresacadivi}">
+                    <f:facet name="header">Noingresacadivi</f:facet>
+                    <h:outputText value="#{_activacion.noingresacadivi}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.rif}">
+                    <f:facet name="header">Rif</f:facet>
+                    <h:outputText value="#{_activacion.rif}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.deposito}">
+                    <f:facet name="header">Deposito</f:facet>
+                    <h:outputText value="#{_activacion.deposito}"/>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechadeposito}">
+                    <f:facet name="header">Fechadeposito</f:facet>
+                    <h:outputText value="#{_activacion.fechadeposito}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.valordeposito}">
+                    <f:facet name="header">Valordeposito</f:facet>
+                    <h:outputText value="#{_activacion.valordeposito}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.fechadevolucion}">
+                    <f:facet name="header">Fechadevolucion</f:facet>
+                    <h:outputText value="#{_activacion.fechadevolucion}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_activacion.valordevolucion}">
+                    <f:facet name="header">Valordevolucion</f:facet>
+                    <h:outputText value="#{_activacion.valordevolucion}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{gestorHome.managed}" id="activacions">
+        <div class="actionButtons">
+            <s:button id="addactivacion"
+                   value="Add activacion"
+                    view="/ActivacionEdit.xhtml"
+             propagation="none">
+                 <f:param name="gestorDocumento"
+                         value="#{gestorHome.instance.documento}"/>
+                 <f:param name="activacionFrom" value="Gestor"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

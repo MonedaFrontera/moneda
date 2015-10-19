@@ -1,0 +1,152 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cne" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{cneHome.managed ? 'Edit' : 'Add'} Cne</f:facet>
+
+
+            <s:decorate id="nacionalidadField" template="layout/edit.xhtml">
+                <ui:define name="label">Nacionalidad</ui:define>
+                <h:inputText id="nacionalidad"
+                       disabled="#{cneHome.managed}"
+                          size="2"
+                     maxlength="2"
+                         value="#{cneHome.instance.id.nacionalidad}">
+                    <a:support event="onblur" reRender="nacionalidadField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="cedulaField" template="layout/edit.xhtml">
+                <ui:define name="label">Cedula</ui:define>
+                <h:inputText id="cedula"
+                       disabled="#{cneHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{cneHome.instance.id.cedula}">
+                    <a:support event="onblur" reRender="cedulaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="primerApellidoField" template="layout/edit.xhtml">
+                <ui:define name="label">Primer apellido</ui:define>
+                <h:inputText id="primerApellido"
+                       disabled="#{cneHome.managed}"
+                          size="50"
+                     maxlength="50"
+                         value="#{cneHome.instance.id.primerApellido}">
+                    <a:support event="onblur" reRender="primerApellidoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="segundoApellidoField" template="layout/edit.xhtml">
+                <ui:define name="label">Segundo apellido</ui:define>
+                <h:inputText id="segundoApellido"
+                       disabled="#{cneHome.managed}"
+                          size="50"
+                     maxlength="50"
+                         value="#{cneHome.instance.id.segundoApellido}">
+                    <a:support event="onblur" reRender="segundoApellidoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="primerNombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Primer nombre</ui:define>
+                <h:inputText id="primerNombre"
+                       disabled="#{cneHome.managed}"
+                          size="50"
+                     maxlength="50"
+                         value="#{cneHome.instance.id.primerNombre}">
+                    <a:support event="onblur" reRender="primerNombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="segundoNombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Segundo nombre</ui:define>
+                <h:inputText id="segundoNombre"
+                       disabled="#{cneHome.managed}"
+                          size="50"
+                     maxlength="50"
+                         value="#{cneHome.instance.id.segundoNombre}">
+                    <a:support event="onblur" reRender="segundoNombreField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="estadoField" template="layout/edit.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:inputText id="estado"
+                       disabled="#{cneHome.managed}"
+                          size="20"
+                     maxlength="20"
+                         value="#{cneHome.instance.id.estado}">
+                    <a:support event="onblur" reRender="estadoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codCentroField" template="layout/edit.xhtml">
+                <ui:define name="label">Cod centro</ui:define>
+                <h:inputText id="codCentro"
+                       disabled="#{cneHome.managed}"
+                          size="12"
+                     maxlength="12"
+                         value="#{cneHome.instance.id.codCentro}">
+                    <a:support event="onblur" reRender="codCentroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{cneHome.persist}"
+                       disabled="#{!cneHome.wired}"
+                       rendered="#{!cneHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{cneHome.update}"
+                       rendered="#{cneHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{cneHome.remove}"
+                      immediate="true"
+                       rendered="#{cneHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Cne.xhtml"
+                rendered="#{cneHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty cneFrom ? 'CneList' : cneFrom}.xhtml"
+                rendered="#{!cneHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

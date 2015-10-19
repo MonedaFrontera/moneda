@@ -1,0 +1,101 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistasaldojueves" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{vistasaldojuevesHome.managed ? 'Edit' : 'Add'} Vistasaldojueves</f:facet>
+
+
+            <s:decorate id="docupromoField" template="layout/edit.xhtml">
+                <ui:define name="label">Docupromo</ui:define>
+                <h:inputText id="docupromo"
+                       disabled="#{vistasaldojuevesHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{vistasaldojuevesHome.instance.id.docupromo}">
+                    <a:support event="onblur" reRender="docupromoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="nombrepromoField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrepromo</ui:define>
+                <h:inputTextarea id="nombrepromo"
+                               cols="80"
+                               rows="3"
+                           disabled="#{vistasaldojuevesHome.managed}"
+                              value="#{vistasaldojuevesHome.instance.id.nombrepromo}"/>
+            </s:decorate>
+
+            <s:decorate id="asesoraField" template="layout/edit.xhtml">
+                <ui:define name="label">Asesora</ui:define>
+                <h:inputTextarea id="asesora"
+                               cols="80"
+                               rows="3"
+                           disabled="#{vistasaldojuevesHome.managed}"
+                              value="#{vistasaldojuevesHome.instance.id.asesora}"/>
+            </s:decorate>
+
+            <s:decorate id="saldoClienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldo cliente</ui:define>
+                <h:inputText id="saldoCliente"
+                          value="#{vistasaldojuevesHome.instance.id.saldoCliente}"
+                           size="131.096">
+                    <a:support event="onblur" reRender="saldoClienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{vistasaldojuevesHome.persist}"
+                       disabled="#{!vistasaldojuevesHome.wired}"
+                       rendered="#{!vistasaldojuevesHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{vistasaldojuevesHome.update}"
+                       rendered="#{vistasaldojuevesHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{vistasaldojuevesHome.remove}"
+                      immediate="true"
+                       rendered="#{vistasaldojuevesHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Vistasaldojueves.xhtml"
+                rendered="#{vistasaldojuevesHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty vistasaldojuevesFrom ? 'VistasaldojuevesList' : vistasaldojuevesFrom}.xhtml"
+                rendered="#{!vistasaldojuevesHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

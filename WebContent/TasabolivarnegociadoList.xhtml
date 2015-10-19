@@ -1,0 +1,153 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasabolivarnegociadoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Tasa de Bolivar Negociado" switchType="ajax">
+
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTasa.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarTasa.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTasa.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+            
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{AdministrarTasa.fecha}" datePattern="dd/MM/yyyy"/>
+            </s:decorate>    
+            
+            
+            <s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{AdministrarTasa.tipo}" 
+                 >
+                    <f:selectItem itemValue="" itemLabel="Seleccione"/>
+					<f:selectItem itemValue="D" itemLabel="Deposito"/>
+					<f:selectItem itemValue="T" itemLabel="Transferencia"/>
+				</h:selectOneMenu>   
+            </s:decorate>
+            
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="buscar"
+                          value="Buscar"
+                         action="#{AdministrarTasa.buscarTasaBolivarnegociado()}"
+                         reRender="panelResultado"/>
+                         
+            <h:commandButton id="limpiar"
+                          value="Limpiar"
+                         action="#{AdministrarTasa.limpiarTasaBolivarnegociado()}"
+                         reRender="panelResultado"/>
+                         
+            <s:button view="/TasabolivarnegociadoEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Crear Tasa Bolivar Negociado">
+            <f:param name="tasabolivarnegociadoFecha"/>
+            <f:param name="tasabolivarnegociadoDocumento"/>
+        </s:button>
+        </div>
+
+    </h:form>
+
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultados de la Busqueda de Tasa de Bolivar Negociado </f:facet>
+    <div class="results" id="tasabolivarnegociadoList">
+
+    <h:outputText value="La busqueda de tasa de bolivar negociado no retorno ningun resultado."
+               rendered="#{empty AdministrarTasa.listaTasabolivarnegociado}"/>
+<h:form>
+    <rich:dataTable id="tasabolivarnegociadoList"
+                var="_tasabolivarnegociado"
+              value="#{AdministrarTasa.listaTasabolivarnegociado}"
+           rendered="#{not empty AdministrarTasa.listaTasabolivarnegociado}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasabolivarnegociadoList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="tasabolivarnegociado.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasabolivarnegociado.id.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasabolivarnegociadoList}"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="_tasabolivarnegociado.promotor.personal.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tasabolivarnegociado.promotor.personal.nombre} #{_tasabolivarnegociado.promotor.personal.apellido}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasabolivarnegociadoList}"/>
+                    <ui:param name="propertyLabel" value="Tipo"/>
+                    <ui:param name="propertyPath" value="tasabolivarnegociado.id.tipo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText style= "text-align:center; display:block" value="Deposito" rendered="#{_tasabolivarnegociado.id.tipo=='D'}"/>
+            <h:outputText style= "text-align:center; display:block" value="Transferencia" rendered="#{_tasabolivarnegociado.id.tipo=='T'}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tasabolivarnegociadoList}"/>
+                    <ui:param name="propertyLabel" value="Preciobolivar"/>
+                    <ui:param name="propertyPath" value="tasabolivarnegociado.preciobolivar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText style= "text-align:center; display:block" value="#{_tasabolivarnegociado.preciobolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            <h:commandLink value="" action="#{AdministrarTasa.editarTasabolivarnegociado(_tasabolivarnegociado.id.fecha, _tasabolivarnegociado.id.tipo, _tasabolivarnegociado.id.documento)}" >
+            	<h:graphicImage title="Editar Tasa Bolivar Negociado" style="border-style:none;" id="verTasa" value="/img/edit.gif" />
+            </h:commandLink>
+            
+        </rich:column>
+    </rich:dataTable>
+</h:form>
+    </div>
+    </rich:panel>
+
+   
+
+
+
+</ui:define>
+
+</ui:composition>

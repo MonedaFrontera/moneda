@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{cneList.firstResult}"/>
+   <param name="sort" value="#{cneList.orderColumn}"/>
+   <param name="dir" value="#{cneList.orderDirection}"/>
+   <param name="logic" value="#{cneList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="nacionalidad" value="#{cneList.cne.id.nacionalidad}"/>
+   <param name="cedula" value="#{cneList.cne.id.cedula}"/>
+   <param name="primerApellido" value="#{cneList.cne.id.primerApellido}"/>
+   <param name="segundoApellido" value="#{cneList.cne.id.segundoApellido}"/>
+   <param name="primerNombre" value="#{cneList.cne.id.primerNombre}"/>
+   <param name="segundoNombre" value="#{cneList.cne.id.segundoNombre}"/>
+   <param name="estado" value="#{cneList.cne.id.estado}"/>
+   <param name="codCentro" value="#{cneList.cne.id.codCentro}"/>
+
+</page>

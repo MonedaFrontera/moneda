@@ -1,0 +1,195 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Tasadolarparametros Details</f:facet>
+
+        <s:decorate id="codbanco" template="layout/display.xhtml">
+            <ui:define name="label">Codbanco</ui:define>
+            <h:outputText value="#{tasadolarparametrosHome.instance.id.codbanco}"/>
+        </s:decorate>
+        <s:decorate id="codpais" template="layout/display.xhtml">
+            <ui:define name="label">Codpais</ui:define>
+            <h:outputText value="#{tasadolarparametrosHome.instance.id.codpais}"/>
+        </s:decorate>
+        <s:decorate id="codfranquicia" template="layout/display.xhtml">
+            <ui:define name="label">Codfranquicia</ui:define>
+            <h:outputText value="#{tasadolarparametrosHome.instance.id.codfranquicia}"/>
+        </s:decorate>
+        <s:decorate id="fechainicio" template="layout/display.xhtml">
+            <ui:define name="label">Fechainicio</ui:define>
+            <h:outputText value="#{tasadolarparametrosHome.instance.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="fechafin" template="layout/display.xhtml">
+            <ui:define name="label">Fechafin</ui:define>
+            <h:outputText value="#{tasadolarparametrosHome.instance.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="tasadolar" template="layout/display.xhtml">
+            <ui:define name="label">Tasadolar</ui:define>
+            <h:outputText value="#{tasadolarparametrosHome.instance.tasadolar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/TasadolarparametrosEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty tasadolarparametrosFrom ? 'TasadolarparametrosList' : tasadolarparametrosFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Franquicia</h:panelGroup>
+        </f:facet>
+    <div class="association" id="franquiciaParent">
+
+        <h:outputText value="There is no franquicia associated with this tasadolarparametros."
+                   rendered="#{tasadolarparametrosHome.instance.franquicia == null}"/>
+
+        <rich:dataTable var="_franquicia"
+                   value="#{tasadolarparametrosHome.instance.franquicia}"
+                rendered="#{tasadolarparametrosHome.instance.franquicia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="franquiciaTable">
+            <h:column>
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrefranquicia</f:facet>
+                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewfranquicia"
+                     value="View"
+                      view="/Franquicia.xhtml">
+                    <f:param name="franquiciaCodfranquicia"
+                           value="#{_franquicia.codfranquicia}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Pais</h:panelGroup>
+        </f:facet>
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this tasadolarparametros."
+                   rendered="#{tasadolarparametrosHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{tasadolarparametrosHome.instance.pais}"
+                rendered="#{tasadolarparametrosHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Paisiso codigopais</f:facet>
+                <h:outputText value="#{_pais.paisiso.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewpais"
+                     value="View"
+                      view="/Pais.xhtml">
+                    <f:param name="paisCodigopais"
+                           value="#{_pais.codigopais}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Banco</h:panelGroup>
+        </f:facet>
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this tasadolarparametros."
+                   rendered="#{tasadolarparametrosHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{tasadolarparametrosHome.instance.banco}"
+                rendered="#{tasadolarparametrosHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewbanco"
+                     value="View"
+                      view="/Banco.xhtml">
+                    <f:param name="bancoCodbanco"
+                           value="#{_banco.codbanco}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

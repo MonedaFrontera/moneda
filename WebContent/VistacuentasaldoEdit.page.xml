@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/VistacuentasaldoList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{vistacuentasaldoHome.wire}"/>
+
+   <param name="vistacuentasaldoFrom"/>
+   <param name="vistacuentasaldoNumcuenta" value="#{vistacuentasaldoHome.vistacuentasaldoId.numcuenta}"/>
+   <param name="vistacuentasaldoNombre" value="#{vistacuentasaldoHome.vistacuentasaldoId.nombre}"/>
+   <param name="vistacuentasaldoFecha" value="#{vistacuentasaldoHome.vistacuentasaldoId.fecha}"/>
+   <param name="vistacuentasaldoCreditos" value="#{vistacuentasaldoHome.vistacuentasaldoId.creditos}"/>
+   <param name="vistacuentasaldoDebitos" value="#{vistacuentasaldoHome.vistacuentasaldoId.debitos}"/>
+   <param name="vistacuentasaldoDetalle" value="#{vistacuentasaldoHome.vistacuentasaldoId.detalle}"/>
+   <param name="vistacuentasaldoNombrebanco" value="#{vistacuentasaldoHome.vistacuentasaldoId.nombrebanco}"/>
+   <param name="vistacuentasaldoCodbanco" value="#{vistacuentasaldoHome.vistacuentasaldoId.codbanco}"/>
+   <param name="vistacuentasaldoSaldo" value="#{vistacuentasaldoHome.vistacuentasaldoId.saldo}"/>
+   <param name="vistacuentasaldoItem" value="#{vistacuentasaldoHome.vistacuentasaldoId.item}"/>
+   <param name="vistacuentasaldoSum" value="#{vistacuentasaldoHome.vistacuentasaldoId.sum}"/>
+
+
+   <navigation from-action="#{vistacuentasaldoHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Vistacuentasaldo.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{vistacuentasaldoHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Vistacuentasaldo.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{vistacuentasaldoHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/VistacuentasaldoList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

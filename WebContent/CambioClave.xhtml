@@ -1,0 +1,44 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="loginForm">
+	<div align="center">
+        <rich:panel style="width:320px; text-align:left;">
+            <f:facet name="header">Cambiar Clave</f:facet>
+
+            <p>Realice su cambio de clave: </p>
+
+            <div class="dialog"> 
+                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value" style=" width : 299px;">
+                    <h:outputLabel for="username">Usuario</h:outputLabel>
+                    <h:inputText id="username" disabled="true"
+                              value="#{credentials.username}"/>
+                    <h:outputLabel for="password2">Clave</h:outputLabel>
+                    <h:inputSecret id="password2"
+                                value="#{AdministrarPersonal.password}"/>
+                    <h:outputLabel for="confirmacion">Confirmacion</h:outputLabel>
+                    <h:inputSecret id="confirmacion"
+                                value="#{AdministrarPersonal.confirmacion}"/>
+                </h:panelGrid>
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+            <h:commandButton id="submit" value="Cambiar" action="#{AdministrarPersonal.cambiarClave()}"/>
+            <s:button view="/home.xhtml" value="Cancelar"/>
+        </div>
+	</div>
+    </h:form>
+
+ </ui:define>
+</ui:composition>

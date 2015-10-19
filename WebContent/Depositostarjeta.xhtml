@@ -1,0 +1,241 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Depositostarjeta Details</f:facet>
+
+        <s:decorate id="consecutivo" template="layout/display.xhtml">
+            <ui:define name="label">Consecutivo</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.consecutivo}"/>
+        </s:decorate>
+
+        <s:decorate id="fecha" template="layout/display.xhtml">
+            <ui:define name="label">Fecha</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.fecha}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="preciobolivar" template="layout/display.xhtml">
+            <ui:define name="label">Preciobolivar</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.preciobolivar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="valordeposito" template="layout/display.xhtml">
+            <ui:define name="label">Valordeposito</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.valordeposito}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="tipodebolivar" template="layout/display.xhtml">
+            <ui:define name="label">Tipodebolivar</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.tipodebolivar}"/>
+        </s:decorate>
+
+        <s:decorate id="depositopesos" template="layout/display.xhtml">
+            <ui:define name="label">Depositopesos</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.depositopesos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="tipodep" template="layout/display.xhtml">
+            <ui:define name="label">Tipodep</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.tipodep}"/>
+        </s:decorate>
+
+        <s:decorate id="fechamod" template="layout/display.xhtml">
+            <ui:define name="label">Fechamod</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="usuariomod" template="layout/display.xhtml">
+            <ui:define name="label">Usuariomod</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.usuariomod}"/>
+        </s:decorate>
+
+        <s:decorate id="asesor" template="layout/display.xhtml">
+            <ui:define name="label">Asesor</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.asesor}"/>
+        </s:decorate>
+
+        <s:decorate id="promotor" template="layout/display.xhtml">
+            <ui:define name="label">Promotor</ui:define>
+            <h:outputText value="#{depositostarjetaHome.instance.promotor}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/DepositostarjetaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty depositostarjetaFrom ? 'DepositostarjetaList' : depositostarjetaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuenta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="cuentaParent">
+
+        <h:outputText value="There is no cuenta associated with this depositostarjeta."
+                   rendered="#{depositostarjetaHome.instance.cuenta == null}"/>
+
+        <rich:dataTable var="_cuenta"
+                   value="#{depositostarjetaHome.instance.cuenta}"
+                rendered="#{depositostarjetaHome.instance.cuenta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="cuentaTable">
+            <h:column>
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuenta.numcuenta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_cuenta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuenta.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_cuenta.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcuenta"
+                     value="View"
+                      view="/Cuenta.xhtml">
+                    <f:param name="cuentaNumcuenta"
+                           value="#{_cuenta.numcuenta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjeta</h:panelGroup>
+        </f:facet>
+    <div class="association" id="tarjetaParent">
+
+        <h:outputText value="There is no tarjeta associated with this depositostarjeta."
+                   rendered="#{depositostarjetaHome.instance.tarjeta == null}"/>
+
+        <rich:dataTable var="_tarjeta"
+                   value="#{depositostarjetaHome.instance.tarjeta}"
+                rendered="#{depositostarjetaHome.instance.tarjeta != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="tarjetaTable">
+            <h:column>
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor documento</f:facet>
+                <h:outputText value="#{_tarjeta.promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Franquicia codfranquicia</f:facet>
+                <h:outputText value="#{_tarjeta.franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Banco codbanco</f:facet>
+                <h:outputText value="#{_tarjeta.banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewtarjeta"
+                     value="View"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                           value="#{_tarjeta.numerotarjeta}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

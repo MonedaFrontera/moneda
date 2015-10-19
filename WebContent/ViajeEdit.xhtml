@@ -1,0 +1,258 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="viaje" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{viajeHome.managed ? 'Edit' : 'Add'} Viaje</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{viajeHome.managed}"
+                          value="#{viajeHome.instance.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                          value="#{viajeHome.instance.fechainicio}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{viajeHome.instance.fechafin}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="cupoinicialviajeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupoinicialviajero</ui:define>
+                <h:inputText id="cupoinicialviajero"
+                          value="#{viajeHome.instance.cupoinicialviajero}">
+                    <a:support event="onblur" reRender="cupoinicialviajeroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cupoinicialinternetField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupoinicialinternet</ui:define>
+                <h:inputText id="cupoinicialinternet"
+                          value="#{viajeHome.instance.cupoinicialinternet}">
+                    <a:support event="onblur" reRender="cupoinicialinternetField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cupoviajeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupoviajero</ui:define>
+                <h:inputText id="cupoviajero"
+                          value="#{viajeHome.instance.cupoviajero}">
+                    <a:support event="onblur" reRender="cupoviajeroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cupointernetField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupointernet</ui:define>
+                <h:inputText id="cupointernet"
+                          value="#{viajeHome.instance.cupointernet}">
+                    <a:support event="onblur" reRender="cupointernetField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="cedulatarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Cedulatarjetahabiente</ui:define>
+                <h:inputText id="cedulatarjetahabiente"
+                           size="15"
+                      maxlength="15"
+                          value="#{viajeHome.instance.cedulatarjetahabiente}">
+                    <a:support event="onblur" reRender="cedulatarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{viajeHome.instance.fechamod}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                           size="15"
+                      maxlength="15"
+                          value="#{viajeHome.instance.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{viajeHome.persist}"
+                       disabled="#{!viajeHome.wired}"
+                       rendered="#{!viajeHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{viajeHome.update}"
+                       rendered="#{viajeHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{viajeHome.remove}"
+                      immediate="true"
+                       rendered="#{viajeHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Viaje.xhtml"
+                rendered="#{viajeHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty viajeFrom ? 'ViajeList' : viajeFrom}.xhtml"
+                rendered="#{!viajeHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Audit tarjetaviajes">
+        <h:form styleClass="association" id="auditTarjetaviajesChildren">
+
+            <h:outputText value="There are no auditTarjetaviajes associated with this viaje."
+                       rendered="#{empty viajeHome.auditTarjetaviajes}"/>
+
+            <rich:dataTable value="#{viajeHome.auditTarjetaviajes}"
+                           var="_auditTarjetaviaje"
+                      rendered="#{not empty viajeHome.auditTarjetaviajes}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="auditTarjetaviajesTable">
+                <rich:column sortBy="#{_auditTarjetaviaje.id.numerotarjeta}">
+                    <f:facet name="header">Numerotarjeta</f:facet>
+                    <h:outputText value="#{_auditTarjetaviaje.id.numerotarjeta}"/>
+                </rich:column>
+                <rich:column sortBy="#{_auditTarjetaviaje.id.consecutivoviaje}">
+                    <f:facet name="header">Consecutivoviaje</f:facet>
+                    <h:outputText value="#{_auditTarjetaviaje.id.consecutivoviaje}"/>
+                </rich:column>
+                <rich:column sortBy="#{_auditTarjetaviaje.id.estado}">
+                    <f:facet name="header">Estado</f:facet>
+                    <h:outputText value="#{_auditTarjetaviaje.id.estado}"/>
+                </rich:column>
+                <rich:column sortBy="#{_auditTarjetaviaje.id.fechamod}">
+                    <f:facet name="header">Fechamod</f:facet>
+                    <h:outputText value="#{_auditTarjetaviaje.id.fechamod}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_auditTarjetaviaje.id.usuariomod}">
+                    <f:facet name="header">Usuariomod</f:facet>
+                    <h:outputText value="#{_auditTarjetaviaje.id.usuariomod}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{viajeHome.managed}" id="auditTarjetaviajes">
+        <div class="actionButtons">
+            <s:button id="addauditTarjetaviaje"
+                   value="Add auditTarjetaviaje"
+                    view="/AuditTarjetaviajeEdit.xhtml"
+             propagation="none">
+                 <f:param name="viajeConsecutivo"
+                         value="#{viajeHome.instance.consecutivo}"/>
+                 <f:param name="auditTarjetaviajeFrom" value="Viaje"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Tarjetaviajes">
+        <h:form styleClass="association" id="tarjetaviajesChildren">
+
+            <h:outputText value="There are no tarjetaviajes associated with this viaje."
+                       rendered="#{empty viajeHome.tarjetaviajes}"/>
+
+            <rich:dataTable value="#{viajeHome.tarjetaviajes}"
+                           var="_tarjetaviaje"
+                      rendered="#{not empty viajeHome.tarjetaviajes}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="tarjetaviajesTable">
+                <rich:column sortBy="#{_tarjetaviaje.id.numerotarjeta}">
+                    <f:facet name="header">Numerotarjeta</f:facet>
+                    <h:outputText value="#{_tarjetaviaje.id.numerotarjeta}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjetaviaje.id.consecutivoviaje}">
+                    <f:facet name="header">Consecutivoviaje</f:facet>
+                    <h:outputText value="#{_tarjetaviaje.id.consecutivoviaje}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjetaviaje.estado}">
+                    <f:facet name="header">Estado</f:facet>
+                    <h:outputText value="#{_tarjetaviaje.estado}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tarjetaviaje.fechamod}">
+                    <f:facet name="header">Fechamod</f:facet>
+                    <h:outputText value="#{_tarjetaviaje.fechamod}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_tarjetaviaje.usuariomod}">
+                    <f:facet name="header">Usuariomod</f:facet>
+                    <h:outputText value="#{_tarjetaviaje.usuariomod}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{viajeHome.managed}" id="tarjetaviajes">
+        <div class="actionButtons">
+            <s:button id="addtarjetaviaje"
+                   value="Add tarjetaviaje"
+                    view="/TarjetaviajeEdit.xhtml"
+             propagation="none">
+                 <f:param name="viajeConsecutivo"
+                         value="#{viajeHome.instance.consecutivo}"/>
+                 <f:param name="tarjetaviajeFrom" value="Viaje"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

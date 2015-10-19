@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/VistasaldoviernesList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{vistasaldoviernesHome.wire}"/>
+
+   <param name="vistasaldoviernesFrom"/>
+   <param name="vistasaldoviernesDocupromo" value="#{vistasaldoviernesHome.vistasaldoviernesId.docupromo}"/>
+   <param name="vistasaldoviernesNombrepromo" value="#{vistasaldoviernesHome.vistasaldoviernesId.nombrepromo}"/>
+   <param name="vistasaldoviernesAsesora" value="#{vistasaldoviernesHome.vistasaldoviernesId.asesora}"/>
+   <param name="vistasaldoviernesSaldoCliente" value="#{vistasaldoviernesHome.vistasaldoviernesId.saldoCliente}"/>
+
+
+   <navigation from-action="#{vistasaldoviernesHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Vistasaldoviernes.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{vistasaldoviernesHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Vistasaldoviernes.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{vistasaldoviernesHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/VistasaldoviernesList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

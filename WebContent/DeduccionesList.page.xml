@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{deduccionesList.firstResult}"/>
+   <param name="sort" value="#{deduccionesList.orderColumn}"/>
+   <param name="dir" value="#{deduccionesList.orderDirection}"/>
+   <param name="logic" value="#{deduccionesList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="descripcion" value="#{deduccionesList.deducciones.id.descripcion}"/>
+   <param name="tipo" value="#{deduccionesList.deducciones.tipo}"/>
+
+</page>

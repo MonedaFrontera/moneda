@@ -1,0 +1,84 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="mesanio" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{mesanioHome.managed ? 'Edit' : 'Add'} Mesanio</f:facet>
+
+
+            <s:decorate id="codigomesField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigomes</ui:define>
+                <h:inputText id="codigomes"
+                       required="true"
+                       disabled="#{mesanioHome.managed}"
+                          value="#{mesanioHome.instance.codigomes}">
+                    <a:support event="onblur" reRender="codigomesField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombremesField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombremes</ui:define>
+                <h:inputText id="nombremes"
+                           size="12"
+                      maxlength="12"
+                          value="#{mesanioHome.instance.nombremes}">
+                    <a:support event="onblur" reRender="nombremesField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{mesanioHome.persist}"
+                       disabled="#{!mesanioHome.wired}"
+                       rendered="#{!mesanioHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{mesanioHome.update}"
+                       rendered="#{mesanioHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{mesanioHome.remove}"
+                      immediate="true"
+                       rendered="#{mesanioHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Mesanio.xhtml"
+                rendered="#{mesanioHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty mesanioFrom ? 'MesanioList' : mesanioFrom}.xhtml"
+                rendered="#{!mesanioHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

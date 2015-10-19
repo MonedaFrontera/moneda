@@ -1,0 +1,324 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="transaccionerrorSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Transaccionerror Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numerotarjeta</ui:define>
+                <h:inputText id="numerotarjeta" value="#{transaccionerrorList.transaccionerror.id.numerotarjeta}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codigounico</ui:define>
+                <h:inputText id="codigounico" value="#{transaccionerrorList.transaccionerror.id.codigounico}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tipotx</ui:define>
+                <h:inputText id="tipotx" value="#{transaccionerrorList.transaccionerror.id.tipotx}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numfactura</ui:define>
+                <h:inputText id="numfactura" value="#{transaccionerrorList.transaccionerror.id.numfactura}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod" value="#{transaccionerrorList.transaccionerror.id.usuariomod}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Asesor</ui:define>
+                <h:inputText id="asesor" value="#{transaccionerrorList.transaccionerror.id.asesor}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputText id="promotor" value="#{transaccionerrorList.transaccionerror.id.promotor}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Digitador</ui:define>
+                <h:inputText id="digitador" value="#{transaccionerrorList.transaccionerror.id.digitador}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Error</ui:define>
+                <h:inputText id="error" value="#{transaccionerrorList.transaccionerror.id.error}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{transaccionerrorList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/TransaccionerrorList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Transaccionerror Search Results (#{empty transaccionerrorList.resultList ? 0 : (transaccionerrorList.paginated ? transaccionerrorList.resultCount : transaccionerrorList.resultList.size)})</f:facet>
+    <div class="results" id="transaccionerrorList">
+
+    <h:outputText value="The transaccionerror search returned no results."
+               rendered="#{empty transaccionerrorList.resultList}"/>
+
+    <rich:dataTable id="transaccionerrorList"
+                var="_transaccionerror"
+              value="#{transaccionerrorList.resultList}"
+           rendered="#{not empty transaccionerrorList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Numerotarjeta"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.numerotarjeta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Codigounico"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.codigounico"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.codigounico}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Fechatx"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.fechatx"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.fechatx}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Tipotx"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.tipotx"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.tipotx}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Numfactura"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.numfactura"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.numfactura}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Fechamod"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.fechamod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.fechamod}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Usuariomod"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.usuariomod"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.usuariomod}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Asesor"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.asesor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.asesor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.promotor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.promotor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Digitador"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.digitador"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.digitador}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{transaccionerrorList}"/>
+                    <ui:param name="propertyLabel" value="Error"/>
+                    <ui:param name="propertyPath" value="transaccionerror.id.error"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_transaccionerror.id.error}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Transaccionerror' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="transaccionerrorViewId">
+                <f:param name="transaccionerrorNumerotarjeta"
+                        value="#{_transaccionerror.id.numerotarjeta}"/>
+                <f:param name="transaccionerrorCodigounico"
+                        value="#{_transaccionerror.id.codigounico}"/>
+                <f:param name="transaccionerrorFechatx"
+                        value="#{_transaccionerror.id.fechatx}"/>
+                <f:param name="transaccionerrorTipotx"
+                        value="#{_transaccionerror.id.tipotx}"/>
+                <f:param name="transaccionerrorNumfactura"
+                        value="#{_transaccionerror.id.numfactura}"/>
+                <f:param name="transaccionerrorFechamod"
+                        value="#{_transaccionerror.id.fechamod}"/>
+                <f:param name="transaccionerrorUsuariomod"
+                        value="#{_transaccionerror.id.usuariomod}"/>
+                <f:param name="transaccionerrorAsesor"
+                        value="#{_transaccionerror.id.asesor}"/>
+                <f:param name="transaccionerrorPromotor"
+                        value="#{_transaccionerror.id.promotor}"/>
+                <f:param name="transaccionerrorDigitador"
+                        value="#{_transaccionerror.id.digitador}"/>
+                <f:param name="transaccionerrorError"
+                        value="#{_transaccionerror.id.error}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/TransaccionerrorEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="transaccionerrorEdit"
+                rendered="#{empty from}">
+                <f:param name="transaccionerrorNumerotarjeta"
+                        value="#{_transaccionerror.id.numerotarjeta}"/>
+                <f:param name="transaccionerrorCodigounico"
+                        value="#{_transaccionerror.id.codigounico}"/>
+                <f:param name="transaccionerrorFechatx"
+                        value="#{_transaccionerror.id.fechatx}"/>
+                <f:param name="transaccionerrorTipotx"
+                        value="#{_transaccionerror.id.tipotx}"/>
+                <f:param name="transaccionerrorNumfactura"
+                        value="#{_transaccionerror.id.numfactura}"/>
+                <f:param name="transaccionerrorFechamod"
+                        value="#{_transaccionerror.id.fechamod}"/>
+                <f:param name="transaccionerrorUsuariomod"
+                        value="#{_transaccionerror.id.usuariomod}"/>
+                <f:param name="transaccionerrorAsesor"
+                        value="#{_transaccionerror.id.asesor}"/>
+                <f:param name="transaccionerrorPromotor"
+                        value="#{_transaccionerror.id.promotor}"/>
+                <f:param name="transaccionerrorDigitador"
+                        value="#{_transaccionerror.id.digitador}"/>
+                <f:param name="transaccionerrorError"
+                        value="#{_transaccionerror.id.error}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TransaccionerrorList.xhtml"
+            rendered="#{transaccionerrorList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TransaccionerrorList.xhtml"
+            rendered="#{transaccionerrorList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{transaccionerrorList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TransaccionerrorList.xhtml"
+            rendered="#{transaccionerrorList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{transaccionerrorList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TransaccionerrorList.xhtml"
+            rendered="#{transaccionerrorList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{transaccionerrorList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/TransaccionerrorEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create transaccionerror">
+            <f:param name="transaccionerrorNumerotarjeta"/>
+            <f:param name="transaccionerrorCodigounico"/>
+            <f:param name="transaccionerrorFechatx"/>
+            <f:param name="transaccionerrorTipotx"/>
+            <f:param name="transaccionerrorNumfactura"/>
+            <f:param name="transaccionerrorFechamod"/>
+            <f:param name="transaccionerrorUsuariomod"/>
+            <f:param name="transaccionerrorAsesor"/>
+            <f:param name="transaccionerrorPromotor"/>
+            <f:param name="transaccionerrorDigitador"/>
+            <f:param name="transaccionerrorError"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

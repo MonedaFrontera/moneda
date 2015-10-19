@@ -1,0 +1,213 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="gastosSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Busqueda de Gastos" switchType="ajax">
+
+			<s:decorate id="promotorField" template="layout/edit.xhtml" required="true">
+                <ui:define name="label">Promotor o Arrastrador</ui:define>		
+			<h:inputText value="#{AdministrarGasto.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarGasto.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png" 
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarGasto.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor o arrastrador con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+			
+			
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{gastosHome.instance.fecha}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Fin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{AdministrarGasto.fechafin}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+			
+            <s:decorate id="tipogastoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:selectOneMenu id="tipogastoSel" value="#{gastosHome.instance.tipogasto}" >
+			<s:selectItems value="#{tipogastoList.resultList}" var="gasto" label="#{gasto.descripcion}" 
+			rendered ="#{gasto.codtipogasto!='TR'}"
+			                    noSelectionLabel="Seleccione..." /> 
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="tipogastoField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	
+        	<s:decorate id="totalField" template="layout/edit.xhtml">
+                <ui:define name="label">Total Consulta</ui:define>
+                <h:inputText id="limite"
+                       disabled="true"
+                          value="#{AdministrarGasto.totalgastos}">
+                          <f:convertNumber pattern="$ #,###,##0"/>  
+                </h:inputText>
+            </s:decorate>
+
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+        <h:commandButton id="buscar"
+                          value="Buscar"
+                         action="#{AdministrarGasto.buscarGastos()}"
+                         reRender="panelResultado, totalField"/>
+            
+            <s:button id="reset" value="Limpiar" includePageParams="false"/>
+            <s:button view="/GastosEdit.xhtml"
+                    id="create"
+           propagation="none"
+           rendered="#{s:hasRole('Registrar Gastos')}"
+                 value="Registrar Gasto">
+            <f:param name="gastosConsecutivo"/>
+        </s:button>
+        </div>
+
+    </h:form>
+
+    <rich:panel id="panelResultado">
+        <f:facet name="header">Resultado de la Busqueda de Gastos (#{empty AdministrarGasto.listarGastos ? 0 : AdministrarGasto.listarGastos.size})</f:facet>
+    <div class="results" id="gastosList">
+
+    <h:outputText value="La busqueda de Gastos no retorno resultados."
+               rendered="#{empty AdministrarGasto.listarGastos}"/>
+    
+    <rich:dataTable id="gastosList"
+                var="_gastos"
+              value="#{AdministrarGasto.listarGastos}"
+           rendered="#{not empty AdministrarGasto.listarGastos}">
+
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{gastosList}"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="gastos.personal.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_gastos.personal.nombre} #{_gastos.personal.apellido}"/>
+        </h:column>
+        <h:column   style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{gastosList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="gastos.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_gastos.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{gastosList}"/>
+                    <ui:param name="propertyLabel" value="Valor"/>
+                    <ui:param name="propertyPath" value="gastos.tipogasto.descripcion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_gastos.tipogasto.descripcion}"/>
+        </h:column>
+        <h:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml" >
+                    <ui:param name="entityList" value="#{gastosList}"/>
+                    <ui:param name="propertyLabel" value="Valor"/>
+                    <ui:param name="propertyPath" value="gastos.valor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_gastos.valor}" style="text-align:right"> 
+            <f:convertNumber/>
+            </h:outputText>                   
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{gastosList}"/>
+                    <ui:param name="propertyLabel" value="Observacion"/>
+                    <ui:param name="propertyPath" value="gastos.observacion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_gastos.observacion}" />
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            
+            <s:link view="/GastosEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="gastosEdit"
+                rendered="#{empty from}">
+                <f:param name="gastosConsecutivo"
+                        value="#{_gastos.consecutivo}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/GastosList.xhtml"
+            rendered="#{gastosList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/GastosList.xhtml"
+            rendered="#{gastosList.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{gastosList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/GastosList.xhtml"
+            rendered="#{gastosList.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{gastosList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/GastosList.xhtml"
+            rendered="#{gastosList.nextExists}"
+               value="Ultimo #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{gastosList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+
+</ui:define>
+
+</ui:composition>

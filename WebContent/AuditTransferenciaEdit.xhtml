@@ -1,0 +1,170 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditTransferencia" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{auditTransferenciaHome.managed ? 'Edit' : 'Add'} Audit transferencia</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          value="#{auditTransferenciaHome.instance.id.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="preciobolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Preciobolivar</ui:define>
+                <h:inputText id="preciobolivar"
+                          value="#{auditTransferenciaHome.instance.id.preciobolivar}"
+                           size="12">
+                    <a:support event="onblur" reRender="preciobolivarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="tipobolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipobolivar</ui:define>
+                <h:inputText id="tipobolivar"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          size="3"
+                     maxlength="3"
+                         value="#{auditTransferenciaHome.instance.id.tipobolivar}">
+                    <a:support event="onblur" reRender="tipobolivarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="valorbolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Valorbolivar</ui:define>
+                <h:inputText id="valorbolivar"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          value="#{auditTransferenciaHome.instance.id.valorbolivar}">
+                    <a:support event="onblur" reRender="valorbolivarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="numcuentaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numcuenta</ui:define>
+                <h:inputText id="numcuenta"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          size="25"
+                     maxlength="25"
+                         value="#{auditTransferenciaHome.instance.id.numcuenta}">
+                    <a:support event="onblur" reRender="numcuentaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="numcuentapromotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Numcuentapromotor</ui:define>
+                <h:inputText id="numcuentapromotor"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          size="25"
+                     maxlength="25"
+                         value="#{auditTransferenciaHome.instance.id.numcuentapromotor}">
+                    <a:support event="onblur" reRender="numcuentapromotorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="documentopromotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Documentopromotor</ui:define>
+                <h:inputText id="documentopromotor"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditTransferenciaHome.instance.id.documentopromotor}">
+                    <a:support event="onblur" reRender="documentopromotorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="preciocompraField" template="layout/edit.xhtml">
+                <ui:define name="label">Preciocompra</ui:define>
+                <h:inputText id="preciocompra"
+                          value="#{auditTransferenciaHome.instance.id.preciocompra}"
+                           size="12">
+                    <a:support event="onblur" reRender="preciocompraField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="precioasesorField" template="layout/edit.xhtml">
+                <ui:define name="label">Precioasesor</ui:define>
+                <h:inputText id="precioasesor"
+                          value="#{auditTransferenciaHome.instance.id.precioasesor}"
+                           size="12">
+                    <a:support event="onblur" reRender="precioasesorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                       disabled="#{auditTransferenciaHome.managed}"
+                          size="20"
+                     maxlength="20"
+                         value="#{auditTransferenciaHome.instance.id.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{auditTransferenciaHome.instance.id.fechamod}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{auditTransferenciaHome.persist}"
+                       disabled="#{!auditTransferenciaHome.wired}"
+                       rendered="#{!auditTransferenciaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{auditTransferenciaHome.update}"
+                       rendered="#{auditTransferenciaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{auditTransferenciaHome.remove}"
+                      immediate="true"
+                       rendered="#{auditTransferenciaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/AuditTransferencia.xhtml"
+                rendered="#{auditTransferenciaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty auditTransferenciaFrom ? 'AuditTransferenciaList' : auditTransferenciaFrom}.xhtml"
+                rendered="#{!auditTransferenciaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

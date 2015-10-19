@@ -1,0 +1,197 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="cuentacreditoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Cuentacredito Search Filter" switchType="ajax">
+
+             <s:decorate id="bancoField" template="layout/edit.xhtml" >
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{cuentacreditoList.banco}" 
+                style=" width : 217px;">
+			<s:selectItems value="#{bancoList.resultList}" var="banco" 
+			label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      
+			</h:selectOneMenu>
+        	</s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numero Cuenta</ui:define>
+                <h:inputText id="numcuenta" value="#{cuentacreditoList.cuenta.numcuenta}" style=" width : 215px;"/>
+            </s:decorate>
+            
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre Cuenta</ui:define>
+                <h:inputText id="nombrecuenta" value="#{cuentacreditoList.cuenta.nombre}" style=" width : 416px;"/>
+            </s:decorate>
+
+            
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/CuentacreditoList.xhtml"/>
+            <s:button id="reset" value="Reiniciar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultados de la Busqueda de Movimientos de Cuentas Venezolanas (#{empty cuentacreditoList.resultList ? 0 : (cuentacreditoList.paginated ? cuentacreditoList.resultCount : cuentacreditoList.resultList.size)})</f:facet>
+    <div class="results" id="cuentacreditoList">
+
+    <h:outputText value="La Busqueda de Movimientos de Cuentas Venezolanas no retorno Resultados."
+               rendered="#{empty cuentacreditoList.resultList}"/>
+
+    <rich:dataTable id="cuentacreditoList"
+                var="_cuentacredito"
+              value="#{cuentacreditoList.resultList}"
+           rendered="#{not empty cuentacreditoList.resultList}">
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="cuentacredito.cuenta.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cuentacredito.cuenta.nombre}"/>
+        </h:column>
+        
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Num Cuenta"/>
+                    <ui:param name="propertyPath" value="cuentacredito.cuenta.numcuenta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cuentacredito.cuenta.numcuenta}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Banco"/>
+                    <ui:param name="propertyPath" value="cuentacredito.cuenta.banco.nombrebanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cuentacredito.cuenta.banco.nombrebanco}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="cuentacredito.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cuentacredito.fecha}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Tipo"/>
+                    <ui:param name="propertyPath" value="cuentacredito.tipo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="Debito" rendered="#{_cuentacredito.tipo==-1}"/>
+            <h:outputText value="Credito" rendered="#{_cuentacredito.tipo==1}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Valor"/>
+                    <ui:param name="propertyPath" value="cuentacredito.valor"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cuentacredito.valor}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{cuentacreditoList}"/>
+                    <ui:param name="propertyLabel" value="Usuario"/>
+                    <ui:param name="propertyPath" value="cuentacredito.usuario"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_cuentacredito.usuario}"/>
+        </h:column>
+
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            
+            <s:link view="/CuentacreditoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="cuentacreditoEdit"
+                rendered="#{empty from}">
+                <f:param name="cuentacreditoConsecutivo"
+                        value="#{_cuentacredito.consecutivo}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/CuentacreditoList.xhtml"
+            rendered="#{cuentacreditoList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/CuentacreditoList.xhtml"
+            rendered="#{cuentacreditoList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{cuentacreditoList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/CuentacreditoList.xhtml"
+            rendered="#{cuentacreditoList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{cuentacreditoList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/CuentacreditoList.xhtml"
+            rendered="#{cuentacreditoList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{cuentacreditoList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+   
+
+</ui:define>
+
+</ui:composition>

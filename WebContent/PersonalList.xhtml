@@ -1,0 +1,198 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="personalSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtros de Busqueda de Personal" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{personalList.personal.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre" value="#{personalList.personal.nombre}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Apellido</ui:define>
+                <h:inputText id="apellido" value="#{personalList.personal.apellido}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Comparacion</ui:define>
+                <h:selectOneRadio id="logic" value="#{personalList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="Todos" itemValue="and"/>
+                    <f:selectItem itemLabel="Algunos" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" rendered="false" value="Busqueda" action="/PersonalList.xhtml"/>
+            <h:commandButton id="search2" value="Busqueda" action="/PersonalList.xhtml"/>
+            <s:button id="reset" value="Cancelar" includePageParams="false" action="#{AdministrarPersonal.limpiar}"/>
+            
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Busqueda de Resultados de Personal (#{empty personalList.resultList ? 0 : (personalList.paginated ? personalList.resultCount : personalList.resultList.size)})</f:facet>
+    <div class="results" id="personalList">
+
+    <h:outputText value="La busqueda no retorno resultados"
+               rendered="#{empty AdministrarPersonal.personal.resultList}"/>
+    <h:form>
+    <rich:dataTable id="personalList"
+                var="_personal"
+              value="#{AdministrarPersonal.personal.resultList}"
+           rendered="#{not empty AdministrarPersonal.personal.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="personal.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Cargo"/>
+                    <ui:param name="propertyPath" value="personal.cargo.codcargo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.cargo.nombrecargo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Tipodocumento"/>
+                    <ui:param name="propertyPath" value="personal.tipodocumento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.tipodocumento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="personal.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.nombre}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Apellido"/>
+                    <ui:param name="propertyPath" value="personal.apellido"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.apellido}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Celular"/>
+                    <ui:param name="propertyPath" value="personal.celular"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.celular}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personalList}"/>
+                    <ui:param name="propertyLabel" value="Telefono"/>
+                    <ui:param name="propertyPath" value="personal.telefono"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personal.telefono}"/>
+        </h:column>
+
+        <rich:column styleClass="action">
+            <f:facet name="header">Accciones</f:facet>
+            <h:commandLink value="Editar" action="#{AdministrarPersonal.editarPersonal(_personal.documento)}">
+            </h:commandLink>
+            <h:commandLink value="Balance" 
+            action="#{AdministrarPromotor.balanceTarjetas(_personal.documento)}"
+            rendered="#{_personal.cargo.codcargo=='PR'}">
+            </h:commandLink>        
+            <h:commandLink value="Riesgos" 
+            action="#{AdministrarPromotor.revisarPrestamo(_promotor.documento)}"
+            rendered="#{_promotor.personal.cargo.codcargo=='PR'}">
+            </h:commandLink>
+        </rich:column>
+    </rich:dataTable>
+	</h:form>
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PersonalList.xhtml"
+            rendered="#{personalList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera Pagina"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PersonalList.xhtml"
+            rendered="#{personalList.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{personalList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PersonalList.xhtml"
+            rendered="#{personalList.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{personalList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PersonalList.xhtml"
+            rendered="#{personalList.nextExists}"
+               value="Ultima Pagina #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{personalList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PersonalEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Registrar Personal"
+                 rendered="#{s:hasRole('Registrar Personal')}">
+            <f:param name="personalDocumento"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

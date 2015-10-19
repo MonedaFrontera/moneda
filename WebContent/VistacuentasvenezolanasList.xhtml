@@ -1,0 +1,206 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistacuentasvenezolanasSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Filtro de Busqueda de Cuentas Venezolanas" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Banco</ui:define>
+                <h:inputText id="nombrebanco" value="#{vistacuentasvenezolanasList.vistacuentasvenezolanas.id.nombrebanco}" style=" width : 278px;"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numero Cuenta</ui:define>
+                <h:inputText id="numcuenta" value="#{vistacuentasvenezolanasList.vistacuentasvenezolanas.id.numcuenta}" style=" width : 278px;"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre Cuenta</ui:define>
+                <h:inputText id="nombre" value="#{vistacuentasvenezolanasList.vistacuentasvenezolanas.id.nombre}" style=" width : 278px;"/>
+            </s:decorate>
+
+            
+
+            
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/VistacuentasvenezolanasList.xhtml"/>
+            <s:button id="reset" value="Limpiar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultado de Cuentas Venezolanas (#{empty vistacuentasvenezolanasList.resultList ? 0 : (vistacuentasvenezolanasList.paginated ? vistacuentasvenezolanasList.resultCount : vistacuentasvenezolanasList.resultList.size)})</f:facet>
+    <div class="results" id="vistacuentasvenezolanasList">
+
+    <h:outputText value="La busqueda de cuentas venezolanas no retorno resultados."
+               rendered="#{empty vistacuentasvenezolanasList.resultList}"/>
+
+    <rich:dataTable id="vistacuentasvenezolanasList"
+                var="_vistacuentasvenezolanas"
+              value="#{vistacuentasvenezolanasList.resultList}"
+           rendered="#{not empty vistacuentasvenezolanasList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Banco"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.nombrebanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.nombrebanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Numero Cuenta"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.numcuenta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.numcuenta}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Nombre Cuenta"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.nombre}"/>
+        </h:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Saldo"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.saldo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.saldo}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Movimientos"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.movimientos"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.movimientos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Depositos"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.depositos"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.depositos}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+        <rich:column style="text-align:right">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{vistacuentasvenezolanasList}"/>
+                    <ui:param name="propertyLabel" value="Transferencias"/>
+                    <ui:param name="propertyPath" value="vistacuentasvenezolanas.id.transferencias"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_vistacuentasvenezolanas.id.transferencias}">
+                <f:convertNumber/>
+            </h:outputText>
+        </rich:column>
+
+        <rich:column styleClass="action">
+            <f:facet name="header">Acciones</f:facet>
+            
+           
+            <s:link view="/CuentaEdit.xhtml"
+                   value="Detalle"
+             propagation="none"
+                      id="cuentaEdit"
+                rendered="#{empty from}">
+                <f:param name="cuentaNumcuenta"
+                        value="#{_vistacuentasvenezolanas.id.numcuenta}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/VistacuentasvenezolanasList.xhtml"
+            rendered="#{vistacuentasvenezolanasList.previousExists}"
+               value="#{messages.left}#{messages.left} Primera Pagina"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/VistacuentasvenezolanasList.xhtml"
+            rendered="#{vistacuentasvenezolanasList.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{vistacuentasvenezolanasList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/VistacuentasvenezolanasList.xhtml"
+            rendered="#{vistacuentasvenezolanasList.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{vistacuentasvenezolanasList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/VistacuentasvenezolanasList.xhtml"
+            rendered="#{vistacuentasvenezolanasList.nextExists}"
+               value="Ultima Pagina #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{vistacuentasvenezolanasList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from &amp;&amp; false}">
+        <s:button view="/VistacuentasvenezolanasEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create vistacuentasvenezolanas">
+            <f:param name="vistacuentasvenezolanasNombrebanco"/>
+            <f:param name="vistacuentasvenezolanasNumcuenta"/>
+            <f:param name="vistacuentasvenezolanasNombre"/>
+            <f:param name="vistacuentasvenezolanasSaldo"/>
+            <f:param name="vistacuentasvenezolanasMovimientos"/>
+            <f:param name="vistacuentasvenezolanasDepositos"/>
+            <f:param name="vistacuentasvenezolanasTransferencias"/>
+            <f:param name="vistacuentasvenezolanasCodbanco"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

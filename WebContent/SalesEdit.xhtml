@@ -1,0 +1,90 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="sales" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{salesHome.managed ? 'Edit' : 'Add'} Sales</f:facet>
+
+
+            <s:decorate id="yearField" template="layout/edit.xhtml">
+                <ui:define name="label">Year</ui:define>
+                <h:inputText id="year"
+                       disabled="#{salesHome.managed}"
+                          value="#{salesHome.instance.id.year}">
+                    <a:support event="onblur" reRender="yearField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="monthField" template="layout/edit.xhtml">
+                <ui:define name="label">Month</ui:define>
+                <h:inputText id="month"
+                       disabled="#{salesHome.managed}"
+                          value="#{salesHome.instance.id.month}">
+                    <a:support event="onblur" reRender="monthField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="qtyField" template="layout/edit.xhtml">
+                <ui:define name="label">Qty</ui:define>
+                <h:inputText id="qty"
+                       disabled="#{salesHome.managed}"
+                          value="#{salesHome.instance.id.qty}">
+                    <a:support event="onblur" reRender="qtyField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{salesHome.persist}"
+                       disabled="#{!salesHome.wired}"
+                       rendered="#{!salesHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{salesHome.update}"
+                       rendered="#{salesHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{salesHome.remove}"
+                      immediate="true"
+                       rendered="#{salesHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Sales.xhtml"
+                rendered="#{salesHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty salesFrom ? 'SalesList' : salesFrom}.xhtml"
+                rendered="#{!salesHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

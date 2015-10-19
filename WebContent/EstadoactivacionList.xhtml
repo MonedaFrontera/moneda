@@ -1,0 +1,197 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="estadoactivacionSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Estadoactivacion Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:inputText id="estado" value="#{estadoactivacionList.estadoactivacion.id.estado}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputText id="observacion" value="#{estadoactivacionList.estadoactivacion.observacion}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{estadoactivacionList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/EstadoactivacionList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Estadoactivacion Search Results (#{empty estadoactivacionList.resultList ? 0 : (estadoactivacionList.paginated ? estadoactivacionList.resultCount : estadoactivacionList.resultList.size)})</f:facet>
+    <div class="results" id="estadoactivacionList">
+
+    <h:outputText value="The estadoactivacion search returned no results."
+               rendered="#{empty estadoactivacionList.resultList}"/>
+
+    <rich:dataTable id="estadoactivacionList"
+                var="_estadoactivacion"
+              value="#{estadoactivacionList.resultList}"
+           rendered="#{not empty estadoactivacionList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{estadoactivacionList}"/>
+                    <ui:param name="propertyLabel" value="Consecutivo"/>
+                    <ui:param name="propertyPath" value="estadoactivacion.id.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_estadoactivacion.id.consecutivo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{estadoactivacionList}"/>
+                    <ui:param name="propertyLabel" value="Estado"/>
+                    <ui:param name="propertyPath" value="estadoactivacion.id.estado"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_estadoactivacion.id.estado}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{estadoactivacionList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="estadoactivacion.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_estadoactivacion.id.fecha}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{estadoactivacionList}"/>
+                    <ui:param name="propertyLabel" value="Activacion consecutivo"/>
+                    <ui:param name="propertyPath" value="estadoactivacion.activacion.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_estadoactivacion.activacion.consecutivo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{estadoactivacionList}"/>
+                    <ui:param name="propertyLabel" value="Actestado codestado"/>
+                    <ui:param name="propertyPath" value="estadoactivacion.actestado.codestado"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_estadoactivacion.actestado.codestado}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{estadoactivacionList}"/>
+                    <ui:param name="propertyLabel" value="Observacion"/>
+                    <ui:param name="propertyPath" value="estadoactivacion.observacion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_estadoactivacion.observacion}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Estadoactivacion' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="estadoactivacionViewId">
+                <f:param name="estadoactivacionConsecutivo"
+                        value="#{_estadoactivacion.id.consecutivo}"/>
+                <f:param name="estadoactivacionEstado"
+                        value="#{_estadoactivacion.id.estado}"/>
+                <f:param name="estadoactivacionFecha"
+                        value="#{_estadoactivacion.id.fecha}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/EstadoactivacionEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="estadoactivacionEdit"
+                rendered="#{empty from}">
+                <f:param name="estadoactivacionConsecutivo"
+                        value="#{_estadoactivacion.id.consecutivo}"/>
+                <f:param name="estadoactivacionEstado"
+                        value="#{_estadoactivacion.id.estado}"/>
+                <f:param name="estadoactivacionFecha"
+                        value="#{_estadoactivacion.id.fecha}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/EstadoactivacionList.xhtml"
+            rendered="#{estadoactivacionList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/EstadoactivacionList.xhtml"
+            rendered="#{estadoactivacionList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{estadoactivacionList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/EstadoactivacionList.xhtml"
+            rendered="#{estadoactivacionList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{estadoactivacionList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/EstadoactivacionList.xhtml"
+            rendered="#{estadoactivacionList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{estadoactivacionList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/EstadoactivacionEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create estadoactivacion">
+            <f:param name="estadoactivacionConsecutivo"/>
+            <f:param name="estadoactivacionEstado"/>
+            <f:param name="estadoactivacionFecha"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

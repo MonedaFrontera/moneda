@@ -1,0 +1,191 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="promotortasaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Promotortasa Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{promotortasaList.promotortasa.id.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codigopais</ui:define>
+                <h:inputText id="codigopais" value="#{promotortasaList.promotortasa.id.codigopais}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{promotortasaList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/PromotortasaList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Promotortasa Search Results (#{empty promotortasaList.resultList ? 0 : (promotortasaList.paginated ? promotortasaList.resultCount : promotortasaList.resultList.size)})</f:facet>
+    <div class="results" id="promotortasaList">
+
+    <h:outputText value="The promotortasa search returned no results."
+               rendered="#{empty promotortasaList.resultList}"/>
+
+    <rich:dataTable id="promotortasaList"
+                var="_promotortasa"
+              value="#{promotortasaList.resultList}"
+           rendered="#{not empty promotortasaList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{promotortasaList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="promotortasa.id.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_promotortasa.id.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{promotortasaList}"/>
+                    <ui:param name="propertyLabel" value="Codigopais"/>
+                    <ui:param name="propertyPath" value="promotortasa.id.codigopais"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_promotortasa.id.codigopais}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{promotortasaList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="promotortasa.id.fecha"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_promotortasa.id.fecha}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{promotortasaList}"/>
+                    <ui:param name="propertyLabel" value="Tasa"/>
+                    <ui:param name="propertyPath" value="promotortasa.tasa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_promotortasa.tasa}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{promotortasaList}"/>
+                    <ui:param name="propertyLabel" value="Tasadolar"/>
+                    <ui:param name="propertyPath" value="promotortasa.tasadolar"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_promotortasa.tasadolar}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Promotortasa' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="promotortasaViewId">
+                <f:param name="promotortasaDocumento"
+                        value="#{_promotortasa.id.documento}"/>
+                <f:param name="promotortasaCodigopais"
+                        value="#{_promotortasa.id.codigopais}"/>
+                <f:param name="promotortasaFecha"
+                        value="#{_promotortasa.id.fecha}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/PromotortasaEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="promotortasaEdit"
+                rendered="#{empty from}">
+                <f:param name="promotortasaDocumento"
+                        value="#{_promotortasa.id.documento}"/>
+                <f:param name="promotortasaCodigopais"
+                        value="#{_promotortasa.id.codigopais}"/>
+                <f:param name="promotortasaFecha"
+                        value="#{_promotortasa.id.fecha}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PromotortasaList.xhtml"
+            rendered="#{promotortasaList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PromotortasaList.xhtml"
+            rendered="#{promotortasaList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{promotortasaList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PromotortasaList.xhtml"
+            rendered="#{promotortasaList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{promotortasaList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PromotortasaList.xhtml"
+            rendered="#{promotortasaList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{promotortasaList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PromotortasaEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create promotortasa">
+            <f:param name="promotortasaDocumento"/>
+            <f:param name="promotortasaCodigopais"/>
+            <f:param name="promotortasaFecha"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

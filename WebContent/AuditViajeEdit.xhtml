@@ -1,0 +1,151 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditViaje" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{auditViajeHome.managed ? 'Edit' : 'Add'} Audit viaje</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.fechafin}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="cupoinicialviajeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupoinicialviajero</ui:define>
+                <h:inputText id="cupoinicialviajero"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.cupoinicialviajero}">
+                    <a:support event="onblur" reRender="cupoinicialviajeroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="cupoinicialinternetField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupoinicialinternet</ui:define>
+                <h:inputText id="cupoinicialinternet"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.cupoinicialinternet}">
+                    <a:support event="onblur" reRender="cupoinicialinternetField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="cupoviajeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupoviajero</ui:define>
+                <h:inputText id="cupoviajero"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.cupoviajero}">
+                    <a:support event="onblur" reRender="cupoviajeroField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="cupointernetField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupointernet</ui:define>
+                <h:inputText id="cupointernet"
+                       disabled="#{auditViajeHome.managed}"
+                          value="#{auditViajeHome.instance.id.cupointernet}">
+                    <a:support event="onblur" reRender="cupointernetField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="cedulatarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Cedulatarjetahabiente</ui:define>
+                <h:inputText id="cedulatarjetahabiente"
+                       disabled="#{auditViajeHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditViajeHome.instance.id.cedulatarjetahabiente}">
+                    <a:support event="onblur" reRender="cedulatarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{auditViajeHome.instance.id.fechamod}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                       disabled="#{auditViajeHome.managed}"
+                          size="20"
+                     maxlength="20"
+                         value="#{auditViajeHome.instance.id.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{auditViajeHome.persist}"
+                       disabled="#{!auditViajeHome.wired}"
+                       rendered="#{!auditViajeHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{auditViajeHome.update}"
+                       rendered="#{auditViajeHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{auditViajeHome.remove}"
+                      immediate="true"
+                       rendered="#{auditViajeHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/AuditViaje.xhtml"
+                rendered="#{auditViajeHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty auditViajeFrom ? 'AuditViajeList' : auditViajeFrom}.xhtml"
+                rendered="#{!auditViajeHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

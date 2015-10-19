@@ -1,0 +1,101 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="porcentajecomisiontx" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{porcentajecomisiontxHome.managed ? 'Editar' : 'Agregar'} Porcentaje de Comision al Pais</f:facet>
+
+			
+			<s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:inputText id="nombre"
+                           size="25"
+                           disabled="true"
+                      maxlength="25"
+                          value="#{porcentajecomisiontxHome.instance.pais.nombre}">
+                    
+                </h:inputText>
+            </s:decorate>
+           
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Inicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="true"
+                          value="#{porcentajecomisiontxHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Fin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{porcentajecomisiontxHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="porcentajeField" template="layout/edit.xhtml">
+                <ui:define name="label">Porcentaje</ui:define>
+                <h:inputText id="porcentaje"
+                          value="#{porcentajecomisiontxHome.instance.porcentaje}"
+                           size="11">
+                    <a:support event="onblur" reRender="porcentajeField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos Requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarPais.guardar}"
+                       disabled="#{!porcentajecomisiontxHome.wired}"
+                       rendered="#{!porcentajecomisiontxHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{porcentajecomisiontxHome.update}"
+                       rendered="#{porcentajecomisiontxHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{porcentajecomisiontxHome.remove}"
+                      immediate="true"
+                       rendered="#{porcentajecomisiontxHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/Porcentajecomisiontx.xhtml"
+                rendered="#{porcentajecomisiontxHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty porcentajecomisiontxFrom ? 'PorcentajecomisiontxList' : porcentajecomisiontxFrom}.xhtml"
+                rendered="#{!porcentajecomisiontxHome.managed}"/>
+
+        </div>
+    </h:form>
+
+
+</ui:define>
+
+</ui:composition>

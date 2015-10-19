@@ -1,0 +1,66 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml"> 
+
+<ui:define name="body">
+    
+	    <div id="mainLogin"><!-- div contenedor -->    
+	    	<div id="bodyLogin">
+			    <div id="loginLeft" >			    	
+			    	<div id="infoLogin">
+			    		<h1>CRM Moneda Frontera</h1><br/> 
+			    		Este sistema ofrece alguna de las siguientes opciones:
+			    		<ul>
+			    			<li>Extractos detallados de Tarjetas de Credito.</li>
+			    			<li>Registrar y administrar Promotores.</li>
+			    			<li>Estado de Activaciones de Tarjetas.</li>
+			    			<li>Tasas cambiarias del dia.</li>			    			
+			    		</ul>				    		
+			    		<p>Software para la administracion de la<br/>
+			    		 relacion con los clientes.</p>
+			    	</div><!-- end div infoLogin -->
+			    	<img src="img/Login.png" class="imgLogin" alt="" />			    				    		    		       	
+			    </div><!-- end div loginLeft-->    
+			    <div id="loginRight">
+			    <h:form id="loginForm">    
+		        	<rich:panel style="width: 400px;">
+		            	<f:facet name="header">Ingreso</f:facet>
+		            	<p>Por favor registre sus datos de ingreso aqui</p>
+		            	<div class="dialog">		            	
+		                	<h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+		                    	<h:outputLabel for="username">Usuario</h:outputLabel>
+		                    	<h:inputText id="username"
+		                              value="#{credentials.username}"/>
+		                    	<h:outputLabel for="password">Clave</h:outputLabel>
+		                    	<h:inputSecret id="password"
+		                                value="#{credentials.password}"/>
+		                    	<h:outputLabel for="rememberMe">Recordarme</h:outputLabel>
+		                    	<h:selectBooleanCheckbox id="rememberMe"
+		                                          value="#{rememberMe.enabled}"/>
+		               	 	</h:panelGrid>
+		            	</div>
+			            <p>
+			              <i>Nota - </i> Su usuario corresponde a su numero de cedula.
+			            </p>	
+		        	</rich:panel>
+		
+		        	<div style=" width : 401px;" class="actionButtons">
+		            	<h:commandButton id="submit" value="Ingresar" action="#{identity.login}"/>           
+		        	</div><!-- end div boton -->
+		        	</h:form>	        
+		        </div><!-- end div loginIzq  -->
+		        
+		        <div class="clear">
+		        </div><!-- -->
+			</div><!-- end div bodyLogin -->
+		</div><!-- end div contentMain -->
+    
+
+ </ui:define>
+</ui:composition>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="vistacuentasfechaFrom"/>
+   <param name="vistacuentasfechaNombrebanco" value="#{vistacuentasfechaHome.vistacuentasfechaId.nombrebanco}"/>
+   <param name="vistacuentasfechaNumcuenta" value="#{vistacuentasfechaHome.vistacuentasfechaId.numcuenta}"/>
+   <param name="vistacuentasfechaNombre" value="#{vistacuentasfechaHome.vistacuentasfechaId.nombre}"/>
+   <param name="vistacuentasfechaSaldo" value="#{vistacuentasfechaHome.vistacuentasfechaId.saldo}"/>
+   <param name="vistacuentasfechaMovimientos" value="#{vistacuentasfechaHome.vistacuentasfechaId.movimientos}"/>
+   <param name="vistacuentasfechaDepositos" value="#{vistacuentasfechaHome.vistacuentasfechaId.depositos}"/>
+   <param name="vistacuentasfechaTransferencias" value="#{vistacuentasfechaHome.vistacuentasfechaId.transferencias}"/>
+   <param name="vistacuentasfechaCodbanco" value="#{vistacuentasfechaHome.vistacuentasfechaId.codbanco}"/>
+   <param name="vistacuentasfechaFecha" value="#{vistacuentasfechaHome.vistacuentasfechaId.fecha}"/>
+
+
+</page>

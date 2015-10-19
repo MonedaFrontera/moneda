@@ -1,0 +1,854 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+<rich:modalPanel id="tarjetahabientePanel" autosized="true" width="150" height="120">
+        <f:facet name="header">
+            <h:outputText value="Informacion del Tarjeta Habiente"
+                style="padding-right:15px;" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/images/modal/close.png"
+                    styleClass="hidelink" id="hidelink2" />
+                <rich:componentControl for="tarjetahabientePanel" attachTo="hidelink2"
+                    operation="hide" event="onclick" />
+            </h:panelGroup>
+        </f:facet>
+        
+        <a:commandButton style="font-size:12px" value="Guardar"   
+            
+            action="#{AdministrarTarjeta.guardarTarjeta}"
+    		oncomplete="javascript:Richfaces.hideModalPanel('tarjetahabientePanel');"/>
+    </rich:modalPanel>
+    
+     
+    
+    
+    
+    <rich:modalPanel id="panel" width="240" height="170">
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="Cambio de Cupo Inicial de Viaje"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        
+        
+        <s:div id="miInformacion">
+        <h:form>
+        <rich:spacer width="100%" height="10"/>
+        
+        <div>
+        <s:decorate id="inicupoviajeronuevoField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupo Inicial Viajero</ui:define> 
+                <h:inputText id="inicupoviajeronuevo"
+                       required="false"
+                       disabled="false"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.saldoinicialviajeronuevo}">
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="inicupointernetnuevoField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupo Inicial Internet</ui:define> 
+                <h:inputText id="inicupointernetnuevo"
+                       required="false"
+                       disabled="false"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.saldoinicialinternetnuevo}">
+                    
+                </h:inputText>
+            </s:decorate>
+        </div>    
+        <div style="width:100%; clear:both; text-align:center">
+        <a:commandButton style="font-size:12px" value="Cambiar"   
+            reRender="infoViaje"
+            action="#{AdministrarTarjeta.recalcularInicial()}" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('panel');"/>
+    		
+    		<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('panel');"/>
+    		
+    		</div>
+        </h:form>
+        </s:div>
+    </rich:modalPanel>
+    
+    
+    
+    <rich:modalPanel id="panelBloqueoTarjeta" width="400" height="180">
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="Observacion de Bloqueo de Tarjeta"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        
+        
+        <s:div id="miInformacionBLoqueo">
+        <h:form>
+        <rich:spacer width="100%" height="10"/>
+        
+        <div>
+        <h:inputTextarea id="observaciones"
+                               cols="43"
+                               rows="3"
+                              value="#{AdministrarTarjeta.observacion}"/>
+        </div>    
+        <div style="width:100%; clear:both; text-align:center">
+        
+            		<a:commandButton id="desactivarViaje" value="Bloquear" 
+            action="#{AdministrarTarjeta.bloquearViajeTarjeta()}"
+            rendered="#{tarjetaHome.managed&amp;&amp;AdministrarTarjeta.activo&amp;&amp;s:hasRole('Bloquear Tarjeta')}"
+            oncomplete="javascript:Richfaces.hideModalPanel('panelBloqueoTarjeta');"/>
+            
+            
+            
+            <a:commandButton id="activarViaje" value="Desbloquear" 
+            action="#{AdministrarTarjeta.desbloquearViajeTarjeta()}"
+            rendered="#{tarjetaHome.managed&amp;&amp;!AdministrarTarjeta.activo&amp;&amp;s:hasRole('Desbloquear Tarjeta')}"
+            oncomplete="javascript:Richfaces.hideModalPanel('panelBloqueoTarjeta');"/>
+        
+        
+        
+    		
+    		<a:commandButton style="font-size:12px;" value="Cancelar" 
+    		oncomplete="javascript:Richfaces.hideModalPanel('panelBloqueoTarjeta');"/>
+    		
+    		</div>
+        </h:form>
+        </s:div>
+    </rich:modalPanel>
+    
+    
+    <h:form id="tarjeta" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tarjetaHome.managed ? 'Editar Informacion ' : 'Agregar '} Tarjeta</f:facet>
+		<s:div style="width:60%; float:left">
+			
+
+            <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                <h:inputText id="numerotarjeta"
+                       disabled="#{tarjetaHome.managed}"
+                       required="true"
+                           size="20"
+                      maxlength="16"
+                          value="#{tarjetaHome.instance.numerotarjeta}">
+                    <a:support event="onblur" reRender="numerotarjetaField,franquiciaField,bancoField" 
+                    action="#{AdministrarTarjeta.validarTarjeta(tarjetaHome.instance.numerotarjeta)}" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+			<s:decorate id="franquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:selectOneMenu id="franquiciaSel" value="#{tarjetaHome.instance.franquicia}" required="true" >
+			<s:selectItems value="#{franquiciaList.resultList}" var="franquicia" label="#{franquicia.nombrefranquicia}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="franquiciaField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="bancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{tarjetaHome.instance.banco}" required="true" >
+			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="bancoField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>                		
+				<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">			
+                	<a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" 
+                		  	   reRender="divTac, tacField" 
+                		   	   ajaxSingle="true"/>
+                </h:inputText>
+                <h:graphicImage value="/img/arrow.png"
+                	    		onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)" 
+                    			alt="" />
+			    <rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+            	</rich:suggestionbox>
+        	</s:decorate>        	
+
+            <s:decorate id="fechavencimientoField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Vencimiento</ui:define>
+                <h:inputText id="fechavencimiento"
+                       required="true"
+                           size="5"
+                      maxlength="5"
+                          value="#{tarjetaHome.instance.fechavencimiento}">
+                    <a:support event="onblur" reRender="fechavencimientoField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="codseguridadField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo Seguridad</ui:define>
+                <h:inputText id="codseguridad"
+                       required="true"
+                           size="4"
+                      maxlength="4"
+                          value="#{tarjetaHome.instance.codseguridad}">
+                    <a:support event="onblur" reRender="codseguridadField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+		<s:decorate id="limiteField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupo Limite</ui:define>
+                <h:inputText id="limite"
+                       required="false"
+                          value="#{tarjetaHome.instance.limite}">
+                    <a:support event="onblur" reRender="limiteField" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+			<s:div id="datosTarjetahabiente">
+						
+            <s:decorate id="cedulatarjetahabienteField" rendered="#{tarjetaHome.managed}" 
+            	        template="layout/edit.xhtml">
+                <ui:define name="label">Cedula</ui:define>
+                <h:inputText id="cedulatarjetahabiente"
+                       required="false"
+                           size="15"
+                      maxlength="15"  accesskey="c"                    
+                          value="#{tarjetaHome.instance.cedulatarjetahabiente}">
+                    <a:support event="onblur"
+                    action="#{AdministrarTarjeta.buscarTarjetahabienteCne( tarjetaHome.instance.cedulatarjetahabiente)}" 
+                    reRender="cedulatarjetahabienteField, tarjetahabienteField, 
+                    		  direcciontarjetahabienteField, inicupoviajeroField,
+                    		  fechainicioField, fechafinField" ajaxSingle="true"/>
+                </h:inputText>
+                <br/>
+                <h:outputText value="Desea cargar la informacion de este numero de documento. " 
+                rendered="#{AdministrarTarjeta.existeTarjetahabiente()}" />
+                <h:commandButton id="validar"
+                          value="Cargar"
+                         action="#{AdministrarTarjeta.buscarTarjetahabiente()}" 
+                         ajaxSingle="true"
+                       reRender="datosTarjetahabiente,infoViaje" 
+                       rendered="#{AdministrarTarjeta.existeTarjetahabiente()}"/>
+            </s:decorate>
+			
+            <s:decorate id="tarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Tarjeta Habiente</ui:define>
+                <h:inputText id="tarjetahabiente"
+                       required="false"
+                           size="50"
+                      maxlength="50"
+                          value="#{tarjetaHome.instance.tarjetahabiente}"> 
+                    <a:support event="onblur" reRender="tarjetahabienteField"   
+                    action="#{AdministrarTarjeta.tarjetaHabienteAMayuscula(tarjetaHome.instance.tarjetahabiente)}"                                                                                        
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="direcciontarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Direccion</ui:define>
+                <h:inputText id="direcciontarjetahabiente"                       
+                           size="50"
+                      maxlength="300"
+                          value="#{tarjetaHome.instance.direcciontarjetahabiente}">
+                    <a:support event="onblur" reRender="direcciontarjetahabienteField" 
+                    action="#{AdministrarTarjeta.direccionAMayuscula(tarjetaHome.instance.direcciontarjetahabiente)}"                    
+                    ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+            
+            <s:div id="divTac">
+        	<s:decorate id="tacField" template="layout/edit.xhtml" rendered="#{tarjetaHome.instance.promotor.tac}"
+            			style="color:blue">
+                <ui:define name="label">Tarjeta TAC</ui:define>
+                <h:selectBooleanCheckbox id="tac" 
+                						 disabled="#{!s:hasRole('Activa Caracteristicas TAC de Promotores')}"	
+                                         value="#{tarjetaHome.instance.tac}"/>
+                       <a:support event="onclick"  ajaxSingle="true"/>
+ 			</s:decorate>
+ 			</s:div>  
+ 
+            <s:decorate id="telefonotarjetahabienteField" template="layout/edit.xhtml">
+                <ui:define name="label">Telefono</ui:define> 
+                <h:inputText id="telefonotarjetahabiente"                       
+                           size="15"
+                      maxlength="15"
+                          value="#{tarjetaHome.instance.telefonotarjetahabiente}">
+                    <a:support event="onblur" reRender="telefonotarjetahabienteField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>            
+            
+            </s:div>
+            
+            <s:div style="width:90%; float:left; padding-top:10px" rendered="#{tarjetaHome.managed}">
+            
+             <rich:dataTable value="#{AdministrarTarjeta.bloqueos}"
+                           var="_bloqueos" style="width:90%"
+                      rendered="#{not empty AdministrarTarjeta.bloqueos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transaccionsBLoqueos">
+                <rich:column>
+                    <f:facet name="header">Observacion</f:facet>
+                    
+                    
+                    <h:outputText 
+                    value="#{_bloqueos[1]}"/>
+                </rich:column>
+                <rich:column style="text-align:center">
+                    <f:facet name="header">Fecha</f:facet>                    
+                    <h:outputText  value="#{_bloqueos[0]}"  >
+                    <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText> 	
+                </rich:column>
+                </rich:dataTable>
+          
+            </s:div>
+            
+            
+
+		</s:div>
+		<s:div style="width:38%; float:left;" id="infoViaje">
+		<s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Inicio Viaje</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="false"
+                          value="#{tarjetaHome.instance.fechainicio}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Fin Viaje</ui:define>
+                <rich:calendar id="fechafin"
+                       required="false"
+                          value="#{tarjetaHome.instance.fechafin}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="inicupoviajeroField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupo Inicial Viajero</ui:define> 
+                <h:inputText id="inicupoviajero"
+                       required="false"
+                       disabled="false"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.viajeactual.cupoinicialviajero}">
+                    <a:support event="onblur" reRender="inicupoviajeroField"  
+                    ajaxSingle="true" />
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="inicupointernetField" template="layout/edit.xhtml">
+                <ui:define name="label">Cupo Inicial Internet</ui:define> 
+                <h:inputText id="inicupointernet"
+                       required="false"
+                       disabled="false"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.viajeactual.cupoinicialinternet}">
+                    
+                </h:inputText>
+                
+            </s:decorate>
+            
+            <s:decorate id="cupoviajeroField" template="layout/edit.xhtml" rendered="#{tarjetaHome.managed||AdministrarTarjeta.viajeasignado}">
+                <ui:define name="label">Saldo Viajero</ui:define> 
+                <h:inputText id="cupoviajero"
+                       required="false"
+                       disabled="true"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.viajeactual.cupoviajero}">
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="cupointernetField" template="layout/edit.xhtml" rendered="#{tarjetaHome.managed||AdministrarTarjeta.viajeasignado}">
+                <ui:define name="label">Saldo Internet</ui:define> 
+                <h:inputText id="cupointernet"
+                       required="false"
+                       disabled="true"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.viajeactual.cupointernet}">
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            
+            <s:decorate id="depoviajeroField" template="layout/edit.xhtml" 
+            		rendered="#{tarjetaHome.managed||AdministrarTarjeta.viajeasignado}">
+                <ui:define name="label">Saldo Depositos</ui:define> 
+                <h:inputText id="depoviajero"
+                       required="false"
+                       disabled="true"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.saldodepoviajero}">
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="depointernetField" template="layout/edit.xhtml" rendered="false">
+                <ui:define name="label">Saldo Depositos Internet</ui:define> 
+                <h:inputText id="depointernet"
+                       required="false"
+                       disabled="true"
+                           size="10"
+                      maxlength="10"
+                          value="#{AdministrarTarjeta.saldodepointernet}">
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="promocomisionField" template="layout/edit.xhtml" rendered="#{tarjetaHome.managed||AdministrarTarjeta.viajeasignado}">
+                <ui:define name="label">Comision Viajero</ui:define> 
+                <h:inputText id="comisionviajero"
+                       required="false"
+                       disabled="true"
+                           size="10"
+                      maxlength="10"
+                          value="#{tarjetaHome.instance.promotor.comisionviajero} %">
+                          
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            <s:decorate id="asesorField" template="layout/edit.xhtml" rendered="#{tarjetaHome.managed}">
+                <ui:define name="label">Asesor</ui:define> 
+                <h:inputText id="asesorid"
+                       required="false"
+                       disabled="true"
+                           size="30"
+                      maxlength="30"
+                          value="#{AdministrarTarjeta.nombreasesor}">
+                          
+                    
+                </h:inputText>
+            </s:decorate>
+            
+            <s:div style="width:90%; float:left; padding-top:10px" rendered="#{tarjetaHome.managed}">
+            
+             <rich:dataTable value="#{AdministrarTarjeta.listaporc}"
+                           var="_paiscomision" style="width:90%"
+                      rendered="#{not empty AdministrarTarjeta.listaporc}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transaccionsTable">
+                <rich:column>
+                    <f:facet name="header">Pais</f:facet>
+                    <h:outputText rendered="#{_paiscomision.pais==null}"
+                    value="Viajero"/>
+                    
+                    <h:outputText rendered="#{_paiscomision.pais!=null}"
+                    value="#{_paiscomision.pais.codigopais == 'CO'?'Internet':_paiscomision.pais.nombre}"/>
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">Comision</f:facet>
+                    
+                    <h:outputText value="#{_paiscomision.porcentaje}">
+					<f:convertNumber pattern="####"/> </h:outputText> %
+					
+                </rich:column>
+                </rich:dataTable>
+            </s:div>
+            
+		</s:div>
+			<div style="clear:both" title="Fecha de llegada de la Tarjeta">
+                Tarjeta Creada en el Sistema #{' '}
+                <h:outputText value="#{AdministrarTarjeta.fechaCreacionTarjeta}" 
+                title="Fecha de llegada de la Tarjeta">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText> <br /><br />                
+            </div>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarTarjeta.guardarTarjeta}"
+                       rendered="#{!tarjetaHome.managed}"/>  
+                                 
+            <a:commandButton value="Guardar" rendered="false"
+    		oncomplete="javascript:Richfaces.showModalPanel('tarjetahabientePanel');"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{AdministrarTarjeta.actualizarTarjeta()}"
+                       rendered="#{tarjetaHome.managed&amp;&amp;!AdministrarTarjeta.bloqueada}"/>
+			
+			<h:commandButton id="deleteviaje"
+                          value="Eliminar Viaje"
+                          onclick="javascript:if(confirm('Esta Seguro que desea Eliminar el viaje actual asociado a esta tarjeta.  Si el viaje cuenta con mas de una tarjeta solo se desasociara de la tarjeta actual pero el viaje quedara en el sistema.')){return true;}else{return false;}"
+                         action="#{AdministrarTarjeta.liberarTarjeta()}"
+                      immediate="true"
+                       rendered="#{tarjetaHome.managed&amp;&amp;!AdministrarTarjeta.bloqueada&amp;&amp;s:hasRole('Eliminar Viaje')}"/>
+			
+
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{tarjetaHome.remove}"
+                         onclick="javascript:if(confirm('Esta Seguro que desea Eliminar la Tarjeta, no olvide que si la tarjeta tiene transacciones liquidadas no podra ser eliminada')){return true;}else{return false;}"
+                      immediate="true"
+                       rendered="#{tarjetaHome.managed&amp;&amp;!AdministrarTarjeta.bloqueada}"/>                
+                
+            <a:commandButton value="Cambiar Saldo Inicial"
+    		oncomplete="javascript:Richfaces.showModalPanel('panel');"
+    		rendered="#{tarjetaHome.managed&amp;&amp;!AdministrarTarjeta.bloqueada}"/>
+    		
+    		
+    		<a:commandButton value="Bloquear"
+    		oncomplete="javascript:Richfaces.showModalPanel('panelBloqueoTarjeta');"
+    		rendered="#{tarjetaHome.managed&amp;&amp;AdministrarTarjeta.activo&amp;&amp;s:hasRole('Bloquear Tarjeta')}"/>
+    		
+    		
+    		<a:commandButton value="Desbloquear"
+    		oncomplete="javascript:Richfaces.showModalPanel('panelBloqueoTarjeta');"
+    		rendered="#{tarjetaHome.managed&amp;&amp;!AdministrarTarjeta.activo&amp;&amp;s:hasRole('Desbloquear Tarjeta')}"/>
+    		
+    		
+            <h:commandLink target="_blank" id="extractoT2" style="border: none; text-decoration: none;"
+            			   rendered="#{tarjetaHome.managed}"
+            action="#{Reporteador.generarReportePDFNombre(tarjetaHome.instance.numerotarjeta, null, null, null,null, 'ExtractoTajeta2_v5')}">   
+            	<h:commandButton id="save0032" value="Imprimir Extracto" />
+            </h:commandLink>
+            
+             <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/TarjetaaList.xhtml"
+                rendered="#{tarjetaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty tarjetaFrom ? 'TarjetaList' : tarjetaFrom}.xhtml"
+                rendered="#{!tarjetaHome.managed}"/>
+    		
+            
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax" rendered="#{tarjetaHome.managed}">
+
+    <rich:tab label="Estado de la Tarjeta">
+    
+<rich:dataTable value="#{AdministrarTarjeta.totalTransacciones}"
+                           var="_paiscomision"
+                      rendered="#{not empty AdministrarTarjeta.totalTransacciones}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transaccionsTable">
+                <rich:column style="text-align:center; width:20%">
+                    <f:facet name="header">Total Transacciones</f:facet>
+                    <h:outputText value="#{AdministrarTarjeta.totalTransacciones}" >
+                    <f:convertNumber pattern="$ #,###"/>					
+					</h:outputText>
+                </rich:column>
+                <rich:column style="text-align:center; width:20%">
+                    <f:facet name="header">Total Comisiones</f:facet>
+					<h:outputText value="#{AdministrarTarjeta.totalComisiones}" >
+					<f:convertNumber pattern="$ #,###"/>
+					</h:outputText>
+                </rich:column>
+				<rich:column style="text-align:center; width:20%">
+                    <f:facet name="header">Total Depositos</f:facet>
+					<h:outputText value="#{AdministrarTarjeta.totalDepositosPesos}" >
+					<f:convertNumber pattern="$ #,###"/>
+					</h:outputText>
+                </rich:column>
+				<rich:column style="text-align:center; width:20%">
+                    <f:facet name="header">Total Neto</f:facet>
+					<h:outputText value="#{AdministrarTarjeta.totalConDeducciones}" >
+					<f:convertNumber pattern="$ #,###"/>
+					</h:outputText>
+                </rich:column>
+                <rich:column style="text-align:center; width:20%">
+                    <f:facet name="header">Dias Restantes</f:facet>
+					<h:outputText value="#{AdministrarTarjeta.dias}" >
+					<f:convertNumber pattern="###"/>
+					</h:outputText>
+                </rich:column>
+                </rich:dataTable>    
+
+    </rich:tab>
+
+    
+
+    <rich:tab label="Transacciones Viajero">
+        <h:form styleClass="association" id="transaccionsChildren">
+
+            <h:outputText value="No hay transacciones de viajero registradas para esta tarjeta"
+                       rendered="#{empty AdministrarTarjeta.tviajero}"/>
+
+            <rich:dataTable value="#{AdministrarTarjeta.tviajero}"
+                           var="_transaccion"
+                      rendered="#{not empty AdministrarTarjeta.tviajero}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transaccionsTable">
+                <rich:column sortBy="#{_transaccion.establecimiento.nombreestable}">
+                    <f:facet name="header">Establecimiento</f:facet>
+                    <h:outputText value="#{_transaccion.establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.fechatx}" style="text-align:center">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_transaccion.fechatx}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.numfactura}" style="text-align:center" >
+                    <f:facet name="header">Num Factura</f:facet>
+                    <h:outputText value="#{_transaccion.numfactura}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.valortxpesos}" style="text-align:right">
+                    <f:facet name="header">Total Pesos</f:facet>
+                    <h:outputText value="#{_transaccion.valortxpesos}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style= "text-align:right; display:block" value="#{AdministrarTarjeta.totalTransaccionPesos}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                
+                <rich:column sortBy="#{_transaccion.valorcomision}" style="text-align:right">
+                    <f:facet name="header">Valor Comision</f:facet>
+                    <h:outputText value="#{_transaccion.valorcomision}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style= "text-align:right; display:block" value="#{AdministrarTarjeta.totalComisionPesos}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                <rich:column style="text-align:right">
+                    <f:facet name="header">Tasa Dolar</f:facet>
+                    <h:outputText value="#{AdministrarTarjeta.tasaDolar(_transaccion.fechatx, _transaccion.establecimiento.pais.codigopais,
+                    tarjetaHome.instance.promotor.documento)}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.valortxdolares}" style="text-align:right">
+                    <f:facet name="header">Total Dolares (Us)</f:facet>
+                    <h:outputText value="#{_transaccion.valortxdolares}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style= "text-align:right; display:block"  value="#{AdministrarTarjeta.totalTransaccionDolares}">
+                       <f:convertNumber patter="Us #,###.00"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+            </rich:dataTable>
+            
+
+        </h:form>
+
+        <f:subview rendered="#{tarjetaHome.managed}" id="transaccions">
+        <div class="actionButtons">
+            <s:button id="addtransaccion"
+                   value="Registrar Transaccion"
+                    view="/TransaccionEdit.xhtml"
+             propagation="none">
+                 <f:param name="tarjetaNumerotarjeta"
+                         value="#{tarjetaHome.instance.numerotarjeta}"/>
+                 <f:param name="transaccionFrom" value="Tarjeta"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+	
+	<rich:tab label="Transacciones Internet">
+        <h:form styleClass="association" id="transaccionsChildrenI">
+
+            <h:outputText value="No hay transacciones de internet registradas para esta tarjeta"
+                       rendered="#{empty AdministrarTarjeta.tinternet}"/>
+
+            <rich:dataTable value="#{AdministrarTarjeta.tinternet}"
+                           var="_transaccion"
+                      rendered="#{not empty AdministrarTarjeta.tinternet}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="transaccionsTableI">
+                <rich:column sortBy="#{_transaccion.establecimiento.nombreestable}">
+                    <f:facet name="header">Establecimiento</f:facet>
+                    <h:outputText value="#{_transaccion.establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.fechatx}" style="text-align:center">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_transaccion.fechatx}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.numfactura}" style="text-align:center">
+                    <f:facet name="header">Num Factura</f:facet>
+                    <h:outputText value="#{_transaccion.numfactura}"/>
+                </rich:column>
+                <rich:column sortBy="#{_transaccion.valortxpesos}" style="text-align:right">
+                    <f:facet name="header">Total Pesos</f:facet>
+                    <h:outputText value="#{_transaccion.valortxpesos}" >
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style="text-align:right; display:block" value="#{AdministrarTarjeta.totalTransaccionPesosInt}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                
+                <rich:column sortBy="#{_transaccion.valorcomision}" style="text-align:right">
+                    <f:facet name="header">Valor Comision</f:facet>
+                    <h:outputText value="#{_transaccion.valorcomision}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style="text-align:right; display:block" value="#{AdministrarTarjeta.totalComisionPesosInt}">
+                        <f:convertNumber pattern="$ #,###"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                
+                <rich:column style="text-align:right">
+                    <f:facet name="header">Tasa Dolar</f:facet>
+                    <h:outputText value="#{AdministrarTarjeta.tasaDolar(_transaccion.fechatx, _transaccion.establecimiento.pais.codigopais,
+                    tarjetaHome.instance.promotor.documento)}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                
+                <rich:column sortBy="#{_transaccion.valortxdolares}" style="text-align:right">
+                    <f:facet name="header">Total Dolares (Us)</f:facet>
+                    <h:outputText value="#{_transaccion.valortxdolares}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style="text-align:right; display:block" value="#{AdministrarTarjeta.totalTransaccionDolaresInt}">
+                        <f:convertNumber patter="Us #,###.00"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{tarjetaHome.managed}" id="transaccionsI">
+        <div class="actionButtons">
+            <s:button id="addtransaccionI"
+                   value="Registrar Transaccion"
+                    view="/TransaccionEdit.xhtml"
+             propagation="none">
+                 <f:param name="tarjetaNumerotarjeta"
+                         value="#{tarjetaHome.instance.numerotarjeta}"/>
+                 <f:param name="transaccionFrom" value="Tarjeta"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+
+    <rich:tab label="Depositos">
+        <h:form styleClass="association" id="depositostarjetasChildren">
+
+            <h:outputText value="No hay depositos registrados para esta tarjeta."
+                       rendered="#{empty AdministrarTarjeta.depositos}"/>
+
+            <rich:dataTable value="#{AdministrarTarjeta.depositos}"
+                           var="_depositostarjeta"
+                      rendered="#{not empty tarjetaHome.depositostarjetas}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="depositostarjetasTable">
+                <rich:column sortBy="#{_depositostarjeta.fecha}" style="text-align:center">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_depositostarjeta.fecha}">
+                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.preciobolivar}" style="text-align:rigth">
+                    <f:facet name="header">Precio Bolivar</f:facet>
+                    <h:outputText style="text-align:right; display:block"  value="#{_depositostarjeta.preciobolivar}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.tipodebolivar}" style="text-align:center">
+                    <f:facet name="header">Tipo Bolivar</f:facet>
+                    <h:outputText value="#{_depositostarjeta.tipodebolivar}"/>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.tipodep}" style="text-align:center">
+                    <f:facet name="header">Cupo</f:facet>
+                    <h:outputText value="#{_depositostarjeta.tipodep == 'V' ? 'Viajero': 'Internet'}"/>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.valordeposito}" style="text-align:right">
+                    <f:facet name="header"> Total Bolivares</f:facet>
+                    <h:outputText value="#{_depositostarjeta.valordeposito}">
+                    <f:convertNumber pattern="Bs #,###.00"/>                        
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style="text-align:right; display:block" value="#{AdministrarTarjeta.totalDepositosBolivaresActual}">
+                    <f:convertNumber pattern="Bs #,###.00"/>
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+                <rich:column sortBy="#{_depositostarjeta.depositopesos}" style="text-align:right">
+                    <f:facet name="header">Total Pesos</f:facet>
+                    <h:outputText value="#{_depositostarjeta.depositopesos}">
+                    <f:convertNumber pattern="$ #,###.00"/>
+                    </h:outputText>
+                    <f:facet name="footer">
+					<h:outputText style="text-align:right; display:block" value="#{AdministrarTarjeta.totalDepositosPesos}"> 
+					 <f:convertNumber pattern="$ #,###.00"/>                     
+                    </h:outputText>
+					</f:facet>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{tarjetaHome.managed}" id="depositostarjetas">
+        <div class="actionButtons">
+            <s:button id="adddepositostarjeta"
+                   value="Registrar Deposito"
+                    view="/DepositostarjetaEdit.xhtml"
+             propagation="none">
+                 <f:param name="tarjetaNumerotarjeta"
+                         value="#{tarjetaHome.instance.numerotarjeta}"/>
+                 <f:param name="depositostarjetaFrom" value="Tarjeta"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+
+
+
+
+</ui:composition>

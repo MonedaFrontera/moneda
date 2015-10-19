@@ -1,0 +1,99 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistasaldodiariopromotor" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{vistasaldodiariopromotorHome.managed ? 'Edit' : 'Add'} Vistasaldodiariopromotor</f:facet>
+
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{vistasaldodiariopromotorHome.managed}"
+                          value="#{vistasaldodiariopromotorHome.instance.id.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{vistasaldodiariopromotorHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{vistasaldodiariopromotorHome.instance.id.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>
+                <h:inputTextarea id="promotor"
+                               cols="80"
+                               rows="3"
+                           disabled="#{vistasaldodiariopromotorHome.managed}"
+                              value="#{vistasaldodiariopromotorHome.instance.id.promotor}"/>
+            </s:decorate>
+
+            <s:decorate id="saldoaldiaField" template="layout/edit.xhtml">
+                <ui:define name="label">Saldoaldia</ui:define>
+                <h:inputText id="saldoaldia"
+                          value="#{vistasaldodiariopromotorHome.instance.id.saldoaldia}"
+                           size="131.096">
+                    <a:support event="onblur" reRender="saldoaldiaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{vistasaldodiariopromotorHome.persist}"
+                       disabled="#{!vistasaldodiariopromotorHome.wired}"
+                       rendered="#{!vistasaldodiariopromotorHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{vistasaldodiariopromotorHome.update}"
+                       rendered="#{vistasaldodiariopromotorHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{vistasaldodiariopromotorHome.remove}"
+                      immediate="true"
+                       rendered="#{vistasaldodiariopromotorHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Vistasaldodiariopromotor.xhtml"
+                rendered="#{vistasaldodiariopromotorHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty vistasaldodiariopromotorFrom ? 'VistasaldodiariopromotorList' : vistasaldodiariopromotorFrom}.xhtml"
+                rendered="#{!vistasaldodiariopromotorHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

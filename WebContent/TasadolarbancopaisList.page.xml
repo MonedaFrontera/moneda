@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{tasadolarbancopaisList.firstResult}"/>
+   <param name="sort" value="#{tasadolarbancopaisList.orderColumn}"/>
+   <param name="dir" value="#{tasadolarbancopaisList.orderDirection}"/>
+   <param name="logic" value="#{tasadolarbancopaisList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codigopais" value="#{tasadolarbancopaisList.tasadolarbancopais.id.codigopais}"/>
+   <param name="codbanco" value="#{tasadolarbancopaisList.tasadolarbancopais.id.codbanco}"/>
+
+</page>

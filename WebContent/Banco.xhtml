@@ -1,0 +1,250 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Banco Details</f:facet>
+
+        <s:decorate id="codbanco" template="layout/display.xhtml">
+            <ui:define name="label">Codbanco</ui:define>
+            <h:outputText value="#{bancoHome.instance.codbanco}"/>
+        </s:decorate>
+
+        <s:decorate id="nombrebanco" template="layout/display.xhtml">
+            <ui:define name="label">Nombrebanco</ui:define>
+            <h:outputText value="#{bancoHome.instance.nombrebanco}"/>
+        </s:decorate>
+
+        <s:decorate id="dias" template="layout/display.xhtml">
+            <ui:define name="label">Dias</ui:define>
+            <h:outputText value="#{bancoHome.instance.dias}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/BancoEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty bancoFrom ? 'BancoList' : bancoFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuentapromotors</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="cuentapromotorsChildren">
+
+        <h:outputText value="There are no cuentapromotors associated with this banco."
+                   rendered="#{empty bancoHome.cuentapromotors}"/>
+
+        <rich:dataTable value="#{bancoHome.cuentapromotors}"
+                       var="_cuentapromotor"
+                  rendered="#{not empty bancoHome.cuentapromotors}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="cuentapromotorsTable">
+            <rich:column sortBy="#{_cuentapromotor.id.numcuenta}">
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuentapromotor.id.numcuenta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentapromotor.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_cuentapromotor.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuentapromotor.nombre}">
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuentapromotor.nombre}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectcuentapromotor"
+                     value="Select"
+                      view="/Cuentapromotor.xhtml">
+                    <f:param name="cuentapromotorNumcuenta"
+                            value="#{_cuentapromotor.id.numcuenta}"/>
+                    <f:param name="cuentapromotorDocumento"
+                            value="#{_cuentapromotor.id.documento}"/>
+                    <f:param name="cuentapromotorFrom" value="Banco"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add cuentapromotor"
+                view="/CuentapromotorEdit.xhtml">
+            <f:param name="bancoCodbanco"
+                    value="#{bancoHome.instance.codbanco}"/>
+            <f:param name="cuentapromotorFrom" value="Banco"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Tarjetas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="tarjetasChildren">
+
+        <h:outputText value="There are no tarjetas associated with this banco."
+                   rendered="#{empty bancoHome.tarjetas}"/>
+
+        <rich:dataTable value="#{bancoHome.tarjetas}"
+                       var="_tarjeta"
+                  rendered="#{not empty bancoHome.tarjetas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="tarjetasTable">
+            <rich:column sortBy="#{_tarjeta.numerotarjeta}">
+                <f:facet name="header">Numerotarjeta</f:facet>
+                <h:outputText value="#{_tarjeta.numerotarjeta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.limite}">
+                <f:facet name="header">Limite</f:facet>
+                <h:outputText value="#{_tarjeta.limite}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_tarjeta.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_tarjeta.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechavencimiento}">
+                <f:facet name="header">Fechavencimiento</f:facet>
+                <h:outputText value="#{_tarjeta.fechavencimiento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.codseguridad}">
+                <f:facet name="header">Codseguridad</f:facet>
+                <h:outputText value="#{_tarjeta.codseguridad}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.tarjetahabiente}">
+                <f:facet name="header">Tarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.direcciontarjetahabiente}">
+                <f:facet name="header">Direcciontarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.direcciontarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.cedulatarjetahabiente}">
+                <f:facet name="header">Cedulatarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.cedulatarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.telefonotarjetahabiente}">
+                <f:facet name="header">Telefonotarjetahabiente</f:facet>
+                <h:outputText value="#{_tarjeta.telefonotarjetahabiente}"/>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.fechamod}">
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_tarjeta.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_tarjeta.usuariomod}">
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_tarjeta.usuariomod}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selecttarjeta"
+                     value="Select"
+                      view="/Tarjeta.xhtml">
+                    <f:param name="tarjetaNumerotarjeta"
+                            value="#{_tarjeta.numerotarjeta}"/>
+                    <f:param name="tarjetaFrom" value="Banco"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add tarjeta"
+                view="/TarjetaEdit.xhtml">
+            <f:param name="bancoCodbanco"
+                    value="#{bancoHome.instance.codbanco}"/>
+            <f:param name="tarjetaFrom" value="Banco"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Cuentas</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="cuentasChildren">
+
+        <h:outputText value="There are no cuentas associated with this banco."
+                   rendered="#{empty bancoHome.cuentas}"/>
+
+        <rich:dataTable value="#{bancoHome.cuentas}"
+                       var="_cuenta"
+                  rendered="#{not empty bancoHome.cuentas}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="cuentasTable">
+            <rich:column sortBy="#{_cuenta.numcuenta}">
+                <f:facet name="header">Numcuenta</f:facet>
+                <h:outputText value="#{_cuenta.numcuenta}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuenta.nombre}">
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_cuenta.nombre}"/>
+            </rich:column>
+            <rich:column sortBy="#{_cuenta.saldo}">
+                <f:facet name="header">Saldo</f:facet>
+                <h:outputText value="#{_cuenta.saldo}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectcuenta"
+                     value="Select"
+                      view="/Cuenta.xhtml">
+                    <f:param name="cuentaNumcuenta"
+                            value="#{_cuenta.numcuenta}"/>
+                    <f:param name="cuentaFrom" value="Banco"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add cuenta"
+                view="/CuentaEdit.xhtml">
+            <f:param name="bancoCodbanco"
+                    value="#{bancoHome.instance.codbanco}"/>
+            <f:param name="cuentaFrom" value="Banco"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

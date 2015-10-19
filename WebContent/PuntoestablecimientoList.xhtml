@@ -1,0 +1,199 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="puntoestablecimientoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Puntoestablecimiento Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codigounico</ui:define>
+                <h:inputText id="codigounico" value="#{puntoestablecimientoList.puntoestablecimiento.id.codigounico}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Codpuntoventa</ui:define>
+                <h:inputText id="codpuntoventa" value="#{puntoestablecimientoList.puntoestablecimiento.id.codpuntoventa}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{puntoestablecimientoList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/PuntoestablecimientoList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Puntoestablecimiento Search Results (#{empty puntoestablecimientoList.resultList ? 0 : (puntoestablecimientoList.paginated ? puntoestablecimientoList.resultCount : puntoestablecimientoList.resultList.size)})</f:facet>
+    <div class="results" id="puntoestablecimientoList">
+
+    <h:outputText value="The puntoestablecimiento search returned no results."
+               rendered="#{empty puntoestablecimientoList.resultList}"/>
+
+    <rich:dataTable id="puntoestablecimientoList"
+                var="_puntoestablecimiento"
+              value="#{puntoestablecimientoList.resultList}"
+           rendered="#{not empty puntoestablecimientoList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{puntoestablecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Codigounico"/>
+                    <ui:param name="propertyPath" value="puntoestablecimiento.id.codigounico"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_puntoestablecimiento.id.codigounico}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{puntoestablecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Codpuntoventa"/>
+                    <ui:param name="propertyPath" value="puntoestablecimiento.id.codpuntoventa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_puntoestablecimiento.id.codpuntoventa}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{puntoestablecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Fechainicio"/>
+                    <ui:param name="propertyPath" value="puntoestablecimiento.id.fechainicio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_puntoestablecimiento.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{puntoestablecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Puntodeventa codpuntoventa"/>
+                    <ui:param name="propertyPath" value="puntoestablecimiento.puntodeventa.codpuntoventa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_puntoestablecimiento.puntodeventa.codpuntoventa}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{puntoestablecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Establecimiento codigounico"/>
+                    <ui:param name="propertyPath" value="puntoestablecimiento.establecimiento.codigounico"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_puntoestablecimiento.establecimiento.codigounico}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{puntoestablecimientoList}"/>
+                    <ui:param name="propertyLabel" value="Fechafin"/>
+                    <ui:param name="propertyPath" value="puntoestablecimiento.fechafin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_puntoestablecimiento.fechafin}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Puntoestablecimiento' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="puntoestablecimientoViewId">
+                <f:param name="puntoestablecimientoCodigounico"
+                        value="#{_puntoestablecimiento.id.codigounico}"/>
+                <f:param name="puntoestablecimientoCodpuntoventa"
+                        value="#{_puntoestablecimiento.id.codpuntoventa}"/>
+                <f:param name="puntoestablecimientoFechainicio"
+                        value="#{_puntoestablecimiento.id.fechainicio}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/PuntoestablecimientoEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="puntoestablecimientoEdit"
+                rendered="#{empty from}">
+                <f:param name="puntoestablecimientoCodigounico"
+                        value="#{_puntoestablecimiento.id.codigounico}"/>
+                <f:param name="puntoestablecimientoCodpuntoventa"
+                        value="#{_puntoestablecimiento.id.codpuntoventa}"/>
+                <f:param name="puntoestablecimientoFechainicio"
+                        value="#{_puntoestablecimiento.id.fechainicio}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PuntoestablecimientoList.xhtml"
+            rendered="#{puntoestablecimientoList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PuntoestablecimientoList.xhtml"
+            rendered="#{puntoestablecimientoList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{puntoestablecimientoList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PuntoestablecimientoList.xhtml"
+            rendered="#{puntoestablecimientoList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{puntoestablecimientoList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PuntoestablecimientoList.xhtml"
+            rendered="#{puntoestablecimientoList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{puntoestablecimientoList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PuntoestablecimientoEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create puntoestablecimiento">
+            <f:param name="puntoestablecimientoCodigounico"/>
+            <f:param name="puntoestablecimientoCodpuntoventa"/>
+            <f:param name="puntoestablecimientoFechainicio"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

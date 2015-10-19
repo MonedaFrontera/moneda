@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/ActivagestorList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{activagestorHome.wire}"/>
+
+   <param name="activagestorFrom"/>
+   <param name="activagestorConsecutivo" value="#{activagestorHome.activagestorId.consecutivo}"/>
+   <param name="activagestorDocumento" value="#{activagestorHome.activagestorId.documento}"/>
+   <param name="activagestorFecha" value="#{activagestorHome.activagestorId.fecha}"/>
+   <param name="gestorFrom"/>
+   <param name="gestorDocumento" value="#{gestorHome.gestorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+
+   <param name="activacionFrom"/>
+   <param name="activacionConsecutivo" value="#{activacionHome.activacionConsecutivo}"/>
+   <param name="actestadoFrom"/>
+   <param name="actestadoCodestado" value="#{actestadoHome.actestadoCodestado}"/>
+
+   <param name="bancoFrom"/>
+   <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
+
+
+
+
+   <navigation from-action="#{activagestorHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Activagestor.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{activagestorHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Activagestor.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{activagestorHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/ActivagestorList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

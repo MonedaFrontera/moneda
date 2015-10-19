@@ -1,0 +1,241 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="personaltipoprocesoSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Personaltipoproceso Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento" value="#{personaltipoprocesoList.personaltipoproceso.id.documento}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Puntodeventa</ui:define>
+                <h:inputText id="puntodeventa" value="#{personaltipoprocesoList.personaltipoproceso.id.puntodeventa}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tipoproceso</ui:define>
+                <h:inputText id="tipoproceso" value="#{personaltipoprocesoList.personaltipoproceso.id.tipoproceso}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{personaltipoprocesoList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/PersonaltipoprocesoList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Personaltipoproceso Search Results (#{empty personaltipoprocesoList.resultList ? 0 : (personaltipoprocesoList.paginated ? personaltipoprocesoList.resultCount : personaltipoprocesoList.resultList.size)})</f:facet>
+    <div class="results" id="personaltipoprocesoList">
+
+    <h:outputText value="The personaltipoproceso search returned no results."
+               rendered="#{empty personaltipoprocesoList.resultList}"/>
+
+    <rich:dataTable id="personaltipoprocesoList"
+                var="_personaltipoproceso"
+              value="#{personaltipoprocesoList.resultList}"
+           rendered="#{not empty personaltipoprocesoList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Documento"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.id.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.id.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Fechainicio"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.id.fechainicio"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.id.fechainicio}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Puntodeventa"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.id.puntodeventa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.id.puntodeventa}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Tipoproceso"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.id.tipoproceso"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.id.tipoproceso}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Personal documento"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.personal.documento"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.personal.documento}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Puntodeventa codpuntoventa"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.puntodeventa.codpuntoventa"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.puntodeventa.codpuntoventa}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Tipoproceso tipo"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.tipoproceso.tipo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.tipoproceso.tipo}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Fechafin"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.fechafin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.fechafin}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{personaltipoprocesoList}"/>
+                    <ui:param name="propertyLabel" value="Porcentaje"/>
+                    <ui:param name="propertyPath" value="personaltipoproceso.porcentaje"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_personaltipoproceso.porcentaje}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Personaltipoproceso' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="personaltipoprocesoViewId">
+                <f:param name="personaltipoprocesoDocumento"
+                        value="#{_personaltipoproceso.id.documento}"/>
+                <f:param name="personaltipoprocesoFechainicio"
+                        value="#{_personaltipoproceso.id.fechainicio}"/>
+                <f:param name="personaltipoprocesoPuntodeventa"
+                        value="#{_personaltipoproceso.id.puntodeventa}"/>
+                <f:param name="personaltipoprocesoTipoproceso"
+                        value="#{_personaltipoproceso.id.tipoproceso}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/PersonaltipoprocesoEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="personaltipoprocesoEdit"
+                rendered="#{empty from}">
+                <f:param name="personaltipoprocesoDocumento"
+                        value="#{_personaltipoproceso.id.documento}"/>
+                <f:param name="personaltipoprocesoFechainicio"
+                        value="#{_personaltipoproceso.id.fechainicio}"/>
+                <f:param name="personaltipoprocesoPuntodeventa"
+                        value="#{_personaltipoproceso.id.puntodeventa}"/>
+                <f:param name="personaltipoprocesoTipoproceso"
+                        value="#{_personaltipoproceso.id.tipoproceso}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PersonaltipoprocesoList.xhtml"
+            rendered="#{personaltipoprocesoList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PersonaltipoprocesoList.xhtml"
+            rendered="#{personaltipoprocesoList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{personaltipoprocesoList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PersonaltipoprocesoList.xhtml"
+            rendered="#{personaltipoprocesoList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{personaltipoprocesoList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PersonaltipoprocesoList.xhtml"
+            rendered="#{personaltipoprocesoList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{personaltipoprocesoList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PersonaltipoprocesoEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create personaltipoproceso">
+            <f:param name="personaltipoprocesoDocumento"/>
+            <f:param name="personaltipoprocesoFechainicio"/>
+            <f:param name="personaltipoprocesoPuntodeventa"/>
+            <f:param name="personaltipoprocesoTipoproceso"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

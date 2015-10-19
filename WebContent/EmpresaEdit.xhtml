@@ -1,0 +1,140 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="empresa" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{empresaHome.managed ? 'Edit' : 'Add'} Empresa</f:facet>
+
+
+            <s:decorate id="nitField" template="layout/edit.xhtml">
+                <ui:define name="label">Nit</ui:define>
+                <h:inputText id="nit"
+                       disabled="#{empresaHome.managed}"
+                       required="true"
+                           size="20"
+                      maxlength="20"
+                          value="#{empresaHome.instance.nit}">
+                    <a:support event="onblur" reRender="nitField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombrerazonsocialField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombrerazonsocial</ui:define>
+                <h:inputText id="nombrerazonsocial"
+                           size="70"
+                      maxlength="70"
+                          value="#{empresaHome.instance.nombrerazonsocial}">
+                    <a:support event="onblur" reRender="nombrerazonsocialField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{empresaHome.persist}"
+                       disabled="#{!empresaHome.wired}"
+                       rendered="#{!empresaHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{empresaHome.update}"
+                       rendered="#{empresaHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{empresaHome.remove}"
+                      immediate="true"
+                       rendered="#{empresaHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Empresa.xhtml"
+                rendered="#{empresaHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty empresaFrom ? 'EmpresaList' : empresaFrom}.xhtml"
+                rendered="#{!empresaHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Establecimientos">
+        <h:form styleClass="association" id="establecimientosChildren">
+
+            <h:outputText value="There are no establecimientos associated with this empresa."
+                       rendered="#{empty empresaHome.establecimientos}"/>
+
+            <rich:dataTable value="#{empresaHome.establecimientos}"
+                           var="_establecimiento"
+                      rendered="#{not empty empresaHome.establecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="establecimientosTable">
+                <rich:column sortBy="#{_establecimiento.codigounico}">
+                    <f:facet name="header">Codigounico</f:facet>
+                    <h:outputText value="#{_establecimiento.codigounico}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.nombreestable}">
+                    <f:facet name="header">Nombreestable</f:facet>
+                    <h:outputText value="#{_establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.direccion}">
+                    <f:facet name="header">Direccion</f:facet>
+                    <h:outputText value="#{_establecimiento.direccion}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.telefono}">
+                    <f:facet name="header">Telefono</f:facet>
+                    <h:outputText value="#{_establecimiento.telefono}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_establecimiento.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{empresaHome.managed}" id="establecimientos">
+        <div class="actionButtons">
+            <s:button id="addestablecimiento"
+                   value="Add establecimiento"
+                    view="/EstablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="empresaNit"
+                         value="#{empresaHome.instance.nit}"/>
+                 <f:param name="establecimientoFrom" value="Empresa"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

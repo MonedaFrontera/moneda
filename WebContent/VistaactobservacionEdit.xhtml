@@ -1,0 +1,105 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="vistaactobservacion" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{vistaactobservacionHome.managed ? 'Edit' : 'Add'} Vistaactobservacion</f:facet>
+
+
+            <s:decorate id="tipoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo</ui:define>
+                <h:inputTextarea id="tipo"
+                               cols="80"
+                               rows="3"
+                           disabled="#{vistaactobservacionHome.managed}"
+                              value="#{vistaactobservacionHome.instance.id.tipo}"/>
+            </s:decorate>
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       disabled="#{vistaactobservacionHome.managed}"
+                          value="#{vistaactobservacionHome.instance.id.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                          value="#{vistaactobservacionHome.instance.id.fecha}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <s:decorate id="observacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputTextarea id="observacion"
+                               cols="80"
+                               rows="10"
+                           disabled="#{vistaactobservacionHome.managed}"
+                              value="#{vistaactobservacionHome.instance.id.observacion}"/>
+            </s:decorate>
+
+            <s:decorate id="datoField" template="layout/edit.xhtml">
+                <ui:define name="label">Dato</ui:define>
+                <h:inputTextarea id="dato"
+                               cols="80"
+                               rows="3"
+                           disabled="#{vistaactobservacionHome.managed}"
+                              value="#{vistaactobservacionHome.instance.id.dato}"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{vistaactobservacionHome.persist}"
+                       disabled="#{!vistaactobservacionHome.wired}"
+                       rendered="#{!vistaactobservacionHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{vistaactobservacionHome.update}"
+                       rendered="#{vistaactobservacionHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{vistaactobservacionHome.remove}"
+                      immediate="true"
+                       rendered="#{vistaactobservacionHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Vistaactobservacion.xhtml"
+                rendered="#{vistaactobservacionHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty vistaactobservacionFrom ? 'VistaactobservacionList' : vistaactobservacionFrom}.xhtml"
+                rendered="#{!vistaactobservacionHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

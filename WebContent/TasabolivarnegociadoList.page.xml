@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+	<begin-conversation join="true" flush-mode="MANUAL"/>
+   <param name="firstResult" value="#{tasabolivarnegociadoList.firstResult}"/>
+   <param name="sort" value="#{tasabolivarnegociadoList.orderColumn}"/>
+   <param name="dir" value="#{tasabolivarnegociadoList.orderDirection}"/>
+   <param name="logic" value="#{tasabolivarnegociadoList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="documento" value="#{tasabolivarnegociadoList.tasabolivarnegociado.id.documento}"/>
+   
+   <navigation from-action="#{AdministrarTasa.editarTasabolivarnegociado(_tasabolivarnegociado.id.fecha, _tasabolivarnegociado.id.tipo, _tasabolivarnegociado.id.documento)}">
+      
+
+         <redirect view-id="/TasabolivarnegociadoEdit.xhtml"/>
+      
+   </navigation>
+		
+		
+</page>

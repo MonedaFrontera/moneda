@@ -1,0 +1,146 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="auditGastos" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{auditGastosHome.managed ? 'Edit' : 'Add'} Audit gastos</f:facet>
+
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{auditGastosHome.managed}"
+                          size="15"
+                     maxlength="15"
+                         value="#{auditGastosHome.instance.id.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha</ui:define>
+                <rich:calendar id="fecha"
+                       disabled="#{auditGastosHome.managed}"
+                          value="#{auditGastosHome.instance.id.fecha}" datePattern="MM/dd/yyyy" />
+            </s:decorate>
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                       disabled="#{auditGastosHome.managed}"
+                          value="#{auditGastosHome.instance.id.valor}">
+                    <a:support event="onblur" reRender="valorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="observacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Observacion</ui:define>
+                <h:inputTextarea id="observacion"
+                               cols="80"
+                               rows="2"
+                           disabled="#{auditGastosHome.managed}"
+                              value="#{auditGastosHome.instance.id.observacion}"/>
+            </s:decorate>
+
+            <s:decorate id="tipogastoField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipogasto</ui:define>
+                <h:inputText id="tipogasto"
+                       disabled="#{auditGastosHome.managed}"
+                          size="2"
+                     maxlength="2"
+                         value="#{auditGastosHome.instance.id.tipogasto}">
+                    <a:support event="onblur" reRender="tipogastoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{auditGastosHome.managed}"
+                          value="#{auditGastosHome.instance.id.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="valorbolivarField" template="layout/edit.xhtml">
+                <ui:define name="label">Valorbolivar</ui:define>
+                <h:inputText id="valorbolivar"
+                          value="#{auditGastosHome.instance.id.valorbolivar}"
+                           size="12">
+                    <a:support event="onblur" reRender="valorbolivarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="usuariomodField" template="layout/edit.xhtml">
+                <ui:define name="label">Usuariomod</ui:define>
+                <h:inputText id="usuariomod"
+                       disabled="#{auditGastosHome.managed}"
+                          size="20"
+                     maxlength="20"
+                         value="#{auditGastosHome.instance.id.usuariomod}">
+                    <a:support event="onblur" reRender="usuariomodField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechamodField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechamod</ui:define>
+                <rich:calendar id="fechamod"
+                          value="#{auditGastosHome.instance.id.fechamod}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{auditGastosHome.persist}"
+                       disabled="#{!auditGastosHome.wired}"
+                       rendered="#{!auditGastosHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{auditGastosHome.update}"
+                       rendered="#{auditGastosHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{auditGastosHome.remove}"
+                      immediate="true"
+                       rendered="#{auditGastosHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/AuditGastos.xhtml"
+                rendered="#{auditGastosHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty auditGastosFrom ? 'AuditGastosList' : auditGastosFrom}.xhtml"
+                rendered="#{!auditGastosHome.managed}"/>
+
+        </div>
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

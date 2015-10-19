@@ -1,0 +1,303 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tasadolarparametrospromotor" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{tasadolarparametrospromotorHome.managed ? 'Edit' : 'Add'} Tasadolarparametrospromotor</f:facet>
+
+
+            <s:decorate id="documentoField" template="layout/edit.xhtml">
+                <ui:define name="label">Documento</ui:define>
+                <h:inputText id="documento"
+                       disabled="#{tasadolarparametrospromotorHome.managed}"
+                      required="true"
+                          size="15"
+                     maxlength="15"
+                         value="#{tasadolarparametrospromotorHome.instance.id.documento}">
+                    <a:support event="onblur" reRender="documentoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codbancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Codbanco</ui:define>
+                <h:inputText id="codbanco"
+                       disabled="#{tasadolarparametrospromotorHome.managed}"
+                      required="true"
+                          size="3"
+                     maxlength="3"
+                         value="#{tasadolarparametrospromotorHome.instance.id.codbanco}">
+                    <a:support event="onblur" reRender="codbancoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codpaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codpais</ui:define>
+                <h:inputText id="codpais"
+                       disabled="#{tasadolarparametrospromotorHome.managed}"
+                      required="true"
+                          size="5"
+                     maxlength="5"
+                         value="#{tasadolarparametrospromotorHome.instance.id.codpais}">
+                    <a:support event="onblur" reRender="codpaisField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="codfranquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Codfranquicia</ui:define>
+                <h:inputText id="codfranquicia"
+                       disabled="#{tasadolarparametrospromotorHome.managed}"
+                      required="true"
+                          size="1"
+                     maxlength="1"
+                         value="#{tasadolarparametrospromotorHome.instance.id.codfranquicia}">
+                    <a:support event="onblur" reRender="codfranquiciaField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="fechainicioField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechainicio</ui:define>
+                <rich:calendar id="fechainicio"
+                       required="true"
+                          value="#{tasadolarparametrospromotorHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+            </s:decorate>
+
+
+
+
+
+
+            <s:decorate id="fechafinField" template="layout/edit.xhtml">
+                <ui:define name="label">Fechafin</ui:define>
+                <rich:calendar id="fechafin"
+                          value="#{tasadolarparametrospromotorHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="tasadolarField" template="layout/edit.xhtml">
+                <ui:define name="label">Tasadolar</ui:define>
+                <h:inputText id="tasadolar"
+                          value="#{tasadolarparametrospromotorHome.instance.tasadolar}"
+                           size="13">
+                    <a:support event="onblur" reRender="tasadolarField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{tasadolarparametrospromotorHome.persist}"
+                       disabled="#{!tasadolarparametrospromotorHome.wired}"
+                       rendered="#{!tasadolarparametrospromotorHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{tasadolarparametrospromotorHome.update}"
+                       rendered="#{tasadolarparametrospromotorHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{tasadolarparametrospromotorHome.remove}"
+                      immediate="true"
+                       rendered="#{tasadolarparametrospromotorHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Tasadolarparametrospromotor.xhtml"
+                rendered="#{tasadolarparametrospromotorHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty tasadolarparametrospromotorFrom ? 'TasadolarparametrospromotorList' : tasadolarparametrospromotorFrom}.xhtml"
+                rendered="#{!tasadolarparametrospromotorHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Promotor *" labelClass="required">
+    <div class="association" id="promotorParent">
+
+        <h:outputText value="There is no promotor associated with this tasadolarparametrospromotor."
+                   rendered="#{tasadolarparametrospromotorHome.instance.promotor == null}"/>
+
+        <rich:dataTable var="_promotor"
+                   value="#{tasadolarparametrospromotorHome.instance.promotor}"
+                rendered="#{tasadolarparametrospromotorHome.instance.promotor != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="promotorTable">
+            <h:column>
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_promotor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Personal documento</f:facet>
+                <h:outputText value="#{_promotor.personal.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor documento</f:facet>
+                <h:outputText value="#{_promotor.asesor.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador documento</f:facet>
+                <h:outputText value="#{_promotor.arrastrador.documento}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionviajero</f:facet>
+                <h:outputText value="#{_promotor.comisionviajero}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Comisionarrastrador</f:facet>
+                <h:outputText value="#{_promotor.comisionarrastrador}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{tasadolarparametrospromotorHome.instance.promotor != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarparametrospromotorHome.instance.promotor != null ? 'Change' : 'Select'} promotor"
+                       view="/PromotorList.xhtml">
+                <f:param name="from" value="TasadolarparametrospromotorEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Franquicia *" labelClass="required">
+    <div class="association" id="franquiciaParent">
+
+        <h:outputText value="There is no franquicia associated with this tasadolarparametrospromotor."
+                   rendered="#{tasadolarparametrospromotorHome.instance.franquicia == null}"/>
+
+        <rich:dataTable var="_franquicia"
+                   value="#{tasadolarparametrospromotorHome.instance.franquicia}"
+                rendered="#{tasadolarparametrospromotorHome.instance.franquicia != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="franquiciaTable">
+            <h:column>
+                <f:facet name="header">Codfranquicia</f:facet>
+                <h:outputText value="#{_franquicia.codfranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrefranquicia</f:facet>
+                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_franquicia.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{tasadolarparametrospromotorHome.instance.franquicia != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarparametrospromotorHome.instance.franquicia != null ? 'Change' : 'Select'} franquicia"
+                       view="/FranquiciaList.xhtml">
+                <f:param name="from" value="TasadolarparametrospromotorEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Pais *" labelClass="required">
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this tasadolarparametrospromotor."
+                   rendered="#{tasadolarparametrospromotorHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{tasadolarparametrospromotorHome.instance.pais}"
+                rendered="#{tasadolarparametrospromotorHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Paisiso codigopais</f:facet>
+                <h:outputText value="#{_pais.paisiso.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{tasadolarparametrospromotorHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarparametrospromotorHome.instance.pais != null ? 'Change' : 'Select'} pais"
+                       view="/PaisList.xhtml">
+                <f:param name="from" value="TasadolarparametrospromotorEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Banco *" labelClass="required">
+    <div class="association" id="bancoParent">
+
+        <h:outputText value="There is no banco associated with this tasadolarparametrospromotor."
+                   rendered="#{tasadolarparametrospromotorHome.instance.banco == null}"/>
+
+        <rich:dataTable var="_banco"
+                   value="#{tasadolarparametrospromotorHome.instance.banco}"
+                rendered="#{tasadolarparametrospromotorHome.instance.banco != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="bancoTable">
+            <h:column>
+                <f:facet name="header">Codbanco</f:facet>
+                <h:outputText value="#{_banco.codbanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombrebanco</f:facet>
+                <h:outputText value="#{_banco.nombrebanco}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Dias</f:facet>
+                <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{tasadolarparametrospromotorHome.instance.banco != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarparametrospromotorHome.instance.banco != null ? 'Change' : 'Select'} banco"
+                       view="/BancoList.xhtml">
+                <f:param name="from" value="TasadolarparametrospromotorEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

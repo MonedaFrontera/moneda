@@ -1,0 +1,244 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="pais" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{paisHome.managed ? 'Editar Informacion ' : 'Agregar Informacion '} Pais</f:facet>
+
+
+            <s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codigo Pais</ui:define>
+                <h:inputText id="codigopais"
+                       disabled="#{paisHome.managed}"
+                       required="true"
+                           size="5"
+                      maxlength="5"
+                          value="#{paisHome.instance.codigopais}">                          
+                    <a:support event="onblur" reRender="codigopaisField" 
+                    action="#{AdministrarPais.validarCodigo}" ajaxSingle="true"/>
+                    <rich:toolTip>
+            		<span style="white-space:nowrap">
+            			#{"Para crear el codigo del pais, debe consultar la guia de codigos del estandar ISO A2"} <br />            	
+            		</span>
+            </rich:toolTip>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="nombreField" template="layout/edit.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre"
+                           size="25"
+                      maxlength="25"
+                          value="#{paisHome.instance.nombre}">
+                    <a:support event="onblur" reRender="nombreField"
+                    action="#{AdministrarPais.nombreMayuscula(paisHome.instance.nombre)}"                    
+                     ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                Campos requeridos
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarPais.guardarPais}"
+                       disabled="#{!paisHome.wired}"
+                       rendered="#{!paisHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Actualizar"
+                         action="#{paisHome.update}"
+                       rendered="#{paisHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Eliminar"
+                         action="#{paisHome.remove}"
+                      immediate="true"
+                       rendered="#{paisHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancelar"
+             propagation="end"
+                    view="/PaisList.xhtml"
+                rendered="#{paisHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancelar"
+             propagation="end"
+                    view="/#{empty paisFrom ? 'PaisList' : paisFrom}.xhtml"
+                rendered="#{!paisHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Porcentaje Comision Transacciones">
+        <h:form styleClass="association" id="porcentajecomisiontxesChildren">
+
+            <h:outputText value="There are no porcentajecomisiontxes associated with this pais."
+                       rendered="#{empty paisHome.porcentajecomisiontxes}"/>
+
+            <rich:dataTable value="#{paisHome.porcentajecomisiontxes}"
+                           var="_porcentajecomisiontx"
+                      rendered="#{not empty paisHome.porcentajecomisiontxes}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="porcentajecomisiontxesTable">
+                <rich:column sortBy="#{_porcentajecomisiontx.id.codpais}">
+                    <f:facet name="header">Codpais</f:facet>
+                    <h:outputText value="#{_porcentajecomisiontx.id.codpais}"/>
+                </rich:column>
+                <rich:column sortBy="#{_porcentajecomisiontx.id.fechainicio}">
+                    <f:facet name="header">Fechainicio</f:facet>
+                    <h:outputText value="#{_porcentajecomisiontx.id.fechainicio}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_porcentajecomisiontx.fechafin}">
+                    <f:facet name="header">Fechafin</f:facet>
+                    <h:outputText value="#{_porcentajecomisiontx.fechafin}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_porcentajecomisiontx.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_porcentajecomisiontx.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{paisHome.managed}" id="porcentajecomisiontxes">
+        <div class="actionButtons">
+            <s:button id="addporcentajecomisiontx"
+                   value="Add porcentajecomisiontx"
+                    view="/PorcentajecomisiontxEdit.xhtml"
+             propagation="none">
+                 <f:param name="paisCodigopais"
+                         value="#{paisHome.instance.codigopais}"/>
+                 <f:param name="porcentajecomisiontxFrom" value="Pais"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Establecimientos">
+        <h:form styleClass="association" id="establecimientosChildren">
+
+            <h:outputText value="There are no establecimientos associated with this pais."
+                       rendered="#{empty paisHome.establecimientos}"/>
+
+            <rich:dataTable value="#{paisHome.establecimientos}"
+                           var="_establecimiento"
+                      rendered="#{not empty paisHome.establecimientos}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="establecimientosTable">
+                <rich:column sortBy="#{_establecimiento.codigounico}">
+                    <f:facet name="header">Codigounico</f:facet>
+                    <h:outputText value="#{_establecimiento.codigounico}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.nombreestable}">
+                    <f:facet name="header">Nombreestable</f:facet>
+                    <h:outputText value="#{_establecimiento.nombreestable}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.direccion}">
+                    <f:facet name="header">Direccion</f:facet>
+                    <h:outputText value="#{_establecimiento.direccion}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.telefono}">
+                    <f:facet name="header">Telefono</f:facet>
+                    <h:outputText value="#{_establecimiento.telefono}"/>
+                </rich:column>
+                <rich:column sortBy="#{_establecimiento.porcentaje}">
+                    <f:facet name="header">Porcentaje</f:facet>
+                    <h:outputText value="#{_establecimiento.porcentaje}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{paisHome.managed}" id="establecimientos">
+        <div class="actionButtons">
+            <s:button id="addestablecimiento"
+                   value="Add establecimiento"
+                    view="/EstablecimientoEdit.xhtml"
+             propagation="none">
+                 <f:param name="paisCodigopais"
+                         value="#{paisHome.instance.codigopais}"/>
+                 <f:param name="establecimientoFrom" value="Pais"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Tasadolars">
+        <h:form styleClass="association" id="tasadolarsChildren">
+
+            <h:outputText value="There are no tasadolars associated with this pais."
+                       rendered="#{empty paisHome.tasadolars}"/>
+
+            <rich:dataTable value="#{paisHome.tasadolars}"
+                           var="_tasadolar"
+                      rendered="#{not empty paisHome.tasadolars}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="tasadolarsTable">
+                <rich:column sortBy="#{_tasadolar.id.codigopais}">
+                    <f:facet name="header">Codigopais</f:facet>
+                    <h:outputText value="#{_tasadolar.id.codigopais}"/>
+                </rich:column>
+                <rich:column sortBy="#{_tasadolar.id.fecha}">
+                    <f:facet name="header">Fecha</f:facet>
+                    <h:outputText value="#{_tasadolar.id.fecha}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_tasadolar.tasa}">
+                    <f:facet name="header">Tasa</f:facet>
+                    <h:outputText value="#{_tasadolar.tasa}">
+                        <f:convertNumber/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{paisHome.managed}" id="tasadolars">
+        <div class="actionButtons">
+            <s:button id="addtasadolar"
+                   value="Add tasadolar"
+                    view="/TasadolarEdit.xhtml"
+             propagation="none">
+                 <f:param name="paisCodigopais"
+                         value="#{paisHome.instance.codigopais}"/>
+                 <f:param name="tasadolarFrom" value="Pais"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

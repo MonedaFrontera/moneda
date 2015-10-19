@@ -1,0 +1,215 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="baucher" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{baucherHome.managed ? 'Edit' : 'Add'} Baucher</f:facet>
+
+
+            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
+                <ui:define name="label">Consecutivo</ui:define>
+                <h:inputText id="consecutivo"
+                       required="true"
+                       disabled="#{baucherHome.managed}"
+                          value="#{baucherHome.instance.id.consecutivo}">
+                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <s:decorate id="numautorizacionField" template="layout/edit.xhtml">
+                <ui:define name="label">Numautorizacion</ui:define>
+                <h:inputText id="numautorizacion"
+                       disabled="#{baucherHome.managed}"
+                      required="true"
+                          size="8"
+                     maxlength="8"
+                         value="#{baucherHome.instance.id.numautorizacion}">
+                    <a:support event="onblur" reRender="numautorizacionField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="valorField" template="layout/edit.xhtml">
+                <ui:define name="label">Valor</ui:define>
+                <h:inputText id="valor"
+                          value="#{baucherHome.instance.valor}"
+                           size="17">
+                    <a:support event="onblur" reRender="valorField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{baucherHome.persist}"
+                       disabled="#{!baucherHome.wired}"
+                       rendered="#{!baucherHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{baucherHome.update}"
+                       rendered="#{baucherHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{baucherHome.remove}"
+                      immediate="true"
+                       rendered="#{baucherHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Baucher.xhtml"
+                rendered="#{baucherHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty baucherFrom ? 'BaucherList' : baucherFrom}.xhtml"
+                rendered="#{!baucherHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Transaccion *" labelClass="required">
+    <div class="association" id="transaccionParent">
+
+        <h:outputText value="There is no transaccion associated with this baucher."
+                   rendered="#{baucherHome.instance.transaccion == null}"/>
+
+        <rich:dataTable var="_transaccion"
+                   value="#{baucherHome.instance.transaccion}"
+                rendered="#{baucherHome.instance.transaccion != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="transaccionTable">
+            <h:column>
+                <f:facet name="header">Consecutivo</f:facet>
+                <h:outputText value="#{_transaccion.consecutivo}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Establecimiento codigounico</f:facet>
+                <h:outputText value="#{_transaccion.establecimiento.codigounico}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tarjeta numerotarjeta</f:facet>
+                <h:outputText value="#{_transaccion.tarjeta.numerotarjeta}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechatx</f:facet>
+                <h:outputText value="#{_transaccion.fechatx}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Tipotx</f:facet>
+                <h:outputText value="#{_transaccion.tipotx}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valortxpesos</f:facet>
+                <h:outputText value="#{_transaccion.valortxpesos}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valortxdolares</f:facet>
+                <h:outputText value="#{_transaccion.valortxdolares}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Numfactura</f:facet>
+                <h:outputText value="#{_transaccion.numfactura}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Valorcomision</f:facet>
+                <h:outputText value="#{_transaccion.valorcomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesorcomision</f:facet>
+                <h:outputText value="#{_transaccion.asesorcomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastradorcomision</f:facet>
+                <h:outputText value="#{_transaccion.arrastradorcomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Establecimientocomision</f:facet>
+                <h:outputText value="#{_transaccion.establecimientocomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Porcentajecomision</f:facet>
+                <h:outputText value="#{_transaccion.porcentajecomision}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Fechamod</f:facet>
+                <h:outputText value="#{_transaccion.fechamod}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Usuariomod</f:facet>
+                <h:outputText value="#{_transaccion.usuariomod}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Asesor</f:facet>
+                <h:outputText value="#{_transaccion.asesor}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Promotor</f:facet>
+                <h:outputText value="#{_transaccion.promotor}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Arrastrador</f:facet>
+                <h:outputText value="#{_transaccion.arrastrador}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Digitador</f:facet>
+                <h:outputText value="#{_transaccion.digitador}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{baucherHome.instance.transaccion != null ? 'changeParent' : 'selectParent'}" value="#{baucherHome.instance.transaccion != null ? 'Change' : 'Select'} transaccion"
+                       view="/TransaccionList.xhtml">
+                <f:param name="from" value="BaucherEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

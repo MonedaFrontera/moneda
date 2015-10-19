@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/AuditViajeList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{auditViajeHome.wire}"/>
+
+   <param name="auditViajeFrom"/>
+   <param name="auditViajeConsecutivo" value="#{auditViajeHome.auditViajeId.consecutivo}"/>
+   <param name="auditViajeFechainicio" value="#{auditViajeHome.auditViajeId.fechainicio}"/>
+   <param name="auditViajeFechafin" value="#{auditViajeHome.auditViajeId.fechafin}"/>
+   <param name="auditViajeCupoinicialviajero" value="#{auditViajeHome.auditViajeId.cupoinicialviajero}"/>
+   <param name="auditViajeCupoinicialinternet" value="#{auditViajeHome.auditViajeId.cupoinicialinternet}"/>
+   <param name="auditViajeCupoviajero" value="#{auditViajeHome.auditViajeId.cupoviajero}"/>
+   <param name="auditViajeCupointernet" value="#{auditViajeHome.auditViajeId.cupointernet}"/>
+   <param name="auditViajeCedulatarjetahabiente" value="#{auditViajeHome.auditViajeId.cedulatarjetahabiente}"/>
+   <param name="auditViajeFechamod" value="#{auditViajeHome.auditViajeId.fechamod}"/>
+   <param name="auditViajeUsuariomod" value="#{auditViajeHome.auditViajeId.usuariomod}"/>
+
+
+   <navigation from-action="#{auditViajeHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/AuditViaje.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{auditViajeHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/AuditViaje.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{auditViajeHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/AuditViajeList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

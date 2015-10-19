@@ -1,0 +1,340 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="activacionSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Activacion Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Cedula</ui:define>
+                <h:inputText id="cedula" value="#{activacionList.activacion.cedula}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="nombre" value="#{activacionList.activacion.nombre}"/>
+            </s:decorate>
+
+			<s:decorate id="promotor2Field" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+        	
+        	
+        	
+        	<s:decorate id="gestorField" rendered="#{!s:hasRole('Asesor')}" template="layout/edit.xhtml">
+                <ui:define name="label">Gestor</ui:define>		
+			<h:inputText value="#{AdministrarActivacion.nombre}" id="namegestor" size="50">
+                <a:support event="onblur" action="#{AdministrarActivacion.ubicarGestor()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('gestorBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="gestorBoxId" for="namegestor"
+                                        suggestionAction="#{AdministrarActivacion.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun gestor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+        	
+        	  <s:decorate id="asesor_1Field" rendered="#{!s:hasRole('Asesor')}" template="layout/edit.xhtml">
+                <ui:define name="label">Asesor</ui:define>
+                <h:selectOneMenu id="asesorSel" value="#{AdministrarActivacion.asesor}">
+			    <s:selectItems value="#{asesorList.resultList}" var="asesor" 
+			    		label="#{asesor.personal.nombre} #{asesor.personal.apellido}"
+						noSelectionLabel="Seleccione..." />
+			 <s:convertEntity />
+			      
+		</h:selectOneMenu>
+        </s:decorate>
+        	
+        	<s:decorate id="ibancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="ibancoSel" value="#{AdministrarActivacion.banco}" >
+			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			                    
+			      <s:convertEntity />
+			      
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	
+        	<s:decorate id="estadoactField" template="layout/edit.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectOneMenu id="estadoSel" value="#{AdministrarActivacion.estado}" >
+			<s:selectItems value="#{actestadoList.resultList}" var="actestado" label="#{actestado.descripcion}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      
+			</h:selectOneMenu>
+        	</s:decorate>
+        
+       	 <s:decorate id="anoViajeField" template="layout/edit.xhtml" >
+                <ui:define name="label">Viaje</ui:define>
+                <h:selectOneMenu id="anoViaje" value="#{AdministrarActivacion.anioViaje}" 
+                 required="true">
+                    <f:selectItem itemValue="115" itemLabel="2015"/>
+                    <f:selectItem itemValue="114" itemLabel="2014"/>
+                    <a:support event="onchange" reRender="anoViajeField" ajaxSingle="true"/>
+					<rich:toolTip>
+					<span style="white-space:nowrap">
+            			#{'Anio del viaje activado'} <br />            	
+            		</span>
+            		</rich:toolTip>
+				</h:selectOneMenu>   
+            </s:decorate>
+        	
+
+            <s:decorate id="fecharegistroField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Registro</ui:define>
+                <rich:calendar id="fechainireg"
+                          value="#{AdministrarActivacion.fechainireg}" datePattern="dd/MM/yyyy" />
+                          y
+                <rich:calendar id="fechafinreg"
+                          value="#{AdministrarActivacion.fechafinreg}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="fechacitaField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Cita</ui:define>
+                <rich:calendar id="fechainicit"
+                          value="#{AdministrarActivacion.fechainicit}" datePattern="dd/MM/yyyy" />
+                          y
+                <rich:calendar id="fechafincit"
+                          value="#{AdministrarActivacion.fechafincit}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="fechaactField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Activacion</ui:define>
+                <rich:calendar id="fechainiact"
+                          value="#{AdministrarActivacion.fechainiact}" datePattern="dd/MM/yyyy" />
+                          y
+                <rich:calendar id="fechafiniact"
+                          value="#{AdministrarActivacion.fechafinact}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+            
+            <s:decorate id="fechaestField" template="layout/edit.xhtml">
+                <ui:define name="label">Fecha Estado</ui:define>
+                <rich:calendar id="fechainiest"
+                          value="#{AdministrarActivacion.fechainiest}" datePattern="dd/MM/yyyy" />
+                          y
+                <rich:calendar id="fechafiniest"
+                          value="#{AdministrarActivacion.fechafinest}" datePattern="dd/MM/yyyy" />
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Buscar" action="/ActivacionList.xhtml"/>
+            
+            <h:commandButton id="reiniciar"
+                          value="Reiniciar"
+                          reRender="activacionSearch"
+                         action="#{AdministrarActivacion.limpiar}"
+                       />
+                     
+           
+            <h:commandButton id="consulta"            			
+                          value="Generar Excel"
+                         action="#{AdministrarActivacion.generar}"/>  
+            
+            <h:commandButton id="generarReporte"
+                          value="Generar Reporte"
+                         action="#{AdministrarActivacion.generarReporte()}"/>
+ 			</div>
+    
+
+    <rich:panel>
+        <f:facet name="header">Activacion Search Results (#{empty AdministrarActivacion.activacions.resultList ? 0 : (activacionList.paginated ? AdministrarActivacion.activacions.resultCount : AdministrarActivacion.activacions.resultList.size)})</f:facet>
+    <div class="results" id="activacionList">
+
+    <h:outputText value="The activacion search returned no results."
+               rendered="#{empty AdministrarActivacion.activacions.resultList}"/>
+
+    <rich:dataTable id="activacionList"
+                var="_activacion"
+              value="#{AdministrarActivacion.activacions.resultList}"
+           rendered="#{not empty AdministrarActivacion.activacions.resultList}">
+
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Tarjetahabiente"/>
+                    <ui:param name="propertyPath" value="activacion.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_activacion.nombre}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Asesor"/>
+                    <ui:param name="propertyPath" value="activacion.cedula"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{AdministrarActivacion.traerAsesor(_activacion.promotor.asesor.documento)}"/>
+        </h:column>
+        
+                <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="activacion.consecutivo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_activacion.promotor.personal.nombre} #{_activacion.promotor.personal.apellido}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Gestor"/>
+                    <ui:param name="propertyPath" value="activacion.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_activacion.gestor.personal.nombre} #{_activacion.gestor.personal.apellido}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Banco"/>
+                    <ui:param name="propertyPath" value="activacion.banco.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_activacion.banco.nombrebanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Fecha "/>
+                    <ui:param name="propertyPath" value="activacion.cedula"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText  value="#{AdministrarActivacion.traerFecha(_activacion.consecutivo, _activacion.actestado.codestado)}">
+            <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </h:column>
+        
+        <h:column style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Destino"/>
+                    <ui:param name="propertyPath" value="activacion.destino"/>
+                </ui:include>
+            </f:facet>
+            <div style="text-align:center" >
+            <h:outputText value="#{_activacion.destino}"/>
+            </div>
+        </h:column>
+
+        <h:column style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{activacionList}"/>
+                    <ui:param name="propertyLabel" value="Estado"/>
+                    <ui:param name="propertyPath" value="activacion.actestado.descripcion"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText   value="#{_activacion.actestado.descripcion}"/>
+        </h:column>
+ 
+        <rich:column styleClass="action">
+            <f:facet name="header"></f:facet>
+            
+            <h:commandLink value="Editar" 
+            action="#{AdministrarActivacion.editar(_activacion.consecutivo)}" >
+            	
+            </h:commandLink>
+            <rich:toolTip>
+            <span style="white-space:nowrap">
+            	#{_activacion.documentoscompletos?'Documentos Completos':'Documentos Incompletos'} <br />            	
+            </span>
+            </rich:toolTip>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/ActivacionList.xhtml"
+            rendered="#{AdministrarActivacion.activacions.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/ActivacionList.xhtml"
+            rendered="#{AdministrarActivacion.activacions.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarActivacion.activacions.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ActivacionList.xhtml"
+            rendered="#{AdministrarActivacion.activacions.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarActivacion.activacions.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ActivacionList.xhtml"
+            rendered="#{AdministrarActivacion.activacions.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarActivacion.activacions.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/ActivacionEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Crear Activacion">
+            <f:param name="activacionConsecutivo"/>
+        </s:button>
+    </s:div>
+    
+    </h:form>
+
+</ui:define>
+
+</ui:composition>

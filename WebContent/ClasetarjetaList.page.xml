@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{clasetarjetaList.firstResult}"/>
+   <param name="sort" value="#{clasetarjetaList.orderColumn}"/>
+   <param name="dir" value="#{clasetarjetaList.orderDirection}"/>
+   <param name="logic" value="#{clasetarjetaList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codbanco" value="#{clasetarjetaList.clasetarjeta.id.codbanco}"/>
+   <param name="codfranquicia" value="#{clasetarjetaList.clasetarjeta.id.codfranquicia}"/>
+   <param name="clase" value="#{clasetarjetaList.clasetarjeta.id.clase}"/>
+   <param name="nombretipo" value="#{clasetarjetaList.clasetarjeta.nombretipo}"/>
+
+</page>

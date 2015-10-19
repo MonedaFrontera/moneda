@@ -1,0 +1,226 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="tarjetaSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Busqueda de Tarjetas" switchType="ajax">
+			
+			<s:decorate id="promotorField" template="layout/edit.xhtml" >
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{tarjetaList.nombre}" id="namepromotor" size="50">
+                
+                </h:inputText><h:graphicImage value="/img/arrow.png" 
+                    onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
+                    alt="" />
+			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+        	</s:decorate>
+			
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Numero Tarjeta</ui:define>
+                <h:inputText id="numerotarjeta" value="#{tarjetaList.tarjeta.numerotarjeta}"/>
+            </s:decorate>
+
+            
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tarjetahabiente</ui:define>
+                <h:inputText id="tarjetahabiente" value="#{tarjetaList.tarjeta.tarjetahabiente}"/>
+            </s:decorate>
+            
+            
+            <s:decorate id="estadoField" template="layout/display.xhtml">
+                <ui:define name="label">Estado</ui:define>
+                <h:selectOneRadio id="estado" 
+                
+                value="#{AdministrarTarjeta.estado}"
+                styleClass="radio">
+                    <f:selectItem itemLabel="Todas" itemValue="t"/>
+                    <f:selectItem itemLabel="Tarjetas Activas" itemValue="a"/>
+                    <f:selectItem rendered="false" itemLabel="Tarjetas Bloqueadas" itemValue="b"/>
+                    <f:selectItem itemLabel="Tarjetas Fin de Viaje" itemValue="f"/>
+                    <f:selectItem itemLabel="Sin Viaje" itemValue="s"/>
+                    <a:support event="onclick" reRender="estadoField" 
+                action="#{AdministrarTarjeta.cambiarEstado(AdministrarTarjeta.estado)}" ajaxSingle="true"/>
+                
+                </h:selectOneRadio>
+                
+            </s:decorate>
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" accesskey="b" rendered="false" value="Buscar" action="/TarjetaaList.xhtml"/>
+            
+            <h:commandButton id="search2" value="Buscar" action="#{AdministrarTarjeta.busqueda()}"/>
+            
+            <s:button id="reset" value="Limpiar" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Resultado de la Busqueda de Tarjetas (#{empty AdministrarTarjeta.tarjetas.resultList ? 0 : (AdministrarTarjeta.tarjetas.paginated ? AdministrarTarjeta.tarjetas.resultCount : AdministrarTarjeta.tarjetas.resultList.size)})</f:facet>
+    <div class="results" id="tarjetaList2">
+
+    <h:outputText value="La busqueda no retorno resultados."
+               rendered="#{empty AdministrarTarjeta.tarjetas.resultList}"/>
+	<h:form>
+    <rich:dataTable id="tarjetaList"
+                var="_tarjeta"
+              value="#{AdministrarTarjeta.tarjetas.resultList}"
+           rendered="#{not empty AdministrarTarjeta.tarjetas.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Numerotarjeta"/>
+                    <ui:param name="propertyPath" value="tarjeta.numerotarjeta"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText style="text-align:center; display:block" value="#{Reporteador.formatearTarjeta(_tarjeta.numerotarjeta)}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Tarjeta Habiente"/>
+                    <ui:param name="propertyPath" value="tarjeta.tarjetahabiente"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjeta.tarjetahabiente}"/>
+        </h:column>
+        
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Franquicia"/>
+                    <ui:param name="propertyPath" value="tarjeta.franquicia.codfranquicia"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjeta.franquicia.nombrefranquicia}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Banco"/>
+                    <ui:param name="propertyPath" value="tarjeta.banco.codbanco"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjeta.banco.nombrebanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="tarjeta.promotor.personal.nombre"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjeta.promotor.personal.nombre} #{_tarjeta.promotor.personal.apellido}"/>
+        </h:column>
+        <rich:column style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{tarjetaList}"/>
+                    <ui:param name="propertyLabel" value="Fecha Fin"/>
+                    <ui:param name="propertyPath" value="tarjeta.fechafin"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_tarjeta.fechafin}">
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+            </h:outputText>
+        </rich:column>
+        
+        <rich:column styleClass="action" style="text-align:left">
+            <f:facet name="header">Accion</f:facet>
+            <h:commandLink value="" accesskey="e" action="#{AdministrarTarjeta.editarTarjeta(_tarjeta.numerotarjeta)}" >
+            	<h:graphicImage title="Editar Tarjeta" style="border-style:none;" id="verTarjeta" value="/img/edit.png" />
+            </h:commandLink>
+            #{''}
+            <h:commandLink value="" rendered="#{s:hasRole('Cambiar Promotor')}" 
+            action="#{AdministrarTarjeta.solicitarCambioPromotor(_tarjeta.numerotarjeta)}" >
+            	<h:graphicImage title="Cambio Promotor" style="border-style:none;" id="cambioPromotor" value="/img/cambio.png" />
+            </h:commandLink>
+            #{''}
+            <h:commandLink value="" accesskey="v" rendered="#{s:hasRole('Nuevo Viaje')&amp;&amp;_tarjeta.tarjetaviajes.size>0}" 
+            action="#{AdministrarTarjeta.solicitarNuevoViaje(_tarjeta.numerotarjeta)}" >
+            	<h:graphicImage title="Nuevo Viaje" style="border-style:none;" id="nuevoviaje" value="/img/nuevoviaje.png" />
+            </h:commandLink>
+            #{''}
+            <h:commandLink value=""  rendered="#{_tarjeta.tarjetaviajes.size>1}" 
+            action="#{AdministrarTarjeta.verHistorico(_tarjeta.numerotarjeta)}" >
+            	<h:graphicImage title="Ver Historico" style="border-style:none;" id="verHistorico" value="/img/history.png" />
+            </h:commandLink>
+        </rich:column>
+    </rich:dataTable>
+	</h:form>
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/TarjetaaList.xhtml"
+            rendered="#{AdministrarTarjeta.tarjetas.previousExists}"
+               value="#{messages.left}#{messages.left} Pagina Primera"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/TarjetaaList.xhtml"
+            rendered="#{AdministrarTarjeta.tarjetas.previousExists}"
+               value="#{messages.left} Anterior"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarTarjeta.tarjetas.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TarjetaaList.xhtml"
+            rendered="#{AdministrarTarjeta.tarjetas.nextExists}"
+               value="Siguiente #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarTarjeta.tarjetas.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/TarjetaaList.xhtml"
+            rendered="#{AdministrarTarjeta.tarjetas.nextExists}"
+               value="Ultima Pagina #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{AdministrarTarjeta.tarjetas.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{s:hasRole ('Registrar Tarjeta')}">
+        <s:button view="/TarjetaEdit.xhtml" accesskey="r"
+                    id="create"
+           propagation="none"
+                 value="Registrar Tarjeta">
+            <f:param name="tarjetaNumerotarjeta"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

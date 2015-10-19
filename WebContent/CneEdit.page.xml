@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/CneList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{cneHome.wire}"/>
+
+   <param name="cneFrom"/>
+   <param name="cneNacionalidad" value="#{cneHome.cneId.nacionalidad}"/>
+   <param name="cneCedula" value="#{cneHome.cneId.cedula}"/>
+   <param name="cnePrimerApellido" value="#{cneHome.cneId.primerApellido}"/>
+   <param name="cneSegundoApellido" value="#{cneHome.cneId.segundoApellido}"/>
+   <param name="cnePrimerNombre" value="#{cneHome.cneId.primerNombre}"/>
+   <param name="cneSegundoNombre" value="#{cneHome.cneId.segundoNombre}"/>
+   <param name="cneEstado" value="#{cneHome.cneId.estado}"/>
+   <param name="cneCodCentro" value="#{cneHome.cneId.codCentro}"/>
+
+
+   <navigation from-action="#{cneHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Cne.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{cneHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Cne.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{cneHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/CneList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

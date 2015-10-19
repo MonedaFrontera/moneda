@@ -1,0 +1,184 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Puntodeventa Details</f:facet>
+
+        <s:decorate id="codpuntoventa" template="layout/display.xhtml">
+            <ui:define name="label">Codpuntoventa</ui:define>
+            <h:outputText value="#{puntodeventaHome.instance.codpuntoventa}"/>
+        </s:decorate>
+
+        <s:decorate id="nombre" template="layout/display.xhtml">
+            <ui:define name="label">Nombre</ui:define>
+            <h:outputText value="#{puntodeventaHome.instance.nombre}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/PuntodeventaEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty puntodeventaFrom ? 'PuntodeventaList' : puntodeventaFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Puntoestablecimientos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="puntoestablecimientosChildren">
+
+        <h:outputText value="There are no puntoestablecimientos associated with this puntodeventa."
+                   rendered="#{empty puntodeventaHome.puntoestablecimientos}"/>
+
+        <rich:dataTable value="#{puntodeventaHome.puntoestablecimientos}"
+                       var="_puntoestablecimiento"
+                  rendered="#{not empty puntodeventaHome.puntoestablecimientos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="puntoestablecimientosTable">
+            <rich:column sortBy="#{_puntoestablecimiento.id.codigounico}">
+                <f:facet name="header">Codigounico</f:facet>
+                <h:outputText value="#{_puntoestablecimiento.id.codigounico}"/>
+            </rich:column>
+            <rich:column sortBy="#{_puntoestablecimiento.id.codpuntoventa}">
+                <f:facet name="header">Codpuntoventa</f:facet>
+                <h:outputText value="#{_puntoestablecimiento.id.codpuntoventa}"/>
+            </rich:column>
+            <rich:column sortBy="#{_puntoestablecimiento.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_puntoestablecimiento.id.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_puntoestablecimiento.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_puntoestablecimiento.fechafin}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpuntoestablecimiento"
+                     value="Select"
+                      view="/Puntoestablecimiento.xhtml">
+                    <f:param name="puntoestablecimientoCodigounico"
+                            value="#{_puntoestablecimiento.id.codigounico}"/>
+                    <f:param name="puntoestablecimientoCodpuntoventa"
+                            value="#{_puntoestablecimiento.id.codpuntoventa}"/>
+                    <f:param name="puntoestablecimientoFechainicio"
+                            value="#{_puntoestablecimiento.id.fechainicio}"/>
+                    <f:param name="puntoestablecimientoFrom" value="Puntodeventa"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add puntoestablecimiento"
+                view="/PuntoestablecimientoEdit.xhtml">
+            <f:param name="puntodeventaCodpuntoventa"
+                    value="#{puntodeventaHome.instance.codpuntoventa}"/>
+            <f:param name="puntoestablecimientoFrom" value="Puntodeventa"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Personaltipoprocesos</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="personaltipoprocesosChildren">
+
+        <h:outputText value="There are no personaltipoprocesos associated with this puntodeventa."
+                   rendered="#{empty puntodeventaHome.personaltipoprocesos}"/>
+
+        <rich:dataTable value="#{puntodeventaHome.personaltipoprocesos}"
+                       var="_personaltipoproceso"
+                  rendered="#{not empty puntodeventaHome.personaltipoprocesos}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="personaltipoprocesosTable">
+            <rich:column sortBy="#{_personaltipoproceso.id.documento}">
+                <f:facet name="header">Documento</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.documento}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.id.fechainicio}">
+                <f:facet name="header">Fechainicio</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.fechainicio}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.id.puntodeventa}">
+                <f:facet name="header">Puntodeventa</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.puntodeventa}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.id.tipoproceso}">
+                <f:facet name="header">Tipoproceso</f:facet>
+                <h:outputText value="#{_personaltipoproceso.id.tipoproceso}"/>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.fechafin}">
+                <f:facet name="header">Fechafin</f:facet>
+                <h:outputText value="#{_personaltipoproceso.fechafin}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_personaltipoproceso.porcentaje}">
+                <f:facet name="header">Porcentaje</f:facet>
+                <h:outputText value="#{_personaltipoproceso.porcentaje}">
+                    <f:convertNumber/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpersonaltipoproceso"
+                     value="Select"
+                      view="/Personaltipoproceso.xhtml">
+                    <f:param name="personaltipoprocesoDocumento"
+                            value="#{_personaltipoproceso.id.documento}"/>
+                    <f:param name="personaltipoprocesoFechainicio"
+                            value="#{_personaltipoproceso.id.fechainicio}"/>
+                    <f:param name="personaltipoprocesoPuntodeventa"
+                            value="#{_personaltipoproceso.id.puntodeventa}"/>
+                    <f:param name="personaltipoprocesoTipoproceso"
+                            value="#{_personaltipoproceso.id.tipoproceso}"/>
+                    <f:param name="personaltipoprocesoFrom" value="Puntodeventa"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add personaltipoproceso"
+                view="/PersonaltipoprocesoEdit.xhtml">
+            <f:param name="puntodeventaCodpuntoventa"
+                    value="#{puntodeventaHome.instance.codpuntoventa}"/>
+            <f:param name="personaltipoprocesoFrom" value="Puntodeventa"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

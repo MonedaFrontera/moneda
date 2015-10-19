@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
+      no-conversation-view-id="/DeduccionesList.xhtml"
+      login-required="true">
+
+   <begin-conversation join="true" flush-mode="MANUAL"/>
+
+   <action execute="#{deduccionesHome.wire}"/>
+
+   <param name="deduccionesFrom"/>
+   <param name="deduccionesConsecutivo" value="#{deduccionesHome.deduccionesId.consecutivo}"/>
+   <param name="deduccionesDescripcion" value="#{deduccionesHome.deduccionesId.descripcion}"/>
+   <param name="transaccionFrom"/>
+   <param name="transaccionConsecutivo" value="#{transaccionHome.transaccionConsecutivo}"/>
+   <param name="establecimientoFrom"/>
+   <param name="establecimientoCodigounico" value="#{establecimientoHome.establecimientoCodigounico}"/>
+   <param name="paisFrom"/>
+   <param name="paisCodigopais" value="#{paisHome.paisCodigopais}"/>
+
+   <param name="empresaFrom"/>
+   <param name="empresaNit" value="#{empresaHome.empresaNit}"/>
+
+   <param name="bancocolFrom"/>
+   <param name="bancocolCodbanco" value="#{bancocolHome.bancocolCodbanco}"/>
+
+
+   <param name="tarjetaFrom"/>
+   <param name="tarjetaNumerotarjeta" value="#{tarjetaHome.tarjetaNumerotarjeta}"/>
+   <param name="promotorFrom"/>
+   <param name="promotorDocumento" value="#{promotorHome.promotorDocumento}"/>
+   <param name="personalFrom"/>
+   <param name="personalDocumento" value="#{personalHome.personalDocumento}"/>
+   <param name="cargoFrom"/>
+   <param name="cargoCodcargo" value="#{cargoHome.cargoCodcargo}"/>
+
+   <param name="arrastradorFrom"/>
+   <param name="arrastradorDocumento" value="#{arrastradorHome.arrastradorDocumento}"/>
+
+   <param name="administrativoFrom"/>
+   <param name="administrativoDocumento" value="#{administrativoHome.administrativoDocumento}"/>
+
+   <param name="asesorFrom"/>
+   <param name="asesorDocumento" value="#{asesorHome.asesorDocumento}"/>
+
+
+
+   <param name="franquiciaFrom"/>
+   <param name="franquiciaCodfranquicia" value="#{franquiciaHome.franquiciaCodfranquicia}"/>
+
+   <param name="bancoFrom"/>
+   <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
+
+
+
+
+
+   <navigation from-action="#{deduccionesHome.persist}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/Deducciones.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{deduccionesHome.update}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/Deducciones.xhtml"/>
+      </rule>
+   </navigation>
+
+   <navigation from-action="#{deduccionesHome.remove}">
+      <rule if-outcome="removed">
+         <end-conversation/>
+         <redirect view-id="/DeduccionesList.xhtml"/>
+      </rule>
+   </navigation>
+
+</page>

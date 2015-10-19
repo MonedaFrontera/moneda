@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="http://jboss.com/products/seam/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
+
+   <param name="firstResult" value="#{porcentajeparametrosList.firstResult}"/>
+   <param name="sort" value="#{porcentajeparametrosList.orderColumn}"/>
+   <param name="dir" value="#{porcentajeparametrosList.orderDirection}"/>
+   <param name="logic" value="#{porcentajeparametrosList.restrictionLogicOperator}"/>
+
+   <param name="from"/>
+   <param name="codbanco" value="#{porcentajeparametrosList.porcentajeparametros.id.codbanco}"/>
+   <param name="codpais" value="#{porcentajeparametrosList.porcentajeparametros.id.codpais}"/>
+   <param name="codfranquicia" value="#{porcentajeparametrosList.porcentajeparametros.id.codfranquicia}"/>
+
+</page>
