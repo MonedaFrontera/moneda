@@ -602,18 +602,23 @@ public class EnviarMailAlertas {
 			 * Ojo aca reemplazar por consulta
 			 */
 			// multiples direcciones
-			String[] to = { "lfernandortiz@hotmail.com", 
+		/**	String[] to = { "lfernandortiz@hotmail.com", 
 							"lfernandortiz@gmail.com",
 							"lfernandortiz@yahoo.es",
 							"lortiz@monedafrontera.com",
 							"gerencia@monedafrontera.com"
-							};
-
+							};*/
+		
+			entityManager.clear();
+			List<String> resultList = 
+				entityManager.createQuery("select p.correo from Personal p where p.correosalerta=true").getResultList();
+			
 			// arreglo con las direcciones de correo
-			InternetAddress[] addressTo = new InternetAddress[to.length];
-			for (int i = 0; i < to.length; i++) {
-				addressTo[i] = new InternetAddress(to[i]);
+			InternetAddress[] addressTo = new InternetAddress[resultList.size()];
+			for (int i = 0; i < resultList.size(); i++) {
+				addressTo[i] = new InternetAddress(resultList.get(i));
 			}
+			
 			
 			// se compone el mensaje (Asunto, cuerpo del mensaje y direccion origen)
 			MimeMessage message = new MimeMessage(session);
