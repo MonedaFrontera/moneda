@@ -50,6 +50,7 @@ public class Personal implements java.io.Serializable {
 	private Set<Gastos> gastoses = new HashSet<Gastos>(0);
 	private Set<Saldo> saldos = new HashSet<Saldo>(0);
 	private Date ultmactualizacion;
+	private Boolean correosalerta;
 
 	public Personal() {
 	}
@@ -66,7 +67,7 @@ public class Personal implements java.io.Serializable {
 			Set<Comisionhistorico> comisionhistoricos, 
 			Set<Personaltipoproceso> personaltipoprocesos, Arrastrador arrastrador,
 			Administrativo administrativo, Promotor promotor, Asesor asesor, 
-			Set<Gastos> gastoses, Set<Saldo> saldos, Gestor gestor, Date ultmactualizacion) {
+			Set<Gastos> gastoses, Set<Saldo> saldos, Gestor gestor, Date ultmactualizacion, Boolean correosalerta) {
 		this.documento = documento;
 		this.cargo = cargo;
 		this.tipodocumento = tipodocumento;
@@ -89,6 +90,7 @@ public class Personal implements java.io.Serializable {
 		this.saldos = saldos;
 		this.gestor = gestor;
 		this.ultmactualizacion = ultmactualizacion;
+		this.correosalerta=correosalerta;
 	}
 
 	@Id
@@ -203,6 +205,15 @@ public class Personal implements java.io.Serializable {
 
 	public void setCorreoalternativo(String correoalternativo) {
 		this.correoalternativo = correoalternativo;
+	}
+	
+	@Column(name = "correosalerta")
+	public Boolean getCorreosalerta() {
+		return this.correosalerta;
+	}
+
+	public void setCorreosalerta(Boolean correosalerta) {
+		this.correosalerta = correosalerta;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

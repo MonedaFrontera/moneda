@@ -297,6 +297,8 @@
 		  									 promotorHome.instance.asesor.documento == '22222222')
 		  									&amp;&amp;
 		  									personalHome.instance.cargo.codcargo=='PR'}">
+		  									
+		  									
 		  
 		  <s:decorate id="nomUltAsField" template="layout/edit.xhtml" style="color:#0066cc;">
 		 
@@ -315,7 +317,24 @@
             </s:decorate>
           </s:div><!-- end s:div divAsesor  -->
 		  
-		  </s:div>	  
+		   <s:div rendered="#{personalHome.instance.cargo.codcargo=='AA'||
+		                                                personalHome.instance.cargo.codcargo=='MG'||
+		                                                personalHome.instance.cargo.codcargo=='SB'||
+		                                                personalHome.instance.cargo.codcargo=='SU'||
+		                                                personalHome.instance.cargo.codcargo=='CO'}">
+		     <s:decorate id="correosalerta"  template="layout/edit.xhtml">
+                <ui:define name="label">Recibir Correo de Alerta</ui:define>
+                <h:selectBooleanCheckbox id="correosalerta" value="#{personalHome.instance.correosalerta}">
+                <a:support event="onclick"
+                				reRender="correosalerta"
+								inmediate="true"
+								ajaxSingle="true" />                      
+                </h:selectBooleanCheckbox>
+            </s:decorate>
+		  </s:div><!-- end div correo de alerta -->
+		  
+		  </s:div>	
+		  
 		  <br /> <br /> 
 		  
 		  <div style="clear:both; padding: 10px 0px 0px 0px; " title="Fecha de llegada de la Tarjeta">
