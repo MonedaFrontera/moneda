@@ -160,8 +160,7 @@ public class AdministrarActivacion {
 			System.out.println("Se agrega en la tabla activagestor");
 		}
 	
-		if (this.getObservacionReg() != null
-				&& !this.getObservacionReg().equals("")) {
+		if (this.getObservacionReg() != null && !this.getObservacionReg().equals("")) {
 			ObservacionId obsId = new ObservacionId();
 			obsId.setConsecutivo(activacionHome.getInstance().getConsecutivo());
 			obsId.setFecha(activacionHome.getInstance().getFechareg());

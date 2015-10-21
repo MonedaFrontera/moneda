@@ -48,9 +48,13 @@
                            size="30"
                       maxlength="30"
                           value="#{enviosHome.instance.envia}">
-                    <a:support event="onblur" reRender="enviaField" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="enviaField"  
+                    action="#{AdministrarEnvios.nombreMayuscula(enviosHome.instance.envia, true)}" 
+                    ajaxSingle="true"/>
+                    
                 </h:inputText>
             </s:decorate>
+           
 
 
             <s:decorate id="recibeField" template="layout/edit.xhtml"  required="true">
@@ -59,7 +63,9 @@
                            size="30"
                       maxlength="30"
                           value="#{enviosHome.instance.recibe}">
-                    <a:support event="onblur" reRender="recibeField" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="recibeField"
+                     action="#{AdministrarEnvios.nombreMayuscula(enviosHome.instance.recibe, false)}" 
+                     ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
 
@@ -139,7 +145,7 @@
 
             <h:commandButton id="update"
                           value="Actualizar"
-                         action="#{AdministrarEnvios.actualizarEnvio}"
+                         action="#{enviosHome.update}"
                        rendered="#{enviosHome.managed}"/>
 
             <h:commandButton id="delete"

@@ -26,12 +26,6 @@
       
    </navigation>
    
-   <navigation from-action="#{AdministrarEnvios.actualizarEnvio}">
-      
-         <end-conversation/>
-         <redirect view-id="/EnviosList.xhtml"/>
-      
-   </navigation>
 
    <navigation from-action="#{enviosHome.update}">
       <rule if-outcome="updated">

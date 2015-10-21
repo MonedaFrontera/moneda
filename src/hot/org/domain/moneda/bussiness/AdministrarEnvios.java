@@ -23,6 +23,7 @@ import org.domain.moneda.session.EnviosHome;
 import org.domain.moneda.session.EnviosList;
 import org.domain.moneda.session.PromotorHome;
 import org.domain.moneda.util.CargarObjetos;
+import org.domain.moneda.util.ExpresionesRegulares;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.In;
@@ -197,12 +198,6 @@ public class AdministrarEnvios
 		
 	}
 	
-	public void actualizarEnvio(){
-		this.nombre = "";
-		enviosHome.update();
-		this.envioss = null;
-		
-	}
 	
 	@DataModel
 	private List<Envios> enviosDataModel=new ArrayList<Envios>();
@@ -447,7 +442,7 @@ public class AdministrarEnvios
 		
 		
 		if(this.estado.contentEquals("p")){
-			sql = sql + "and (envios.enviado = false or envios.enviado is null) ";
+			sql+="and (envios.enviado = false or envios.enviado is null) ";
 		}
 		
 		if(this.estado.contentEquals("e")){
@@ -474,37 +469,40 @@ public class AdministrarEnvios
 		
 		if(this.promotorHome.getInstance().getDocumento()!=null && 
 				!this.promotorHome.getInstance().getDocumento().contentEquals("")){
-			sql = sql + "and (envios.promotor.documento = '"+this.promotorHome.getInstance().getDocumento()+"') ";
+			sql +="and (envios.promotor.documento = '"+this.promotorHome.getInstance().getDocumento()+"') ";
 		}
 		
-		sql = sql + "and (envios.promotor.asesor.documento = '"+this.identity.getUsername()+"') ";
+		if(this.identity.hasRole("Asesor")){
+			sql +="and (envios.promotor.asesor.documento = '" 
+									+this.identity.getUsername()+"') ";
+		}
 		
 		if(this.envios.getEnvia()!=null && !this.envios.getEnvia().contentEquals("")){
-			sql = sql + "and lower(envios.envia) like lower('%" + this.envios.getEnvia() + "%') ";
+			sql += "and lower(envios.envia) like lower('%" + this.envios.getEnvia() + "%') ";
 		}
 		
 		if(this.envios.getRecibe()!=null && !this.envios.getRecibe().contentEquals("")){
-			sql = sql + "and lower(envios.recibe) like lower('%" + this.envios.getRecibe() + "%') ";
+			sql +="and lower(envios.recibe) like lower('%" + this.envios.getRecibe() + "%') ";
 		}
 		
 		if(this.envios.getCiudad()!=null && !this.envios.getCiudad().contentEquals("")){
-			sql = sql + "and lower(envios.ciudad) like lower('%" + this.envios.getCiudad() + "%') ";
+			sql +="and lower(envios.ciudad) like lower('%" + this.envios.getCiudad() + "%') ";
 		}
 		
 		if(this.envios.getOficina()!=null && !this.envios.getOficina().contentEquals("")){
-			sql = sql + "and lower(envios.oficina) like lower('%" + this.envios.getOficina() + "%') ";
+			sql += "and lower(envios.oficina) like lower('%" + this.envios.getOficina() + "%') ";
 		}
 		
 		if(this.envios.getNrocupon()!=null && !this.envios.getNrocupon().contentEquals("")){
-			sql = sql + "and envios.nrocupon = '" + this.envios.getNrocupon() + "' ";
+			sql += "and envios.nrocupon = '" + this.envios.getNrocupon() + "' ";
 		}
 		
 		if(this.envios.getFecha()!=null){
-			sql = sql + "and envios.fecha = '" + this.envios.getFecha() + "' ";
+			sql += "and envios.fecha = '" + this.envios.getFecha() + "' ";
 		}
 		
 		if(this.envios.getFechaenvio()!=null){
-			sql = sql + "and envios.fechaenvio = '" + this.envios.getFechaenvio() + "' ";
+			sql +="and envios.fechaenvio = '" + this.envios.getFechaenvio() + "' ";
 		}		
 		
 		System.out.println(sql);
@@ -526,6 +524,19 @@ public class AdministrarEnvios
 		promotorHome.setPromotorDocumento(p.getDocumento());
 		
 		this.nombre = p.getNombre() + " " + p.getApellido();
+	}
+	
+	   // Pasa a mayuscula la primera letra del nombre - elimina espacios
+	public void nombreMayuscula(String nombre, Boolean envia) {
+		String nombreTemp = ExpresionesRegulares.eliminarEspacios(nombre, true);
+		if(envia){
+		enviosHome.getInstance().setEnvia(nombreTemp);
+		System.out.println(enviosHome.getInstance().getEnvia());
+		}else{
+			enviosHome.getInstance().setRecibe(nombreTemp);	
+			System.out.println(enviosHome.getInstance().getRecibe());
+		}
+		
 	}
     
     
