@@ -159,6 +159,7 @@ public class AdministrarPais {
 		String nombreTemp = ExpresionesRegulares.eliminarEspacios(nombre, true);
 		System.out.println(">>>>>NOMBRE DE PAIS EDITADO : " + nombreTemp);
 		paisHome.getInstance().setNombre(nombreTemp);
+		
 	}
 	
 	
@@ -168,6 +169,8 @@ public class AdministrarPais {
 				Paisiso.class, paisHome.getInstance().getCodigopais().substring(0, 2));
 		
 		paisHome.getInstance().setPaisiso( paisIso);
+		String nombreTemp = ExpresionesRegulares.eliminarEspacios(paisHome.getInstance().getNombre(), true);
+		paisHome.getInstance().setNombre(nombreTemp);
 		entityManager.persist( paisHome.getInstance() );
 		entityManager.flush();
 		entityManager.clear();
@@ -175,4 +178,14 @@ public class AdministrarPais {
 		return "persisted";
 		
 	}
+	
+   public String actualizarPais(){
+	   
+	   String nombreTemp = ExpresionesRegulares.eliminarEspacios(paisHome.getInstance().getNombre(), true);
+		paisHome.getInstance().setNombre(nombreTemp);
+		entityManager.persist(paisHome.getInstance());
+		entityManager.flush();
+		entityManager.clear();
+	   return "updated";
+   }
 }

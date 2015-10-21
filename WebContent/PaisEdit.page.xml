@@ -27,7 +27,7 @@
       </rule>
    </navigation>
 
-   <navigation from-action="#{paisHome.update}">
+   <navigation from-action="#{AdministrarPais.actualizarPais}">
       <rule if-outcome="updated">
          <end-conversation/>
          <redirect view-id="/PaisList.xhtml"/>
