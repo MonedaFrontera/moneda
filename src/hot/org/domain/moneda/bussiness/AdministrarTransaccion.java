@@ -1058,6 +1058,11 @@ public class AdministrarTransaccion
 	
 	
 	
+	//Nuevo Modelo de liquidacion
+	
+	
+	
+	
 	private Boolean transaccionvoz = false;
 	
 	
