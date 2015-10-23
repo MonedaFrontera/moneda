@@ -20,6 +20,7 @@ public class CargoList extends EntityQuery<Cargo> {
 		setEjbql(EJBQL);
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
 		setMaxResults(25);
+		this.setOrder("cargo.nombrecargo");
 	}
 
 	public Cargo getCargo() {

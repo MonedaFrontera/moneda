@@ -189,7 +189,7 @@ public class AdministrarTransaccion
 	
 	public void llenarPromotores(){
 		entityManager.clear();
-		String sql = "";
+		String sql = "";	
 		
 		/*
 		if(identity.hasRole("Asesor")){
@@ -199,6 +199,7 @@ public class AdministrarTransaccion
 			entityManager.createQuery("select p.personal.nombre||' '||p.personal.apellido from Promotor p " +
 				"union select a.personal.nombre||' '||a.personal.apellido from Arrastrador a"+ sql).getResultList();
 		lista = resultList;
+		
 	}
 
 
