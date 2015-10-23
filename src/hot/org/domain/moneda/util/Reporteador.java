@@ -74,7 +74,7 @@ public class Reporteador {
 		return null;
 	}
 	
-	//
+	
 	public String generarReportePDFNombre6( Object param1, Object param2, 
 											Object param3, Object param4, 
 											Object param5, Object param5a, 
