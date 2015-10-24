@@ -106,6 +106,7 @@ public class Reporteador {
 	}
 	
 	
+	
 	public String generarBalanceCliente( )
 	{
 		String str = "";
