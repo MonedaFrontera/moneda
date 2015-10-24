@@ -1,36 +1,23 @@
 package org.domain.moneda.bussiness;
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-
 import org.domain.moneda.entity.Cuentapromotor;
 import org.domain.moneda.entity.CuentapromotorId;
+import org.domain.moneda.entity.Dolartoday;
 import org.domain.moneda.entity.Gastos;
 import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Promotor;
@@ -40,10 +27,8 @@ import org.domain.moneda.entity.Promotortasa;
 import org.domain.moneda.entity.PromotortasaId;
 import org.domain.moneda.entity.Saldo;
 import org.domain.moneda.entity.Tasadolar;
-import org.domain.moneda.entity.Transaccion;
 import org.domain.moneda.entity.Usuario;
 import org.domain.moneda.session.CuentapromotorHome;
-import org.domain.moneda.session.GastosHome;
 import org.domain.moneda.session.PaisHome;
 import org.domain.moneda.session.PersonalHome;
 import org.domain.moneda.session.PromotorHome;
@@ -55,16 +40,15 @@ import org.domain.moneda.util.EnviarMailAdjunto;
 import org.domain.moneda.util.Reporteador;
 import org.domain.moneda.util.UtilidadesBD;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.End;
-import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
+import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.log.Log;
-import org.jboss.seam.security.Identity;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.international.StatusMessages;
+import org.jboss.seam.log.Log;
+import org.jboss.seam.security.Identity;
 
 @Name("AdministrarPromotor")
 @Scope(ScopeType.CONVERSATION)
@@ -1297,6 +1281,24 @@ public void revisarPrestamo(String documento){
 			return "updated";
 		}
 	}
-    
+   
+	//Genera el pdf del análisis de clientes
+	public void generarAnalisisRiesgoCliente(){
+		String nombreReporte="analisisderiesgo";
+		BigDecimal trm=this.getTasa();
+		BigDecimal bolivar=this.getTasabolivar();
+        String documentoProm=this.promotorHome.getInstance().getDocumento();
+        
+        
+        String queryString="select dolartoday.usdsicad1 from dolartoday WHERE dolartoday.epoch IN ( " +
+        					 "select max( dolartodayfecha.epoch) FROM ( select date(to_timestamp(dolartoday.epoch /1000 )) as fecha, " +
+        					 "dolartoday.epoch from dolartoday where date(to_timestamp(dolartoday.epoch /1000 ))= current_date  " +
+        					 "group by dolartoday.epoch  )as dolartodayfecha)";
+         
+        BigDecimal sicad1= (BigDecimal) entityManager.createNativeQuery(queryString).getSingleResult();
+        String usuario= identity.getUsername();
+        
+		Reporteador.generarReportePDFNombre(trm, bolivar, documentoProm, sicad1, usuario, nombreReporte);
+	}
     
 }
