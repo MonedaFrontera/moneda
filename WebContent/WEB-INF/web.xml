@@ -17,7 +17,7 @@
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.seam</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
   <context-param>
     <param-name>org.richfaces.SKIN</param-name>
     <param-value>darkX</param-value>
@@ -58,6 +58,26 @@
     <auth-constraint/>
   </security-constraint>
   <session-config>
-  <session-timeout>60</session-timeout>
+    <session-timeout>60</session-timeout>
   </session-config>
+  <servlet>
+    <description></description>
+    <display-name>Cerrartasas</display-name>
+    <servlet-name>Cerrartasas</servlet-name>
+    <servlet-class>org.domain.monea.weblisten.Cerrartasas</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Cerrartasas</servlet-name>
+    <url-pattern>/Cerrartasas</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CerrarTasas</display-name>
+    <servlet-name>CerrarTasas</servlet-name>
+    <servlet-class>org.domain.moneda.service.CerrarTasas</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CerrarTasas</servlet-name>
+    <url-pattern>/CerrarTasas</url-pattern>
+  </servlet-mapping>
 </web-app>
