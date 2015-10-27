@@ -112,9 +112,11 @@
             <s:div id="divAnt" style="width:34%; float:left">
 <s:decorate id="saldoiniField" template="layout/edit.xhtml">
                 <ui:define name="label">Saldo Inicial</ui:define>
-<h:inputText disabled="true" value="#{AdministrarPromotor.saldoini+
-AdministrarPromotor.balancesfecha[4]-AdministrarPromotor.balancesfecha[1]
-+AdministrarPromotor.gastosfecha[1]-AdministrarPromotor.gastosfecha[0]}">
+				<h:inputText disabled="true" value="#{AdministrarPromotor.saldoini +
+													  AdministrarPromotor.balancesfecha[4] - 
+													  AdministrarPromotor.balancesfecha[1] + 
+													  AdministrarPromotor.gastosfecha[1] - 
+													  AdministrarPromotor.gastosfecha[0]}">
                         <f:convertNumber pattern="$ #,###"/>
                     </h:inputText>
                     </s:decorate>

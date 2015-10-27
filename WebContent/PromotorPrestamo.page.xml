@@ -43,7 +43,7 @@
          <redirect view-id="/Personal.xhtml"/>
       </rule>
    </navigation>
-
+   
    <navigation from-action="#{personalHome.remove}">
       <rule if-outcome="removed">
          <end-conversation/>
