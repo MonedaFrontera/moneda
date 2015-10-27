@@ -185,42 +185,24 @@ public class AdministrarPromotor {
 			mensajeSaldo = "No se registra en el sistema ningun saldo inicial";
 		}
 
-		gastosLista = entityManager.createQuery(
-				"SELECT g FROM Gastos g " + "WHERE g.fecha = '"
-						+ sdf.format(fecha) + "' and "
-						+ "g.personal.documento = '" + documento + "'")
-				.getResultList();
-
-		gastostotal = entityManager
-				.createQuery(
-						"SELECT sum(case when g.tipogasto.tipo = '2' then g.valor else 0 end) as tdebito, "
-								+ "sum(case when g.tipogasto.tipo = '1' then g.valor else 0 end) as tcredito,"
-								+ "sum(t.valorbolivar) as tbolivar FROM Gastos g left outer join g.transferencia t "
-								+ "WHERE g.fecha = '"
-								+ sdf.format(fecha)
-								+ "' and "
-								+ "g.personal.documento = '"
-								+ documento + "' ").getSingleResult();
-
-		gastosfecha = entityManager
-				.createQuery(
-						"SELECT sum(case when g.tipogasto.tipo = '2' then g.valor else 0 end) as tdebito, "
-								+ "sum(case when g.tipogasto.tipo = '1' then g.valor else 0 end) as tcredito,"
-								+ "sum(t.valorbolivar) as tbolivar FROM Gastos g left outer join g.transferencia t "
-								+ "WHERE g.fecha < '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "and (g.fecha > '"
-								+ fechaini
-								+ "' or "
-								+ "'"
-								+ fechaini
-								+ "' =  '"
-								+ sdf.format(this.fecha)
-								+ "') "
-								+ "and "
-								+ "g.personal.documento = '" + documento + "' ")
-				.getSingleResult();
+		gastosLista = entityManager.createQuery("SELECT g FROM Gastos g " +
+			      "WHERE g.fecha = '"+sdf.format(fecha)+"' and " +
+			          "g.personal.documento = '"+documento+"'").getResultList();  
+			  
+			  gastostotal = entityManager.createQuery("SELECT sum(case when g.tipogasto.tipo = '2' then g.valor else 0 end) as tdebito, " +
+			      "sum(case when g.tipogasto.tipo = '1' then g.valor else 0 end) as tcredito," +
+			      "sum(t.valorbolivar) as tbolivar FROM Gastos g left outer join g.transferencia t " +
+			        "WHERE g.fecha = '"+sdf.format(fecha)+"' and " +
+			          "g.personal.documento = '"+documento+"' ").getSingleResult();
+			  
+			  gastosfecha = entityManager.createQuery("SELECT sum(case when g.tipogasto.tipo = '2' then g.valor else 0 end) as tdebito, " +
+			        "sum(case when g.tipogasto.tipo = '1' then g.valor else 0 end) as tcredito," +
+			        "sum(t.valorbolivar) as tbolivar FROM Gastos g left outer join g.transferencia t " +
+			          "WHERE g.fecha < '"+sdf.format(this.fecha)+"' " +
+			          "and (g.fecha > '"+fechaini+"' or " +
+			        "'"+fechaini+"' =  '"+sdf.format(this.fecha)+"') " +
+			              "and " +
+			            "g.personal.documento = '"+documento+"' ").getSingleResult();
 
 		/*
 		 * gastostotal =entityManager.createQuery(
@@ -234,313 +216,210 @@ public class AdministrarPromotor {
 		 */
 
 		System.out.println("Inicio de Consulta>>");
-		balances = entityManager
-				.createNativeQuery(
-						"SELECT "
-								+ "tarjeta.numerotarjeta, "
-								+ // 0
-								"banco.nombrebanco, "
-								+ // 1
-								"franquicia.nombrefranquicia, "
-								+ // 2
-								"viaje.fechainicio, "
-								+ // 3
-								"viaje.fechafin, "
-								+ // 4
-								"viaje.cupoinicialviajero, "
-								+ // 5
-								"viaje.cupoinicialinternet, "
-								+ // 6
-								"viaje.cupoviajero, "
-								+ // 7
-								"viaje.cupointernet, "
-								+ // 8
-								"tarjeta.tarjetahabiente, "
-								+ // 9
-								"depositos.bolivares, "
-								+ // 10
-								"depositos.pesos as depositopesos, "
-								+ // 11
-								"transacciones.pesos, "
-								+ // 12
-								"transacciones.dolares, "
-								+ // 13
-								"transacciones.comision, "
-								+ // 14
-								"viaje.cupoviajero + viaje.cupointernet as totalcuporestante, "
-								+ // 15
-								"depositos.preciobolivar "
-								+ // 16
-								"FROM "
-								+ "tarjeta "
-								+ "LEFT OUTER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) "
-								+ "LEFT OUTER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) "
-								+ "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) "
-								+ "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) "
-								+ "LEFT JOIN (SELECT  "
-								+ "depositostarjeta.numerotarjeta, "
-								+ "depositostarjeta.promotor, "
-								+ "depositostarjeta.preciobolivar, "
-								+ "sum(depositostarjeta.valordeposito) AS bolivares, "
-								+ "sum(depositostarjeta.depositopesos) AS pesos "
-								+ "FROM "
-								+ "depositostarjeta, viaje, tarjeta, tarjetaviaje "
-								+ "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and "
-								+ "tarjeta.numerotarjeta = depositostarjeta.numerotarjeta and fecha = '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "	and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin "
-								+ "GROUP BY "
-								+ "depositostarjeta.numerotarjeta, "
-								+ "depositostarjeta.promotor, "
-								+ "depositostarjeta.preciobolivar ) depositos "
-								+ "ON (depositos.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta and depositos.promotor = '"
-								+ documento
-								+ "') "
-								+ "LEFT JOIN (SELECT  "
-								+ "transaccion.numerotarjeta, "
-								+ "sum(transaccion.valortxpesos) AS pesos, "
-								+ "sum(transaccion.valortxdolares) AS dolares, "
-								+ "sum(transaccion.valorcomision) AS comision,"
-								+ "transaccion.promotor "
-								+ "FROM "
-								+ "transaccion, viaje, tarjeta, tarjetaviaje "
-								+ "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and "
-								+ "tarjeta.numerotarjeta = transaccion.numerotarjeta and fechatx = '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin "
-								+ "GROUP BY "
-								+ "transaccion.numerotarjeta,"
-								+ "transaccion.promotor) transacciones "
-								+ "ON (transacciones.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta and transacciones.promotor = '"
-								+ documento
-								+ "')"
-								+ "where tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and "
-								+ "(transacciones.promotor = '"
-								+ documento
-								+ "' or "
-								+ "depositos.promotor = '"
-								+ documento
-								+ "') "
-								+ "and (transacciones.pesos > 0 or "
-								+ "depositos.pesos > 0)").getResultList();
+		balances = entityManager.createNativeQuery("SELECT " +
+				  "tarjeta.numerotarjeta, " +  //0
+				  "banco.nombrebanco, " +  //1
+				  "franquicia.nombrefranquicia, " +  //2
+				  "viaje.fechainicio, " +  //3
+				  "viaje.fechafin, " +  //4 
+				  "viaje.cupoinicialviajero, " +  //5
+				  "viaje.cupoinicialinternet, " +  //6
+				  "viaje.cupoviajero, " +  //7
+				  "viaje.cupointernet, " +  //8
+				  "tarjeta.tarjetahabiente, " +  //9 
+				  "depositos.bolivares, " +  //10
+				  "depositos.pesos as depositopesos, " +  //11
+				  "transacciones.pesos, " +  //12
+				  "transacciones.dolares, " +  //13
+				  "transacciones.comision, " +  //14
+				  "viaje.cupoviajero + viaje.cupointernet as totalcuporestante, " +  //15
+				  "depositos.preciobolivar " +//16
+				"FROM " +
+				  "tarjeta " +
+				  "LEFT OUTER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) " +
+				  "LEFT OUTER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) " +
+				  "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) " +
+				  "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) " +
+				  "LEFT JOIN (SELECT  " +
+				    "depositostarjeta.numerotarjeta, " +
+				    "depositostarjeta.promotor, " +
+				    "depositostarjeta.preciobolivar, "+
+				    "sum(depositostarjeta.valordeposito) AS bolivares, " +
+				    "sum(depositostarjeta.depositopesos) AS pesos " +
+				    "FROM " +
+				    "depositostarjeta, viaje, tarjeta, tarjetaviaje " +
+				    "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and " +
+				    "tarjeta.numerotarjeta = depositostarjeta.numerotarjeta and fecha = '"+sdf.format(this.fecha)+"' " + 
+				    " and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin " +
+				    "GROUP BY " +
+				    "depositostarjeta.numerotarjeta, " +
+				    "depositostarjeta.promotor, " +
+				    "depositostarjeta.preciobolivar ) depositos " + 
+				  "ON (depositos.numerotarjeta =  " +
+				  "tarjeta.numerotarjeta and depositos.promotor = '" + documento + "') " +
+				"LEFT JOIN (SELECT  " +
+				  "transaccion.numerotarjeta, " +
+				  "sum(transaccion.valortxpesos) AS pesos, " +
+				  "sum(transaccion.valortxdolares) AS dolares, " +
+				  "sum(transaccion.valorcomision) AS comision," +
+				  "transaccion.promotor " +
+				"FROM " +
+				  "transaccion, viaje, tarjeta, tarjetaviaje " +
+				  "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and " +
+				  "tarjeta.numerotarjeta = transaccion.numerotarjeta and fechatx = '"+sdf.format(this.fecha)+"' " +
+				      "and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin " + 
+				"GROUP BY " +
+				  "transaccion.numerotarjeta," +
+				  "transaccion.promotor) transacciones " + 
+				  "ON (transacciones.numerotarjeta =  " +
+				  "tarjeta.numerotarjeta and transacciones.promotor = '" + documento + "')" + 
+				          "where tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and " +
+				          "(transacciones.promotor = '" + documento + "' or " +
+				              "depositos.promotor = '" + documento + "') " +
+				          "and (transacciones.pesos > 0 or " +
+				          "depositos.pesos > 0)").getResultList();
 
-		// consulta para totales
-		balancestotal = entityManager
-				.createNativeQuery(
-						"SELECT SUM(bolivares) as depobolivares, "
-								+ "SUM(depositopesos) as depopesos, SUM(pesos) as transacpesos, "
-								+ "SUM(dolares) as transacdolares, SUM(comision) as transacomision"
-								+ " FROM (SELECT "
-								+ "tarjeta.numerotarjeta, "
-								+ // 0
-								"banco.nombrebanco, "
-								+ // 1
-								"franquicia.nombrefranquicia, "
-								+ // 2
-								"viaje.fechainicio, "
-								+ // 3
-								"viaje.fechafin, "
-								+ // 4
-								"viaje.cupoinicialviajero, "
-								+ // 5
-								"viaje.cupoinicialinternet, "
-								+ // 6
-								"viaje.cupoviajero, "
-								+ // 7
-								"viaje.cupointernet, "
-								+ // 8
-								"tarjeta.tarjetahabiente, "
-								+ // 9
-								"depositos.bolivares, "
-								+ // 10
-								"depositos.pesos as depositopesos, "
-								+ // 11
-								"transacciones.pesos, "
-								+ // 12
-								"transacciones.dolares, "
-								+ // 13
-								"transacciones.comision, "
-								+ // 14
-								"sum(viaje.cupoviajero + viaje.cupointernet) as totalcuporestante "
-								+ // 15
-								"FROM "
-								+ "tarjeta "
-								+ "LEFT OUTER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) "
-								+ "LEFT OUTER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) "
-								+ "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) "
-								+ "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) "
-								+ "LEFT JOIN (SELECT  "
-								+ "depositostarjeta.promotor,"
-								+ "depositostarjeta.numerotarjeta, "
-								+ "sum(depositostarjeta.valordeposito) AS bolivares, "
-								+ "sum(depositostarjeta.depositopesos) AS pesos "
-								+ "FROM "
-								+ "depositostarjeta, viaje, tarjeta, tarjetaviaje "
-								+ "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and "
-								+ "tarjeta.numerotarjeta = depositostarjeta.numerotarjeta and depositostarjeta.fecha = '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin "
-								+ "GROUP BY "
-								+ "depositostarjeta.numerotarjeta,"
-								+ "depositostarjeta.promotor) depositos "
-								+ "ON (depositos.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta and depositos.promotor = '"
-								+ documento
-								+ "') "
-								+ "LEFT JOIN (SELECT  "
-								+ "transaccion.numerotarjeta, transaccion.promotor, "
-								+ "sum(transaccion.valortxpesos) AS pesos, "
-								+ "sum(transaccion.valortxdolares) AS dolares, "
-								+ "sum(transaccion.valorcomision) AS comision "
-								+ "FROM "
-								+ "transaccion, viaje, tarjeta, tarjetaviaje  "
-								+ "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and "
-								+ "tarjeta.numerotarjeta = transaccion.numerotarjeta and fechatx = '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin "
-								+ "GROUP BY "
-								+ "transaccion.numerotarjeta, transaccion.promotor) transacciones "
-								+ "ON (transacciones.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta and transacciones.promotor = '"
-								+ documento
-								+ "') "
-								+
-
-								"where tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and "
-								+ "(transacciones.promotor = '"
-								+ documento
-								+ "' or "
-								+ "depositos.promotor = '"
-								+ documento
-								+ "') "
-								+ " group by "
-								+ "tarjeta.numerotarjeta, " + // 0
-								"banco.nombrebanco, " + // 1
-								"franquicia.nombrefranquicia, " + // 2
-								"viaje.fechainicio, " + // 3
-								"viaje.fechafin, " + // 4
-								"viaje.cupoinicialviajero, " + // 5
-								"viaje.cupoinicialinternet, " + // 6
-								"viaje.cupoviajero, " + // 7
-								"viaje.cupointernet, " + // 8
-								"tarjeta.tarjetahabiente, " + // 9
-								"depositos.bolivares, " + // 10
-								"depositos.pesos, " + // 11
-								"transacciones.pesos, " + // 12
-								"transacciones.dolares, " + // 13
-								"transacciones.comision  ) tot")
-				.getSingleResult();
-
-		balancesfecha = entityManager
-				.createNativeQuery(
-						"SELECT SUM(bolivares) as depobolivares, "
-								+ "SUM(depositopesos) as depopesos, SUM(pesos) as transacpesos, "
-								+ "SUM(dolares) as transacdolares, SUM(comision) as transacomision"
-								+ " FROM (SELECT "
-								+ "tarjeta.numerotarjeta, "
-								+ // 0
-								"banco.nombrebanco, "
-								+ // 1
-								"franquicia.nombrefranquicia, "
-								+ // 2
-								"viaje.fechainicio, "
-								+ // 3
-								"viaje.fechafin, "
-								+ // 4
-								"viaje.cupoinicialviajero, "
-								+ // 5
-								"viaje.cupoinicialinternet, "
-								+ // 6
-								"viaje.cupoviajero, "
-								+ // 7
-								"viaje.cupointernet, "
-								+ // 8
-								"tarjeta.tarjetahabiente, "
-								+ // 9
-								"depositos.bolivares, "
-								+ // 10
-								"depositos.pesos as depositopesos, "
-								+ // 11
-								"transacciones.pesos, "
-								+ // 12
-								"transacciones.dolares, "
-								+ // 13
-								"transacciones.comision, "
-								+ // 14
-								"viaje.cupoviajero + viaje.cupointernet as totalcuporestante "
-								+ // 15
-								"FROM "
-								+ "tarjeta "
-								+ "LEFT OUTER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) "
-								+ "LEFT OUTER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) "
-								+ "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) "
-								+ "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) "
-								+ "LEFT JOIN (SELECT  "
-								+ "depositostarjeta.promotor, "
-								+ "depositostarjeta.numerotarjeta, "
-								+ "sum(depositostarjeta.valordeposito) AS bolivares, "
-								+ "sum(depositostarjeta.depositopesos) AS pesos "
-								+ "FROM "
-								+ "depositostarjeta, viaje, tarjeta, tarjetaviaje "
-								+ "WHERE tarjeta.numerotarjeta = depositostarjeta.numerotarjeta and viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and "
-								+ "tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and "
-								+ "depositostarjeta.fecha < '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "and (depositostarjeta.fecha > '"
-								+ fechaini
-								+ "' or "
-								+ "'"
-								+ fechaini
-								+ "' =  '"
-								+ sdf.format(this.fecha)
-								+ "') "
-								+ "GROUP BY "
-								+ "depositostarjeta.numerotarjeta,"
-								+ "depositostarjeta.promotor) depositos "
-								+ "ON (depositos.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta and depositos.promotor = '"
-								+ documento
-								+ "') "
-								+ "LEFT JOIN (SELECT  "
-								+ "transaccion.numerotarjeta, transaccion.promotor, "
-								+ "sum(transaccion.valortxpesos) AS pesos, "
-								+ "sum(transaccion.valortxdolares) AS dolares, "
-								+ "sum(transaccion.valorcomision) AS comision "
-								+ "FROM "
-								+ "transaccion, viaje, tarjeta, tarjetaviaje "
-								+ "WHERE tarjeta.numerotarjeta = transaccion.numerotarjeta and viaje.consecutivo = tarjetaviaje.consecutivoviaje and "
-								+ "tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and "
-								+ "tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and fechatx < '"
-								+ sdf.format(this.fecha)
-								+ "' "
-								+ "and (fechatx > '"
-								+ fechaini
-								+ "' or "
-								+ "'"
-								+ fechaini
-								+ "' =  '"
-								+ sdf.format(this.fecha)
-								+ "')"
-								+ "GROUP BY "
-								+ "transaccion.numerotarjeta, transaccion.promotor) transacciones "
-								+ "ON (transacciones.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta and transacciones.promotor = '"
-								+ documento
-								+ "')"
-								+ "where tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin "
-								+ "and (transacciones.promotor = '"
-								+ documento
-								+ "' or "
-								+ "depositos.promotor = '"
-								+ documento + "') ) tot").getSingleResult();
-
+		//consulta para totales
+	      balancestotal = entityManager.createNativeQuery("SELECT SUM(bolivares) as depobolivares, " +
+	          "SUM(depositopesos) as depopesos, SUM(pesos) as transacpesos, " +
+	          "SUM(dolares) as transacdolares, SUM(comision) as transacomision" +
+	          " FROM (SELECT " +
+	            "tarjeta.numerotarjeta, " +  //0
+	            "banco.nombrebanco, " +  //1
+	            "franquicia.nombrefranquicia, " +  //2
+	            "viaje.fechainicio, " +  //3
+	            "viaje.fechafin, " +  //4 
+	            "viaje.cupoinicialviajero, " +  //5
+	            "viaje.cupoinicialinternet, " +  //6
+	            "viaje.cupoviajero, " +  //7
+	            "viaje.cupointernet, " +  //8
+	            "tarjeta.tarjetahabiente, " +  //9 
+	            "depositos.bolivares, " +  //10
+	            "depositos.pesos as depositopesos, " +  //11
+	            "transacciones.pesos, " +  //12
+	            "transacciones.dolares, " +  //13
+	            "transacciones.comision, " +  //14
+	            "sum(viaje.cupoviajero + viaje.cupointernet) as totalcuporestante " +  //15
+	          "FROM " +
+	            "tarjeta " +
+	            "LEFT OUTER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) " +
+	            "LEFT OUTER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) " +
+	            "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) " +
+	            "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) " +
+	             "LEFT JOIN (SELECT  " +
+	             "depositostarjeta.promotor," +
+	            "depositostarjeta.numerotarjeta, " +
+	            "sum(depositostarjeta.valordeposito) AS bolivares, " +
+	            "sum(depositostarjeta.depositopesos) AS pesos " +
+	          "FROM " +
+	            "depositostarjeta, viaje, tarjeta, tarjetaviaje " +
+	            "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and " +
+	  "tarjeta.numerotarjeta = depositostarjeta.numerotarjeta and depositostarjeta.fecha = '"+sdf.format(this.fecha)+"' " + 
+	  "and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin " + 
+	          "GROUP BY " +
+	            "depositostarjeta.numerotarjeta," +
+	            "depositostarjeta.promotor) depositos " + 
+	            "ON (depositos.numerotarjeta =  " +
+	            "tarjeta.numerotarjeta and depositos.promotor = '" + documento + "') " +
+	          "LEFT JOIN (SELECT  " +
+	            "transaccion.numerotarjeta, transaccion.promotor, " +
+	            "sum(transaccion.valortxpesos) AS pesos, " +
+	            "sum(transaccion.valortxdolares) AS dolares, " +
+	            "sum(transaccion.valorcomision) AS comision " +
+	          "FROM " +
+	            "transaccion, viaje, tarjeta, tarjetaviaje  " +
+	            "WHERE viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and " +
+	            "tarjeta.numerotarjeta = transaccion.numerotarjeta and fechatx = '"+sdf.format(this.fecha)+"' " +
+	                "and tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin " + 
+	          "GROUP BY " +
+	            "transaccion.numerotarjeta, transaccion.promotor) transacciones " + 
+	            "ON (transacciones.numerotarjeta =  " +
+	            "tarjeta.numerotarjeta and transacciones.promotor = '" + documento + "') " + 
+	            
+	                    "where tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and " +
+	                    "(transacciones.promotor = '" + documento + "' or " +
+	              "depositos.promotor = '" + documento + "') " +
+	              " group by " +
+	             "tarjeta.numerotarjeta, " +  //0
+	            "banco.nombrebanco, " +  //1 
+	            "franquicia.nombrefranquicia, " +  //2
+	            "viaje.fechainicio, " +  //3
+	            "viaje.fechafin, " +  //4 
+	            "viaje.cupoinicialviajero, " +  //5
+	            "viaje.cupoinicialinternet, " +  //6
+	            "viaje.cupoviajero, " +  //7
+	            "viaje.cupointernet, " +  //8
+	            "tarjeta.tarjetahabiente, " +  //9 
+	            "depositos.bolivares, " +  //10
+	            "depositos.pesos, " +  //11
+	            "transacciones.pesos, " +  //12
+	            "transacciones.dolares, " +  //13
+	            "transacciones.comision  ) tot").getSingleResult();
+	      
+	      
+	      balancesfecha = entityManager.createNativeQuery("SELECT SUM(bolivares) as depobolivares, " +
+	              "SUM(depositopesos) as depopesos, SUM(pesos) as transacpesos, " +
+	              "SUM(dolares) as transacdolares, SUM(comision) as transacomision" +
+	              " FROM (SELECT " +
+	                "tarjeta.numerotarjeta, " +  //0
+	                "banco.nombrebanco, " +  //1
+	                "franquicia.nombrefranquicia, " +  //2
+	                "viaje.fechainicio, " +  //3
+	                "viaje.fechafin, " +  //4 
+	                "viaje.cupoinicialviajero, " +  //5
+	                "viaje.cupoinicialinternet, " +  //6
+	                "viaje.cupoviajero, " +  //7
+	                "viaje.cupointernet, " +  //8
+	                "tarjeta.tarjetahabiente, " +  //9 
+	                "depositos.bolivares, " +  //10
+	                "depositos.pesos as depositopesos, " +  //11
+	                "transacciones.pesos, " +  //12
+	                "transacciones.dolares, " +  //13
+	                "transacciones.comision, " +  //14
+	                "viaje.cupoviajero + viaje.cupointernet as totalcuporestante " +  //15
+	              "FROM " +
+	                "tarjeta " +
+	                "LEFT OUTER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) " +
+	                "LEFT OUTER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) " +
+	                "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) " +
+	                "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) " +
+	                 "LEFT JOIN (SELECT  " +
+	                 "depositostarjeta.promotor, " +
+	                "depositostarjeta.numerotarjeta, " +
+	                "sum(depositostarjeta.valordeposito) AS bolivares, " +
+	                "sum(depositostarjeta.depositopesos) AS pesos " +
+	              "FROM " +
+	                "depositostarjeta, viaje, tarjeta, tarjetaviaje " +
+	                "WHERE tarjeta.numerotarjeta = depositostarjeta.numerotarjeta and viaje.consecutivo = tarjetaviaje.consecutivoviaje and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and " +
+	                "tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and " +
+	                "depositostarjeta.fecha < '"+sdf.format(this.fecha)+"' " +
+	                    "and (depositostarjeta.fecha > '"+fechaini+"' or " +
+	                        "'"+fechaini+"' =  '"+sdf.format(this.fecha)+"') " + 
+	              "GROUP BY " +
+	                "depositostarjeta.numerotarjeta," +
+	                "depositostarjeta.promotor) depositos " + 
+	                "ON (depositos.numerotarjeta =  " +
+	                "tarjeta.numerotarjeta and depositos.promotor = '" + documento + "') " +
+	              "LEFT JOIN (SELECT  " +
+	                "transaccion.numerotarjeta, transaccion.promotor, " +
+	                "sum(transaccion.valortxpesos) AS pesos, " +
+	                "sum(transaccion.valortxdolares) AS dolares, " +
+	                "sum(transaccion.valorcomision) AS comision " +
+	              "FROM " +
+	                "transaccion, viaje, tarjeta, tarjetaviaje " +
+	                "WHERE tarjeta.numerotarjeta = transaccion.numerotarjeta and viaje.consecutivo = tarjetaviaje.consecutivoviaje and " +
+	                "tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta and " +
+	                "tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin and fechatx < '"+sdf.format(this.fecha)+"' " + 
+	                "and (fechatx > '"+fechaini+"' or " +
+	                "'"+fechaini+"' =  '"+sdf.format(this.fecha)+"')" + 
+	              "GROUP BY " +
+	                "transaccion.numerotarjeta, transaccion.promotor) transacciones " + 
+	                "ON (transacciones.numerotarjeta =  " +
+	                "tarjeta.numerotarjeta and transacciones.promotor = '" + documento + "')" + 
+	                        "where tarjeta.fechainicio = viaje.fechainicio and tarjeta.fechafin = viaje.fechafin " +
+	                        "and (transacciones.promotor = '" + documento + "' or " +
+	                  "depositos.promotor = '" + documento + "') ) tot").getSingleResult();
+	      
 		System.out.println("LA CONSULTA ANTERIOR ES LA DE LA GUI");
 		AdministrarUsuario.auditarUsuario(17, "Consulto balance de promotor "
 				+ documento + " en la fecha " + sdf.format(this.fecha) + "");
@@ -598,231 +477,161 @@ public class AdministrarPromotor {
 			this.tasabolivar = tasabolivares.get(0);
 		}
 
-		balances = entityManager
-				.createNativeQuery(
-						"SELECT t.tarjetahabiente, t.nombrebanco, "
-								+ "t.cupoviajero, max(t.fechatx), t.cupoviajero*"
-								+ tasa
-								+ " from "
-								+ "(SELECT "
-								+ "tarjeta.numerotarjeta, "
-								+ // 0
-								"banco.nombrebanco, "
-								+ // 1
-								"franquicia.nombrefranquicia, "
-								+ // 2
-								"viaje.fechainicio, "
-								+ // 3
-								"viaje.fechafin, "
-								+ // 4
-								"viaje.cupoinicialviajero, "
-								+ // 5
-								"viaje.cupoinicialinternet, "
-								+ // 6
-								"viaje.cupoviajero, "
-								+ // 7
-								"viaje.cupointernet, "
-								+ // 8
-								"tarjeta.tarjetahabiente, "
-								+ // 9
-								"depositos.bolivares, "
-								+ // 10
-								"depositos.pesos as depositopesos, "
-								+ // 11
-								"transacciones.pesos, "
-								+ // 12
-								"transacciones.dolares, "
-								+ // 13
-								"transacciones.comision, "
-								+ "transacciones.fechatx,"
-								+ // 14
-								"viaje.cupoviajero + viaje.cupointernet as totalcuporestante "
-								+ // 15
-								"FROM "
-								+ "tarjeta "
-								+ "INNER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) "
-								+ "INNER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) "
-								+ "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) "
-								+ "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) "
-								+ "LEFT JOIN (SELECT  "
-								+ "depositostarjeta.numerotarjeta, "
-								+ "sum(depositostarjeta.valordeposito) AS bolivares, "
-								+ "sum(depositostarjeta.depositopesos) AS pesos "
-								+ "FROM "
-								+ "depositostarjeta "
-								+ "GROUP BY "
-								+ "depositostarjeta.numerotarjeta) depositos "
-								+ "ON (depositos.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta) "
-								+ "LEFT JOIN (SELECT  "
-								+ "transaccion.numerotarjeta, "
-								+ "sum(transaccion.valortxpesos) AS pesos, "
-								+ "sum(transaccion.valortxdolares) AS dolares, "
-								+ "sum(transaccion.valorcomision) AS comision, "
-								+ "max(transaccion.fechatx) AS fechatx "
-								+ "FROM "
-								+ "transaccion "
-								+ "GROUP BY "
-								+ "transaccion.numerotarjeta) transacciones "
-								+ "ON (transacciones.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta)"
-								+ "where tarjeta.documento = '"
-								+ documento
-								+ "' "
-								+ "and (transacciones.pesos > 0 or "
-								+ "depositos.pesos > 0) "
-								+ "and viaje.cupoviajero >= 40 "
-								+ "and tarjetaviaje.estado = 1 and "
-								+ "viaje.fechafin>='"
-								+ this.fecha
-								+ "') t "
-								+ "group by t.tarjetahabiente, t.nombrebanco, t.cupoviajero")
-				.getResultList();
+		balances = entityManager.createNativeQuery("SELECT t.tarjetahabiente, t.nombrebanco, " +
+		          "t.cupoviajero, max(t.fechatx), t.cupoviajero*"+tasa+" from " +
+		          "(SELECT " +
+		            "tarjeta.numerotarjeta, " +  //0
+		            "banco.nombrebanco, " +  //1
+		            "franquicia.nombrefranquicia, " +  //2
+		            "viaje.fechainicio, " +  //3
+		            "viaje.fechafin, " +  //4 
+		            "viaje.cupoinicialviajero, " +  //5
+		            "viaje.cupoinicialinternet, " +  //6
+		            "viaje.cupoviajero, " +  //7
+		            "viaje.cupointernet, " +  //8
+		            "tarjeta.tarjetahabiente, " +  //9 
+		            "depositos.bolivares, " +  //10
+		            "depositos.pesos as depositopesos, " +  //11
+		            "transacciones.pesos, " +  //12
+		            "transacciones.dolares, " +  //13
+		            "transacciones.comision, " +
+		            "transacciones.fechatx," +  //14
+		            "viaje.cupoviajero + viaje.cupointernet as totalcuporestante " +  //15
+		          "FROM " +
+		            "tarjeta " +
+		            "INNER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) " +
+		            "INNER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) " +
+		            "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) " +
+		            "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) " +
+		             "LEFT JOIN (SELECT  " +
+		            "depositostarjeta.numerotarjeta, " +
+		            "sum(depositostarjeta.valordeposito) AS bolivares, " +
+		            "sum(depositostarjeta.depositopesos) AS pesos " +
+		          "FROM " +
+		            "depositostarjeta " +
+		          "GROUP BY " +
+		            "depositostarjeta.numerotarjeta) depositos " + 
+		            "ON (depositos.numerotarjeta =  " +
+		            "tarjeta.numerotarjeta) " +
+		          "LEFT JOIN (SELECT  " +
+		            "transaccion.numerotarjeta, " +
+		            "sum(transaccion.valortxpesos) AS pesos, " +
+		            "sum(transaccion.valortxdolares) AS dolares, " +
+		            "sum(transaccion.valorcomision) AS comision, " +
+		            "max(transaccion.fechatx) AS fechatx " +
+		          "FROM " +
+		            "transaccion " +
+		          "GROUP BY " +
+		            "transaccion.numerotarjeta) transacciones " + 
+		            "ON (transacciones.numerotarjeta =  " +
+		            "tarjeta.numerotarjeta)" + 
+		                    "where tarjeta.documento = '" + documento + "' " +
+		                    "and (transacciones.pesos > 0 or " +
+		                    "depositos.pesos > 0) " +
+		                    "and viaje.cupoviajero >= 40 " +
+		                    "and tarjetaviaje.estado = 1 and " +
+		                    "viaje.fechafin>='"+this.fecha+"') t " +
+		            "group by t.tarjetahabiente, t.nombrebanco, t.cupoviajero").getResultList();
 
-		balancesst = entityManager
-				.createNativeQuery(
-						"SELECT distinct t.tarjetahabiente, t.nombrebanco, "
-								+ "t.cupoviajero, t.fechainicio, t.cupoviajero*"
-								+ tasa
-								+ " from "
-								+ "(SELECT "
-								+ "tarjeta.numerotarjeta, "
-								+ // 0
-								"banco.nombrebanco, "
-								+ // 1
-								"franquicia.nombrefranquicia, "
-								+ // 2
-								"viaje.fechainicio, "
-								+ // 3
-								"viaje.fechafin, "
-								+ // 4
-								"viaje.cupoinicialviajero, "
-								+ // 5
-								"viaje.cupoinicialinternet, "
-								+ // 6
-								"viaje.cupoviajero, "
-								+ // 7
-								"viaje.cupointernet, "
-								+ // 8
-								"tarjeta.tarjetahabiente, "
-								+ // 9
+		balancesst = entityManager.createNativeQuery("SELECT distinct t.tarjetahabiente, t.nombrebanco, " +
+		          "t.cupoviajero, t.fechainicio, t.cupoviajero*"+tasa+" from " +
+		          "(SELECT " +
+		            "tarjeta.numerotarjeta, " +  //0
+		            "banco.nombrebanco, " +  //1
+		            "franquicia.nombrefranquicia, " +  //2
+		            "viaje.fechainicio, " +  //3
+		            "viaje.fechafin, " +  //4 
+		            "viaje.cupoinicialviajero, " +  //5
+		            "viaje.cupoinicialinternet, " +  //6
+		            "viaje.cupoviajero, " +  //7
+		            "viaje.cupointernet, " +  //8
+		            "tarjeta.tarjetahabiente, " +  //9 
+		           
+		            "viaje.cupoviajero + viaje.cupointernet as totalcuporestante " +  //15
+		          "FROM " +
+		            "tarjeta " +
+		            "INNER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) " +
+		            "INNER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) " +
+		            "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) " +
+		            "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) " +
+		             
+		             
+		                    "where tarjeta.documento = '" + documento + "' " +
+		                    
+		                    "and tarjetaviaje.estado = 1 and " +
+		                    "viaje.fechafin>='"+sdf.format(this.fecha)+"' and " +
+		                    " viaje.consecutivo not in (SELECT  " +
+		            "tarjetaviaje.consecutivoviaje " +
+		          "FROM " +
+		            "transaccion, tarjetaviaje, tarjeta " +
+		          "WHERE " +
+		          "transaccion.numerotarjeta = tarjeta.numerotarjeta " +
+		          "and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta " +
+		          ")) t ").getResultList();
+			
 
-								"viaje.cupoviajero + viaje.cupointernet as totalcuporestante "
-								+ // 15
-								"FROM "
-								+ "tarjeta "
-								+ "INNER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) "
-								+ "INNER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) "
-								+ "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) "
-								+ "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) "
-								+
-
-								"where tarjeta.documento = '"
-								+ documento
-								+ "' "
-								+
-
-								"and tarjetaviaje.estado = 1 and "
-								+ "viaje.fechafin>='"
-								+ sdf.format(this.fecha)
-								+ "' and "
-								+ " viaje.consecutivo not in (SELECT  "
-								+ "tarjetaviaje.consecutivoviaje "
-								+ "FROM "
-								+ "transaccion, tarjetaviaje, tarjeta "
-								+ "WHERE "
-								+ "transaccion.numerotarjeta = tarjeta.numerotarjeta "
-								+ "and tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta "
-								+ ")) t ").getResultList();
-
-		balancesprestamo = entityManager
-				.createNativeQuery(
-						"select count(d.consecutivo) as cuentatarjetas, "
-								+ "sum(d.cupoviajero) as totaldolares, "
-								+ "sum(d.totalpesos) as totalpesos, "
-								+ "sum(d.totalbolivares) as totalbolivares "
-								+ "from (" + "SELECT t.consecutivo, "
-								+ "t.cupoviajero,  t.cupoviajero*"
-								+ tasa
-								+ " as totalpesos, "
-								+ "t.cupoviajero*4.3*"
-								+ tasabolivar
-								+ " as totalbolivares  from "
-								+ "(SELECT "
-								+ "tarjeta.numerotarjeta, "
-								+ // 0
-								"banco.nombrebanco, "
-								+ // 1
-								"franquicia.nombrefranquicia, "
-								+ // 2
-								"viaje.fechainicio, "
-								+ // 3
-								"viaje.fechafin, "
-								+ // 4
-								"viaje.cupoinicialviajero, "
-								+ // 5
-								"viaje.cupoinicialinternet, "
-								+ // 6
-								"viaje.cupoviajero, "
-								+ // 7
-								"viaje.cupointernet, "
-								+ // 8
-								"tarjeta.tarjetahabiente, "
-								+ // 9
-								"depositos.bolivares, "
-								+ // 10
-								"depositos.pesos as depositopesos, "
-								+ // 11
-								"transacciones.pesos, "
-								+ // 12
-								"transacciones.dolares, "
-								+ // 13
-								"transacciones.comision, "
-								+ "transacciones.fechatx,"
-								+ // 14
-								"viaje.cupoviajero + viaje.cupointernet as totalcuporestante,"
-								+ "viaje.consecutivo "
-								+ // 15
-								"FROM "
-								+ "tarjeta "
-								+ "INNER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) "
-								+ "INNER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) "
-								+ "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) "
-								+ "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) "
-								+ "LEFT JOIN (SELECT  "
-								+ "depositostarjeta.numerotarjeta, "
-								+ "sum(depositostarjeta.valordeposito) AS bolivares, "
-								+ "sum(depositostarjeta.depositopesos) AS pesos "
-								+ "FROM "
-								+ "depositostarjeta "
-								+ "GROUP BY "
-								+ "depositostarjeta.numerotarjeta) depositos "
-								+ "ON (depositos.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta) "
-								+ "LEFT JOIN (SELECT  "
-								+ "transaccion.numerotarjeta, "
-								+ "sum(transaccion.valortxpesos) AS pesos, "
-								+ "sum(transaccion.valortxdolares) AS dolares, "
-								+ "sum(transaccion.valorcomision) AS comision, "
-								+ "max(transaccion.fechatx) AS fechatx "
-								+ "FROM "
-								+ "transaccion "
-								+ "GROUP BY "
-								+ "transaccion.numerotarjeta) transacciones "
-								+ "ON (transacciones.numerotarjeta =  "
-								+ "tarjeta.numerotarjeta)"
-								+ "where tarjeta.documento = '"
-								+ documento
-								+ "' "
-								+ "and (transacciones.pesos > 0 or "
-								+ "depositos.pesos > 0) "
-								+ "and viaje.cupoviajero >= 40 "
-								+ "and tarjetaviaje.estado = 1 and "
-								+ "viaje.fechafin>='"
-								+ this.fecha
-								+ "') t "
-								+ "group by t.consecutivo, t.cupoviajero) d")
-				.getSingleResult();
+		balancesprestamo = entityManager.createNativeQuery("select count(d.consecutivo) as cuentatarjetas, " +
+		          "sum(d.cupoviajero) as totaldolares, " +
+		          "sum(d.totalpesos) as totalpesos, " +
+		          "sum(d.totalbolivares) as totalbolivares " +
+		          "from (" +
+		          "SELECT t.consecutivo, " +
+		          "t.cupoviajero,  t.cupoviajero*"+tasa+" as totalpesos, " +
+		          "t.cupoviajero*4.3*"+tasabolivar+" as totalbolivares  from " +
+		          "(SELECT " +
+		            "tarjeta.numerotarjeta, " +  //0
+		            "banco.nombrebanco, " +  //1
+		            "franquicia.nombrefranquicia, " +  //2
+		            "viaje.fechainicio, " +  //3
+		            "viaje.fechafin, " +  //4 
+		            "viaje.cupoinicialviajero, " +  //5
+		            "viaje.cupoinicialinternet, " +  //6
+		            "viaje.cupoviajero, " +  //7
+		            "viaje.cupointernet, " +  //8
+		            "tarjeta.tarjetahabiente, " +  //9 
+		            "depositos.bolivares, " +  //10
+		            "depositos.pesos as depositopesos, " +  //11
+		            "transacciones.pesos, " +  //12
+		            "transacciones.dolares, " +  //13
+		            "transacciones.comision, " +
+		            "transacciones.fechatx," +  //14
+		            "viaje.cupoviajero + viaje.cupointernet as totalcuporestante," +
+		            "viaje.consecutivo " +  //15
+		          "FROM " +
+		            "tarjeta " +
+		            "INNER JOIN tarjetaviaje ON (tarjeta.numerotarjeta = tarjetaviaje.numerotarjeta) " +
+		            "INNER JOIN viaje ON (tarjetaviaje.consecutivoviaje = viaje.consecutivo) " +
+		            "INNER JOIN banco ON (tarjeta.bancoemisor = banco.codbanco) " +
+		            "INNER JOIN franquicia ON (tarjeta.franquicia = franquicia.codfranquicia) " +
+		             "LEFT JOIN (SELECT  " +
+		            "depositostarjeta.numerotarjeta, " +
+		            "sum(depositostarjeta.valordeposito) AS bolivares, " +
+		            "sum(depositostarjeta.depositopesos) AS pesos " +
+		          "FROM " +
+		            "depositostarjeta " +
+		          "GROUP BY " +
+		            "depositostarjeta.numerotarjeta) depositos " + 
+		            "ON (depositos.numerotarjeta =  " +
+		            "tarjeta.numerotarjeta) " +
+		          "LEFT JOIN (SELECT  " +
+		            "transaccion.numerotarjeta, " +
+		            "sum(transaccion.valortxpesos) AS pesos, " +
+		            "sum(transaccion.valortxdolares) AS dolares, " +
+		            "sum(transaccion.valorcomision) AS comision, " +
+		            "max(transaccion.fechatx) AS fechatx " +
+		          "FROM " +
+		            "transaccion " +
+		          "GROUP BY " +
+		            "transaccion.numerotarjeta) transacciones " + 
+		            "ON (transacciones.numerotarjeta =  " +
+		            "tarjeta.numerotarjeta)" + 
+		                    "where tarjeta.documento = '" + documento + "' " +
+		                    "and (transacciones.pesos > 0 or " +
+		                    "depositos.pesos > 0) " +
+		                    "and viaje.cupoviajero >= 40 " +
+		                    "and tarjetaviaje.estado = 1 and " +
+		                    "viaje.fechafin>='"+this.fecha+"') t " +
+		            "group by t.consecutivo, t.cupoviajero) d").getSingleResult();
 
 		String sql = "SELECT tarjeta.tarjetahabiente, " + "banco.nombrebanco, "
 				+ "viaje.cupoviajero, " + "viaje.cupoviajero*"
