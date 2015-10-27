@@ -715,9 +715,7 @@ public class AdministrarGasto
 					this.cuentaHome.getInstance().getNombre() +"'";
 		}
 		System.out.println(sql);
-		
-		sql += " order by transferencia.gastos.personal.nombre";
-		
+	
 		System.out.println("Ejecutando query:");
 		
 		this.listarTransferencias = entityManager.createQuery(sql).setMaxResults(30).getResultList();

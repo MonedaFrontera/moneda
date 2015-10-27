@@ -74,7 +74,17 @@ public class Reporteador {
 		return null;
 	}
 	
+	public String generarReportePDFNombre2(Object param1, Object param2, 
+				  							   Object param3, Object param4, 
+				  							   Object param5, Object param6,
+				  							   String nombre){
+		this.nombrereporte = nombre;
 	
+		generarReportePDF2(param1, param2, 
+				param3, param4, param5, param6);
+		return null;
+	}
+		
 	public String generarReportePDFNombre6( Object param1, Object param2, 
 											Object param3, Object param4, 
 											Object param5, Object param5a, 
@@ -355,6 +365,79 @@ public class Reporteador {
 		}	
 		//System.out.println("Generando Nomina 5");
 	}	
+	
+	
+	//Generar el pdf con 6 parametros recibidos
+	public String generarReportePDF2(Object param1, Object param2, 
+						Object param3, Object param4, 
+						Object param5, Object param6){
+			
+			System.out.println("Generando el reporte.........");
+			if(reportesHome.getInstance().getCodreporte()!=null){
+			this.nombrereporte = reportesHome.getInstance().getCodreporte();
+			}
+			
+			String documento = "/ReportesMoneda/"+this.nombrereporte+".jasper";
+			
+			System.out.println("[Path] " + documento);
+			
+			//String ficheros = "ruta2.jasper";
+			long inicio = System.currentTimeMillis();
+			String doc = nombrereporte+inicio+".pdf"; 
+			
+			
+			
+			String destFileNamePdf = path + doc;
+			Map parameters = new HashMap();
+			
+			parameters.put("param1", param1);
+			parameters.put("param2", param2);
+			parameters.put("param3", param3);
+			parameters.put("param4", param4);
+			parameters.put("param5", param5);
+			parameters.put("param6", param6);
+			System.out.println("param1: " + param1);
+			System.out.println("param2: " + param2);
+			System.out.println("param3: " + param3);
+			System.out.println("param4: " + param4);
+			System.out.println("param5: " + param5);
+			try {
+			
+			UtilidadesBD u = new UtilidadesBD();
+			
+			System.out.println("Creando Conexion...");
+			Connection c = u.obtenerConnection();
+			
+			System.out.println("Creando el reporte: "+documento);
+			JasperPrint jasperPrint = 
+			JasperFillManager.fillReport(documento,  parameters, c);
+			
+			System.out.println("Exportando el informe...");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, destFileNamePdf);
+			
+			c.close();
+			u.mostrarFormato(path,doc);//
+			
+			return destFileNamePdf;
+			
+			} catch (SQLException e) {
+			//e.printStackTrace();
+			System.err.println(e.getMessage());
+			return null;
+			} catch (JRException e) {
+			//e.printStackTrace();
+			System.err.println(e.getMessage());
+			return null;
+			} catch (IOException e) {
+			//e.printStackTrace();
+			System.err.println(e.getMessage());
+			return null;
+			}	
+			//System.out.println("Generando Nomina 5");
+		}	
+	
+	
+	
 	
 	/**
 	 * Genera la consulta actual de la 
