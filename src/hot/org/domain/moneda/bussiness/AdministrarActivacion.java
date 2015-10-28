@@ -833,6 +833,10 @@ public class AdministrarActivacion {
 		System.out.print("Proceso con Carpeta:");
 		System.out.println(activacionHome.getInstance().getActestado().getCodestado().contentEquals("PC"));
 		
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		activacionHome.getInstance().setFechamod(hoy);
+		
 		// Si es el estado proceso con carpeta
 		if ( activacionHome.getInstance().getActestado().getCodestado().contentEquals("PC") ) {
 			System.out.println("Ingrese al if de Proceso con carpeta");	
@@ -1346,6 +1350,10 @@ public class AdministrarActivacion {
 		log.info("Actualizacion del Viaje "
 				+ activacionHome.getInstance().getCedula());
 
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		activacionHome.getInstance().setFechamod(hoy);
+		
 		activacionHome.getInstance().setActestado(
 				activacionHome.getInstance().getActestado());
 		activacionHome.getInstance().setPromotor(promotorHome.getInstance());
@@ -1356,6 +1364,7 @@ public class AdministrarActivacion {
 		activacionHome.clearInstance();
 
 	}
+	
 
 	private String nombrePromotor = "";
 
