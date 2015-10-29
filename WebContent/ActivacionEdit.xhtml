@@ -367,13 +367,13 @@
         	
         	<s:decorate id="promotor2Field" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
-			<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">
-                <a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" ajaxSingle="true"/>
+			<h:inputText value="#{AdministrarActivacion.nombrePromotor}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarActivacion.ubicarPromotor}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
                     alt="" />
 			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
-                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        suggestionAction="#{AdministrarActivacion.autocompletarPromotor}" var="result"
                                         tokens="," height="150" width="260" cellpadding="2"
                                         cellspacing="2"   shadowOpacity="4" shadowDepth="4"
                                         minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
@@ -879,7 +879,7 @@
 
             <h:commandButton id="update"
                           value="Actualizar"
-                         action="#{activacionHome.update}"
+                         action="#{AdministrarActivacion.actualizarActivacion()}"
                        rendered="#{activacionHome.managed}"/>
 
             <h:commandButton id="delete"

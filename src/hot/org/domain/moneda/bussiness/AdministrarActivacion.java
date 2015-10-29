@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -91,11 +93,45 @@ public class AdministrarActivacion {
 	//Esta variable guarda el destino para la interfaz de usuario
 	private String destinoAnio;
 
-	public void administrarActivacion() {
-		// implement your business logic here
-		log.info("AdministrarActivacion.administrarActivacion() action called");
-		statusMessages.add("administrarActivacion");
-	}
+	@In(create = true)
+	@Out
+	private PromotorHome promotorHome;
+
+	@In(create = true)
+	@Out
+	private GestorHome gestorHome;
+
+	@In(create = true)
+	@Out
+	private ActivacionHome activacionHome;
+
+	@In(create = true)
+	@Out
+	private ObservacionHome observacionHome;
+
+	@In(create = true)
+	@Out
+	private ActivagestorHome activagestorHome;
+
+	@In(create = true)
+	@Out
+	private EstadoactivacionHome estadoactivacionHome;
+
+	List<String> lista = new ArrayList<String>();
+	
+	private Integer anioViaje;
+	
+	private String nombrePromotor = "";
+	//Cedula
+	private String promotor;
+
+	
+	Actestado estado;
+	Asesor asesor;
+	Banco banco;
+	
+	Boolean b = false;
+	Boolean a = false;
 
 	public String getObservacionReg() {
 		return observacionReg;
@@ -104,6 +140,110 @@ public class AdministrarActivacion {
 	public void setObservacionReg(String observacionReg) {
 		this.observacionReg = observacionReg;
 	}
+	
+	public Integer getAnioViaje() {
+		return anioViaje;
+	}
+
+	public void setAnioViaje(Integer anioViaje) {
+		this.anioViaje = anioViaje;
+	}
+	
+	public String getNombrePromotor() {
+		return nombrePromotor;
+	}
+
+	public void setNombrePromotor(String nombrePromotor) {
+		this.nombrePromotor= nombrePromotor;
+	}
+	
+	private String nombre = "";
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getPromotor() {
+		return promotor;
+	}
+
+	public void setPromotor(String promotor) {
+		this.promotor = promotor;
+	}
+
+	EntityQuery<Activacion> activacions = new EntityQuery<Activacion>();
+
+	@In(create = true)
+	private ActivacionList activacionList;
+
+	public EntityQuery<Activacion> getActivacions() {
+		return activacions;
+	}
+
+	public void setActivacions(EntityQuery<Activacion> activacions) {
+		this.activacions = activacions;
+	}
+
+	public Banco getBanco() {
+		//
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}
+
+	
+	public Asesor getAsesor() {
+		return asesor;
+	}
+
+	public void setAsesor(Asesor asesor) {
+		this.asesor = asesor;
+	}
+
+	public Boolean getA() {
+		return a;
+	}
+
+	public void setA(Boolean a) {
+		this.a = a;
+	}
+
+	public Boolean getB() {
+		return b;
+	}
+
+	public void setB(Boolean b) {
+		this.b = b;
+	}
+
+	public Actestado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Actestado estado) {
+		this.estado = estado;
+	}
+	
+	
+	public String getDestinoAnio() {
+		return destinoAnio;
+	}
+
+	public void setDestinoAnio(String destinoAnio) {
+		this.destinoAnio = destinoAnio;
+	}
+	
+	public void administrarActivacion() {
+		// implement your business logic here
+		log.info("AdministrarActivacion.administrarActivacion() action called");
+		statusMessages.add("administrarActivacion");
+	}
 
 	public String guardarActivacion() {
 		Date hoy = new Date();
@@ -111,8 +251,12 @@ public class AdministrarActivacion {
 				"select nextval('activacion_consecutivo_seq')")
 				.getSingleResult();
 		activacionHome.getInstance().setConsecutivo(query.intValue());
-
-		activacionHome.getInstance().setPromotor(promotorHome.getInstance());
+	
+    		if(!this.nombrePromotor.contentEquals("")){  
+    			System.out.println("***********"+this.nombrePromotor);
+    			ubicarPromotor();
+    		}
+    	
 
 		if (activacionHome.getInstance().getFechareg() != null) {
 			System.out.println("fecha reg"
@@ -221,45 +365,7 @@ public class AdministrarActivacion {
 						+ "p.documento = '" + docasesor + "'")
 				.getSingleResult();
 	}
-
-	@In(create = true)
-	@Out
-	private PromotorHome promotorHome;
-
-	@In(create = true)
-	@Out
-	private GestorHome gestorHome;
-
-	@In(create = true)
-	@Out
-	private ActivacionHome activacionHome;
-
-	@In(create = true)
-	@Out
-	private ObservacionHome observacionHome;
-
-	@In(create = true)
-	@Out
-	private ActivagestorHome activagestorHome;
-
-	@In(create = true)
-	@Out
-	private EstadoactivacionHome estadoactivacionHome;
-
-	List<String> lista = new ArrayList<String>();
-	
-	private Integer anioViaje;
-	
-	
-	public Integer getAnioViaje() {
-		return anioViaje;
-	}
-
-	public void setAnioViaje(Integer anioViaje) {
-		this.anioViaje = anioViaje;
-	}
-
-	public void llenarPromotores() {
+	public void llenarGestores() {
 		entityManager.clear();
 		String sql = "";
 		if (identity.hasRole("Asesor")) {
@@ -274,7 +380,7 @@ public class AdministrarActivacion {
 
 	public List<String> autocompletar(Object nombre) {
 		if (lista.isEmpty())
-			llenarPromotores(); // Metodo que carga la informacion de los
+			llenarGestores(); // Metodo que carga la informacion de los
 		// nombres de las personas
 		String pref = (String) nombre;
 		ArrayList<String> result = new ArrayList<String>();
@@ -310,98 +416,7 @@ public class AdministrarActivacion {
 						+ "in ('AC','EG','RE', 'RA', 'RC') order by s.descripcion asc").getResultList();
 	}
 
-	private String nombre = "";
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	private String promotor;
-
-	public String getPromotor() {
-		return promotor;
-	}
-
-	public void setPromotor(String promotor) {
-		this.promotor = promotor;
-	}
-
-	EntityQuery<Activacion> activacions = new EntityQuery<Activacion>();
-
-	@In(create = true)
-	private ActivacionList activacionList;
-
-	public EntityQuery<Activacion> getActivacions() {
-		return activacions;
-	}
-
-	public void setActivacions(EntityQuery<Activacion> activacions) {
-		this.activacions = activacions;
-	}
-
-	Banco banco;
-
-	public Banco getBanco() {
-		//
-		return banco;
-	}
-
-	public void setBanco(Banco banco) {
-		this.banco = banco;
-	}
-
-	Asesor asesor;
-
-	public Asesor getAsesor() {
-		return asesor;
-	}
-
-	public void setAsesor(Asesor asesor) {
-		this.asesor = asesor;
-	}
-
-	Boolean b = false;
-	Boolean a = false;
 	
-	
-	public Boolean getA() {
-		return a;
-	}
-
-	public void setA(Boolean a) {
-		this.a = a;
-	}
-
-	public Boolean getB() {
-		return b;
-	}
-
-	public void setB(Boolean b) {
-		this.b = b;
-	}
-
-	Actestado estado;
-
-	public Actestado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Actestado estado) {
-		this.estado = estado;
-	}
-	
-	
-	public String getDestinoAnio() {
-		return destinoAnio;
-	}
-
-	public void setDestinoAnio(String destinoAnio) {
-		this.destinoAnio = destinoAnio;
-	}
 
 	Activacion x;
 	public void buscar() {
@@ -948,8 +963,11 @@ public class AdministrarActivacion {
 
 	public void editar(int consecutivo) {
 		activacionHome.setActivacionConsecutivo(consecutivo);
+		Activacion act=entityManager.find(Activacion.class, consecutivo);
+		activacionHome.setInstance(act);
 		this.setDestinoAnio("Destino " + activacionHome.getInstance().getDestino());
-		AdministrarTarjeta.setNombre(activacionHome.getInstance().getPromotor()
+		
+		this.nombrePromotor=(activacionHome.getInstance().getPromotor()
 				.getPersonal().getNombre()
 				+ " "
 				+ activacionHome.getInstance().getPromotor().getPersonal()
@@ -1344,30 +1362,36 @@ public class AdministrarActivacion {
 	/**
 	 * actualiza la activacion
 	 */
-	public void actualizarActivacion() {
-		log.info("Actualizacion del Viaje "
-				+ activacionHome.getInstance().getCedula());
+	public String actualizarActivacion() {
+	
+		 entityManager.clear();
+		    log.info("Actualizacion del Viaje "
+		        + activacionHome.getInstance().getCedula());
+		    System.out.println("********entra a actualizar");
+		    Date hoy= new Date();
+		    activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		    activacionHome.getInstance().setFechamod(hoy);
+		    
+		    System.out.println("********entra a actualizar usuario mod");
+		    
+		    Actestado act= activacionHome.getInstance().getActestado();
+		    activacionHome.getInstance().setActestado(act);
+		    
+		    System.out.println("******entra a actualizar actestado");
+		    Promotor p=activacionHome.getInstance().getPromotor();
+		    activacionHome.getInstance().setPromotor(p);
+		    
+		    System.out.println("******entra a actualizar promotor");
+		    
+		    entityManager.merge(activacionHome.getInstance());
 
-		activacionHome.getInstance().setActestado(
-				activacionHome.getInstance().getActestado());
-		activacionHome.getInstance().setPromotor(promotorHome.getInstance());
-
-		entityManager.merge(activacionHome.getInstance());
-
-		entityManager.flush();
-		activacionHome.clearInstance();
+		    entityManager.flush();
+		    activacionHome.clearInstance(); 
+		    return "updated";
 
 	}
 
-	private String nombrePromotor = "";
-
-	public String getNombrePromotor() {
-		return nombre;
-	}
-
-	public void setNombrePromotor(String nombre) {
-		this.nombre = nombre;
-	}
+	
 
 	public void ubicarPromotor() {
 
@@ -1424,7 +1448,61 @@ public class AdministrarActivacion {
 		}
 	}
 	
+	public List<String> autocompletarPromotor(Object nom) {
+	    llenarPromotores();               // Metodo que carga la informacion de los nombres de las personas
+	    String nombre = (String) nom;
+	    List<String> result = new ArrayList<String>();
+	    StringTokenizer tokens = new StringTokenizer(nombre.toLowerCase());
+	    StringBuilder bldr = new StringBuilder();//builder usado para formar el patron
+	    
+	    long t1 = System.currentTimeMillis();
+	    // creamos el patron para la busqueda
+	    int lengthToken = nombre.split("\\s+").length;// longitud de palabras
+	                            // en el nombre
+	    int cont = 1;
+	    while (tokens.hasMoreTokens()) {      
+	      if (cont == lengthToken && lengthToken == 1) {
+	        bldr.append(".*").append(tokens.nextToken()).append(".*");
+	      } else {
+	        if (cont++ < lengthToken--) {
+	          bldr.append(".*").append(tokens.nextToken()).append(".*");
+	          lengthToken--;
+	        } else {
+	          bldr.append(tokens.nextToken()).append(".*");
+	        }
+	      }
+	    }   
+	    Pattern p = Pattern.compile(bldr.toString().trim());
+	    Matcher match;    
+	    // realiza la busqueda
+	    for (String promo : lista) {      
+	      match = p.matcher(promo.toLowerCase());
+	      boolean b = match.find();
+	      if (b) {
+	        result.add(promo);        
+	      }   
+	    }
+	    long t2 = System.currentTimeMillis() - t1;
+	    System.out.println(">>>Tiempo total de la busqueda: " + t2 + "ms");   
+	  
+	    return result;
+	    
+	  }
 	
+	  public void llenarPromotores(){
+		    entityManager.clear();
+		    String sql = "";
+		      
+		    if(identity.hasRole("Asesor")){
+		      sql = " where p.asesor.documento = '" + identity.getUsername()+"'";
+		    }
+		    List<String> resultList = entityManager.createQuery("select " +
+		        "p.personal.nombre||' '||p.personal.apellido from Promotor p "+ 
+		        sql).getResultList();
+		    lista = resultList;
+		    }
+	 
+	  
 	
 	
 }// fin de la clase AdministrarActivacion
