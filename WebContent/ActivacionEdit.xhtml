@@ -738,10 +738,12 @@
             <div class=".divDerechoAct;">
             <fieldset>
             <legend style="color:#000066;font-weight:bold;">Informacion de Estado</legend>
-            
-         <s:decorate id="estadoiniactField" template="layout/edit.xhtml" rendered="#{!activacionHome.managed}">
+
+            <!-- 
+            <s:decorate id="estadoiniactField" template="layout/edit.xhtml" rendered="#{!activacionHome.managed}">
+
                 <ui:define name="label">Estado Inicial</ui:define>
-                <h:selectOneMenu id="estadoiniSel" value="#{activacionHome.instance.actestado}" required="true" >
+                <h:selectOneMenu id="estadoiniSel" value="#{activacionHome.instance.actestado}"  >
 			<s:selectItems	value="#{AdministrarActivacion.estadosInicio()}" disabled="#{activacionHome.managed}"
 						   	var="actestado" label="#{actestado.descripcion}" 
 			                    noSelectionLabel="Seleccione..."  />
@@ -749,15 +751,17 @@
 			      <s:convertEntity />			      
 			</h:selectOneMenu>
         	</s:decorate>
+        	 -->
         	
-        	
-        	<s:decorate id="estadoactField" template="layout/edit.xhtml" rendered="#{activacionHome.managed}">
-                <ui:define name="label">Estado Actual</ui:define>
+        	<s:decorate id="estadoactField" template="layout/edit.xhtml" >
+                <ui:define name="label">Estado Actual +</ui:define>
                 <h:selectOneMenu id="estadoSel" 
-                disabled="#{!activacionHome.managed}" value="#{activacionHome.instance.actestado}" required="true" >
-			<s:selectItems value="#{actestadoList.resultList}" var="actestado" label="#{actestado.descripcion}" 
-			                    noSelectionLabel="Seleccione..." />
-			                    <a:support event="onchange" reRender="divfechas" ajaxSingle="true"/>
+                 value="#{activacionHome.instance.actestado}" required="true" >
+			<s:selectItems value="#{ AdministrarActivacion.estadoActivacion()}" 
+						   var="actestado" 
+						   label="#{actestado.descripcion}" 
+			               noSelectionLabel="Seleccione..." />
+			                    <a:support event="onchange" reRender="divfechas, estadoiniactField" ajaxSingle="true"/>
 			      <s:convertEntity />
 			      
 			</h:selectOneMenu>

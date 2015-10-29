@@ -30,7 +30,9 @@ import org.domain.moneda.entity.Gestor;
 import org.domain.moneda.entity.Observacion;
 import org.domain.moneda.entity.ObservacionId;
 import org.domain.moneda.entity.Promotor;
+
 import org.domain.moneda.entity.Usuario;
+
 import org.domain.moneda.session.ActestadoList;
 import org.domain.moneda.session.ActivacionHome;
 import org.domain.moneda.session.ActivacionList;
@@ -242,8 +244,11 @@ public class AdministrarActivacion {
 	@In(create = true)
 	@Out
 	private EstadoactivacionHome estadoactivacionHome;
+	
 
 	List<String> lista = new ArrayList<String>();
+	
+	
 	
 	private Integer anioViaje;
 	
@@ -356,6 +361,15 @@ public class AdministrarActivacion {
 		this.activacions = activacions;
 	}
 
+		
+	public ActestadoList getActestadoList() {
+		return actestadoList;
+	}
+
+	public void setActestadoList(ActestadoList actestadoList) {
+		this.actestadoList = actestadoList;
+	}
+
 	Banco banco;
 
 	public Banco getBanco() {
@@ -385,6 +399,7 @@ public class AdministrarActivacion {
 		return a;
 	}
 
+	
 	public void setA(Boolean a) {
 		this.a = a;
 	}
@@ -980,6 +995,8 @@ public class AdministrarActivacion {
 	public void editar(int consecutivo) {
 		System.out.println("*************************  LLega a editar Activacion");
 		activacionHome.setActivacionConsecutivo(consecutivo);
+		Activacion act = entityManager.find(Activacion.class, consecutivo);
+		activacionHome.setInstance(act);
 		this.setDestinoAnio("Destino " + activacionHome.getInstance().getDestino());
 		AdministrarTarjeta.setNombre(activacionHome.getInstance().getPromotor()
 				.getPersonal().getNombre()
@@ -993,6 +1010,7 @@ public class AdministrarActivacion {
 					+ activacionHome.getInstance().getGestor().getPersonal()
 							.getApellido();
 		}
+
 		if (activacionHome.getInstance().getPromotor() != null) {
 			System.out.println("+++++++++++"+activacionHome.getInstance().getPromotor().getPersonal().getNombre());
 			
@@ -1009,6 +1027,9 @@ public class AdministrarActivacion {
 		}
 		
 		System.out.println("*************************"+this.getNombrePromotor());
+
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
+
 
 	}
 
@@ -1194,11 +1215,16 @@ public class AdministrarActivacion {
 	}
 
 	public void nombreActivacionMayuscula(String nombre) {
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
+		
 		String nomTemp = ExpresionesRegulares.eliminarEspacios(nombre, true);
+	
 		activacionHome.getInstance().setNombre(nomTemp);
+		activacionHome.setInstance(this.activacionHome.getInstance());
 	}
 
 	public void correoEspaciosBlanco(String correo) {
+		
 		String correoTemp = ExpresionesRegulares
 				.eliminarEspacios(correo, false);
 		
@@ -1214,6 +1240,7 @@ public class AdministrarActivacion {
 	//
 	public void claveEspaciosBlanco(String clave) {
 		
+		
 		activacionHome.getInstance().setClave(clave.trim().toLowerCase());
 		
 		//this.depurarClaveCadivi("");
@@ -1222,6 +1249,7 @@ public class AdministrarActivacion {
 	// las claves no pueden contener caracter de letra "o"
 	// se debe cambiar al caracter a cero "0"
 	public String depurarClaveCadivi(String clave) {
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
 		StringBuilder claveTemp = new StringBuilder();
 		String temp = "";
 		for (int i = 0; i < clave.length(); i++) {
@@ -1535,20 +1563,19 @@ public class AdministrarActivacion {
 		
 	}
     
-    public List<Actestado> estadoActivacion(){
-    	System.out.println("PERSISTIDO:" + activacionHome.isManaged());
+
+
+	public List<Actestado> estadoActivacion(){
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
     	
-    	if( activacionHome.getInstance().getCedula() != null  ){
+    	if( activacionHome.isManaged()){
+
     		
     		System.out.println(	"ESTADO DE ACTIVACION "+ 
     				this.activacionHome.getInstance().getActestado().getCodestado());
-    		
-    		List<Actestado> estadoAct = entityManager.createQuery("from Actestado ac where ac.codestado = '" +
-    				this.activacionHome.getInstance().getActestado().getCodestado() + "'").getResultList();
-    		
-    		
-    		return estadoAct;
-    		
+    
+    		return this.getActestadoList().getResultList(); 
+
     	}else{
     		return this.estadosInicio();
     	}
