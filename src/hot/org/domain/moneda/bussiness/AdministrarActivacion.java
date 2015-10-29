@@ -2,13 +2,10 @@ package org.domain.moneda.bussiness;
 
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
-import gnu.trove.benchmark.Main;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -25,17 +22,13 @@ import org.domain.moneda.entity.Activagestor;
 import org.domain.moneda.entity.ActivagestorId;
 import org.domain.moneda.entity.Asesor;
 import org.domain.moneda.entity.Banco;
-import org.domain.moneda.entity.Cita;
-import org.domain.moneda.entity.CitaId;
-import org.domain.moneda.entity.Cne;
 import org.domain.moneda.entity.Estadoactivacion;
 import org.domain.moneda.entity.EstadoactivacionId;
 import org.domain.moneda.entity.Gestor;
 import org.domain.moneda.entity.Observacion;
 import org.domain.moneda.entity.ObservacionId;
-import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Promotor;
-import org.domain.moneda.entity.Tarjeta;
+import org.domain.moneda.session.ActestadoList;
 import org.domain.moneda.session.ActivacionHome;
 import org.domain.moneda.session.ActivacionList;
 import org.domain.moneda.session.ActivagestorHome;
@@ -43,7 +36,6 @@ import org.domain.moneda.session.EstadoactivacionHome;
 import org.domain.moneda.session.GestorHome;
 import org.domain.moneda.session.ObservacionHome;
 import org.domain.moneda.session.PromotorHome;
-import org.domain.moneda.session.TarjetaList;
 import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.domain.moneda.util.ExpresionesRegulares;
@@ -243,8 +235,15 @@ public class AdministrarActivacion {
 	@In(create = true)
 	@Out
 	private EstadoactivacionHome estadoactivacionHome;
+	
+	@In(create = true)
+	@Out
+	private ActestadoList actestadoList;
+	
 
 	List<String> lista = new ArrayList<String>();
+	
+	
 	
 	private Integer anioViaje;
 	
@@ -341,6 +340,15 @@ public class AdministrarActivacion {
 		this.activacions = activacions;
 	}
 
+		
+	public ActestadoList getActestadoList() {
+		return actestadoList;
+	}
+
+	public void setActestadoList(ActestadoList actestadoList) {
+		this.actestadoList = actestadoList;
+	}
+
 	Banco banco;
 
 	public Banco getBanco() {
@@ -370,6 +378,7 @@ public class AdministrarActivacion {
 		return a;
 	}
 
+	
 	public void setA(Boolean a) {
 		this.a = a;
 	}
@@ -946,6 +955,8 @@ public class AdministrarActivacion {
 
 	public void editar(int consecutivo) {
 		activacionHome.setActivacionConsecutivo(consecutivo);
+		Activacion act = entityManager.find(Activacion.class, consecutivo);
+		activacionHome.setInstance(act);
 		this.setDestinoAnio("Destino " + activacionHome.getInstance().getDestino());
 		AdministrarTarjeta.setNombre(activacionHome.getInstance().getPromotor()
 				.getPersonal().getNombre()
@@ -959,6 +970,8 @@ public class AdministrarActivacion {
 					+ activacionHome.getInstance().getGestor().getPersonal()
 							.getApellido();
 		}
+		
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
 
 	}
 
@@ -1144,11 +1157,16 @@ public class AdministrarActivacion {
 	}
 
 	public void nombreActivacionMayuscula(String nombre) {
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
+		
 		String nomTemp = ExpresionesRegulares.eliminarEspacios(nombre, true);
+	
 		activacionHome.getInstance().setNombre(nomTemp);
+		activacionHome.setInstance(this.activacionHome.getInstance());
 	}
 
 	public void correoEspaciosBlanco(String correo) {
+		
 		String correoTemp = ExpresionesRegulares
 				.eliminarEspacios(correo, false);
 		
@@ -1164,6 +1182,7 @@ public class AdministrarActivacion {
 	//
 	public void claveEspaciosBlanco(String clave) {
 		
+		
 		activacionHome.getInstance().setClave(clave.trim().toLowerCase());
 		
 		//this.depurarClaveCadivi("");
@@ -1172,6 +1191,7 @@ public class AdministrarActivacion {
 	// las claves no pueden contener caracter de letra "o"
 	// se debe cambiar al caracter a cero "0"
 	public String depurarClaveCadivi(String clave) {
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
 		StringBuilder claveTemp = new StringBuilder();
 		String temp = "";
 		for (int i = 0; i < clave.length(); i++) {
@@ -1422,7 +1442,21 @@ public class AdministrarActivacion {
 		}
 	}
 	
-	
+	public List<Actestado> estadoActivacion(){
+		System.out.println(">>>>>>>>>>>>ESTADO PERSISTIDO DE LA ACTIVACION: " + activacionHome.isManaged());
+    	
+    	if( activacionHome.isManaged()){
+    		
+    		System.out.println(	"ESTADO DE ACTIVACION "+ 
+    				this.activacionHome.getInstance().getActestado().getCodestado());
+    		
+    		
+    		return this.getActestadoList().getResultList(); 
+    		
+    	}else{
+    		return this.estadosInicio();
+    	}
+    }
 	
 	
 }// fin de la clase AdministrarActivacion
