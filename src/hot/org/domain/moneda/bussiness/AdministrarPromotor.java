@@ -1221,13 +1221,14 @@ public class AdministrarPromotor {
 		BigDecimal bolivar = this.getTasabolivar();
 		String documentoProm = this.promotorHome.getInstance().getDocumento();
 		BigDecimal saldo = this.getSaldoinforme();
-		String usuario = identity.getUsername();
+		Usuario user = entityManager
+		.find(Usuario.class, identity.getUsername());
 		System.out.println(trm + "*******" + bolivar + "*****" + documentoProm
 				+ "******" + saldo);
 
 		// Se genera el reporte
 		Reporteador.generarReportePDFNombre2(trm, bolivar, documentoProm, this
-				.getSicad1(), usuario, saldo, nombreReporte);
+				.getSicad1(), user.getNombre(), saldo, nombreReporte);
 	}
 
 	/**

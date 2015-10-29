@@ -367,13 +367,13 @@
         	
         	<s:decorate id="promotor2Field" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
-			<h:inputText value="#{AdministrarTarjeta.nombre}" id="namepromotor" size="50">
-                <a:support event="onblur" action="#{AdministrarTarjeta.ubicarPromotor()}" ajaxSingle="true"/>
+			<h:inputText value="#{AdministrarActivacion.nombrePromotor}" id="namepromotor" size="50">
+                <a:support event="onblur" action="#{AdministrarActivacion.ubicarPromotor()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
                     alt="" />
 			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
-                                        suggestionAction="#{AdministrarTarjeta.autocompletar}" var="result"
+                                        suggestionAction="#{AdministrarActivacion.autocompletarPromotor}" var="result"
                                         tokens="," height="150" width="260" cellpadding="2"
                                         cellspacing="2"   shadowOpacity="4" shadowDepth="4"
                                         minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
@@ -739,7 +739,7 @@
             <fieldset>
             <legend style="color:#000066;font-weight:bold;">Informacion de Estado</legend>
             
-            <s:decorate id="estadoiniactField" template="layout/edit.xhtml" rendered="#{!activacionHome.managed}">
+         <s:decorate id="estadoiniactField" template="layout/edit.xhtml" rendered="#{!activacionHome.managed}">
                 <ui:define name="label">Estado Inicial</ui:define>
                 <h:selectOneMenu id="estadoiniSel" value="#{activacionHome.instance.actestado}" required="true" >
 			<s:selectItems	value="#{AdministrarActivacion.estadosInicio()}" disabled="#{activacionHome.managed}"
@@ -762,6 +762,8 @@
 			      
 			</h:selectOneMenu>
         	</s:decorate>
+        	
+        	
         	
         	<s:div id="divfechas">
 			

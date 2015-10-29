@@ -32,11 +32,11 @@
       </rule>
    </navigation>
 
-   <navigation from-action="#{activacionHome.update}">
-      <rule if-outcome="updated">
+   <navigation from-action="#{AdministrarActivacion.actualizarActivacion}">
+    <rule if-outcome="updated">
          <end-conversation/>
          <redirect view-id="/ActivacionList.xhtml"/>
-      </rule>
+   </rule>
    </navigation>
    
    <navigation from-action="#{AdministrarActivacion.cancelar()}">

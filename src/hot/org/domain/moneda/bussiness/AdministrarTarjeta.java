@@ -657,7 +657,7 @@ public class AdministrarTarjeta
 	
 	
 	public String actualizarTarjeta(){
-    	entityManager.clear();
+		entityManager.clear();
 
     	//valida que el nombre del promotor no este vacio
 		if(!this.nombre.contentEquals("")){
@@ -916,6 +916,8 @@ public class AdministrarTarjeta
         	promotorHome.clearInstance();
         	this.nombre = "";
     	return "updated";
+		
+    	 
     }
     
     Boolean viajeasignado = false;

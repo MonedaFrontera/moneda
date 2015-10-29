@@ -2,17 +2,16 @@ package org.domain.moneda.bussiness;
 
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
-import gnu.trove.benchmark.Main;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -25,17 +24,14 @@ import org.domain.moneda.entity.Activagestor;
 import org.domain.moneda.entity.ActivagestorId;
 import org.domain.moneda.entity.Asesor;
 import org.domain.moneda.entity.Banco;
-import org.domain.moneda.entity.Cita;
-import org.domain.moneda.entity.CitaId;
-import org.domain.moneda.entity.Cne;
 import org.domain.moneda.entity.Estadoactivacion;
 import org.domain.moneda.entity.EstadoactivacionId;
 import org.domain.moneda.entity.Gestor;
 import org.domain.moneda.entity.Observacion;
 import org.domain.moneda.entity.ObservacionId;
-import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Promotor;
-import org.domain.moneda.entity.Tarjeta;
+import org.domain.moneda.entity.Usuario;
+import org.domain.moneda.session.ActestadoList;
 import org.domain.moneda.session.ActivacionHome;
 import org.domain.moneda.session.ActivacionList;
 import org.domain.moneda.session.ActivagestorHome;
@@ -43,7 +39,6 @@ import org.domain.moneda.session.EstadoactivacionHome;
 import org.domain.moneda.session.GestorHome;
 import org.domain.moneda.session.ObservacionHome;
 import org.domain.moneda.session.PromotorHome;
-import org.domain.moneda.session.TarjetaList;
 import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.domain.moneda.util.ExpresionesRegulares;
@@ -231,6 +226,10 @@ public class AdministrarActivacion {
 	@In(create = true)
 	@Out
 	private ActivacionHome activacionHome;
+	
+	@In(create = true)
+	@Out
+	private ActestadoList actestadoList;
 
 	@In(create = true)
 	@Out
@@ -257,7 +256,7 @@ public class AdministrarActivacion {
 		this.anioViaje = anioViaje;
 	}
 
-	public void llenarPromotores() {
+	public void llenarGestores() {
 		entityManager.clear();
 		String sql = "";
 		if (identity.hasRole("Asesor")) {
@@ -269,10 +268,24 @@ public class AdministrarActivacion {
 						+ sql).getResultList();
 		lista = resultList;
 	}
+	
+	public void llenarPromotores(){
+		entityManager.clear();
+		String sql = "";
+			
+		if(identity.hasRole("Asesor")){
+			sql = " where p.asesor.documento = '" + identity.getUsername()+"'";
+		}
+		List<String> resultList = entityManager.createQuery("select " +
+				"p.personal.nombre||' '||p.personal.apellido from Promotor p "+ 
+				sql).getResultList();
+		lista = resultList;
+		}
+	
 
 	public List<String> autocompletar(Object nombre) {
 		if (lista.isEmpty())
-			llenarPromotores(); // Metodo que carga la informacion de los
+			llenarGestores(); // Metodo que carga la informacion de los
 		// nombres de las personas
 		String pref = (String) nombre;
 		ArrayList<String> result = new ArrayList<String>();
@@ -303,6 +316,8 @@ public class AdministrarActivacion {
 	}
 
 	public List<Actestado> estadosInicio() {
+		
+		
 		return entityManager.createQuery(
 				"select s from Actestado s where s.codestado "
 						+ "in ('AC','EG','RE', 'RA', 'RC') order by s.descripcion asc").getResultList();
@@ -769,6 +784,11 @@ public class AdministrarActivacion {
 	}
 
 	public void guardarObservacion() {
+			
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		activacionHome.getInstance().setFechamod(hoy);
+		
 		Observacion o = new Observacion();
 		ObservacionId oid = new ObservacionId();
 
@@ -789,10 +809,16 @@ public class AdministrarActivacion {
 	}
 
 	public void guardarGestor() {
+		
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		activacionHome.getInstance().setFechamod(hoy);
+		
 		Activagestor ag = new Activagestor();
 		ActivagestorId agid = new ActivagestorId(activacionHome.getInstance()
 				.getConsecutivo(), gestorHome.getInstance().getDocumento(),
 				activagestorHome.getInstance().getId().getFecha());
+		ag.setObservacion(activagestorHome.getInstance().getObservacion());
 		ag.setId(agid);
 		ag.setActivacion(activacionHome.getInstance());
 		ag.setGestor(gestorHome.getInstance());
@@ -814,28 +840,28 @@ public class AdministrarActivacion {
 		System.out.println("Nuevo Promotor>> "
 				+ promotorHome.getInstance().getDocumento());
 
-		String docPromo = promotorHome.getInstance().getDocumento();
-
-		int reg = (int) entityManager.createNativeQuery(
-				" update public.activacion set promotor = '" + docPromo
-						+ "' where" + " public.activacion.cedula = '"
-						+ activacionHome.getInstance().getCedula() + "'")
-				.executeUpdate();
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		activacionHome.getInstance().setFechamod(hoy);
+		activacionHome.getInstance().setPromotor(promotorHome.getInstance());
+		Activacion a = activacionHome.getInstance();
+		entityManager.merge(a);
+		entityManager.flush();
+		
 		promotorHome.clearInstance();
 		gestorHome.clearInstance();
 
 	}
 
 	public void guardarEstado() {
+		
 		System.out.print("Entregada al Gestor:");
 		System.out.println(activacionHome.getInstance().getActestado().getCodestado().contentEquals("EG"));
 		
 		System.out.print("Proceso con Carpeta:");
 		System.out.println(activacionHome.getInstance().getActestado().getCodestado().contentEquals("PC"));
 		
-		Date hoy= new Date();
-		activacionHome.getInstance().setUsuariomod(identity.getUsername());
-		activacionHome.getInstance().setFechamod(hoy);
+	
 		
 		// Si es el estado proceso con carpeta
 		if ( activacionHome.getInstance().getActestado().getCodestado().contentEquals("PC") ) {
@@ -931,9 +957,12 @@ public class AdministrarActivacion {
 		}// fin del else externo
 		
 		
-		
-
 		Activacion a = activacionHome.getInstance();
+		Date hoy= new Date();
+		a.setUsuariomod(identity.getUsername());
+	    a.setFechamod(hoy);
+	
+
 		entityManager.merge(a);
 		entityManager.flush();
 
@@ -949,6 +978,7 @@ public class AdministrarActivacion {
 	private AdministrarTarjeta AdministrarTarjeta;
 
 	public void editar(int consecutivo) {
+		System.out.println("*************************  LLega a editar Activacion");
 		activacionHome.setActivacionConsecutivo(consecutivo);
 		this.setDestinoAnio("Destino " + activacionHome.getInstance().getDestino());
 		AdministrarTarjeta.setNombre(activacionHome.getInstance().getPromotor()
@@ -963,6 +993,22 @@ public class AdministrarActivacion {
 					+ activacionHome.getInstance().getGestor().getPersonal()
 							.getApellido();
 		}
+		if (activacionHome.getInstance().getPromotor() != null) {
+			System.out.println("+++++++++++"+activacionHome.getInstance().getPromotor().getPersonal().getNombre());
+			
+			String nom= activacionHome.getInstance().getPromotor().getPersonal().getNombre()
+					+ " "
+					+ activacionHome.getInstance().getPromotor().getPersonal().getApellido();
+			this.setNombrePromotor(nom); 
+		}
+		
+		if (activacionHome.getInstance().getActestado() != null) {
+			System.out.println("+++++++++++"+activacionHome.getInstance().getPromotor().getPersonal().getNombre());
+			Actestado ac=activacionHome.getInstance().getActestado();
+			this.setEstado(ac); 
+		}
+		
+		System.out.println("*************************"+this.getNombrePromotor());
 
 	}
 
@@ -1346,22 +1392,31 @@ public class AdministrarActivacion {
 	/**
 	 * actualiza la activacion
 	 */
-	public void actualizarActivacion() {
+	public String actualizarActivacion() {
+		entityManager.clear();
 		log.info("Actualizacion del Viaje "
 				+ activacionHome.getInstance().getCedula());
-
+		System.out.println("********entra a actualizar");
 		Date hoy= new Date();
 		activacionHome.getInstance().setUsuariomod(identity.getUsername());
 		activacionHome.getInstance().setFechamod(hoy);
 		
-		activacionHome.getInstance().setActestado(
-				activacionHome.getInstance().getActestado());
+		System.out.println("********entra a actualizar usuario mod");
+		
+		Actestado act= activacionHome.getInstance().getActestado();
+		activacionHome.getInstance().setActestado(act);
+		
+		System.out.println("******entra a actualizar actestado");
+		
 		activacionHome.getInstance().setPromotor(promotorHome.getInstance());
-
+		
+		System.out.println("******entra a actualizar promotor");
+		
 		entityManager.merge(activacionHome.getInstance());
 
 		entityManager.flush();
-		activacionHome.clearInstance();
+		activacionHome.clearInstance();	
+		return "updated";
 
 	}
 	
@@ -1386,6 +1441,7 @@ public class AdministrarActivacion {
 
 			activacionHome.getInstance().setPromotor(pr); 
 		}
+		
 	}
 	
 	/**
@@ -1432,6 +1488,71 @@ public class AdministrarActivacion {
 	}
 	
 	
+	   /**
+     * @author Luis Fernando Ortiz 
+     * Busqueda de nombres por medio de expresiones regulares.
+     * @param nom
+     * @return
+     */
+    public List<String> autocompletarPromotor(Object nom) {
+		llenarPromotores(); 							// Metodo que carga la informacion de los nombres de las personas
+		String nombre = (String) nom;
+		List<String> result = new ArrayList<String>();
+		StringTokenizer tokens = new StringTokenizer(nombre.toLowerCase());
+		StringBuilder bldr = new StringBuilder();//builder usado para formar el patron
+		
+		long t1 = System.currentTimeMillis();
+		// creamos el patron para la busqueda
+		int lengthToken = nombre.split("\\s+").length;// longitud de palabras
+														// en el nombre
+		int cont = 1;
+		while (tokens.hasMoreTokens()) {			
+			if (cont == lengthToken && lengthToken == 1) {
+				bldr.append(".*").append(tokens.nextToken()).append(".*");
+			} else {
+				if (cont++ < lengthToken--) {
+					bldr.append(".*").append(tokens.nextToken()).append(".*");
+					lengthToken--;
+				} else {
+					bldr.append(tokens.nextToken()).append(".*");
+				}
+			}
+		}		
+		Pattern p = Pattern.compile(bldr.toString().trim());
+		Matcher match;		
+		// realiza la busqueda
+		for (String promo : lista) {			
+			match = p.matcher(promo.toLowerCase());
+			boolean b = match.find();
+			if (b) {
+				result.add(promo);				
+			}		
+		}
+		long t2 = System.currentTimeMillis() - t1;
+		System.out.println(">>>Tiempo total de la busqueda: " + t2 + "ms");		
+	
+		return result;
+		
+	}
+    
+    public List<Actestado> estadoActivacion(){
+    	System.out.println("PERSISTIDO:" + activacionHome.isManaged());
+    	
+    	if( activacionHome.getInstance().getCedula() != null  ){
+    		
+    		System.out.println(	"ESTADO DE ACTIVACION "+ 
+    				this.activacionHome.getInstance().getActestado().getCodestado());
+    		
+    		List<Actestado> estadoAct = entityManager.createQuery("from Actestado ac where ac.codestado = '" +
+    				this.activacionHome.getInstance().getActestado().getCodestado() + "'").getResultList();
+    		
+    		
+    		return estadoAct;
+    		
+    	}else{
+    		return this.estadosInicio();
+    	}
+    }
 	
 	
 }// fin de la clase AdministrarActivacion
