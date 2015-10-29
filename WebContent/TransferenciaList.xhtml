@@ -105,7 +105,9 @@
             </f:facet>
             <h:outputText value="#{_gastos.gastos.personal.nombre} #{_gastos.gastos.personal.apellido}"/>
         </h:column>
-        <h:column>
+   
+ 
+        <rich:column style="text-align:center">
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{gastosList}"/>
@@ -113,10 +115,12 @@
                     <ui:param name="propertyPath" value="transferencia.gastos.fecha"/>
                 </ui:include>
             </f:facet>
-            <h:outputText style="text-align:center; display:block" value="#{_gastos.gastos.fecha}">
+  			<h:outputText value="#{_gastos.gastos.fecha}">
                 <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
             </h:outputText>
-        </h:column>
+        </rich:column>
+        
+        
         <h:column style="text-align:right">
             <f:facet name="header" style="text-align:right">
                 <ui:include src="layout/sort.xhtml">
