@@ -14,70 +14,298 @@
     <h:form id="tasadolarpromotorparametro" styleClass="edit">
 
         <rich:panel>
-            <f:facet name="header">#{tasadolarpromotorparametroHome.managed ? 'Edit' : 'Add'} Tasadolarpromotorparametro</f:facet>
-
-
-            <s:decorate id="consecutivoField" template="layout/edit.xhtml">
-                <ui:define name="label">Consecutivo</ui:define>
-                <h:inputText id="consecutivo"
-                       required="true"
-                       disabled="#{tasadolarpromotorparametroHome.managed}"
-                          value="#{tasadolarpromotorparametroHome.instance.consecutivo}">
-                    <a:support event="onblur" reRender="consecutivoField" bypassUpdates="true" ajaxSingle="true"/>
-                </h:inputText>
+            <f:facet name="header">#{tasadolarpromotorparametroHome.managed ? 'Editando' : 'Grabando'} Parametros de Transacciones</f:facet>
+			
+			<s:div id="parametrostasa" style="float:left; width:60%">
+			
+			<rich:panel id="banderaImg" 
+						style="padding: 0px; margin:0px 0px 10px 125px; width:110px; height:80px" 
+						bodyClass="rich-laguna-panel-no-header">
+				<h:graphicImage style="padding: 0px; width:90px; height:60px;" 
+								rendered="true" 
+								value="#{AdministrarTasa.pathBandera}" alt=""/>
+    		</rich:panel>
+			
+			<s:decorate id="codigopaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Pais</ui:define>
+                <h:selectOneMenu id="paisSel" value="#{AdministrarTasa.paisTemp}" required="true" >
+				<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
+			                    noSelectionLabel="Seleccione..." />
+			    <s:convertEntity />
+			    <a:support event="onchange" action="#{AdministrarTasa.listarComercios(AdministrarTasa.paisTemp.codigopais)}" 
+			    					reRender="dolarTasas, dolarGlobal, tasadolarField, tasadolarFieldTac, tasadolarFieldOf, dolarGlobalEst,
+                				dolarGlobalEstS, tasadolarFieldNeg, euroTasas, euroGlobal, euroGlobalEst, euroGlobalEstS,
+                				tasaeuroField, tasaeuroFieldTac, tasaeuroFieldOf, tasaeuroFieldNeg, 
+                				banderaImg" ajaxSingle="true"/>
+			</h:selectOneMenu>
             </s:decorate>
-
-
-
-
-
-
-
-            <s:decorate id="tipocupoField" template="layout/edit.xhtml">
-                <ui:define name="label">Tipocupo</ui:define>
-                <h:inputText id="tipocupo"
-                           size="1"
-                      maxlength="1"
-                          value="#{tasadolarpromotorparametroHome.instance.tipocupo}">
-                    <a:support event="onblur" reRender="tipocupoField" bypassUpdates="true" ajaxSingle="true"/>
+            
+            <s:decorate id="promotorField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>                		
+				<h:inputText value="#{AdministrarTasa.nombre}" id="namepromotor" size="50">			
+                	<a:support event="onblur" reRender="dolarTasas, dolarGlobal, tasadolarField, tasadolarFieldTac, tasadolarFieldOf, dolarGlobalEst,
+                				dolarGlobalEstS, tasadolarFieldNeg, euroTasas, euroGlobal, euroGlobalEst, euroGlobalEstS,
+                				tasaeuroField, tasaeuroFieldTac, tasaeuroFieldOf, tasaeuroFieldNeg, porcentdiv, paridaddiv, 
+                				pariFieldClt, porcentFieldOf, paridadFielddOf"  
+                				action="#{AdministrarTasa.ubicarPromotor()}" 
+                				ajaxSingle="true"/>
                 </h:inputText>
+                <h:graphicImage value="/img/arrow.png"
+                	    		onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)" 
+                    			alt="" />
+			    <rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
+                                        suggestionAction="#{AdministrarTasa.autocompletar}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+            	</rich:suggestionbox>
+        	</s:decorate> 
+        	
+        	
+        	<s:decorate id="codigounicoField" template="layout/edit.xhtml">
+                <ui:define name="label">Establecimiento</ui:define>
+                <h:inputText value="#{AdministrarTasa.sugestion}" id="name" styleClass="textBox" size="50">
+                <a:support event="onblur" action="#{AdministrarTasa.ubicarEstablecimiento()}" ajaxSingle="true"/>
+                </h:inputText><h:graphicImage value="/img/arrow.png"
+                    onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
+                    alt="" />
+				<rich:suggestionbox id="suggestionBoxId" for="name"
+                                        suggestionAction="#{AdministrarTasa.autocompletarEstablecimiento}" var="result"
+                                        tokens="," height="150" width="260" cellpadding="2"
+                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
+                                        minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">
+                                        <h:column>
+                                            <h:outputText value="#{result}" style="font-style:bold" />
+                                        </h:column>
+                                    </rich:suggestionbox>
+                
             </s:decorate>
-
-
-            <s:decorate id="tasadolarField" template="layout/edit.xhtml">
-                <ui:define name="label">Tasadolar</ui:define>
-                <h:inputText id="tasadolar"
-                          value="#{tasadolarpromotorparametroHome.instance.tasadolar}"
-                           size="13">
-                    <a:support event="onblur" reRender="tasadolarField" bypassUpdates="true" ajaxSingle="true"/>
-                </h:inputText>
+            
+            <s:decorate id="franquiciaField" template="layout/edit.xhtml">
+                <ui:define name="label">Franquicia</ui:define>
+                <h:selectOneMenu id="franquiciaSel" value="#{AdministrarTasa.frqTemp}" required="false" >
+			<s:selectItems value="#{franquiciaList.resultList}" var="franquicia" label="#{franquicia.nombrefranquicia}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="franquiciaField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="bancoField" template="layout/edit.xhtml">
+                <ui:define name="label">Banco</ui:define>
+                <h:selectOneMenu id="bancoSel" value="#{AdministrarTasa.bancoTemp}" required="false" >
+			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			                    noSelectionLabel="Seleccione..." />
+			      <s:convertEntity />
+			      <a:support event="onchange" reRender="bancoField" ajaxSingle="true"/>
+			</h:selectOneMenu>
+        	</s:decorate>
+        	
+        	<s:decorate id="tipotxField" template="layout/edit.xhtml">
+                <ui:define name="label">Tipo Transaccion</ui:define>
+                <h:selectOneMenu id="tipotx" value="#{AdministrarTasa.tipoCupoTemp}" required="true">
+					<f:selectItem itemValue="V" itemLabel="Viajero"/>
+					<f:selectItem itemValue="I" itemLabel="Internet"/>
+				</h:selectOneMenu>   
             </s:decorate>
-
-
-            <s:decorate id="tasadolarTacField" template="layout/edit.xhtml">
-                <ui:define name="label">Tasadolar tac</ui:define>
-                <h:inputText id="tasadolarTac"
-                          value="#{tasadolarpromotorparametroHome.instance.tasadolarTac}"
-                           size="13">
-                    <a:support event="onblur" reRender="tasadolarTacField" bypassUpdates="true" ajaxSingle="true"/>
-                </h:inputText>
-            </s:decorate>
-
+            
+            </s:div>            
+            <s:div id="valorestasa" style="float:right; width:40%">
+          
 
             <s:decorate id="fechainicioField" template="layout/edit.xhtml">
                 <ui:define name="label">Fechainicio</ui:define>
                 <rich:calendar id="fechainicio"
-                          value="#{tasadolarpromotorparametroHome.instance.fechainicio}" datePattern="MM/dd/yyyy hh:mm a"/>
+                          value="#{AdministrarTasa.fechaIniTemp}" datePattern="dd/MM/yyyy"/>
             </s:decorate>
-
 
             <s:decorate id="fechafinField" template="layout/edit.xhtml">
                 <ui:define name="label">Fechafin</ui:define>
-                <rich:calendar id="fechafin"
-                          value="#{tasadolarpromotorparametroHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+                <rich:calendar id="fechafin" 
+                          value="#{AdministrarTasa.fechaFinTemp}" datePattern="dd/MM/yyyy"/>
             </s:decorate>
+            
+                        
+            <s:div id="dolarTasas" style="width=100%">
+			<s:decorate id="dolarGlobal" rendered="#{AdministrarTasa.codMoneda != 'EUR' &amp;&amp; AdministrarTasa.paisTemp != null }">
+            <fieldset style="border-color:#d2d2d2; float:left; width: 65%">            
+            <legend style="color:#07890d;font-weight:bold;">Tasas Dolar </legend>
+            	<!-- Este div rederiza cuando solo estan los parametros de Pais, 
+            		 Estable, Tipo Cupo Viajero-->
+            	<s:div id="dolarGlobalEst">
+            	<!-- Renderiza si hay promotor -->
+            	<s:decorate id="dolarGlobalEstS" rendered="#{AdministrarTasa.codMoneda != 'EUR' &amp;&amp;  
+            												  AdministrarTasa.promoTemp == null}" >
+            	
+            		<s:decorate id="tasadolarField" template="layout/edit.xhtml"
+            					rendered="#{AdministrarTasa.codMoneda != 'EUR'}">
+                		<ui:define name="label">Tasa Dolar Cliente</ui:define>
+               			<h:inputText id="tasadolar"
+                          value="#{AdministrarTasa.tasaDolarTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasadolarField" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText> 
+            		</s:decorate>
+            		
+            		<s:decorate id="tasadolarFieldTac" template="layout/edit.xhtml" 
+            					rendered="#{AdministrarTasa.codMoneda != 'EUR'}">
+                		<ui:define name="label">Tasa Dolar TAC</ui:define>
+               			<h:inputText id="tasadolarTac"
+                          value="#{AdministrarTasa.tasaDolarTacTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasadolarFieldTac" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            		
+            		<s:decorate id="tasadolarFieldOf" template="layout/edit.xhtml" 
+            					rendered="#{AdministrarTasa.codMoneda != 'EUR'}">
+                		<ui:define name="label">Tasa Dolar Oficina</ui:define>
+               			<h:inputText id="tasadolarOf"
+                          value="#{AdministrarTasa.tasaDolarOfTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasadolarFieldOf" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            	<!-- end s:decorate dolarGlobalEstS -->
+            	</s:decorate>
+            	</s:div>  
+            		
+            	<s:div id="dolarNeg">            	
+            		<s:decorate id="tasadolarFieldNeg" template="layout/edit.xhtml" 
+            					rendered="#{AdministrarTasa.codMoneda != 'EUR' &amp;&amp;  
+            												  AdministrarTasa.promoTemp != null}" >
+                		<ui:define name="label">Tasa Dolar Negociado</ui:define>
+               			<h:inputText id="tasadolarNeg"
+                          value="#{AdministrarTasa.tasaDolarNegTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasadolarFieldNeg" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            	</s:div>
+			 </fieldset> 
+			 </s:decorate>          
+            </s:div>
+           
+            
+            <br/>
+            
+            <s:div id="euroTasas" style="width=100%" > 
+            <s:decorate id="euroGlobal" rendered="#{AdministrarTasa.codMoneda == 'EUR' &amp;&amp; AdministrarTasa.paisTemp != null }">           
+            <fieldset style="border-color:#d2d2d2; float:left; width: 65%">            
+            <legend style="color:#cc0000; font-weight:bold;">Tasas Euro </legend>
+            	
+            	<!-- Este div rederiza cuando solo estan los parametros de Pais, 
+            		 Estable, Tipo Cupo Viajero-->
+            	<s:div id="euroGlobalEst" >
+            	<s:decorate id="euroGlobalEstS" rendered="#{AdministrarTasa.codMoneda == 'EUR' &amp;&amp;  
+            												  AdministrarTasa.promoTemp == null}" >
+            	
+            		<s:decorate id="tasaeuroField" template="layout/edit.xhtml" 
+            									   rendered="#{AdministrarTasa.codMoneda == 'EUR'}">
+                		<ui:define name="label">Tasa Euro Cliente</ui:define>
+               			<h:inputText id="tasaEuro"
+                          value="#{AdministrarTasa.tasaEuroTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasaeuroField" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            		
+            		<s:decorate id="tasaeuroFieldTac" template="layout/edit.xhtml" 
+            										  rendered="#{AdministrarTasa.codMoneda == 'EUR'}">
+                		<ui:define name="label">Tasa Euro TAC</ui:define>
+               			<h:inputText id="tasaeuroTac"
+                          value="#{AdministrarTasa.tasaEuroTacTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasaeuroFieldTac" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            		
+            		<s:decorate id="tasaeuroFieldOf" template="layout/edit.xhtml" 
+            										 rendered="#{AdministrarTasa.codMoneda == 'EUR'}">
+                		<ui:define name="label">Tasa Euro Oficina</ui:define>
+               			<h:inputText id="tasaeurorOf"
+                          value="#{AdministrarTasa.tasaEuroOfTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasaeuroFieldOf" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            	</s:decorate>
+            	</s:div> 
+            	 	
+            	<s:div id="euroNeg">            	
+            		<s:decorate id="tasaeuroFieldNeg" template="layout/edit.xhtml" rendered="#{AdministrarTasa.codMoneda == 'EUR' &amp;&amp;  
+            												  AdministrarTasa.promoTemp != null}">
+                		<ui:define name="label">Tasa Euro Negociado</ui:define>
+               			<h:inputText id="tasaeurorNeg"
+                          value="#{AdministrarTasa.tasaEuroNegTemp}"
+                           size="13">
+                    	<a:support event="onblur" reRender="tasaeuroFieldNeg" bypassUpdates="true" ajaxSingle="true"/>
+                		</h:inputText>
+            		</s:decorate>
+            	</s:div>
+			 </fieldset>   
+			 </s:decorate>        
+            </s:div>
+            
+            <s:div id="porcentdiv" style="width=100%">
+            	<fieldset style="border-color:#d2d2d2; float:left; width: 65%">    
+					<legend>Porcentajes</legend>
+					
+					<s:decorate id="porcentFieldClt" template="layout/edit.xhtml">
+						<ui:define name="label">Porcentaje Cliente</ui:define>
+						<h:inputText id="porcentClient"
+			  					 value="#{AdministrarTasa.porcentCt}"
+			   					 size="13">
+		  				<a:support event="onblur" reRender="porcentFieldClt" 
+		  								bypassUpdates="true" ajaxSingle="true"/>
+						</h:inputText>
+					</s:decorate>
+					
+					<s:decorate id="porcentFieldOf" rendered="#{AdministrarTasa.promoTemp == null}" template="layout/edit.xhtml">
+						<ui:define name="label">Porcentaje Oficina</ui:define>
+						<h:inputText id="porcentOf"
+			  					 value="#{AdministrarTasa.porcentOfi}"
+			   					 size="13">
+		  				<a:support event="onblur" reRender="porcentFieldOf" 
+		  								bypassUpdates="true" ajaxSingle="true"/>
+						</h:inputText>
+					</s:decorate>
+	  			</fieldset>
+            </s:div>
+            
+            <s:div id="paridaddiv" style="width=100%">
+            	<fieldset style="border-color:#d2d2d2; float:left; width: 65%">    
+					<legend>Paridad Cambiaria</legend>
+					
+					<s:decorate id="pariFieldClt" rendered="#{AdministrarTasa.promoTemp == null}" template="layout/edit.xhtml">
+						<ui:define name="label">Paridad Cliente</ui:define>
+						<h:inputText id="paridadClient"
+			  					 value="#{AdministrarTasa.paridadClienteTemp}"
+			   					 size="13">
+		  				<a:support event="onblur" reRender="pariFieldClt" 
+		  								bypassUpdates="true" ajaxSingle="true"/>
+						</h:inputText>
+					</s:decorate>
+					
+					<s:decorate id="paridadFielddOf" rendered="#{AdministrarTasa.promoTemp == null}" template="layout/edit.xhtml">
+						<ui:define name="label">Paridad Oficina</ui:define>
+						<h:inputText id="paridadOf"
+			  					 value="#{AdministrarTasa.paridadEstTemp}"
+			   					 size="13">
+		  				<a:support event="onblur" reRender="paridadFielddOf" 
+		  								bypassUpdates="true" ajaxSingle="true"/>
+						</h:inputText>
+					</s:decorate>
+	  			</fieldset>
+            </s:div>
+            
+            <!-- fin div izquierdo -->
+            </s:div>
 
-            <div style="clear:both">
+			<div style="clear:both">
                 <span class="required">*</span>
                 required fields
             </div>
@@ -85,11 +313,10 @@
         </rich:panel>
 
         <div class="actionButtons">
-
-            <h:commandButton id="save"
-                          value="Save"
-                         action="#{tasadolarpromotorparametroHome.persist}"
-                       disabled="#{!tasadolarpromotorparametroHome.wired}"
+        
+        	<h:commandButton id="save"
+                          value="Guardar"
+                         action="#{AdministrarTasa.guardarTasaDolarParam}"
                        rendered="#{!tasadolarpromotorparametroHome.managed}"/>
 
             <h:commandButton id="update"
@@ -118,243 +345,10 @@
         </div>
     </h:form>
 
-<rich:tabPanel switchType="ajax">
+ 
 
-    <rich:tab label="Promotor">
-    <div class="association" id="promotorParent">
 
-        <h:outputText value="There is no promotor associated with this tasadolarpromotorparametro."
-                   rendered="#{tasadolarpromotorparametroHome.instance.promotor == null}"/>
 
-        <rich:dataTable var="_promotor"
-                   value="#{tasadolarpromotorparametroHome.instance.promotor}"
-                rendered="#{tasadolarpromotorparametroHome.instance.promotor != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-                      id="promotorTable">
-            <h:column>
-                <f:facet name="header">Documento</f:facet>
-                <h:outputText value="#{_promotor.documento}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Personal documento</f:facet>
-                <h:outputText value="#{_promotor.personal.documento}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Asesor documento</f:facet>
-                <h:outputText value="#{_promotor.asesor.documento}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Arrastrador documento</f:facet>
-                <h:outputText value="#{_promotor.arrastrador.documento}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Comisionviajero</f:facet>
-                <h:outputText value="#{_promotor.comisionviajero}">
-                    <f:convertNumber/>
-                </h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Comisionarrastrador</f:facet>
-                <h:outputText value="#{_promotor.comisionarrastrador}">
-                    <f:convertNumber/>
-                </h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Tac</f:facet>
-                <h:outputText value="#{_promotor.tac}"/>
-            </h:column>
-        </rich:dataTable>
-
-        <div class="actionButtons">
-            <s:button id="#{tasadolarpromotorparametroHome.instance.promotor != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarpromotorparametroHome.instance.promotor != null ? 'Change' : 'Select'} promotor"
-                       view="/PromotorList.xhtml">
-                <f:param name="from" value="TasadolarpromotorparametroEdit"/>
-            </s:button>
-        </div>
-
-    </div>
-    </rich:tab>
-
-    <rich:tab label="Franquicia">
-    <div class="association" id="franquiciaParent">
-
-        <h:outputText value="There is no franquicia associated with this tasadolarpromotorparametro."
-                   rendered="#{tasadolarpromotorparametroHome.instance.franquicia == null}"/>
-
-        <rich:dataTable var="_franquicia"
-                   value="#{tasadolarpromotorparametroHome.instance.franquicia}"
-                rendered="#{tasadolarpromotorparametroHome.instance.franquicia != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-                      id="franquiciaTable">
-            <h:column>
-                <f:facet name="header">Codfranquicia</f:facet>
-                <h:outputText value="#{_franquicia.codfranquicia}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Nombrefranquicia</f:facet>
-                <h:outputText value="#{_franquicia.nombrefranquicia}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Porcentaje</f:facet>
-                <h:outputText value="#{_franquicia.porcentaje}">
-                    <f:convertNumber/>
-                </h:outputText>
-            </h:column>
-        </rich:dataTable>
-
-        <div class="actionButtons">
-            <s:button id="#{tasadolarpromotorparametroHome.instance.franquicia != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarpromotorparametroHome.instance.franquicia != null ? 'Change' : 'Select'} franquicia"
-                       view="/FranquiciaList.xhtml">
-                <f:param name="from" value="TasadolarpromotorparametroEdit"/>
-            </s:button>
-        </div>
-
-    </div>
-    </rich:tab>
-
-    <rich:tab label="Pais">
-    <div class="association" id="paisParent">
-
-        <h:outputText value="There is no pais associated with this tasadolarpromotorparametro."
-                   rendered="#{tasadolarpromotorparametroHome.instance.pais == null}"/>
-
-        <rich:dataTable var="_pais"
-                   value="#{tasadolarpromotorparametroHome.instance.pais}"
-                rendered="#{tasadolarpromotorparametroHome.instance.pais != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-                      id="paisTable">
-            <h:column>
-                <f:facet name="header">Codigopais</f:facet>
-                <h:outputText value="#{_pais.codigopais}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Paisiso codigopais</f:facet>
-                <h:outputText value="#{_pais.paisiso.codigopais}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Nombre</f:facet>
-                <h:outputText value="#{_pais.nombre}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Estado</f:facet>
-                <h:outputText value="#{_pais.estado}"/>
-            </h:column>
-        </rich:dataTable>
-
-        <div class="actionButtons">
-            <s:button id="#{tasadolarpromotorparametroHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarpromotorparametroHome.instance.pais != null ? 'Change' : 'Select'} pais"
-                       view="/PaisList.xhtml">
-                <f:param name="from" value="TasadolarpromotorparametroEdit"/>
-            </s:button>
-        </div>
-
-    </div>
-    </rich:tab>
-
-    <rich:tab label="Establecimiento">
-    <div class="association" id="establecimientoParent">
-
-        <h:outputText value="There is no establecimiento associated with this tasadolarpromotorparametro."
-                   rendered="#{tasadolarpromotorparametroHome.instance.establecimiento == null}"/>
-
-        <rich:dataTable var="_establecimiento"
-                   value="#{tasadolarpromotorparametroHome.instance.establecimiento}"
-                rendered="#{tasadolarpromotorparametroHome.instance.establecimiento != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-                      id="establecimientoTable">
-            <h:column>
-                <f:facet name="header">Codigounico</f:facet>
-                <h:outputText value="#{_establecimiento.codigounico}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Pais codigopais</f:facet>
-                <h:outputText value="#{_establecimiento.pais.codigopais}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Empresa nit</f:facet>
-                <h:outputText value="#{_establecimiento.empresa.nit}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Bancocol codbanco</f:facet>
-                <h:outputText value="#{_establecimiento.bancocol.codbanco}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Nombreestable</f:facet>
-                <h:outputText value="#{_establecimiento.nombreestable}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Direccion</f:facet>
-                <h:outputText value="#{_establecimiento.direccion}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Telefono</f:facet>
-                <h:outputText value="#{_establecimiento.telefono}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Porcentaje</f:facet>
-                <h:outputText value="#{_establecimiento.porcentaje}">
-                    <f:convertNumber/>
-                </h:outputText>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Iva</f:facet>
-                <h:outputText value="#{_establecimiento.iva}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Numcuenta</f:facet>
-                <h:outputText value="#{_establecimiento.numcuenta}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Facturar</f:facet>
-                <h:outputText value="#{_establecimiento.facturar}"/>
-            </h:column>
-        </rich:dataTable>
-
-        <div class="actionButtons">
-            <s:button id="#{tasadolarpromotorparametroHome.instance.establecimiento != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarpromotorparametroHome.instance.establecimiento != null ? 'Change' : 'Select'} establecimiento"
-                       view="/EstablecimientoList.xhtml">
-                <f:param name="from" value="TasadolarpromotorparametroEdit"/>
-            </s:button>
-        </div>
-
-    </div>
-    </rich:tab>
-
-    <rich:tab label="Banco">
-    <div class="association" id="bancoParent">
-
-        <h:outputText value="There is no banco associated with this tasadolarpromotorparametro."
-                   rendered="#{tasadolarpromotorparametroHome.instance.banco == null}"/>
-
-        <rich:dataTable var="_banco"
-                   value="#{tasadolarpromotorparametroHome.instance.banco}"
-                rendered="#{tasadolarpromotorparametroHome.instance.banco != null}"
-              rowClasses="rvgRowOne,rvgRowTwo"
-                      id="bancoTable">
-            <h:column>
-                <f:facet name="header">Codbanco</f:facet>
-                <h:outputText value="#{_banco.codbanco}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Nombrebanco</f:facet>
-                <h:outputText value="#{_banco.nombrebanco}"/>
-            </h:column>
-            <h:column>
-                <f:facet name="header">Dias</f:facet>
-                <h:outputText value="#{_banco.dias}"/>
-            </h:column>
-        </rich:dataTable>
-
-        <div class="actionButtons">
-            <s:button id="#{tasadolarpromotorparametroHome.instance.banco != null ? 'changeParent' : 'selectParent'}" value="#{tasadolarpromotorparametroHome.instance.banco != null ? 'Change' : 'Select'} banco"
-                       view="/BancoList.xhtml">
-                <f:param name="from" value="TasadolarpromotorparametroEdit"/>
-            </s:button>
-        </div>
-
-    </div>
-    </rich:tab>
-</rich:tabPanel>
 </ui:define>
 
 </ui:composition>

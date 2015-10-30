@@ -115,6 +115,18 @@
                 <f:convertNumber/>
             </h:outputText>
         </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{establecimientoprecioList}"/>
+                    <ui:param name="propertyLabel" value="Paridad"/>
+                    <ui:param name="propertyPath" value="establecimientoprecio.paridad"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_establecimientoprecio.paridad}">
+                <f:convertNumber/>
+            </h:outputText>
+        </h:column>
         <rich:column styleClass="action">
             <f:facet name="header">Action</f:facet>
             <s:link view="/#{empty from ? 'Establecimientoprecio' : from}.xhtml"

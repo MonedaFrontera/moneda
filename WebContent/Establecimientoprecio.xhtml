@@ -45,6 +45,13 @@
             </h:outputText>
         </s:decorate>
 
+        <s:decorate id="paridad" template="layout/display.xhtml">
+            <ui:define name="label">Paridad</ui:define>
+            <h:outputText value="#{establecimientoprecioHome.instance.paridad}">
+                <f:convertNumber/>
+            </h:outputText>
+        </s:decorate>
+
         <div style="clear:both"/>
 
     </rich:panel>

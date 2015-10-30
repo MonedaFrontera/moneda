@@ -75,8 +75,16 @@
                 <h:outputText value="#{_pais.codigopais}"/>
             </h:column>
             <h:column>
+                <f:facet name="header">Paisiso codigopais</f:facet>
+                <h:outputText value="#{_pais.paisiso.codigopais}"/>
+            </h:column>
+            <h:column>
                 <f:facet name="header">Nombre</f:facet>
                 <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
             </h:column>
             <h:column styleClass="action">
                 <f:facet name="header">Action</f:facet>

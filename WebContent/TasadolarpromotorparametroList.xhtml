@@ -133,18 +133,6 @@
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Tasadolar tac"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.tasadolarTac"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.tasadolarTac}">
-                <f:convertNumber/>
-            </h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
                     <ui:param name="propertyLabel" value="Fechainicio"/>
                     <ui:param name="propertyPath" value="tasadolarpromotorparametro.fechainicio"/>
                 </ui:include>

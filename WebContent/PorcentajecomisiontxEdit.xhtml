@@ -14,34 +14,35 @@
     <h:form id="porcentajecomisiontx" styleClass="edit">
 
         <rich:panel>
-            <f:facet name="header">#{porcentajecomisiontxHome.managed ? 'Editar' : 'Agregar'} Porcentaje de Comision al Pais</f:facet>
+            <f:facet name="header">#{porcentajecomisiontxHome.managed ? 'Edit' : 'Add'} Porcentajecomisiontx</f:facet>
 
-			
-			<s:decorate id="nombreField" template="layout/edit.xhtml">
-                <ui:define name="label">Pais</ui:define>
-                <h:inputText id="nombre"
-                           size="25"
-                           disabled="true"
-                      maxlength="25"
-                          value="#{porcentajecomisiontxHome.instance.pais.nombre}">
-                    
+
+            <s:decorate id="codpaisField" template="layout/edit.xhtml">
+                <ui:define name="label">Codpais</ui:define>
+                <h:inputText id="codpais"
+                       disabled="#{porcentajecomisiontxHome.managed}"
+                      required="true"
+                          size="5"
+                     maxlength="5"
+                         value="#{porcentajecomisiontxHome.instance.id.codpais}">
+                    <a:support event="onblur" reRender="codpaisField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
-           
 
             <s:decorate id="fechainicioField" template="layout/edit.xhtml">
-                <ui:define name="label">Fecha Inicio</ui:define>
+                <ui:define name="label">Fechainicio</ui:define>
                 <rich:calendar id="fechainicio"
+                       disabled="#{porcentajecomisiontxHome.managed}"
                        required="true"
-                          value="#{porcentajecomisiontxHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy hh:mm a" />
+                          value="#{porcentajecomisiontxHome.instance.id.fechainicio}" datePattern="MM/dd/yyyy" />
             </s:decorate>
 
 
 
             <s:decorate id="fechafinField" template="layout/edit.xhtml">
-                <ui:define name="label">Fecha Fin</ui:define>
+                <ui:define name="label">Fechafin</ui:define>
                 <rich:calendar id="fechafin"
-                          value="#{porcentajecomisiontxHome.instance.fechafin}" datePattern="MM/dd/yyyy hh:mm a"/>
+                          value="#{porcentajecomisiontxHome.instance.fechafin}" datePattern="MM/dd/yyyy" />
             </s:decorate>
 
 
@@ -56,7 +57,7 @@
 
             <div style="clear:both">
                 <span class="required">*</span>
-                Campos Requeridos
+                required fields
             </div>
 
         </rich:panel>
@@ -64,30 +65,30 @@
         <div class="actionButtons">
 
             <h:commandButton id="save"
-                          value="Guardar"
-                         action="#{AdministrarPais.guardar}"
+                          value="Save"
+                         action="#{porcentajecomisiontxHome.persist}"
                        disabled="#{!porcentajecomisiontxHome.wired}"
                        rendered="#{!porcentajecomisiontxHome.managed}"/>
 
             <h:commandButton id="update"
-                          value="Actualizar"
+                          value="Save"
                          action="#{porcentajecomisiontxHome.update}"
                        rendered="#{porcentajecomisiontxHome.managed}"/>
 
             <h:commandButton id="delete"
-                          value="Eliminar"
+                          value="Delete"
                          action="#{porcentajecomisiontxHome.remove}"
                       immediate="true"
                        rendered="#{porcentajecomisiontxHome.managed}"/>
 
             <s:button id="cancelEdit"
-                   value="Cancelar"
+                   value="Cancel"
              propagation="end"
                     view="/Porcentajecomisiontx.xhtml"
                 rendered="#{porcentajecomisiontxHome.managed}"/>
 
             <s:button id="cancelAdd"
-                   value="Cancelar"
+                   value="Cancel"
              propagation="end"
                     view="/#{empty porcentajecomisiontxFrom ? 'PorcentajecomisiontxList' : porcentajecomisiontxFrom}.xhtml"
                 rendered="#{!porcentajecomisiontxHome.managed}"/>
@@ -95,7 +96,47 @@
         </div>
     </h:form>
 
+<rich:tabPanel switchType="ajax">
 
+    <rich:tab label="Pais *" labelClass="required">
+    <div class="association" id="paisParent">
+
+        <h:outputText value="There is no pais associated with this porcentajecomisiontx."
+                   rendered="#{porcentajecomisiontxHome.instance.pais == null}"/>
+
+        <rich:dataTable var="_pais"
+                   value="#{porcentajecomisiontxHome.instance.pais}"
+                rendered="#{porcentajecomisiontxHome.instance.pais != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="paisTable">
+            <h:column>
+                <f:facet name="header">Codigopais</f:facet>
+                <h:outputText value="#{_pais.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Paisiso codigopais</f:facet>
+                <h:outputText value="#{_pais.paisiso.codigopais}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{_pais.nombre}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                <h:outputText value="#{_pais.estado}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button id="#{porcentajecomisiontxHome.instance.pais != null ? 'changeParent' : 'selectParent'}" value="#{porcentajecomisiontxHome.instance.pais != null ? 'Change' : 'Select'} pais"
+                       view="/PaisList.xhtml">
+                <f:param name="from" value="PorcentajecomisiontxEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
 </ui:define>
 
 </ui:composition>
