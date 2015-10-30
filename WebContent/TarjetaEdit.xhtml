@@ -651,8 +651,7 @@
                 </rich:column>
                 <rich:column style="text-align:right">
                     <f:facet name="header">Tasa Dolar</f:facet>
-                    <h:outputText value="#{AdministrarTarjeta.tasaDolar(_transaccion.fechatx, _transaccion.establecimiento.pais.codigopais,
-                    tarjetaHome.instance.promotor.documento)}">
+                    <h:outputText value="#{AdministrarTarjeta.tasaDolarNew(_transaccion.consecutivo)}">
                         <f:convertNumber/>
                     </h:outputText>
                 </rich:column>

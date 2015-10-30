@@ -492,6 +492,45 @@ public class AdministrarTarjeta
     	}
     }
     
+    /**
+	 * Retorna la tasa de dolar para el detalle de las Tx en la interfaz TarjetaEdit.xhtml
+	 * Este nuevo metodo trae la tasa de dolar, con base en el dolar liquidado en el momento
+	 * de la transaccion, y no los de las tablas de dolar negociado y global.
+	 * @param fecha
+	 * @param codpais
+	 * @param documento
+	 * @return tasa dolar del dia
+	 */
+    public BigDecimal tasaDolarNew(int consecutivo){
+    	try{
+
+    		BigDecimal t = BigDecimal.ZERO;
+    		//1. Busca la Tx con el Nro. de consecutivo
+    		Transaccion tx = (Transaccion) entityManager.createQuery(
+    				"from Transaccion t where t.consecutivo = " + consecutivo).getSingleResult();
+    		
+    		//2. Con el objeto Transaccion obtengo el establecimiento > pais > moneda y 
+    		//   para determinar la operacion que retorna la tasa de cambio 
+    		//   de Dolar o Euro
+    		String tipoMoneda = tx.getEstablecimiento().getPais().getPaisiso().getCodigomoneda();
+    		if("EUR".equals(tipoMoneda)){  
+    			t = tx.getValortxpesos().divide(tx.getValortxeuros());
+    		}else{if( "USD".equals(tipoMoneda)){
+    			t = tx.getValortxpesos().divide(tx.getValortxdolares());
+    			}else{if("COP".equals(tipoMoneda)){
+    				t = tx.getValortxpesos().divide(tx.getValortxdolares());
+        			}
+    			}
+    		}    		
+    	return t;
+    	
+    	}catch(Exception e){
+    		System.out.println("Error al ubicar la tasa de cambio de una Transaccion");
+    		return null;
+    	}
+    }
+    
+    
     public void guardarTarjeta()
     {    	
     	//valida el banco antes de guardar la tarjeta, si eligen un banco errado
