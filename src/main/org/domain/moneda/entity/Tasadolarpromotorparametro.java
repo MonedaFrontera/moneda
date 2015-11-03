@@ -1,6 +1,6 @@
 package org.domain.moneda.entity;
 
-// Generated 27/04/2015 11:47:31 AM by Hibernate Tools 3.2.4.GA
+// Generated 9/06/2015 03:23:02 PM by Hibernate Tools 3.2.4.GA
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,7 +30,6 @@ public class Tasadolarpromotorparametro implements java.io.Serializable {
 	private Banco banco;
 	private String tipocupo;
 	private BigDecimal tasadolar;
-	private BigDecimal tasadolarTac;
 	private Date fechainicio;
 	private Date fechafin;
 
@@ -44,7 +43,7 @@ public class Tasadolarpromotorparametro implements java.io.Serializable {
 	public Tasadolarpromotorparametro(int consecutivo, Promotor promotor,
 			Franquicia franquicia, Pais pais, Establecimiento establecimiento,
 			Banco banco, String tipocupo, BigDecimal tasadolar,
-			BigDecimal tasadolarTac, Date fechainicio, Date fechafin) {
+			Date fechainicio, Date fechafin) {
 		this.consecutivo = consecutivo;
 		this.promotor = promotor;
 		this.franquicia = franquicia;
@@ -53,7 +52,6 @@ public class Tasadolarpromotorparametro implements java.io.Serializable {
 		this.banco = banco;
 		this.tipocupo = tipocupo;
 		this.tasadolar = tasadolar;
-		this.tasadolarTac = tasadolarTac;
 		this.fechainicio = fechainicio;
 		this.fechafin = fechafin;
 	}
@@ -128,22 +126,13 @@ public class Tasadolarpromotorparametro implements java.io.Serializable {
 		this.tipocupo = tipocupo;
 	}
 
-	@Column(name = "tasadolar", precision = 6, scale = 3)
+	@Column(name = "tasadolar", precision = 6)
 	public BigDecimal getTasadolar() {
 		return this.tasadolar;
 	}
 
 	public void setTasadolar(BigDecimal tasadolar) {
 		this.tasadolar = tasadolar;
-	}
-
-	@Column(name = "tasadolar_tac", precision = 6, scale = 3)
-	public BigDecimal getTasadolarTac() {
-		return this.tasadolarTac;
-	}
-
-	public void setTasadolarTac(BigDecimal tasadolarTac) {
-		this.tasadolarTac = tasadolarTac;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

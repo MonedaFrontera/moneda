@@ -52,15 +52,4 @@ public class PaisisoHome extends EntityHome<Paisiso> {
 				.getPaises());
 	}
 
-	public List<Pais> getPaises_1() {
-		return getInstance() == null ? null : new ArrayList<Pais>(getInstance()
-				.getPaises_1());
-	}
-
-	public List<Tasabolivartransferpais> getTasabolivartransferpaises_1() {
-		return getInstance() == null ? null
-				: new ArrayList<Tasabolivartransferpais>(getInstance()
-						.getTasabolivartransferpaises_1());
-	}
-
 }

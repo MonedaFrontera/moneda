@@ -42,19 +42,19 @@
             
             <s:decorate id="promotorField" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>                		
-				<h:inputText value="#{AdministrarTasa.nombre}" id="namepromotor" size="50">			
+				<h:inputText value="#{AdministrarTasa.nombrePromo}" id="namepromotor" size="50">			
                 	<a:support event="onblur" reRender="dolarTasas, dolarGlobal, tasadolarField, tasadolarFieldTac, tasadolarFieldOf, dolarGlobalEst,
                 				dolarGlobalEstS, tasadolarFieldNeg, euroTasas, euroGlobal, euroGlobalEst, euroGlobalEstS,
                 				tasaeuroField, tasaeuroFieldTac, tasaeuroFieldOf, tasaeuroFieldNeg, porcentdiv, paridaddiv, 
                 				pariFieldClt, porcentFieldOf, paridadFielddOf"  
-                				action="#{AdministrarTasa.ubicarPromotor()}" 
+                				action="#{AdministrarTasa.ubicarPromotorTasa()}" 
                 				ajaxSingle="true"/>
                 </h:inputText>
                 <h:graphicImage value="/img/arrow.png"
                 	    		onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)" 
                     			alt="" />
 			    <rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
-                                        suggestionAction="#{AdministrarTasa.autocompletar}" var="result"
+                                        suggestionAction="#{AdministrarTasa.autocompletarPromotor}" var="result"
                                         tokens="," height="150" width="260" cellpadding="2"
                                         cellspacing="2"   shadowOpacity="4" shadowDepth="4"
                                         minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
@@ -67,13 +67,13 @@
         	
         	<s:decorate id="codigounicoField" template="layout/edit.xhtml">
                 <ui:define name="label">Establecimiento</ui:define>
-                <h:inputText value="#{AdministrarTasa.sugestion}" id="name" styleClass="textBox" size="50">
-                <a:support event="onblur" action="#{AdministrarTasa.ubicarEstablecimiento()}" ajaxSingle="true"/>
+                <h:inputText value="#{AdministrarTasa.nomEstable}" id="name" styleClass="textBox" size="50">
+                <a:support event="onblur" action="#{AdministrarTasa.ubicarEstablecimientoTasa()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
                     alt="" />
 				<rich:suggestionbox id="suggestionBoxId" for="name"
-                                        suggestionAction="#{AdministrarTasa.autocompletarEstablecimiento}" var="result"
+                                        suggestionAction="#{AdministrarTasa.autocompletarEstablecimientoTasas}" var="result"
                                         tokens="," height="150" width="260" cellpadding="2"
                                         cellspacing="2"   shadowOpacity="4" shadowDepth="4"
                                         minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">

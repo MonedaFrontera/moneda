@@ -610,6 +610,7 @@ public class EnviarMailAlertas {
 							};*/
 		
 			entityManager.clear();
+			//
 			List<String> resultList = 
 				entityManager.createQuery("select p.correo from Personal p where p.correosalerta=true").getResultList();
 			
