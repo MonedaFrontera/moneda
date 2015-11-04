@@ -1400,7 +1400,7 @@ public class AdministrarTransaccion
 		EstablecimientoprecioId idEst = null;
 		try {
 			idEst = new EstablecimientoprecioId( 
-					establecimientoHome.getInstance().getCodigounico(), sdf.parse(sdf.format(new Date())) );
+					establecimientoHome.getInstance().getCodigounico(), sdf.parse(sdf.format(this.transaccionHome.getInstance().getFechatx())) );
 		} catch (ParseException e) {
 			
 			e.printStackTrace();

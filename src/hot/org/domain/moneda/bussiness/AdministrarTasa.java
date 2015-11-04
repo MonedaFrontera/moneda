@@ -1141,12 +1141,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				"Se debe ingresar la tasa de dolar para la oficina");
 				return null;
 			}
-			if(this.getTasaEuroTacTemp() == null && this.getTasaDolarNegTemp() == null ){
+			if(this.getTasaDolarTacTemp() == null && this.getTasaDolarNegTemp() == null ){
 				facesMessages.addToControl("tasadolarTac",	
 				"Se debe ingresar la tasa de dolar para clientes TAC");
 				return null;
 			}					
-			if(this.getTasaEuroTemp() == null && this.getTasaDolarNegTemp() == null ){					
+			if(this.getTasaDolarTemp() == null && this.getTasaDolarNegTemp() == null ){					
 				facesMessages.addToControl("tasadolar",	
 				"Se debe ingresar la tasa de dolar para clientes");
 				return null;
