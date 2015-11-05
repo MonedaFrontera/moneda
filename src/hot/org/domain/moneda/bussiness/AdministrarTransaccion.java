@@ -1842,7 +1842,7 @@ public class AdministrarTransaccion
 				Promotor p = (Promotor) 
 					entityManager.createQuery("from Promotor p where p.documento ='" + documento +"'").getResultList().get(0);
 				System.out.println(">>>>>>>>>PROMOTOR:" + p.getTac());
-				if( p.getTac() ){
+				if( p.getTac() || tarjetaHome.getInstance().getTac() ){
 					System.out.println("SI ES cliente TAC");
 					tasaEuro = listTasaEuro.get(0).getTasaeuroTac().floatValue();
 					
@@ -2076,7 +2076,7 @@ public class AdministrarTransaccion
 				Promotor p = (Promotor) 
 					entityManager.createQuery("from Promotor p where p.documento ='" + documento +"'").getResultList().get(0);
 				System.out.println(">>>>>>>>>PROMOTOR:" + p.getTac());
-				if( p.getTac() ){
+				if( p.getTac() || tarjetaHome.getInstance().getTac() ){
 					System.out.println("SI ES cliente TAC");
 					tasaDolar = listTasaEuro.get(0).getTasadolarTac().floatValue();
 					

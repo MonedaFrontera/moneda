@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -15,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
+import javax.xml.rpc.encoding.Deserializer;
 
 import org.domain.moneda.entity.Activacion;
 import org.domain.moneda.entity.Banco;
@@ -32,6 +34,7 @@ import org.domain.moneda.session.PromotorHome;
 import org.domain.moneda.session.TarjetaHome;
 import org.domain.moneda.session.TarjetaList;
 import org.domain.moneda.session.ViajeHome;
+import org.domain.moneda.util.BinJson;
 import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.domain.moneda.util.ExpresionesRegulares;
@@ -52,8 +55,6 @@ import org.jboss.seam.security.Identity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.domain.moneda.util.BinJson;
 
 @Name("AdministrarTarjeta") 
 @Scope(ScopeType.CONVERSATION)
@@ -514,18 +515,21 @@ public class AdministrarTarjeta
     		//   de Dolar o Euro
     		String tipoMoneda = tx.getEstablecimiento().getPais().getPaisiso().getCodigomoneda();
     		if("EUR".equals(tipoMoneda)){  
-    			t = tx.getValortxpesos().divide(tx.getValortxeuros());
-    		}else{if( "USD".equals(tipoMoneda)){
-    			t = tx.getValortxpesos().divide(tx.getValortxdolares());
-    			}else{if("COP".equals(tipoMoneda)){
-    				t = tx.getValortxpesos().divide(tx.getValortxdolares());
-        			}
+    			t = tx.getValortxpesos().divide(tx.getValortxeuros(), 2, RoundingMode.HALF_UP);
+    		}else{
+    			if( "USD".equals(tipoMoneda)){
+    				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
+    			}else{
+    				if("COP".equals(tipoMoneda)){
+    					t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
+    				}
     			}
     		}    		
     	return t;
     	
     	}catch(Exception e){
     		System.out.println("Error al ubicar la tasa de cambio de una Transaccion");
+    		e.printStackTrace();
     		return null;
     	}
     }
