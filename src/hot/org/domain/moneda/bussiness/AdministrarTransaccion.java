@@ -1307,7 +1307,8 @@ public class AdministrarTransaccion
 			try {
 				estprecioId = new EstablecimientoprecioId ( 
 								establecimientoHome.getInstance().getCodigounico(), 
-								sdf.parse(sdf.format(new Date())) );
+								sdf.parse(sdf.format(transaccionHome.getInstance().getFechatx())) );
+				
 			} catch (ParseException e) {
 				e.printStackTrace(); 
 			} 
