@@ -1323,7 +1323,7 @@ public class AdministrarTransaccion
 				
 			}
 						
-			float dolarFromEuro =Math.round( (100.0 * transaccionHome.getInstance().getValortxeuros().floatValue()/paridad)) / 100.0f;
+			float dolarFromEuro =Math.round( (100.0 * transaccionHome.getInstance().getValortxeuros().floatValue()*paridad)) / 100.0f;
 			transaccionHome.getInstance().setValortxdolares(new BigDecimal(Float.toString(dolarFromEuro)));
 			
 			System.out.println("Paridad: " + paridad); 
