@@ -5,8 +5,8 @@ package org.domain.moneda.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 

@@ -8,6 +8,9 @@
    <param name="porcentajecomisiontxFechainicio" value="#{porcentajecomisiontxHome.porcentajecomisiontxId.fechainicio}"/>
    <param name="paisFrom"/>
    <param name="paisCodigopais" value="#{paisHome.paisCodigopais}"/>
+   <param name="paisisoFrom"/>
+   <param name="paisisoCodigopais" value="#{paisisoHome.paisisoCodigopais}"/>
+
 
 
 

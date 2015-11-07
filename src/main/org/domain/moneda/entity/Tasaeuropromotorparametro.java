@@ -1,6 +1,6 @@
 package org.domain.moneda.entity;
 
-// Generated 7/10/2015 05:14:39 PM by Hibernate Tools 3.2.4.GA
+// Generated 9/06/2015 03:23:02 PM by Hibernate Tools 3.2.4.GA
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -30,7 +30,6 @@ public class Tasaeuropromotorparametro implements java.io.Serializable {
 	private Banco banco;
 	private String tipocupo;
 	private BigDecimal tasaeuro;
-	private BigDecimal tasaeuroTac;
 	private Date fechainicio;
 	private Date fechafin;
 
@@ -53,7 +52,6 @@ public class Tasaeuropromotorparametro implements java.io.Serializable {
 		this.banco = banco;
 		this.tipocupo = tipocupo;
 		this.tasaeuro = tasaeuro;
-		this.tasaeuroTac = tasaeuroTac;
 		this.fechainicio = fechainicio;
 		this.fechafin = fechafin;
 	}
@@ -136,16 +134,7 @@ public class Tasaeuropromotorparametro implements java.io.Serializable {
 	public void setTasaeuro(BigDecimal tasaeuro) {
 		this.tasaeuro = tasaeuro;
 	}
-
-	@Column(name = "tasaeuro_tac", precision = 6, scale = 3)
-	public BigDecimal getTasaeuroTac() {
-		return this.tasaeuroTac;
-	}
-
-	public void setTasaeuroTac(BigDecimal tasaeuroTac) {
-		this.tasaeuroTac = tasaeuroTac;
-	}
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fechainicio", length = 29)
 	public Date getFechainicio() {

@@ -279,7 +279,7 @@
             </s:decorate>
             
             <s:div id="divTac">
-        	<s:decorate id="tacField" template="layout/edit.xhtml" rendered="#{tarjetaHome.instance.promotor.tac}"
+        	<s:decorate id="tacField" template="layout/edit.xhtml"
             			style="color:blue">
                 <ui:define name="label">Tarjeta TAC</ui:define>
                 <h:selectBooleanCheckbox id="tac" 
@@ -650,10 +650,9 @@
 					</f:facet>
                 </rich:column>
                 <rich:column style="text-align:right">
-                    <f:facet name="header">Tasa Dolar</f:facet>
-                    <h:outputText value="#{AdministrarTarjeta.tasaDolar(_transaccion.fechatx, _transaccion.establecimiento.pais.codigopais,
-                    tarjetaHome.instance.promotor.documento)}">
-                        <f:convertNumber/>
+                    <f:facet name="header">Tasa Cambio</f:facet>
+                    <h:outputText style= "text-align:right; display:block" value="#{AdministrarTarjeta.tasaDolarNew(_transaccion.consecutivo)}">
+                        <f:convertNumber pattern="$ #,###"/>
                     </h:outputText>
                 </rich:column>
                 <rich:column sortBy="#{_transaccion.valortxdolares}" style="text-align:right">

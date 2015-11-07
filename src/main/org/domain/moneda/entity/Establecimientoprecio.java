@@ -1,6 +1,6 @@
 package org.domain.moneda.entity;
 
-// Generated 27/04/2015 11:47:31 AM by Hibernate Tools 3.2.4.GA
+// Generated 9/06/2015 03:23:02 PM by Hibernate Tools 3.2.4.GA
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,6 +29,8 @@ public class Establecimientoprecio implements java.io.Serializable {
 	private Date fechafin;
 	private BigDecimal dolaroficina;
 	private BigDecimal porcentajeoficina;
+	private BigDecimal paridad;
+	private BigDecimal paridadcliente;
 
 	public Establecimientoprecio() {
 	}
@@ -41,12 +43,15 @@ public class Establecimientoprecio implements java.io.Serializable {
 
 	public Establecimientoprecio(EstablecimientoprecioId id,
 			Establecimiento establecimiento, Date fechafin,
-			BigDecimal dolaroficina, BigDecimal porcentajeoficina) {
+			BigDecimal dolaroficina, BigDecimal porcentajeoficina,
+			BigDecimal paridad, BigDecimal paridadcliente) {
 		this.id = id;
 		this.establecimiento = establecimiento;
 		this.fechafin = fechafin;
 		this.dolaroficina = dolaroficina;
 		this.porcentajeoficina = porcentajeoficina;
+		this.paridad = paridad;
+		this.paridadcliente = paridadcliente;
 	}
 
 	@EmbeddedId
@@ -99,6 +104,24 @@ public class Establecimientoprecio implements java.io.Serializable {
 
 	public void setPorcentajeoficina(BigDecimal porcentajeoficina) {
 		this.porcentajeoficina = porcentajeoficina;
+	}
+
+	@Column(name = "paridad", precision = 2)
+	public BigDecimal getParidad() {
+		return this.paridad;
+	}
+
+	public void setParidad(BigDecimal paridad) {
+		this.paridad = paridad;
+	}
+	
+	@Column(name = "paridadcliente", precision = 2)
+	public BigDecimal getParidadCliente() {
+		return this.paridadcliente;
+	}
+
+	public void setParidadCliente(BigDecimal paridadcliente) {
+		this.paridadcliente = paridadcliente;
 	}
 
 }

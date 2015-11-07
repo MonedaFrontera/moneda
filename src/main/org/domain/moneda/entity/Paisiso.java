@@ -1,6 +1,6 @@
 package org.domain.moneda.entity;
 
-// Generated 27/04/2015 11:47:31 AM by Hibernate Tools 3.2.4.GA
+// Generated 9/06/2015 03:23:02 PM by Hibernate Tools 3.2.4.GA
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,12 +33,10 @@ public class Paisiso implements java.io.Serializable {
 	private String pathBanderaAbsoluta;
 	private Boolean estado;
 	private String pathBanderasExtracto;
+	private String pathBanderaGui;
 	private Set<Tasabolivartransferpais> tasabolivartransferpaises = new HashSet<Tasabolivartransferpais>(
 			0);
 	private Set<Pais> paises = new HashSet<Pais>(0);
-	private Set<Pais> paises_1 = new HashSet<Pais>(0);
-	private Set<Tasabolivartransferpais> tasabolivartransferpaises_1 = new HashSet<Tasabolivartransferpais>(
-			0);
 
 	public Paisiso() {
 	}
@@ -53,8 +51,7 @@ public class Paisiso implements java.io.Serializable {
 			String pathBanderaRelativo, String pathBanderaAbsoluta,
 			Boolean estado, String pathBanderasExtracto,
 			Set<Tasabolivartransferpais> tasabolivartransferpaises,
-			Set<Pais> paises, Set<Pais> paises_1,
-			Set<Tasabolivartransferpais> tasabolivartransferpaises_1) {
+			Set<Pais> paises) {
 		this.codigopais = codigopais;
 		this.nombrepaisEs = nombrepaisEs;
 		this.nombrepaisEn = nombrepaisEn;
@@ -70,8 +67,6 @@ public class Paisiso implements java.io.Serializable {
 		this.pathBanderasExtracto = pathBanderasExtracto;
 		this.tasabolivartransferpaises = tasabolivartransferpaises;
 		this.paises = paises;
-		this.paises_1 = paises_1;
-		this.tasabolivartransferpaises_1 = tasabolivartransferpaises_1;
 	}
 
 	@Id
@@ -224,23 +219,16 @@ public class Paisiso implements java.io.Serializable {
 		this.paises = paises;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paisiso")
-	public Set<Pais> getPaises_1() {
-		return this.paises_1;
+	@Column(name = "path_bandera_gui", length = 60)
+	@Length(max = 60)
+	public String getPathBanderaGui() {
+		return pathBanderaGui;
 	}
 
-	public void setPaises_1(Set<Pais> paises_1) {
-		this.paises_1 = paises_1;
+	public void setPathBanderaGui(String pathBanderaGui) {
+		this.pathBanderaGui = pathBanderaGui;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paisiso")
-	public Set<Tasabolivartransferpais> getTasabolivartransferpaises_1() {
-		return this.tasabolivartransferpaises_1;
-	}
-
-	public void setTasabolivartransferpaises_1(
-			Set<Tasabolivartransferpais> tasabolivartransferpaises_1) {
-		this.tasabolivartransferpaises_1 = tasabolivartransferpaises_1;
-	}
+	
+	
 
 }

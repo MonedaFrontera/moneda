@@ -1,16 +1,12 @@
 package org.domain.moneda.entity;
 
-// Generated 23/12/2011 07:58:00 AM by Hibernate Tools 3.2.4.GA
+// Generated 9/06/2015 03:23:02 PM by Hibernate Tools 3.2.4.GA
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -20,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.domain.moneda.entity.Baucher;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
@@ -45,16 +39,18 @@ public class Transaccion implements java.io.Serializable {
 	private BigDecimal arrastradorcomision;
 	private BigDecimal establecimientocomision;
 	private BigDecimal porcentajecomision;
-	private Set<Deducciones> deduccioneses = new HashSet<Deducciones>(0);
-	private Set<Baucher> bauchers = new HashSet<Baucher>(0);
-	private Set<Factura> facturas = new HashSet<Factura>(0);
+	private Date fechamod;
+	private String usuariomod;
 	private String asesor;
 	private String promotor;
 	private String arrastrador;
 	private String digitador;
-	private String usuariomod;
-	private Date fechamod;
-	
+	private BigDecimal valortxeuros;
+	private BigDecimal paridad;
+	private Set<Deducciones> deduccioneses = new HashSet<Deducciones>(0);
+	private Set<Factura> facturas = new HashSet<Factura>(0);
+	private Set<Baucher> bauchers = new HashSet<Baucher>(0);
+
 	public Transaccion() {
 	}
 
@@ -69,14 +65,13 @@ public class Transaccion implements java.io.Serializable {
 	public Transaccion(int consecutivo, Establecimiento establecimiento,
 			Tarjeta tarjeta, Date fechatx, String tipotx,
 			BigDecimal valortxpesos, BigDecimal valortxdolares,
-			String numfactura, 
-			BigDecimal valorcomision, BigDecimal asesorcomision,
-			BigDecimal arrastradorcomision, BigDecimal establecimientocomision,
-			Set<Deducciones> deduccioneses,
-			BigDecimal porcentajecomision,
-			Set<Baucher> bauchers, String promotor, 
-			String arrastrador, Date fechamod, String usuariomod, 
-			String digitador, String asesor, Set<Factura> facturas) {
+			String numfactura, BigDecimal valorcomision,
+			BigDecimal asesorcomision, BigDecimal arrastradorcomision,
+			BigDecimal establecimientocomision, BigDecimal porcentajecomision,
+			Date fechamod, String usuariomod, String asesor, String promotor,
+			String arrastrador, String digitador, BigDecimal valortxeuros,
+			BigDecimal paridad, Set<Deducciones> deduccioneses,
+			Set<Factura> facturas, Set<Baucher> bauchers) {
 		this.consecutivo = consecutivo;
 		this.establecimiento = establecimiento;
 		this.tarjeta = tarjeta;
@@ -86,19 +81,21 @@ public class Transaccion implements java.io.Serializable {
 		this.valortxdolares = valortxdolares;
 		this.numfactura = numfactura;
 		this.valorcomision = valorcomision;
-		this.arrastradorcomision = arrastradorcomision;
 		this.asesorcomision = asesorcomision;
+		this.arrastradorcomision = arrastradorcomision;
 		this.establecimientocomision = establecimientocomision;
 		this.porcentajecomision = porcentajecomision;
-		this.deduccioneses = deduccioneses;
-		this.bauchers = bauchers;
-		this.promotor = promotor;
-		this.asesor = asesor;
-		this.arrastrador = arrastrador;
-		this.digitador = digitador;
-		this.facturas = facturas;
 		this.fechamod = fechamod;
 		this.usuariomod = usuariomod;
+		this.asesor = asesor;
+		this.promotor = promotor;
+		this.arrastrador = arrastrador;
+		this.digitador = digitador;
+		this.valortxeuros = valortxeuros;
+		this.paridad = paridad;
+		this.deduccioneses = deduccioneses;
+		this.facturas = facturas;
+		this.bauchers = bauchers;
 	}
 
 	@Id
@@ -181,19 +178,19 @@ public class Transaccion implements java.io.Serializable {
 	public void setNumfactura(String numfactura) {
 		this.numfactura = numfactura;
 	}
-	
-	public void setValorcomision(BigDecimal valorcomision) {
-		this.valorcomision = valorcomision;
-	}
 
 	@Column(name = "valorcomision", precision = 10)
 	public BigDecimal getValorcomision() {
 		return this.valorcomision;
 	}
-	
+
+	public void setValorcomision(BigDecimal valorcomision) {
+		this.valorcomision = valorcomision;
+	}
+
 	@Column(name = "asesorcomision", precision = 10)
 	public BigDecimal getAsesorcomision() {
-		return asesorcomision;
+		return this.asesorcomision;
 	}
 
 	public void setAsesorcomision(BigDecimal asesorcomision) {
@@ -202,22 +199,22 @@ public class Transaccion implements java.io.Serializable {
 
 	@Column(name = "arrastradorcomision", precision = 10)
 	public BigDecimal getArrastradorcomision() {
-		return arrastradorcomision;
+		return this.arrastradorcomision;
 	}
 
 	public void setArrastradorcomision(BigDecimal arrastradorcomision) {
 		this.arrastradorcomision = arrastradorcomision;
 	}
-	
+
 	@Column(name = "establecimientocomision", precision = 10)
 	public BigDecimal getEstablecimientocomision() {
-		return establecimientocomision;
+		return this.establecimientocomision;
 	}
-	
+
 	public void setEstablecimientocomision(BigDecimal establecimientocomision) {
 		this.establecimientocomision = establecimientocomision;
 	}
-	
+
 	@Column(name = "porcentajecomision", precision = 5, scale = 3)
 	public BigDecimal getPorcentajecomision() {
 		return this.porcentajecomision;
@@ -226,65 +223,7 @@ public class Transaccion implements java.io.Serializable {
 	public void setPorcentajecomision(BigDecimal porcentajecomision) {
 		this.porcentajecomision = porcentajecomision;
 	}
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transaccion")
-	public Set<Deducciones> getDeduccioneses() {
-		return this.deduccioneses;
-	}
 
-	public void setDeduccioneses(Set<Deducciones> deduccioneses) {
-		this.deduccioneses = deduccioneses;
-	}
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transaccion")
-	public Set<Baucher> getBauchers() {
-		return this.bauchers;
-	}
-
-	public void setBauchers(Set<Baucher> bauchers) {
-		this.bauchers = bauchers;
-	}
-	
-	@Column(name = "asesor", length = 15)
-	@Length(max = 15)
-	public String getAsesor() {
-		return asesor;
-	}
-
-	public void setAsesor(String asesor) {
-		this.asesor = asesor;
-	}
-	
-	@Column(name = "promotor", length = 15)
-	@Length(max = 15)
-	public String getPromotor() {
-		return promotor;
-	}
-
-	public void setPromotor(String promotor) {
-		this.promotor = promotor;
-	}
-	
-	@Column(name = "arrastrador", length = 15)
-	@Length(max = 15)
-	public String getArrastrador() {
-		return arrastrador;
-	}
-
-	public void setArrastrador(String arrastrador) {
-		this.arrastrador = arrastrador;
-	}
-	
-	
-	@Length(max = 15)
-	public String getDigitador() {
-		return digitador;
-	}
-
-	public void setDigitador(String digitador) {
-		this.digitador = digitador;
-	}
-	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fechamod", length = 29)
 	public Date getFechamod() {
@@ -304,7 +243,74 @@ public class Transaccion implements java.io.Serializable {
 	public void setUsuariomod(String usuariomod) {
 		this.usuariomod = usuariomod;
 	}
-	
+
+	@Column(name = "asesor", length = 15)
+	@Length(max = 15)
+	public String getAsesor() {
+		return this.asesor;
+	}
+
+	public void setAsesor(String asesor) {
+		this.asesor = asesor;
+	}
+
+	@Column(name = "promotor", length = 15)
+	@Length(max = 15)
+	public String getPromotor() {
+		return this.promotor;
+	}
+
+	public void setPromotor(String promotor) {
+		this.promotor = promotor;
+	}
+
+	@Column(name = "arrastrador", length = 15)
+	@Length(max = 15)
+	public String getArrastrador() {
+		return this.arrastrador;
+	}
+
+	public void setArrastrador(String arrastrador) {
+		this.arrastrador = arrastrador;
+	}
+
+	@Column(name = "digitador", length = 15)
+	@Length(max = 15)
+	public String getDigitador() {
+		return this.digitador;
+	}
+
+	public void setDigitador(String digitador) {
+		this.digitador = digitador;
+	}
+
+	@Column(name = "valortxeuros", precision = 10)
+	public BigDecimal getValortxeuros() {
+		return this.valortxeuros;
+	}
+
+	public void setValortxeuros(BigDecimal valortxeuros) {
+		this.valortxeuros = valortxeuros;
+	}
+
+	@Column(name = "paridad", precision = 2)
+	public BigDecimal getParidad() {
+		return this.paridad;
+	}
+
+	public void setParidad(BigDecimal paridad) {
+		this.paridad = paridad;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transaccion")
+	public Set<Deducciones> getDeduccioneses() {
+		return this.deduccioneses;
+	}
+
+	public void setDeduccioneses(Set<Deducciones> deduccioneses) {
+		this.deduccioneses = deduccioneses;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transaccion")
 	public Set<Factura> getFacturas() {
 		return this.facturas;
@@ -313,7 +319,14 @@ public class Transaccion implements java.io.Serializable {
 	public void setFacturas(Set<Factura> facturas) {
 		this.facturas = facturas;
 	}
-	
-	
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transaccion")
+	public Set<Baucher> getBauchers() {
+		return this.bauchers;
+	}
+
+	public void setBauchers(Set<Baucher> bauchers) {
+		this.bauchers = bauchers;
+	}
 
 }

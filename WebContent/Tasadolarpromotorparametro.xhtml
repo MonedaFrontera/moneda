@@ -30,13 +30,6 @@
             </h:outputText>
         </s:decorate>
 
-        <s:decorate id="tasadolarTac" template="layout/display.xhtml">
-            <ui:define name="label">Tasadolar tac</ui:define>
-            <h:outputText value="#{tasadolarpromotorparametroHome.instance.tasadolarTac}">
-                <f:convertNumber/>
-            </h:outputText>
-        </s:decorate>
-
         <s:decorate id="fechainicio" template="layout/display.xhtml">
             <ui:define name="label">Fechainicio</ui:define>
             <h:outputText value="#{tasadolarpromotorparametroHome.instance.fechainicio}">
@@ -314,6 +307,10 @@
             <h:column>
                 <f:facet name="header">Dias</f:facet>
                 <h:outputText value="#{_banco.dias}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Activo</f:facet>
+                <h:outputText value="#{_banco.activo}"/>
             </h:column>
             <h:column styleClass="action">
                 <f:facet name="header">Action</f:facet>

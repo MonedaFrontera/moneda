@@ -1,6 +1,7 @@
 package org.domain.moneda.session;
 
 import org.domain.moneda.entity.*;
+import org.domain.moneda.entity.Pais;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.framework.EntityQuery;
 import java.util.Arrays;
@@ -8,7 +9,7 @@ import java.util.Arrays;
 @Name("paisList")
 public class PaisList extends EntityQuery<Pais> {
 
-	private static final String EJBQL = "select pais from Pais pais";
+	private static final String EJBQL = "select pais from Pais pais where pais.estado = 1";
 
 	private static final String[] RESTRICTIONS = {
 			"lower(pais.codigopais) like lower(concat(#{paisList.pais.codigopais},'%'))",
@@ -20,7 +21,7 @@ public class PaisList extends EntityQuery<Pais> {
 	public PaisList() {
 		setEjbql(EJBQL);
 		setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
-		setMaxResults(140);
+		setMaxResults(120);
 		setOrder("nombre");
 	}
 

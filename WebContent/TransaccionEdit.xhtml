@@ -28,6 +28,8 @@
                     <a:support event="onblur" action="#{AdministrarTransaccion.verificarTarjeta()}"  
                     reRender="tarjetaHabienteField" ajaxSingle="true"
                     focus="nametarjeta"/> 
+                    
+                    
                 </h:inputText>
             </s:decorate>
 
@@ -100,10 +102,7 @@
                       maxlength="10"
                       required="true"
                           value="#{transaccionHome.instance.numfactura}">
-                    <a:support event="onblur" 
-                    		   reRender="numfacturaField, numautorizacionField" 
-                    		   action="#{AdministrarTransaccion.ubicarFactura}" 
-                    		   ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="numfacturaField" action="#{AdministrarTransaccion.ubicarFactura}" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
             
@@ -125,8 +124,19 @@
                        disabled="true"
                        style="font-size:24px"
                           value="#{AdministrarTransaccion.totalizar}"
-                       rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}">
+                       rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}">
                <f:convertNumber pattern="US #,###,##0"/>                
+               </h:inputText>
+               
+               <h:inputText id="totaleuro"
+                           size="17"
+                      maxlength="17"
+                       disabled="true" 
+                       	 style="font-size:24px"
+                          value="#{AdministrarTransaccion.totalizar}"
+                       rendered="#{transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}">
+               <f:convertNumber pattern="&#8364; #,###,##0"/>                
                </h:inputText>
             </s:decorate>
             
@@ -141,17 +151,8 @@
                       maxlength="8"
                       required="true"
                           value="#{AdministrarTransaccion.baucher1}">
-                    
-                </h:inputText>
-                <!-- 
-                <h:inputText id="numautorizacion1"
-                           size="17"
-                      maxlength="8"
-                      required="true"
-                          value="#{AdministrarTransaccion.baucher1}">
                     <a:support event="onblur" reRender="numautorizacionField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
-                 -->
             </s:decorate>
             <s:decorate id="valortxpesosField" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais == 'CO'}" template="layout/edit.xhtml" >
                 <ui:define name="label">Valor Pesos</ui:define>
@@ -162,7 +163,10 @@
                     <a:support event="onblur" reRender="valortxpesosField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
-            <s:decorate id="valortxdolaresField" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}" template="layout/edit.xhtml">
+            <s:decorate id="valortxdolaresField" 
+            			rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}" 
+            			template="layout/edit.xhtml">
                 <ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares1"
                 required="true"
@@ -170,7 +174,18 @@
                            size="17">
                     <a:support event="onblur" reRender="valortxdolaresField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
-            </s:decorate>            
+            </s:decorate>  
+            <s:decorate id="valortxeurosField" 
+            			rendered="#{ transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}" 
+            			template="layout/edit.xhtml">
+                <ui:define name="label">Valor Euros</ui:define>
+                <h:inputText id="valortxeuros1"
+                required="true"
+                          value="#{AdministrarTransaccion.valor1}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxeurosField, totalField"  ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>          
             
             
             <s:decorate id="numautorizacion2Field" template="layout/edit.xhtml">
@@ -179,7 +194,8 @@
                            size="17"
                       maxlength="8"
                           value="#{AdministrarTransaccion.baucher2}">
-                    <a:support event="onblur" reRender="numautorizacion2Field" bypassUpdates="true" ajaxSingle="true"/>
+                    <a:support event="onblur" reRender="numautorizacion2Field" 
+                    		   bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
             <s:decorate id="valortxpesos2Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais == 'CO'}" template="layout/edit.xhtml" >
@@ -190,14 +206,27 @@
                     <a:support event="onblur" reRender="valortxpesos2Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
-            <s:decorate id="valortxdolares2Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}" template="layout/edit.xhtml">
+            <s:decorate id="valortxdolares2Field" 
+            			rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}" 
+            			template="layout/edit.xhtml">
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares2"
                           value="#{AdministrarTransaccion.valor2}"
                            size="17">
                     <a:support event="onblur" reRender="valortxdolares2Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
-            </s:decorate>            
+            </s:decorate>
+            <s:decorate id="valortxeuros2Field" 
+            			rendered="#{ transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}" 
+            			template="layout/edit.xhtml">
+                <ui:define name="label">Valor Euros</ui:define>
+                <h:inputText id="valortxeuros2"
+                          value="#{AdministrarTransaccion.valor2}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxeuros2Field, totalField"  ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>             
             
             <s:decorate id="numautorizacion3Field" template="layout/edit.xhtml">
             	<ui:define name="label">Autorizacion 3</ui:define>
@@ -215,16 +244,28 @@
                            size="17">
                     <a:support event="onblur" reRender="valortxpesos3Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
-            </s:decorate>	
-            	
-            <s:decorate id="valortxdolares3Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}" template="layout/edit.xhtml">
+            </s:decorate>            	
+            <s:decorate id="valortxdolares3Field" 
+            			rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}" 
+            			template="layout/edit.xhtml">
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares3"
                           value="#{AdministrarTransaccion.valor3}"
                            size="17">
                     <a:support event="onblur" reRender="valortxdolares3Field, totalField" ajaxSingle="true"/>
                 </h:inputText>                
-            </s:decorate>			
+            </s:decorate>		
+            <s:decorate id="valortxeuros3Field" 
+            			rendered="#{ transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}" 
+            			template="layout/edit.xhtml">
+                <ui:define name="label">Valor Euros</ui:define>
+                <h:inputText id="valortxeuros3"
+                          value="#{AdministrarTransaccion.valor3}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxeuros3Field, totalField"  ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>	
 			</s:div>
 			
 			
@@ -244,7 +285,7 @@
             
             <h:commandButton id="save"
                           value="Registrar"
-                         action="#{AdministrarTransaccion.guardarTransaccion()}"
+                         action="#{AdministrarTransaccion.guardarTransaccionFinal()}"
                        rendered="#{!transaccionHome.managed}"/>
 
             <h:commandButton id="update"

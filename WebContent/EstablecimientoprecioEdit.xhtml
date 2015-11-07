@@ -64,6 +64,16 @@
                 </h:inputText>
             </s:decorate>
 
+
+            <s:decorate id="paridadField" template="layout/edit.xhtml">
+                <ui:define name="label">Paridad</ui:define>
+                <h:inputText id="paridad"
+                          value="#{establecimientoprecioHome.instance.paridad}"
+                           size="9">
+                    <a:support event="onblur" reRender="paridadField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
             <div style="clear:both">
                 <span class="required">*</span>
                 required fields

@@ -14,22 +14,18 @@
    <param name="porcentajecomisiontxFechainicio" value="#{porcentajecomisiontxHome.porcentajecomisiontxId.fechainicio}"/>
    <param name="paisFrom"/>
    <param name="paisCodigopais" value="#{paisHome.paisCodigopais}"/>
+   <param name="paisisoFrom"/>
+   <param name="paisisoCodigopais" value="#{paisisoHome.paisisoCodigopais}"/>
 
-	
-	
-	<navigation from-action="#{AdministrarPais.guardar}">
-      <rule if-outcome="persisted">
-          <end-conversation/>
-         <redirect view-id="/PaisList.xhtml"/>
-      </rule>
-   </navigation>
+
+
 
    <navigation from-action="#{porcentajecomisiontxHome.persist}">
       <rule if-outcome="persisted">
          <end-conversation/>
          <redirect view-id="/Porcentajecomisiontx.xhtml"/>
       </rule>
-   </navigation> 
+   </navigation>
 
    <navigation from-action="#{porcentajecomisiontxHome.update}">
       <rule if-outcome="updated">

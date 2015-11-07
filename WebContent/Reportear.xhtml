@@ -30,6 +30,7 @@
                     <f:selectItem id="autovoz" itemLabel="Reporte de Autorizaciones de Voz" itemValue="autovoz" />
                     <f:selectItem id="cuadrediario" itemLabel="Reporte de Cuadre Diario" itemValue="cuadrediario" />
                     <f:selectItem id="mrwpendientes" itemLabel="Reporte MRW Sin Cupones" itemValue="mrwpendientes" />
+                    <f:selectItem id="tasasgrabadas" itemLabel="Reporte Tasas Grabadas" itemValue="tasasgrabadasgeneral" />
                     <a4j:support event="onchange" reRender="divseltiporeporte, divButtons" ajaxSingle="true"></a4j:support>
                 </h:selectOneMenu>
 			 </s:decorate>
@@ -40,7 +41,7 @@
 		 <s:div rendered="#{Reporteador.nombrereporte=='enviosmrw' || Reporteador.nombrereporte=='reporte010'
 		 || Reporteador.nombrereporte=='reporte009' || Reporteador.nombrereporte=='autovoz'
 		 || Reporteador.nombrereporte=='cuadrediario' || Reporteador.nombrereporte=='reporte007' ||Reporteador.nombrereporte=='transferenciasconsolidado'
-		 || Reporteador.nombrereporte=='FacSem'}">
+		 || Reporteador.nombrereporte=='FacSem' || Reporteador.nombrereporte=='tasasgrabadasgeneral'}">
 		  <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">Fecha Inicio</ui:define>
                <rich:calendar id="fechaini"

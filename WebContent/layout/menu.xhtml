@@ -257,7 +257,14 @@
 			includePageParams="false"
      		propagation="none"/>
      </rich:menuItem>	
-    </rich:dropDownMenu>    
+    <rich:menuItem rendered="#{s:hasRole('Crear Tasa Dolar')}">
+    	<s:link view="/TasadolarpromotorparametroEdit.xhtml"
+           	value="Tasa Dolar (Nuevo)"
+           	id="TasadolarParamId"
+			includePageParams="false"
+     		propagation="none"/>
+     </rich:menuItem>	
+    </rich:dropDownMenu>   
     
     
     <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"

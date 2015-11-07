@@ -1,6 +1,6 @@
 package org.domain.moneda.entity;
 
-// Generated 27/04/2015 11:47:31 AM by Hibernate Tools 3.2.4.GA
+// Generated 9/06/2015 03:23:02 PM by Hibernate Tools 3.2.4.GA
 
 import java.util.Date;
 import javax.persistence.Column;
