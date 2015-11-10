@@ -1204,9 +1204,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			}
 		}
 		
+		// Proceso de persistencia de las tasas
 		
-		Boolean euro = false;
-		Boolean negociado = false;
+		Boolean euro = false;	    // Variable de control
+		Boolean negociado = false; // Variable de control
 		Boolean estbto = false;
 		String mensaje= null;
 		
@@ -1310,9 +1311,20 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				System.out.println("DESPUES DE GRABAR EL PRECIO DEL ESTABLECIMIENTO");
 			}
 		}
+		
+		// Falta implementar correo de notificaciones para asesoras
+		if(!negociado ){
+			if( euro ){
+				// buscar en tasa euro global
+			}else{
+				// busca en tasa dolar global
+			}
+		}
+		
 		//5. Proceso de auditoria
 		return mensaje;
 	}
+	
 	
 	
 	public void validarCamposFormulario(){
