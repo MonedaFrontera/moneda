@@ -1422,63 +1422,8 @@ public class EnviarMailAlertas {
 	public void enviarEmailAlertaTasaPromotor(String tipo, List<Tasaeuropromotorparametro> tasas) {
 		
 		try{
-			SimpleDateFormat sdf = new SimpleDateFormat(
-			"dd/MM/yyyy - hh:mm:ss aaa");
-			// 1. Leemos el archivo HTML del correo desde el disco
-			File inputHtml = new File(
-					"/EmailMonedaFrontera/alertaseguridadregistrotc.html");
-			// Asginamos el archivo al objeto analizador Document
-			Document doc = Jsoup.parse(inputHtml, "UTF-8");
-			// obtengo los id's del DOM a los que deseo insertar los valores
-			// mediante el metodo append() se insertan los valores obtenidos de
-			// la consulta
-			/**Element nroTc = doc.select("span#nrotc").first();
-			nroTc.append(cardNumber);
 			
-			Element franq = doc.select("span#franquicia").first();
-			franq.append(franquicia);
-			
-			Element bank = doc.select("span#banco").first();
-			bank.append(banco);
-		
-			Element country = doc.select("span#pais").first();
-			country.append(pais);
-			
-			Element fechat = doc.select("span#fechahora").first();
-			fechat.append(sdf.format(new Date()));
-			
-			Element usuariot = doc.select("span#usuario").first();
-			usuariot.append(usuario);*/
-			
-			// envia el mail
-
-			// Propiedades de la conexión
-			Properties props = new Properties();
-			props.setProperty("mail.smtp.host", "192.168.1.6");
-			props.setProperty("mail.smtp.port", "25");// puerto de salida, de
-			// entrada 110
-			props.setProperty("mail.smtp.user",
-								"notificaciones@monedafrontera.com");
-			props.setProperty("mail.smtp.auth", "true");
-			props.put("mail.transport.protocol.", "smtp");
-
-			// Preparamos la sesion
-			Session session = Session.getDefaultInstance(props);
-			// Construimos el mensaje
-
-			/**
-			 * Ojo aca reemplazar por consulta
-			 */
-			// multiples direcciones
-		/**	String[] to = { "lfernandortiz@hotmail.com", 
-							"lfernandortiz@gmail.com",
-							"lfernandortiz@yahoo.es",
-							"lortiz@monedafrontera.com",
-							"gerencia@monedafrontera.com"
-							};*/
-		
-			entityManager.clear();
-
+			System.out.println("Creando cuerpo el mensaje........................");
 			String texto=" <table>";
 			for(Tasaeuropromotorparametro e:tasas){
 				texto+="<tr> <td>"+e.getPromotor().getPersonal().getNombre()+" "+e.getPromotor().getPersonal().getApellido()+"</td>";
@@ -1487,22 +1432,43 @@ public class EnviarMailAlertas {
 			}
 			texto+="</table>";
 			
-			String correo=tasas.get(0).getPromotor().getAsesor().getPersonal().getCorreo();
+			String correo= tasas.get(0).getPromotor().getAsesor().getPersonal().getCorreo();
+			System.out.println("Correo del asesor: " + correo + "................");
+
 			
-			// se compone el mensaje (Asunto, cuerpo del mensaje y direccion origen)
+			// Propiedades de la conexión
+			System.out.println("Enviar Correo ");
+
+			Properties props = new Properties();
+			props.setProperty("mail.smtp.host", "192.168.1.6");
+			props.setProperty("mail.smtp.port", "25");
+			props.setProperty("mail.smtp.user",
+					"clientes-noreply@monedafrontera.com");
+			props.setProperty("mail.smtp.auth", "true");
+			props.put("mail.transport.protocol.", "smtp");
+
+			// Preparamos la sesion
+			Session session = Session.getDefaultInstance(props);
+
+			// Construimos el mensaje
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(
-					"notificaciones@monedafrontera.com"));
-			message.setRecipients(Message.RecipientType.TO, correo);
-			message.setSubject("ALERTA DE CAMBIO DE TASA - SISTEMA MONEDA FRONTERA");
-			message.setContent(texto, "text; charset=utf-8");
+					"clientes-noreply@monedafrontera.com"));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(correo));
+			message.setSubject("CAMBIO DE TASAS GLOBALES");
+
+			SimpleDateFormat sdf = new SimpleDateFormat(
+					"dd/MM/yyyy - hh:mm:ss aaa");
+
+			System.out.println(texto);
+			message.setText(texto);
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
-			t.connect("notificaciones@monedafrontera.com", "Carlos0411");
+			t.connect("clientes-noreply@monedafrontera.com", "Carlos0411");
 			t.sendMessage(message, message.getAllRecipients());
-			
-			// Cierre de la conexion
+
+			// Cierre.
 			t.close();
 			System.out.println("Conexion cerrada");
 			
