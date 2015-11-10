@@ -2,7 +2,6 @@ package org.domain.moneda.util;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -14,20 +13,19 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityManager;
 
+import org.adrianwalker.multilinestring.Multiline;
+import org.domain.moneda.entity.Activacion;
+import org.domain.moneda.entity.Asesor;
+import org.domain.moneda.entity.Promotor;
+import org.domain.moneda.entity.Tasaeuropromotorparametro;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.security.Identity;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.adrianwalker.multilinestring.Multiline;
-import org.domain.moneda.entity.Activacion;
-import org.domain.moneda.entity.Asesor;
-import org.domain.moneda.entity.Personal;
-import org.domain.moneda.entity.Promotor;
 
 @Name("enviarMailAlertas")
 @Scope(ScopeType.CONVERSATION)
@@ -1399,6 +1397,7 @@ public class EnviarMailAlertas {
 			message.setFrom(new InternetAddress(
 					"notificaciones@monedafrontera.com"));
 			message.setRecipients(Message.RecipientType.BCC, addressTo);
+			
 
 			message.setSubject("Se ha evitado un inicio de sesion sospechoso");
 
@@ -1417,6 +1416,101 @@ public class EnviarMailAlertas {
 			System.out.println("Error al enviar correo");
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public void enviarEmailAlertaTasaPromotor(String tipo, List<Tasaeuropromotorparametro> tasas) {
+		
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat(
+			"dd/MM/yyyy - hh:mm:ss aaa");
+			// 1. Leemos el archivo HTML del correo desde el disco
+			File inputHtml = new File(
+					"/EmailMonedaFrontera/alertaseguridadregistrotc.html");
+			// Asginamos el archivo al objeto analizador Document
+			Document doc = Jsoup.parse(inputHtml, "UTF-8");
+			// obtengo los id's del DOM a los que deseo insertar los valores
+			// mediante el metodo append() se insertan los valores obtenidos de
+			// la consulta
+			/**Element nroTc = doc.select("span#nrotc").first();
+			nroTc.append(cardNumber);
+			
+			Element franq = doc.select("span#franquicia").first();
+			franq.append(franquicia);
+			
+			Element bank = doc.select("span#banco").first();
+			bank.append(banco);
+		
+			Element country = doc.select("span#pais").first();
+			country.append(pais);
+			
+			Element fechat = doc.select("span#fechahora").first();
+			fechat.append(sdf.format(new Date()));
+			
+			Element usuariot = doc.select("span#usuario").first();
+			usuariot.append(usuario);*/
+			
+			// envia el mail
+
+			// Propiedades de la conexión
+			Properties props = new Properties();
+			props.setProperty("mail.smtp.host", "192.168.1.6");
+			props.setProperty("mail.smtp.port", "25");// puerto de salida, de
+			// entrada 110
+			props.setProperty("mail.smtp.user",
+								"notificaciones@monedafrontera.com");
+			props.setProperty("mail.smtp.auth", "true");
+			props.put("mail.transport.protocol.", "smtp");
+
+			// Preparamos la sesion
+			Session session = Session.getDefaultInstance(props);
+			// Construimos el mensaje
+
+			/**
+			 * Ojo aca reemplazar por consulta
+			 */
+			// multiples direcciones
+		/**	String[] to = { "lfernandortiz@hotmail.com", 
+							"lfernandortiz@gmail.com",
+							"lfernandortiz@yahoo.es",
+							"lortiz@monedafrontera.com",
+							"gerencia@monedafrontera.com"
+							};*/
+		
+			entityManager.clear();
+
+			String texto=" <table>";
+			for(Tasaeuropromotorparametro e:tasas){
+				texto+="<tr> <td>"+e.getPromotor().getPersonal().getNombre()+" "+e.getPromotor().getPersonal().getApellido()+"</td>";
+				texto+= "<td>"+e.getTasaeuro()+"</td>"+
+				        "<td> <a href='http://servidorppal:8088/controladortasa/ServletController?id="+e.getConsecutivo()+"&tipo="+tipo+"'>Cerrar</a></td> </tr>";
+			}
+			texto+="</table>";
+			
+			String correo=tasas.get(0).getPromotor().getAsesor().getPersonal().getCorreo();
+			
+			// se compone el mensaje (Asunto, cuerpo del mensaje y direccion origen)
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(
+					"notificaciones@monedafrontera.com"));
+			message.setRecipients(Message.RecipientType.TO, correo);
+			message.setSubject("ALERTA DE CAMBIO DE TASA - SISTEMA MONEDA FRONTERA");
+			message.setContent(texto, "text; charset=utf-8");
+
+			// Lo enviamos.
+			Transport t = session.getTransport("smtp");
+			t.connect("notificaciones@monedafrontera.com", "Carlos0411");
+			t.sendMessage(message, message.getAllRecipients());
+			
+			// Cierre de la conexion
+			t.close();
+			System.out.println("Conexion cerrada");
+			
+		}catch(Exception e){
+			System.out.println("Falla en el envio del correo:");
+			e.printStackTrace();
+		}
+		
 		
 	}
 	

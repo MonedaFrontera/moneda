@@ -43,6 +43,7 @@ import org.domain.moneda.session.TasadebolivaroficinaHome;
 import org.domain.moneda.session.TasadolarHome;
 import org.domain.moneda.session.TasadolarpromotorparametroHome;
 import org.domain.moneda.util.CargarObjetos;
+import org.domain.moneda.util.EnviarMailAlertas;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
@@ -738,6 +739,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	private boolean formValido;
     
+	@In(create = true)
+	@Out
+	private EnviarMailAlertas enviarMailAlertas;
+	
 	
 	
    //Getter and Setter variables del formulario
@@ -1312,9 +1317,38 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			}
 		}
 		
+		
 		// Falta implementar correo de notificaciones para asesoras
 		if(!negociado ){
 			if( euro ){
+				List<Tasaeuropromotorparametro> te=null;
+				te=entityManager.createQuery("SELECT t FROM Tasaeuropromotorparametro t WHERE " +
+						"t.fechafin is null AND t.tasaeuro<"+this.getTasaEuroTemp()).getResultList();
+				
+				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
+																		"FROM Tasaeuropromotorparametro t "+
+																		"WHERE t.fechafin is null AND "+
+																		"t.tasaeuro<"+ this.getTasaEuroTemp()).getResultList();
+				for(String asesor: documentoAsesor){
+					
+					List<Tasaeuropromotorparametro> tasaTemp=new ArrayList<Tasaeuropromotorparametro>();
+					
+					for(Tasaeuropromotorparametro e:te){
+						
+						if(e.getPromotor().getAsesor().getDocumento().equals(asesor)){
+							tasaTemp.add(e);							
+						}	
+					}
+					
+					//enviar correo
+					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("euro", tasaTemp);
+					tasaTemp=null;
+					
+				}
+				
+				
+				
+				
 				// buscar en tasa euro global
 			}else{
 				// busca en tasa dolar global
