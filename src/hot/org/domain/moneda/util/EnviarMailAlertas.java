@@ -1424,6 +1424,7 @@ public class EnviarMailAlertas {
 		Document doc = null;
 		
 		try{
+
 			SimpleDateFormat sdf = new SimpleDateFormat(
 			"dd/MM/yyyy");
 			// 1. Leemos el archivo HTML del correo desde el disco
@@ -1541,11 +1542,14 @@ public class EnviarMailAlertas {
 	         
 			// envia el mail
 
+
+			
 			// Propiedades de la conexión
+			System.out.println("Enviar Correo ");
+
 			Properties props = new Properties();
 			props.setProperty("mail.smtp.host", "192.168.1.6");
-			props.setProperty("mail.smtp.port", "25");// puerto de salida, de
-			// entrada 110
+			props.setProperty("mail.smtp.port", "25");
 			props.setProperty("mail.smtp.user",
 					"clientes-noreply@monedafrontera.com");
 			props.setProperty("mail.smtp.auth", "true");
@@ -1553,6 +1557,7 @@ public class EnviarMailAlertas {
 
 			// Preparamos la sesion
 			Session session = Session.getDefaultInstance(props);
+
 			// Construimos el mensaje
 			
 			// se compone el mensaje (Asunto, cuerpo del mensaje y direccion origen)
@@ -1563,12 +1568,12 @@ public class EnviarMailAlertas {
 			message.setSubject("CAMBIO DE TASAS GLOBALES");
 			message.setContent(doc.html(), "text/html; charset=utf-8");
 
+
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
 			t.connect("clientes-noreply@monedafrontera.com", "Carlos0411");
 			t.sendMessage(message, message.getAllRecipients());
-			
-			
+
 			// Cierre de la conexion
 			t.close();
 			System.out.println("Conexion cerrada");

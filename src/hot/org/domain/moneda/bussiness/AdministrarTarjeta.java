@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -502,7 +503,7 @@ public class AdministrarTarjeta
 	 * @param documento
 	 * @return tasa dolar del dia
 	 */
-    public BigDecimal tasaDolarNew(int consecutivo){
+    public String tasaDolarNew(int consecutivo){
     	try{
 
     		BigDecimal t = BigDecimal.ZERO;
@@ -514,21 +515,21 @@ public class AdministrarTarjeta
     		//   para determinar la operacion que retorna la tasa de cambio 
     		//   de Dolar o Euro
     		String tipoMoneda = tx.getEstablecimiento().getPais().getPaisiso().getCodigomoneda();
-    		if("EUR".equals(tipoMoneda)){  
+    		if("EUR".equals(tipoMoneda)){    			
     			t = tx.getValortxpesos().divide(tx.getValortxeuros(), 2, RoundingMode.HALF_UP);
+    			return new DecimalFormat("€ #,###,##0").format(t);
     		}else{
-    			if( "USD".equals(tipoMoneda)){
+    			if( "COP".equals(tipoMoneda)){
     				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
+    				return new DecimalFormat("USD #,###,##0").format(t);
     			}else{
-    				if("COP".equals(tipoMoneda)){
-    					t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
-    				}
+    				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
+    				return new DecimalFormat("USD #,###,##0").format(t);
     			}
-    		}    		
-    	return t;
-    	
+    		}    
     	}catch(Exception e){
-    		System.out.println("Error al ubicar la tasa de cambio de una Transaccion");
+    		System.out.println("Error al ubicar la tasa de cambio de una Transaccion: " + consecutivo);
+    		
     		e.printStackTrace();
     		return null;
     	}
@@ -586,6 +587,12 @@ public class AdministrarTarjeta
     	Expressions expressions = new Expressions();
     	
     	tarjetaHome.setCreatedMessage(expressions.createValueExpression("La tarjeta ha sido creada de forma correcta"));
+    	
+    	if(tarjetaHome.getInstance().getTac() == null){
+    		tarjetaHome.getInstance().setTac(false);
+    	}if(tarjetaHome.getInstance().getTac() == false){
+    		tarjetaHome.getInstance().setTac(false);
+    	}
     	
     	tarjetaHome.persist();
     	

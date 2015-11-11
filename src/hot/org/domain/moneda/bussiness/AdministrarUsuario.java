@@ -151,8 +151,8 @@ public class AdministrarUsuario
 			
 			//coleccion con las activaciones pasadas sin viaje
 			String sql = "SELECT "+ 
-					"public.activacion.cedula, public.activacion.nombre, "+
-					"banco.nombrebanco, activacion.fechainicioviaje, "+ 
+					"public.activacion.cedula, public.activacion.nombre, "+ //[0]
+					"banco.nombrebanco, activacion.fechainicioviaje, "+     //[1]
 					"public.personal.nombre ||' '||  public.personal.apellido "+
 					"FROM public.activacion "+ 
 					"INNER JOIN public.promotor ON (public.activacion.promotor = public.promotor.documento) "+ 
