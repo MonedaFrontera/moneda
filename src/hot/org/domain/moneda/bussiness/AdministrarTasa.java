@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import org.domain.moneda.entity.Asesor;
 import org.domain.moneda.entity.Banco;
 import org.domain.moneda.entity.Establecimiento;
 import org.domain.moneda.entity.Establecimientoprecio;
@@ -1321,37 +1322,65 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		// Falta implementar correo de notificaciones para asesoras
 		if(!negociado ){
 			if( euro ){
-				List<Tasaeuropromotorparametro> te=null;
-				te=entityManager.createQuery("SELECT t FROM Tasaeuropromotorparametro t WHERE " +
-						"t.fechafin is null AND t.tasaeuro<"+this.getTasaEuroTemp()).getResultList();
 				
+				//Consulta las tasas y porcentajes para promotores que no se han cerrado y cuyo valor sea menor que la tasa actual Global
+				List<Object[]> te=this.consultarTasasEuroPorcentajesPromotor();
+								
 				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
 																		"FROM Tasaeuropromotorparametro t "+
 																		"WHERE t.fechafin is null AND "+
 																		"t.tasaeuro<"+ this.getTasaEuroTemp()).getResultList();
 				for(String asesor: documentoAsesor){
 					
-					List<Tasaeuropromotorparametro> tasaTemp=new ArrayList<Tasaeuropromotorparametro>();
+					List<Object[]> tasaTemp=new ArrayList<Object[]>();
 					
-					for(Tasaeuropromotorparametro e:te){
+					for(int i=0; i<te.size(); i++){
 						
-						if(e.getPromotor().getAsesor().getDocumento().equals(asesor)){
-							tasaTemp.add(e);							
+						if(te.get(i)[8].equals(asesor)){
+							tasaTemp.add(te.get(i));							
 						}	
 					}
 					
+					Asesor ases=entityManager.find(Asesor.class, asesor);
 					//enviar correo
-					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("euro", tasaTemp);
+					if(tasaTemp.size()>0){
+					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("euro", ases, tasaTemp, this.getTasaEuroTemp(), this.getPorcentCt());
+					}
 					tasaTemp=null;
 					
 				}
 				
-				
-				
-				
 				// buscar en tasa euro global
 			}else{
 				// busca en tasa dolar global
+				
+				//Consulta las tasas y porcentajes para promotores que no se han cerrado y cuyo valor sea menor que la tasa actual Global
+				List<Object[]> te=this.consultarTasasDolarPorcentajesPromotor();
+								
+				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
+																		"FROM Tasadolarpromotorparametro t "+
+																		"WHERE t.fechafin is null AND "+
+																		"t.tasadolar<"+ this.getTasaDolarTemp()).getResultList();
+				for(String asesor: documentoAsesor){
+					
+					List<Object[]> tasaTemp=new ArrayList<Object[]>();
+					
+					for(int i=0; i<te.size(); i++){
+						
+						if(te.get(i)[8].equals(asesor)){
+							tasaTemp.add(te.get(i));							
+						}	
+					}
+					
+					Asesor ases=entityManager.find(Asesor.class, asesor);
+					//enviar correo
+					if(tasaTemp.size()>0){
+					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("dolar", ases, tasaTemp, this.getTasaDolarTemp(), this.getPorcentCt());
+					}
+					tasaTemp=null;
+					
+				}
+				
 			}
 		}
 		
@@ -1360,6 +1389,126 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 	
 	
+	private List<Object[]> consultarTasasEuroPorcentajesPromotor(){
+		
+		List<Object[]> te=null;
+		
+		//Busca las tasas negociadas que esten por debajo de la nueva tasa global
+		String sql="SELECT tasaeuropromotorparametro.consecutivo, "+
+					"public.personal.nombre ||' '|| public.personal.apellido, "+
+					"public.establecimiento.nombreestable, "+
+					"public.banco.nombrebanco, "+
+					"public.franquicia.nombrefranquicia, "+
+					"public.tasaeuropromotorparametro.fechainicio, "+
+					"public.tasaeuropromotorparametro.tasaeuro, "+
+					"public.porcentcomisiontxparampromo.porcentaje, "+
+					"public.promotor.asesor, "+
+					"pais1.nombre, "+
+					"public.porcentcomisiontxparampromo.consecutivo as idporcentaje "+
+					"FROM "+
+					"public.tasaeuropromotorparametro "+
+					"LEFT OUTER JOIN public.banco ON (public.tasaeuropromotorparametro.codbanco = public.banco.codbanco) "+
+					"LEFT OUTER JOIN public.franquicia ON (public.tasaeuropromotorparametro.codfranquicia = public.franquicia.codfranquicia) "+
+					"LEFT OUTER JOIN public.establecimiento ON (public.tasaeuropromotorparametro.codigounico = public.establecimiento.codigounico) "+
+					"INNER JOIN public.promotor ON (public.tasaeuropromotorparametro.documento = public.promotor.documento) "+
+					"INNER JOIN public.personal ON (public.promotor.documento = public.personal.documento) "+
+					"INNER JOIN public.pais pais1 ON (public.tasaeuropromotorparametro.codpais = pais1.codigopais), "+
+					"public.porcentcomisiontxparampromo "+
+					"WHERE "+
+					"public.porcentcomisiontxparampromo.codpais =   public.tasaeuropromotorparametro.codpais AND "+
+					"public.porcentcomisiontxparampromo.documento =   public.tasaeuropromotorparametro.documento AND "+
+					"(public.porcentcomisiontxparampromo.codigounico = public.tasaeuropromotorparametro.codigounico OR "+
+					"(public.porcentcomisiontxparampromo.codigounico IS NULL AND public.tasaeuropromotorparametro.codigounico IS NULL) ) AND "+
+					"(public.porcentcomisiontxparampromo.codfranquicia = public.tasaeuropromotorparametro.codfranquicia OR "+
+					"(public.porcentcomisiontxparampromo.codfranquicia IS NULL AND public.tasaeuropromotorparametro.codfranquicia IS NULL )) AND "+
+					"(public.porcentcomisiontxparampromo.codbanco = public.tasaeuropromotorparametro.codbanco OR "+
+					"(public.porcentcomisiontxparampromo.codbanco IS NULL AND public.tasaeuropromotorparametro.codbanco IS NULL)) AND "+
+					"(public.porcentcomisiontxparampromo.tipocupo = public.tasaeuropromotorparametro.tipocupo OR "+
+					"(public.porcentcomisiontxparampromo.tipocupo IS NULL AND public.tasaeuropromotorparametro.tipocupo IS NULL) )AND "+
+					"public.porcentcomisiontxparampromo.fechainicio =  public.tasaeuropromotorparametro.fechainicio AND "+
+					" public.tasaeuropromotorparametro.fechafin is NULL AND "+
+					"(public.tasaeuropromotorparametro.tasaeuro<"+this.getTasaEuroTemp()+
+					" OR  public.porcentcomisiontxparampromo.porcentaje<"+this.getPorcentCt()+")"+
+					" GROUP BY "+
+					"tasaeuropromotorparametro.consecutivo, "+
+					"public.personal.nombre, "+
+					"public.personal.apellido, "+
+					"public.establecimiento.nombreestable, "+
+					"public.banco.nombrebanco, "+
+					"public.franquicia.nombrefranquicia, "+
+					"public.tasaeuropromotorparametro.fechainicio, "+
+					"public.tasaeuropromotorparametro.tasaeuro, "+
+					"public.porcentcomisiontxparampromo.porcentaje, "+
+					"public.promotor.asesor, "+
+					"pais1.nombre, "+
+					"public.porcentcomisiontxparampromo.consecutivo"; 
+		
+		te = entityManager.createNativeQuery(sql).getResultList();
+		
+		return te;
+		
+	}
+	
+	
+	private List<Object[]> consultarTasasDolarPorcentajesPromotor(){
+		
+		List<Object[]> te=null;
+		
+		//Busca las tasas negociadas que esten por debajo de la nueva tasa global
+		String sql="SELECT tasadolarpromotorparametro.consecutivo, "+
+					"public.personal.nombre ||' '|| public.personal.apellido, "+
+					"public.establecimiento.nombreestable, "+
+					"public.banco.nombrebanco, "+
+					"public.franquicia.nombrefranquicia, "+
+					"public.tasadolarpromotorparametro.fechainicio, "+
+					"public.tasadolarpromotorparametro.tasadolar, "+
+					"public.porcentcomisiontxparampromo.porcentaje, "+
+					"public.promotor.asesor, "+
+					"pais1.nombre, "+
+					"public.porcentcomisiontxparampromo.consecutivo as idporcentaje "+
+					"FROM "+
+					"public.tasadolarpromotorparametro "+
+					"LEFT OUTER JOIN public.banco ON (public.tasadolarpromotorparametro.codbanco = public.banco.codbanco) "+
+					"LEFT OUTER JOIN public.franquicia ON (public.tasadolarpromotorparametro.codfranquicia = public.franquicia.codfranquicia) "+
+					"LEFT OUTER JOIN public.establecimiento ON (public.tasadolarpromotorparametro.codigounico = public.establecimiento.codigounico) "+
+					"INNER JOIN public.promotor ON (public.tasadolarpromotorparametro.documento = public.promotor.documento) "+
+					"INNER JOIN public.personal ON (public.promotor.documento = public.personal.documento) "+
+					"INNER JOIN public.pais pais1 ON (public.tasadolarpromotorparametro.codpais = pais1.codigopais), "+
+					"public.porcentcomisiontxparampromo "+
+					"WHERE "+
+					"public.porcentcomisiontxparampromo.codpais =   public.tasadolarpromotorparametro.codpais AND "+
+					"public.porcentcomisiontxparampromo.documento =   public.tasadolarpromotorparametro.documento AND "+
+					"(public.porcentcomisiontxparampromo.codigounico = public.tasadolarpromotorparametro.codigounico OR "+
+					"(public.porcentcomisiontxparampromo.codigounico IS NULL AND public.tasadolarpromotorparametro.codigounico IS NULL) ) AND "+
+					"(public.porcentcomisiontxparampromo.codfranquicia = public.tasadolarpromotorparametro.codfranquicia OR "+
+					"(public.porcentcomisiontxparampromo.codfranquicia IS NULL AND public.tasadolarpromotorparametro.codfranquicia IS NULL )) AND "+
+					"(public.porcentcomisiontxparampromo.codbanco = public.tasadolarpromotorparametro.codbanco OR "+
+					"(public.porcentcomisiontxparampromo.codbanco IS NULL AND public.tasadolarpromotorparametro.codbanco IS NULL)) AND "+
+					"(public.porcentcomisiontxparampromo.tipocupo = public.tasadolarpromotorparametro.tipocupo OR "+
+					"(public.porcentcomisiontxparampromo.tipocupo IS NULL AND public.tasadolarpromotorparametro.tipocupo IS NULL) )AND "+
+					"public.porcentcomisiontxparampromo.fechainicio =  public.tasadolarpromotorparametro.fechainicio AND "+
+					" public.tasadolarpromotorparametro.fechafin is NULL AND "+
+					"(public.tasadolarpromotorparametro.tasadolar<"+this.getTasaDolarTemp()+
+					" OR  public.porcentcomisiontxparampromo.porcentaje<"+this.getPorcentCt()+")"+
+					" GROUP BY "+
+					"tasadolarpromotorparametro.consecutivo, "+
+					"public.personal.nombre, "+
+					"public.personal.apellido, "+
+					"public.establecimiento.nombreestable, "+
+					"public.banco.nombrebanco, "+
+					"public.franquicia.nombrefranquicia, "+
+					"public.tasadolarpromotorparametro.fechainicio, "+
+					"public.tasadolarpromotorparametro.tasadolar, "+
+					"public.porcentcomisiontxparampromo.porcentaje, "+
+					"public.promotor.asesor, "+
+					"pais1.nombre, "+
+					"public.porcentcomisiontxparampromo.consecutivo"; 
+		
+		te = entityManager.createNativeQuery(sql).getResultList();
+		
+		return te;
+		
+	}
 	
 	public void validarCamposFormulario(){
 		// Se implementa proceso de validacion del formulario 
