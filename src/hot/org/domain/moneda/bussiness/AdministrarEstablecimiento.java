@@ -212,9 +212,8 @@ public class AdministrarEstablecimiento
 			this.transacciones = (ArrayList)entityManager
 			.createQuery(sqlcampos+sql).setMaxResults(100).getResultList();
 					
-			sql = "select sum(t.valortxpesos), sum(t.valortxdolares), sum(case when td.tasadolar is null " +
-					"or td.tasadolar = td.tasa then " +
-					"t.valortxpesos else (td.tasadolar*t.valortxdolares) end) " + sql;
+			sql = "select sum(t.valortxpesos), sum(t.valortxdolares), " +
+					" sum(t.valortxdolares *ep.dolaroficina)  " + sql;
 			
 			this.totales = (Object)entityManager
 			.createQuery(sql).setMaxResults(100).getSingleResult();
