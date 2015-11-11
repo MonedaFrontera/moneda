@@ -1,6 +1,7 @@
 package org.domain.moneda.util;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -1419,37 +1420,125 @@ public class EnviarMailAlertas {
 		
 	}
 	
-	public void enviarEmailAlertaTasaPromotor(String tipo, List<Tasaeuropromotorparametro> tasas) {
+	public  void  enviarEmailAlertaTasaPromotor(String tipo, Asesor asesor, List<Object[]> tasas, BigDecimal precioTasa, BigDecimal porcentaje) {
+		Document doc = null;
 		
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat(
-			"dd/MM/yyyy - hh:mm:ss aaa");
+			"dd/MM/yyyy");
 			// 1. Leemos el archivo HTML del correo desde el disco
 			File inputHtml = new File(
-					"/EmailMonedaFrontera/alertaseguridadregistrotc.html");
-			// Asginamos el archivo al objeto analizador Document
-			Document doc = Jsoup.parse(inputHtml, "UTF-8");
-			// obtengo los id's del DOM a los que deseo insertar los valores
-			// mediante el metodo append() se insertan los valores obtenidos de
-			// la consulta
-			/**Element nroTc = doc.select("span#nrotc").first();
-			nroTc.append(cardNumber);
+			"/EmailMonedaFrontera/alertacambiotasa.html");
+	         doc = Jsoup.parse(inputHtml, "UTF-8");
+	
+	      // Aca establece el mensaje, y los listados a mostrar con base 
+	     	// en las colecciones recibidas
+	         Element fec = doc.select("span#fecha").first();
+	         fec.append(sdf.format(new Date()));
+
+	         Element nomA = doc.select("span#nombreAsesor").first();   
+	         nomA.append(asesor.getPersonal().getNombre() + " " + asesor.getPersonal().getApellido());
+	         
+	         String pais= (String) tasas.get(0)[9];
+	         Element paisT=doc.select("span#paisT").first();
+	         paisT.append(pais);
+	         
+	         String pt="$"+precioTasa.toString();
+	         Element ptasa=doc.select("span#ptasa").first();
+	         ptasa.append(pt);
+	         
+	         String pp=porcentaje.toString()+"% ";
+	         Element pporcentaje=doc.select("span#pporcentaje").first();
+	         pporcentaje.append(pp);
+	         
+	         Element tipoMoneda=doc.select("span#tipo").first();
+	         tipoMoneda.append(tipo);
+
+	         String bothM = " <p>Ha cambiado el precio de la moneda para el siguiente pais: <strong>"+pais+"</strong>. Usted cuenta con algunos clientes con tasa negociada, y su valor es inferior al valor general guardado. Si desea que las transacciones de estos clientes se liquiden al nuevo precio haga clic en la palabra \"Cerrar\" para que termine la vigencia de las anteriores tasas negociadas.</p>";
+
+	         Element mensaje = doc.select("span#mensaje").first();
+	         mensaje.append(bothM);
 			
-			Element franq = doc.select("span#franquicia").first();
-			franq.append(franquicia);
-			
-			Element bank = doc.select("span#banco").first();
-			bank.append(banco);
-		
-			Element country = doc.select("span#pais").first();
-			country.append(pais);
-			
-			Element fechat = doc.select("span#fechahora").first();
-			fechat.append(sdf.format(new Date()));
-			
-			Element usuariot = doc.select("span#usuario").first();
-			usuariot.append(usuario);*/
-			
+	         
+	         
+	            Element rowProx = doc.select("table#detalleprox tbody").first();
+				StringBuilder detalle = new StringBuilder();
+				for( int i=0; i<tasas.size(); i++){
+					System.out.println(">>consecutivo: "  +tasas.get(i)[0]);
+					
+					String urlTasa="";
+					String urlPorcentaje="";
+					BigDecimal ptTemp=(BigDecimal) tasas.get(i)[6];
+					BigDecimal porcTemp=(BigDecimal) tasas.get(i)[7];
+					
+					if(ptTemp.floatValue()<precioTasa.floatValue()){
+						urlTasa="<a style=\"text-decoration:none;\" href='http://servidorppal:8088/controladortasa/ServletController?id="+tasas.get(i)[0]+"&tipo="+tipo+"'>Cerrar Tasa</a>";
+					}
+					
+					if(porcTemp.floatValue()<porcentaje.floatValue()){
+						urlPorcentaje="<a style=\"text-decoration:none;\" href='http://servidorppal:8088/controladortasa/ServletController?id="+tasas.get(i)[10]+"&tipo=porcentaje'>Cerrar Porcentaje</a>";
+					}
+					
+					detalle.append(
+							"<tr>" +
+							"<td style=\"padding: 2px 3px 2px 3px; text-align:center;  border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							 (i+1) +
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							tasas.get(i)[1]+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							((tasas.get(i)[2]== null )? "": tasas.get(i)[2])+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							((tasas.get(i)[4]== null )? "": tasas.get(i)[4])+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							((tasas.get(i)[3] == null )? "": tasas.get(i)[3] )+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px;  border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							"<strong>"+
+							sdf.format(tasas.get(i)[5]) +
+							"</strong>"+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; border-color:#666666; \">"+
+							"<span style=\"font-size: 11px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							tasas.get(i)[6]+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; text-align:center; border-color:#666666; \">"+
+							"<span style=\"font-size: 12px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							urlTasa+
+							"</span>" +
+							"</td>"+
+							"<td style=\"padding: 2px 3px 2px 3px; text-align:center; border-color:#666666; \">"+
+							"<span style=\"font-size: 12px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							tasas.get(i)[7]+
+							"</span>" +
+							"</td>" +
+							"<td style=\"padding: 2px 3px 2px 3px; text-align:center; border-color:#666666; \">"+
+							"<span style=\"font-size: 12px; font-family: Arial,Helvetica,sans-serif; display:block; color:#333333\">"+
+							urlPorcentaje+
+							"</span>" +
+							"</td>"+
+							"</tr>");			
+				}//fin del ciclo que imprime la tabla
+				
+				rowProx.html(detalle.toString());
+	         
+	         
 			// envia el mail
 
 			// Propiedades de la conexión
@@ -1458,49 +1547,27 @@ public class EnviarMailAlertas {
 			props.setProperty("mail.smtp.port", "25");// puerto de salida, de
 			// entrada 110
 			props.setProperty("mail.smtp.user",
-								"notificaciones@monedafrontera.com");
+					"clientes-noreply@monedafrontera.com");
 			props.setProperty("mail.smtp.auth", "true");
 			props.put("mail.transport.protocol.", "smtp");
 
 			// Preparamos la sesion
 			Session session = Session.getDefaultInstance(props);
 			// Construimos el mensaje
-
-			/**
-			 * Ojo aca reemplazar por consulta
-			 */
-			// multiples direcciones
-		/**	String[] to = { "lfernandortiz@hotmail.com", 
-							"lfernandortiz@gmail.com",
-							"lfernandortiz@yahoo.es",
-							"lortiz@monedafrontera.com",
-							"gerencia@monedafrontera.com"
-							};*/
-		
-			entityManager.clear();
-
-			String texto=" <table>";
-			for(Tasaeuropromotorparametro e:tasas){
-				texto+="<tr> <td>"+e.getPromotor().getPersonal().getNombre()+" "+e.getPromotor().getPersonal().getApellido()+"</td>";
-				texto+= "<td>"+e.getTasaeuro()+"</td>"+
-				        "<td> <a href='http://servidorppal:8088/controladortasa/ServletController?id="+e.getConsecutivo()+"&tipo="+tipo+"'>Cerrar</a></td> </tr>";
-			}
-			texto+="</table>";
-			
-			String correo=tasas.get(0).getPromotor().getAsesor().getPersonal().getCorreo();
 			
 			// se compone el mensaje (Asunto, cuerpo del mensaje y direccion origen)
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(
-					"notificaciones@monedafrontera.com"));
-			message.setRecipients(Message.RecipientType.TO, correo);
-			message.setSubject("ALERTA DE CAMBIO DE TASA - SISTEMA MONEDA FRONTERA");
-			message.setContent(texto, "text; charset=utf-8");
+			"clientes-noreply@monedafrontera.com"));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(asesor.getPersonal().getCorreo()));
+			message.setSubject("CAMBIO DE TASAS GLOBALES");
+			message.setContent(doc.html(), "text/html; charset=utf-8");
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
-			t.connect("notificaciones@monedafrontera.com", "Carlos0411");
+			t.connect("clientes-noreply@monedafrontera.com", "Carlos0411");
 			t.sendMessage(message, message.getAllRecipients());
+			
 			
 			// Cierre de la conexion
 			t.close();
