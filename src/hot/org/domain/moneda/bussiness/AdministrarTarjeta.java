@@ -521,10 +521,10 @@ public class AdministrarTarjeta
     		}else{
     			if( "COP".equals(tipoMoneda)){
     				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
-    				return new DecimalFormat("US #,###,##0").format(t);
+    				return new DecimalFormat("USD #,###,##0").format(t);
     			}else{
     				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
-    				return new DecimalFormat("US #,###,##0").format(t);
+    				return new DecimalFormat("USD #,###,##0").format(t);
     			}
     		}    
     	}catch(Exception e){
