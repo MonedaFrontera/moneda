@@ -588,6 +588,12 @@ public class AdministrarTarjeta
     	
     	tarjetaHome.setCreatedMessage(expressions.createValueExpression("La tarjeta ha sido creada de forma correcta"));
     	
+    	if(tarjetaHome.getInstance().getTac() == null){
+    		tarjetaHome.getInstance().setTac(false);
+    	}if(tarjetaHome.getInstance().getTac() == false){
+    		tarjetaHome.getInstance().setTac(false);
+    	}
+    	
     	tarjetaHome.persist();
     	
     	AdministrarUsuario.auditarUsuario(2, "Se ha creado la tarjeta con numero " +
