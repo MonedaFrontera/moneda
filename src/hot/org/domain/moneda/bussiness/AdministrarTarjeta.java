@@ -515,9 +515,6 @@ public class AdministrarTarjeta
     		//   para determinar la operacion que retorna la tasa de cambio 
     		//   de Dolar o Euro
     		String tipoMoneda = tx.getEstablecimiento().getPais().getPaisiso().getCodigomoneda();
-    		
-    		System.out.println("Moneda.......:" + tipoMoneda);
-    		
     		if("EUR".equals(tipoMoneda)){    			
     			t = tx.getValortxpesos().divide(tx.getValortxeuros(), 2, RoundingMode.HALF_UP);
     			return new DecimalFormat("€ #,###,##0").format(t);
@@ -538,21 +535,6 @@ public class AdministrarTarjeta
     	}
     }
     
-    /**
-     * Metodo de servicio utilizado por TarjetaEdit para dar formato a la moneda 
-     * de la transaccion.
-     * */
-    public String currencyFormatter(String currency){
-    	System.out.println("<<<<<<<<<<<<<<<<<<Moneda Recibida....:"+ currency);
-    	System.out.println("EUR".equals(currency));
-    	
-		if("EUR".equals(currency)){  
-			return "&#8364; #,###,##0";
-		}else{
-			return "US #,###,##0";
-		}    
-		
-    }
     
     public void guardarTarjeta()
     {    	
