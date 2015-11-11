@@ -649,9 +649,9 @@
                     </h:outputText>
 					</f:facet>
                 </rich:column>
-                <rich:column style="text-align:right">                    
+                <rich:column style="text-align:right">  
+                	<f:facet name="header">Tasa Cambio</f:facet>                  
 					<h:outputText style= "text-align:right; display:block" value="#{AdministrarTarjeta.tasaDolarNew(_transaccion.consecutivo)}">
-                        
                     </h:outputText>
                 </rich:column>
                 <rich:column sortBy="#{_transaccion.valortxdolares}" style="text-align:right">
