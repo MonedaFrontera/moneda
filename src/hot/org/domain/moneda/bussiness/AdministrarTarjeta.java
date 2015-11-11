@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -502,7 +503,7 @@ public class AdministrarTarjeta
 	 * @param documento
 	 * @return tasa dolar del dia
 	 */
-    public BigDecimal tasaDolarNew(int consecutivo){
+    public String tasaDolarNew(int consecutivo){
     	try{
 
     		BigDecimal t = BigDecimal.ZERO;
@@ -517,21 +518,21 @@ public class AdministrarTarjeta
     		
     		System.out.println("Moneda.......:" + tipoMoneda);
     		
-    		if("EUR".equals(tipoMoneda)){  
+    		if("EUR".equals(tipoMoneda)){    			
     			t = tx.getValortxpesos().divide(tx.getValortxeuros(), 2, RoundingMode.HALF_UP);
+    			return new DecimalFormat("€ #,###,##0").format(t);
     		}else{
     			if( "COP".equals(tipoMoneda)){
     				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
+    				return new DecimalFormat("US #,###,##0").format(t);
     			}else{
     				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
+    				return new DecimalFormat("US #,###,##0").format(t);
     			}
     		}    
-    		
-    		System.out.println("Tasa nuevo............................:" + t);
-    	return t;
-    	
     	}catch(Exception e){
-    		System.out.println("Error al ubicar la tasa de cambio de una Transaccion");
+    		System.out.println("Error al ubicar la tasa de cambio de una Transaccion: " + consecutivo);
+    		
     		e.printStackTrace();
     		return null;
     	}
@@ -542,7 +543,8 @@ public class AdministrarTarjeta
      * de la transaccion.
      * */
     public String currencyFormatter(String currency){
-    	System.out.println("Moneda Recibida....:"+ currency);
+    	System.out.println("<<<<<<<<<<<<<<<<<<Moneda Recibida....:"+ currency);
+    	System.out.println("EUR".equals(currency));
     	
 		if("EUR".equals(currency)){  
 			return "&#8364; #,###,##0";
