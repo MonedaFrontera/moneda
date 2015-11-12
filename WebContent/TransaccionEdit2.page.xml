@@ -66,7 +66,7 @@
       </rule>
    </navigation>
 
-   <navigation from-action="#{transaccionHome.update}">
+   <navigation from-action="#{AdministrarTransaccion.actualizarTransaccion()}">
       <rule if-outcome="updated">
          <end-conversation/>
          <redirect view-id="/TransaccionList.xhtml"/>

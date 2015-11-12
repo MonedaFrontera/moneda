@@ -2450,10 +2450,16 @@ public class AdministrarTransaccion
 	}
 	
 	
-	public void actualizarTransaccion()
+	public String actualizarTransaccion()
 	{
-		//no se implementa el metodo se deben eliminar las Tx que deban ser
-		//actualizadas.
+		System.out.println("entra a actualizar");
+		System.out.println("actualiza:*******"+this.transaccionHome.getInstance().getPromotor());
+		
+		
+		entityManager.persist(transaccionHome.getInstance());
+		entityManager.flush();
+		entityManager.clear();
+	   return "updated";
 		
 	}
 	
