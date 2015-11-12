@@ -1411,13 +1411,9 @@ public class AdministrarActivacion {
 	 * CADIVI
 	 */
 	public void noIngresaCadiviCorreo(Integer consecutivo) 
-	{
-		System.out.println("ESTADO CADIVI>> "+ activacionHome.getInstance().getErroringresocadivi());
-		
+	{	
 		if (activacionHome.getInstance().getErroringresocadivi() ) {
-			
 			EnviarMailAlertas alerta = new EnviarMailAlertas();
-			
 			Activacion act = activacionHome.getInstance();
 			alerta.enviarEmailActivaciones(act);
 			AdministrarUsuario.auditarUsuario(12,
@@ -1427,6 +1423,7 @@ public class AdministrarActivacion {
 		}
 	}
 
+	
 	/**
 	 * 
 	 * 
