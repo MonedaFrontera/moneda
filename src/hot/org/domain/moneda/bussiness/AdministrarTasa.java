@@ -99,6 +99,73 @@ public class AdministrarTasa
     @In(create=true) @Out
     AdministrarUsuario AdministrarUsuario;
     
+	
+	/************************************************
+     * Entidades a ingresar en la clase de negocio	*
+     ************************************************/
+    
+    @In(create=true) @Out 
+    PaisHome paisHome;
+ 
+    @In(create=true) @Out 
+    EstablecimientoHome establecimientoHome;
+    
+    @In(create=true) @Out 
+    FranquiciaHome franquiciaHome;
+    
+    @In(create=true) @Out 
+    BancoHome bancoHome;
+    
+    @In(create=true) @Out 
+    TasadolarpromotorparametroHome tasadolarpromotorparametroHome;
+
+    
+    List<String> listaString = new ArrayList<String>();
+    
+    //Campos del formulario
+    private Pais paisTemp;
+    private Promotor promoTemp;
+    private Establecimiento estaTemp;	  
+    private Franquicia frqTemp;
+    private Banco bancoTemp;
+    private String tipoCupoTemp = "V";
+    private Date fechaIniTemp;
+    private Date fechaFinTemp;
+    
+    private BigDecimal tasaDolarTemp;
+    private BigDecimal tasaDolarNegTemp;
+    private BigDecimal tasaDolarTacTemp;
+    private BigDecimal tasaDolarOfTemp;
+    
+    private BigDecimal tasaEuroTemp;
+    private BigDecimal tasaEuroNegTemp;
+    private BigDecimal tasaEuroTacTemp;
+    private BigDecimal tasaEuroOfTemp;
+    
+    private BigDecimal porcentCt;
+    private BigDecimal porcentOfi;
+
+    private BigDecimal paridadEstTemp;
+    private BigDecimal paridadClienteTemp;
+    
+    private String codMoneda;
+    
+	private Tasaeuropromotorparametro tsEuroPromo;
+	private Tasaeuroparametro tsEuroParam;
+	private Tasadolarpromotorparametro tsDolarPromo;		
+	private Tasadolarparametro tsDolarParam;
+	
+	private Porcentcomisiontxparampromo porcentajePromo;
+	private Porcentajecomisiontxparam porcentajeGlob;
+	
+	private String pathBandera;
+	
+	private boolean formValido;
+    
+	@In(create = true)
+	@Out
+	private EnviarMailAlertas enviarMailAlertas;
+    
     public List<Tasadebolivaroficina> getListaTasadebolivaroficina() {
 		return listaTasadebolivaroficina;
 	}
@@ -676,74 +743,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.nombre=null;
 		this.listaTasabolivarnegociado = null;
 	}
-	
-	
-	/************************************************
-     * Entidades a ingresar en la clase de negocio	*
-     ************************************************/
-    
-    @In(create=true) @Out 
-    PaisHome paisHome;
- 
-    @In(create=true) @Out 
-    EstablecimientoHome establecimientoHome;
-    
-    @In(create=true) @Out 
-    FranquiciaHome franquiciaHome;
-    
-    @In(create=true) @Out 
-    BancoHome bancoHome;
-    
-    @In(create=true) @Out 
-    TasadolarpromotorparametroHome tasadolarpromotorparametroHome;
-
-    
-    List<String> listaString = new ArrayList<String>();
-    
-    //Campos del formulario
-    private Pais paisTemp;
-    private Promotor promoTemp;
-    private Establecimiento estaTemp;	  
-    private Franquicia frqTemp;
-    private Banco bancoTemp;
-    private String tipoCupoTemp = "V";
-    private Date fechaIniTemp;
-    private Date fechaFinTemp;
-    
-    private BigDecimal tasaDolarTemp;
-    private BigDecimal tasaDolarNegTemp;
-    private BigDecimal tasaDolarTacTemp;
-    private BigDecimal tasaDolarOfTemp;
-    
-    private BigDecimal tasaEuroTemp;
-    private BigDecimal tasaEuroNegTemp;
-    private BigDecimal tasaEuroTacTemp;
-    private BigDecimal tasaEuroOfTemp;
-    
-    private BigDecimal porcentCt;
-    private BigDecimal porcentOfi;
-
-    private BigDecimal paridadEstTemp;
-    private BigDecimal paridadClienteTemp;
-    
-    private String codMoneda;
-    
-	private Tasaeuropromotorparametro tsEuroPromo;
-	private Tasaeuroparametro tsEuroParam;
-	private Tasadolarpromotorparametro tsDolarPromo;		
-	private Tasadolarparametro tsDolarParam;
-	
-	private Porcentcomisiontxparampromo porcentajePromo;
-	private Porcentajecomisiontxparam porcentajeGlob;
-	
-	private String pathBandera;
-	
-	private boolean formValido;
-    
-	@In(create = true)
-	@Out
-	private EnviarMailAlertas enviarMailAlertas;
-	
 	
 	
    //Getter and Setter variables del formulario

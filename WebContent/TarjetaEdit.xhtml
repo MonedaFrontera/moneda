@@ -284,8 +284,15 @@
                 <ui:define name="label">Tarjeta TAC</ui:define>
                 <h:selectBooleanCheckbox id="tac" 
                 						 disabled="#{!s:hasRole('Activa Caracteristicas TAC de Promotores')}"	
-                                         value="#{tarjetaHome.instance.tac}"/>
+                                         value="#{tarjetaHome.instance.tac}">
+				<a:support event="onclick"
+						   reRender="divTac"
+						   inmediate="true"
+						   action="#{AdministrarTarjeta.auditarCaracteristicaTac}"
+						   ajaxSingle="true" />
+				</h:selectBooleanCheckbox>
                        <a:support event="onclick"  ajaxSingle="true"/>
+                       
  			</s:decorate>
  			</s:div>  
  

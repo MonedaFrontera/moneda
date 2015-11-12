@@ -2789,4 +2789,19 @@ public void ubicarPromotorList(){
 		}
     	
 	}
+	
+	
+	public void auditarCaracteristicaTac(){
+		
+		if(tarjetaHome.getInstance().getTac()){
+			AdministrarUsuario.auditarUsuario(37,
+				"Marco como tarjeta TAC la tarjeta " + tarjetaHome.getInstance().getNumerotarjeta());
+		}else{
+			AdministrarUsuario.auditarUsuario(38,
+					"Desmarco como tarjeta TAC la tarjeta " + tarjetaHome.getInstance().getNumerotarjeta());			
+		}
+		
+	}
+	
+	
 }

@@ -150,16 +150,16 @@ public class AdministrarEstablecimiento
 	{
 		try{
 			String sql = "";		
-			String sqlcampos = "select t.tarjeta.numerotarjeta, t.fechatx, t.tipotx, t.valortxpesos," +
-					"t.valortxdolares, case when td.tasadolar is null or td.tasadolar = td.tasa then " +
-					"t.valortxpesos else (td.tasadolar*t.valortxdolares) end as valorcomp, t.numfactura ";
+			String sqlcampos = "select t.tarjeta.numerotarjeta, t.fechatx, t.tipotx, t.valortxpesos, " +
+					"t.valortxdolares, (t.valortxdolares *ep.dolaroficina), t.numfactura, ep.dolaroficina";
 			
 			if(this.numautorizacion.contentEquals("")){
-				sql = "from Tarjeta tar, Transaccion t, Tasadolar td where 1 = 1 and " +
-						"tar.numerotarjeta = t.tarjeta.numerotarjeta and td.id.fecha = t.fechatx and td.id.codigopais = t.establecimiento.pais.codigopais ";
+				sql = " from Transaccion t join t.establecimiento e join t.tarjeta tar, Establecimientoprecio ep " +
+						" where e.codigounico = ep.establecimiento.codigounico and t.fechatx = ep.id.fechainicio ";
 			}else{
-				sql = "from Tarjeta tar, Transaccion t, Baucher b, Tasadolar td where b.id.consecutivo = t.consecutivo and " +
-						"tar.numerotarjeta = t.tarjeta.numerotarjeta and td.id.fecha = t.fechatx and td.id.codigopais = t.establecimiento.pais.codigopais ";
+				sql = " from Transaccion t  join t.establecimiento e, Establecimientoprecio ep, Baucher b " +
+					   " where e.codigounico = ep.establecimiento.codigounico and t.fechatx = ep.id.fechainicio "+ 
+					   	" and b.id.consecutivo = t.consecutivo ";
 			}
 			
 			List< String > codigoUnico = entityManager.createNativeQuery( "select" + 
@@ -212,9 +212,8 @@ public class AdministrarEstablecimiento
 			this.transacciones = (ArrayList)entityManager
 			.createQuery(sqlcampos+sql).setMaxResults(100).getResultList();
 					
-			sql = "select sum(t.valortxpesos), sum(t.valortxdolares), sum(case when td.tasadolar is null " +
-					"or td.tasadolar = td.tasa then " +
-					"t.valortxpesos else (td.tasadolar*t.valortxdolares) end) " + sql;
+			sql = "select sum(t.valortxpesos), sum(t.valortxdolares), " +
+					" sum(t.valortxdolares *ep.dolaroficina)  " + sql;
 			
 			this.totales = (Object)entityManager
 			.createQuery(sql).setMaxResults(100).getSingleResult();
