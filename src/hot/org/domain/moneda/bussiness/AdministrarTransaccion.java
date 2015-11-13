@@ -140,6 +140,7 @@ public class AdministrarTransaccion
 		System.out.println("Nombre " + this.nombrePromotor);
 		//System.out.println("Doc " + pr.getDocumento());
 		if(pr!=null){
+			
 			transaccionHome.getInstance().setPromotor(pr.getDocumento());
 		}
 		System.out.println("-------------------"+transaccionHome.getInstance().getPromotor());
@@ -2407,8 +2408,8 @@ public class AdministrarTransaccion
 	
 	
 	
-	public void cargarTransaccion(int consecutivo){
 		
+	public void cargarTransaccion(int consecutivo){
 		System.out.println("Num transaccion " + consecutivo );
 		
 		transaccionHome.setTransaccionConsecutivo(consecutivo);
@@ -2453,14 +2454,22 @@ public class AdministrarTransaccion
 	
 	public String actualizarTransaccion()
 	{
+		entityManager.clear();
+		
 		System.out.println("entra a actualizar");
 		System.out.println("actualiza:*******"+this.transaccionHome.getInstance().getPromotor());
 		
-		this.ubicarPromotor();
+		if( !this.getNombrePromotor().equals("")){
+			this.ubicarPromotor();
+		}else{
+			facesMessages.add("Ha ocurrido un error al intentar ubicar el promotor ");
+			return null;
+		}
 		
 		entityManager.merge(transaccionHome.getInstance());
 		entityManager.flush();
 		entityManager.clear();
+		
 	   return "updated";
 		
 	}

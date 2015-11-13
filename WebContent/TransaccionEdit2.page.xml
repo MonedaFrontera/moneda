@@ -9,9 +9,6 @@
 
    <action execute="#{transaccionHome.wire}"/>
    
-
-   
-
    <param name="transaccionFrom"/>
    
    <param name="establecimientoFrom"/>
