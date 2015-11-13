@@ -142,6 +142,7 @@ public class AdministrarTransaccion
 		if(pr!=null){
 			transaccionHome.getInstance().setPromotor(pr.getDocumento());
 		}
+		System.out.println("-------------------"+transaccionHome.getInstance().getPromotor());
 	}
 	
 	/**
@@ -2455,8 +2456,9 @@ public class AdministrarTransaccion
 		System.out.println("entra a actualizar");
 		System.out.println("actualiza:*******"+this.transaccionHome.getInstance().getPromotor());
 		
+		this.ubicarPromotor();
 		
-		entityManager.persist(transaccionHome.getInstance());
+		entityManager.merge(transaccionHome.getInstance());
 		entityManager.flush();
 		entityManager.clear();
 	   return "updated";

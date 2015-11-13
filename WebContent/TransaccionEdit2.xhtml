@@ -15,6 +15,7 @@
 
         <rich:panel>
             <f:facet name="header">#{transaccionHome.managed ? 'Editar' : 'Agregar'} Transaccion</f:facet>
+
 			<s:div id="datostransaccion" style="float:left; width:60%">
             <s:decorate id="numerotarjetaField" template="layout/edit.xhtml">
                 <ui:define name="label">Numero Tarjeta</ui:define>
@@ -35,7 +36,7 @@
 			
 			<s:decorate id="tarjetaHabienteField" template="layout/edit.xhtml">
                 <ui:define name="label">Tarjetahabiente</ui:define>
-                <h:inputText disabled="#{transaccionHome.managed}" value="#{AdministrarTransaccion.tarjetahabiente}" id="nametarjeta" styleClass="textBox" size="50">
+                <h:inputText value="#{AdministrarTransaccion.tarjetahabiente}" id="nametarjeta" styleClass="textBox" size="50">
                 <a:support event="onblur" reRender="datostarjeta" action="#{AdministrarTransaccion.ubicarTarjeta()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png" 
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
@@ -50,10 +51,13 @@
                                         </h:column>
                                     </rich:suggestionbox>
             </s:decorate>
-            
-            <s:decorate id="promotorField" template="layout/edit.xhtml">
+			
+			<s:div id="datostarjeta">
+			</s:div>
+			
+		  <s:decorate id="promotorField" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
-			<h:inputText value="#{AdministrarTransaccion.nombrePromotor}" id="namepromotor" size="50">
+			    <h:inputText value="#{AdministrarTransaccion.nombrePromotor}" id="namepromotor" size="50">
                 <a:support event="onblur" action="#{AdministrarTransaccion.ubicarPromotor}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
@@ -69,13 +73,10 @@
                                     </rich:suggestionbox>
         	</s:decorate>
 			
-			<s:div id="datostarjeta">
-			</s:div>
-			
 			
             <s:decorate id="codigounicoField" template="layout/edit.xhtml">
                 <ui:define name="label">Establecimiento</ui:define>
-                <h:inputText value="#{AdministrarTransaccion.sugestion}" disabled="#{transaccionHome.managed}" id="name" styleClass="textBox" size="50">
+                <h:inputText value="#{AdministrarTransaccion.sugestion}" id="name" styleClass="textBox" size="50">
                 <a:support event="onblur" reRender="tipomoneda, totalField " action="#{AdministrarTransaccion.ubicarEstablecimiento()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
@@ -99,14 +100,13 @@
                           value="#{transaccionHome.instance.fechatx}" 
                           datePattern="dd/MM/yyyy" 
                           enableManualInput="true"
-                          disabled="#{transaccionHome.managed}"
                           />
             </s:decorate>
  
 
 			<s:decorate id="tipotxField" template="layout/edit.xhtml">
                 <ui:define name="label">Tipo Transaccion</ui:define>
-                <h:selectOneMenu id="tipotx" value="#{transaccionHome.instance.tipotx}" disabled="#{transaccionHome.managed}" >
+                <h:selectOneMenu id="tipotx" value="#{transaccionHome.instance.tipotx}" required="true">
 					<f:selectItem itemValue="V" itemLabel="Viajero"/>
 					<f:selectItem itemValue="I" itemLabel="Internet"/>
 				</h:selectOneMenu>   
@@ -119,7 +119,6 @@
                            size="10"
                       maxlength="10"
                       required="true"
-                      disabled="#{transaccionHome.managed}"
                           value="#{transaccionHome.instance.numfactura}">
                     <a:support event="onblur" reRender="numfacturaField" action="#{AdministrarTransaccion.ubicarFactura}" ajaxSingle="true"/>
                 </h:inputText>
@@ -143,8 +142,19 @@
                        disabled="true"
                        style="font-size:24px"
                           value="#{AdministrarTransaccion.totalizar}"
-                       rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}">
+                       rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}">
                <f:convertNumber pattern="US #,###,##0"/>                
+               </h:inputText>
+               
+               <h:inputText id="totaleuro"
+                           size="17"
+                      maxlength="17"
+                       disabled="true" 
+                       	 style="font-size:24px"
+                          value="#{AdministrarTransaccion.totalizar}"
+                       rendered="#{transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}">
+               <f:convertNumber pattern="&#8364; #,###,##0"/>                
                </h:inputText>
             </s:decorate>
             
@@ -158,8 +168,7 @@
                            size="17"
                       maxlength="8"
                       required="true"
-                      disabled="#{transaccionHome.managed}"
-                      value="#{AdministrarTransaccion.baucher1}">
+                          value="#{AdministrarTransaccion.baucher1}">
                     <a:support event="onblur" reRender="numautorizacionField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
@@ -168,81 +177,113 @@
                 <h:inputText id="valortxpesos1"
                           value="#{AdministrarTransaccion.valor1}"
                           required="true"
-                          disabled="#{transaccionHome.managed}"
-                          size="17">
+                           size="17">
                     <a:support event="onblur" reRender="valortxpesosField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
-            <s:decorate id="valortxdolaresField" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}" template="layout/edit.xhtml">
+            <s:decorate id="valortxdolaresField" 
+            			rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}" 
+            			template="layout/edit.xhtml">
                 <ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares1"
-               			  required="true"
-               			  disabled="#{transaccionHome.managed}"
+                required="true"
                           value="#{AdministrarTransaccion.valor1}"
                            size="17">
                     <a:support event="onblur" reRender="valortxdolaresField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
-            </s:decorate>            
+            </s:decorate>  
+            <s:decorate id="valortxeurosField" 
+            			rendered="#{ transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}" 
+            			template="layout/edit.xhtml">
+                <ui:define name="label">Valor Euros</ui:define>
+                <h:inputText id="valortxeuros1"
+                required="true"
+                          value="#{AdministrarTransaccion.valor1}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxeurosField, totalField"  ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>          
             
-              
+            
             <s:decorate id="numautorizacion2Field" template="layout/edit.xhtml">
             	<ui:define name="label">Autorizacion 2</ui:define>
                 <h:inputText id="numautorizacion2"
                            size="17"
-                     	   maxlength="8"
-                           disabled="#{transaccionHome.managed}"
-                           value="#{AdministrarTransaccion.baucher2}">
-                    <a:support event="onblur" reRender="numautorizacion2Field" bypassUpdates="true" ajaxSingle="true"/>
+                      maxlength="8"
+                          value="#{AdministrarTransaccion.baucher2}">
+                    <a:support event="onblur" reRender="numautorizacion2Field" 
+                    		   bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
             <s:decorate id="valortxpesos2Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais == 'CO'}" template="layout/edit.xhtml" >
             	<ui:define name="label">Valor Pesos</ui:define>
                 <h:inputText id="valortxpesos2"
-                             value="#{AdministrarTransaccion.valor2}"
-                             disabled="#{transaccionHome.managed}"
-                             size="17">
+                          value="#{AdministrarTransaccion.valor2}"
+                           size="17">
                     <a:support event="onblur" reRender="valortxpesos2Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
-            <s:decorate id="valortxdolares2Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}" template="layout/edit.xhtml">
+            <s:decorate id="valortxdolares2Field" 
+            			rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}" 
+            			template="layout/edit.xhtml">
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares2"
-                		     disabled="#{transaccionHome.managed}"
-                             value="#{AdministrarTransaccion.valor2}"
-                             size="17">
+                          value="#{AdministrarTransaccion.valor2}"
+                           size="17">
                     <a:support event="onblur" reRender="valortxdolares2Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
-            </s:decorate>            
+            </s:decorate>
+            <s:decorate id="valortxeuros2Field" 
+            			rendered="#{ transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}" 
+            			template="layout/edit.xhtml">
+                <ui:define name="label">Valor Euros</ui:define>
+                <h:inputText id="valortxeuros2"
+                          value="#{AdministrarTransaccion.valor2}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxeuros2Field, totalField"  ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>             
             
             <s:decorate id="numautorizacion3Field" template="layout/edit.xhtml">
             	<ui:define name="label">Autorizacion 3</ui:define>
                 <h:inputText id="numautorizacion3"
-                             size="17"
-                             maxlength="8"
-                             disabled="#{transaccionHome.managed}"
-                             value="#{AdministrarTransaccion.baucher3}">
+                           size="17"
+                      maxlength="8"
+                          value="#{AdministrarTransaccion.baucher3}">
                     <a:support event="onblur" reRender="numautorizacion3Field" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
             <s:decorate id="valortxpesos3Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais == 'CO'}" template="layout/edit.xhtml" >
             	<ui:define name="label">Valor Pesos</ui:define>
                 <h:inputText id="valortxpesos3"
-                			disabled="#{transaccionHome.managed}"
-                         	 value="#{AdministrarTransaccion.valor3}"
-                          	 size="17">
+                          value="#{AdministrarTransaccion.valor3}"
+                           size="17">
                     <a:support event="onblur" reRender="valortxpesos3Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
-            </s:decorate>	
-            	
-            <s:decorate id="valortxdolares3Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO'}" template="layout/edit.xhtml">
+            </s:decorate>            	
+            <s:decorate id="valortxdolares3Field" 
+            			rendered="#{transaccionHome.instance.establecimiento.pais.codigopais != 'CO' &amp;&amp;
+                       			   transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda != 'EUR'}" 
+            			template="layout/edit.xhtml">
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares3"
-                		  disabled="#{transaccionHome.managed}"
                           value="#{AdministrarTransaccion.valor3}"
-                          size="17">
+                           size="17">
                     <a:support event="onblur" reRender="valortxdolares3Field, totalField" ajaxSingle="true"/>
                 </h:inputText>                
-            </s:decorate>			
+            </s:decorate>		
+            <s:decorate id="valortxeuros3Field" 
+            			rendered="#{ transaccionHome.instance.establecimiento.pais.paisiso.codigomoneda == 'EUR'}" 
+            			template="layout/edit.xhtml">
+                <ui:define name="label">Valor Euros</ui:define>
+                <h:inputText id="valortxeuros3"
+                          value="#{AdministrarTransaccion.valor3}"
+                           size="17">
+                    <a:support event="onblur" reRender="valortxeuros3Field, totalField"  ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>	
 			</s:div>
 			
 			
@@ -262,11 +303,11 @@
             
             <h:commandButton id="save"
                           value="Registrar"
-                         action="#{AdministrarTransaccion.guardarTransaccion()}"
+                         action="#{AdministrarTransaccion.guardarTransaccionFinal()}"
                        rendered="#{!transaccionHome.managed}"/>
 
             <h:commandButton id="update"
-                          value="Actualizar Promotor"
+                          value="Actualizar"
                          action="#{AdministrarTransaccion.actualizarTransaccion()}"
                        rendered="#{transaccionHome.managed}"/>
 
