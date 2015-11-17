@@ -102,13 +102,11 @@
             <s:decorate id="fechatxField" template="layout/edit.xhtml">
                 <ui:define name="label">Fecha Transaccion</ui:define>
                 <rich:calendar id="fechatx"
-                       required="true"
-                       disabled="true"
-                          value="#{transaccionHome.instance.fechatx}" 
-                          datePattern="dd/MM/yyyy" 
-                          enableManualInput="true"
-                          disabled="true"
-                          />
+                      	 required="true"
+                      	 disabled="true"
+                      	    value="#{transaccionHome.instance.fechatx}" 
+                      datePattern="dd/MM/yyyy" 
+                enableManualInput="true"/>
             </s:decorate>
  
 
@@ -130,8 +128,7 @@
                       maxlength="10"
                       disabled="true"
                       required="true"
-                      disabled="true"
-                          value="#{transaccionHome.instance.numfactura}">
+                         value="#{transaccionHome.instance.numfactura}">
 
                     <a:support event="onblur" reRender="numfacturaField" ajaxSingle="true"/>
 
@@ -191,7 +188,7 @@
                 <ui:define name="label">Valor Pesos</ui:define>
                 <h:inputText id="valortxpesos1"
                           value="#{AdministrarTransaccion.valor1}"
-                          required="true"
+                          required="true">
                     <a:support event="onblur" reRender="valortxpesosField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
@@ -202,8 +199,7 @@
                 <ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares1"
                 	   required="true"
-                	   disabled="true"
-                          value="#{AdministrarTransaccion.valor1}"
+                	      value="#{AdministrarTransaccion.valor1}"
                            size="17"
                            disabled="true">
                     <a:support event="onblur" reRender="valortxdolaresField, totalField"  ajaxSingle="true"/>
@@ -215,8 +211,7 @@
                 <ui:define name="label">Valor Euros</ui:define>
                 <h:inputText id="valortxeuros1"
                 	   required="true"
-                	   disabled="true"
-                          value="#{AdministrarTransaccion.valor1}"
+                	      value="#{AdministrarTransaccion.valor1}"
                            size="17"
                            disabled="true">
                     <a:support event="onblur" reRender="valortxeurosField, totalField"  ajaxSingle="true"/>
@@ -228,7 +223,6 @@
             	<ui:define name="label">Autorizacion 2</ui:define>
                 <h:inputText id="numautorizacion2"
                            size="17"
-                       disabled="true"
                       maxlength="8"
                           value="#{AdministrarTransaccion.baucher2}"
                           disabled="true">
@@ -239,8 +233,7 @@
             <s:decorate id="valortxpesos2Field" rendered="#{transaccionHome.instance.establecimiento.pais.codigopais == 'CO'}" template="layout/edit.xhtml" >
             	<ui:define name="label">Valor Pesos</ui:define>
                 <h:inputText id="valortxpesos2"
-                	   disabled="true"
-                          value="#{AdministrarTransaccion.valor2}"
+                	      value="#{AdministrarTransaccion.valor2}"
                            size="17"
                            disabled="true">
                     <a:support event="onblur" reRender="valortxpesos2Field, totalField" ajaxSingle="true"/>
@@ -252,8 +245,7 @@
             			template="layout/edit.xhtml">
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares2"
-                	   disabled="true"
-                          value="#{AdministrarTransaccion.valor2}"
+                	      value="#{AdministrarTransaccion.valor2}"
                            size="17"
                            disabled="true">
                     <a:support event="onblur" reRender="valortxdolares2Field, totalField" ajaxSingle="true"/>
@@ -264,8 +256,7 @@
             			template="layout/edit.xhtml">
                 <ui:define name="label">Valor Euros</ui:define>
                 <h:inputText id="valortxeuros2"
-                	   disabled="true"
-                          value="#{AdministrarTransaccion.valor2}"
+                	      value="#{AdministrarTransaccion.valor2}"
                            size="17"
                            disabled="true">
                     <a:support event="onblur" reRender="valortxeuros2Field, totalField"  ajaxSingle="true"/>
@@ -339,7 +330,7 @@
             <h:commandButton id="update"
                           value="Actualizar"
                          action="#{AdministrarTransaccion.actualizarTransaccion()}"
-                       rendered="#{transaccionHome.managed}"/>
+                       rendered="true"/>
 
             <h:commandButton id="delete"
                           value="Eliminar"

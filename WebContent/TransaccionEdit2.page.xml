@@ -56,12 +56,7 @@
       </rule>
    </navigation>
    
-   <navigation from-action="#{TestBean.guardarTransaccion()}">
-      <rule if-outcome="persisted">
-         <end-conversation/>
-         <redirect view-id="/TransaccionEdit.xhtml"/>
-      </rule>
-   </navigation>
+
 
    <navigation from-action="#{AdministrarTransaccion.actualizarTransaccion()}">
       <rule if-outcome="updated">
