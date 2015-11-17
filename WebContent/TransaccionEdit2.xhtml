@@ -25,9 +25,7 @@
                           size="16"
                      maxlength="4"
                          value="#{AdministrarTransaccion.tarjetafin}">
-                    <a:support event="onblur" action="#{AdministrarTransaccion.verificarTarjeta()}"  
-                    reRender="tarjetaHabienteField" ajaxSingle="true"
-                    focus="nametarjeta"/> 
+                   <!--numero tarjeta -->
                     
                     
                 </h:inputText>
@@ -36,24 +34,32 @@
 			
 			<s:decorate id="tarjetaHabienteField" template="layout/edit.xhtml">
                 <ui:define name="label">Tarjetahabiente</ui:define>
-                <h:inputText value="#{AdministrarTransaccion.tarjetahabiente}" id="nametarjeta" styleClass="textBox" size="50">
+                <h:inputText value="#{AdministrarTransaccion.tarjetahabiente}"
+				id="nametarjeta" 
+                styleClass="textBox" 
+                disabled="transaccionHome.managed"
+                size="50">
                 <a:support event="onblur" reRender="datostarjeta" action="#{AdministrarTransaccion.ubicarTarjeta()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png" 
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
                     alt="" />
-			<rich:suggestionbox id="tarjetahabienteBoxId" for="nametarjeta"
-                                        suggestionAction="#{AdministrarTransaccion.autocompletarHabiente}" var="result"
-                                        tokens="," height="150" width="260" cellpadding="2"
-                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
-                                        minChars="1" rules="none" nothingLabel="No se encontro ningun resultado">
-                                        <h:column>
-                                            <h:outputText value="#{result}" style="font-style:bold" />
-                                        </h:column>
-                                    </rich:suggestionbox>
+		<!-- Tarjeta -->
+		
+		
             </s:decorate>
 			
 			<s:div id="datostarjeta">
 			</s:div>
+			
+			
+		  <s:decorate id="promotoractualField" template="layout/edit.xhtml">
+                <ui:define name="label">Promotor</ui:define>		
+			<h:inputText value="#{AdministrarTransaccion.nombrePromotorActual}" 
+			id="namepromotoractual" size="50"
+			disabled="true">
+                </h:inputText>
+			
+          </s:decorate>
 			
 		  <s:decorate id="promotorField" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
@@ -76,20 +82,12 @@
 			
             <s:decorate id="codigounicoField" template="layout/edit.xhtml">
                 <ui:define name="label">Establecimiento</ui:define>
-                <h:inputText value="#{AdministrarTransaccion.sugestion}" id="name" styleClass="textBox" size="50">
+                <h:inputText value="#{AdministrarTransaccion.sugestion}" id="name" styleClass="textBox" size="50" disabled="true">
                 <a:support event="onblur" reRender="tipomoneda, totalField " action="#{AdministrarTransaccion.ubicarEstablecimiento()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
                     alt="" />
-				<rich:suggestionbox id="suggestionBoxId" for="name"
-                                        suggestionAction="#{AdministrarTransaccion.autocompletar}" var="result"
-                                        tokens="," height="150" width="260" cellpadding="2"
-                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
-                                        minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">
-                                        <h:column>
-                                            <h:outputText value="#{result}" style="font-style:bold" />
-                                        </h:column>
-                                    </rich:suggestionbox>
+				<!-- -Establecimiento -->
                 
             </s:decorate>
 
@@ -100,13 +98,14 @@
                           value="#{transaccionHome.instance.fechatx}" 
                           datePattern="dd/MM/yyyy" 
                           enableManualInput="true"
+                          disabled="true"
                           />
             </s:decorate>
  
 
 			<s:decorate id="tipotxField" template="layout/edit.xhtml">
                 <ui:define name="label">Tipo Transaccion</ui:define>
-                <h:selectOneMenu id="tipotx" value="#{transaccionHome.instance.tipotx}" required="true">
+                <h:selectOneMenu id="tipotx" value="#{transaccionHome.instance.tipotx}" required="true" disabled="true">
 					<f:selectItem itemValue="V" itemLabel="Viajero"/>
 					<f:selectItem itemValue="I" itemLabel="Internet"/>
 				</h:selectOneMenu>   
@@ -119,8 +118,9 @@
                            size="10"
                       maxlength="10"
                       required="true"
+                      disabled="true"
                           value="#{transaccionHome.instance.numfactura}">
-                    <a:support event="onblur" reRender="numfacturaField" action="#{AdministrarTransaccion.ubicarFactura}" ajaxSingle="true"/>
+                          <!-- numero de factura -->
                 </h:inputText>
             </s:decorate>
             
@@ -168,6 +168,7 @@
                            size="17"
                       maxlength="8"
                       required="true"
+                      disabled="true"
                           value="#{AdministrarTransaccion.baucher1}">
                     <a:support event="onblur" reRender="numautorizacionField" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
@@ -177,7 +178,8 @@
                 <h:inputText id="valortxpesos1"
                           value="#{AdministrarTransaccion.valor1}"
                           required="true"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxpesosField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
@@ -189,7 +191,8 @@
                 <h:inputText id="valortxdolares1"
                 required="true"
                           value="#{AdministrarTransaccion.valor1}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxdolaresField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>  
@@ -200,7 +203,8 @@
                 <h:inputText id="valortxeuros1"
                 required="true"
                           value="#{AdministrarTransaccion.valor1}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxeurosField, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>          
@@ -211,7 +215,8 @@
                 <h:inputText id="numautorizacion2"
                            size="17"
                       maxlength="8"
-                          value="#{AdministrarTransaccion.baucher2}">
+                          value="#{AdministrarTransaccion.baucher2}"
+                          disabled="true">
                     <a:support event="onblur" reRender="numautorizacion2Field" 
                     		   bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
@@ -220,7 +225,8 @@
             	<ui:define name="label">Valor Pesos</ui:define>
                 <h:inputText id="valortxpesos2"
                           value="#{AdministrarTransaccion.valor2}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxpesos2Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
@@ -231,7 +237,8 @@
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares2"
                           value="#{AdministrarTransaccion.valor2}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxdolares2Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
@@ -241,7 +248,8 @@
                 <ui:define name="label">Valor Euros</ui:define>
                 <h:inputText id="valortxeuros2"
                           value="#{AdministrarTransaccion.valor2}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxeuros2Field, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>             
@@ -251,7 +259,8 @@
                 <h:inputText id="numautorizacion3"
                            size="17"
                       maxlength="8"
-                          value="#{AdministrarTransaccion.baucher3}">
+                          value="#{AdministrarTransaccion.baucher3}"
+                          disabled="true">
                     <a:support event="onblur" reRender="numautorizacion3Field" bypassUpdates="true" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
@@ -259,7 +268,8 @@
             	<ui:define name="label">Valor Pesos</ui:define>
                 <h:inputText id="valortxpesos3"
                           value="#{AdministrarTransaccion.valor3}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxpesos3Field, totalField" ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>            	
@@ -270,7 +280,8 @@
             	<ui:define name="label">Valor Dolares</ui:define>
                 <h:inputText id="valortxdolares3"
                           value="#{AdministrarTransaccion.valor3}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxdolares3Field, totalField" ajaxSingle="true"/>
                 </h:inputText>                
             </s:decorate>		
@@ -280,7 +291,8 @@
                 <ui:define name="label">Valor Euros</ui:define>
                 <h:inputText id="valortxeuros3"
                           value="#{AdministrarTransaccion.valor3}"
-                           size="17">
+                           size="17"
+                           disabled="true">
                     <a:support event="onblur" reRender="valortxeuros3Field, totalField"  ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>	

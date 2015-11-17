@@ -120,6 +120,9 @@ public class AdministrarTransaccion
 	
 	private String nombrePromotor;
 	
+	private String nombrePromotorActual;
+
+	
 	public AdministrarTransaccion  () {
 		
 	}
@@ -134,15 +137,34 @@ public class AdministrarTransaccion
 		this.nombrePromotor = nombrePromotor;
 	}
 	
+	public String getNombrePromotorActual() {
+		return nombrePromotorActual;
+	}
+
+
+	public void setNombrePromotorActual(String nombrePromotorActual) {
+		this.nombrePromotorActual= nombrePromotorActual;
+	}
+	
 	
 	public void ubicarPromotor(){
+		System.out.println("Entra por primera vez: +++++++"+transaccionHome.isManaged());;
 		Personal pr = CargarObjetos.ubicarPersonal(this.nombrePromotor);
-		System.out.println("Nombre " + this.nombrePromotor);
+		System.out.println("Nombre " + this.nombrePromotor
+				+"++++ is managed "+transaccionHome.isManaged());
 		//System.out.println("Doc " + pr.getDocumento());
+		
+		
 		if(pr!=null){
 			transaccionHome.getInstance().setPromotor(pr.getDocumento());
 		}
-		System.out.println("-------------------"+transaccionHome.getInstance().getPromotor());
+				
+		System.out.println("-------------------"+transaccionHome.getInstance().getPromotor()+
+				"tarjeta:"+transaccionHome.getInstance().getTarjeta().getNumerotarjeta()+"****"+
+				"num factura: "+transaccionHome.getInstance().getNumfactura()+
+				"tipo tx:  "+transaccionHome.getInstance().getTipotx()+
+				" estableciomiento: "+transaccionHome.getInstance().getEstablecimiento().getNombreestable()+
+				"********* is maganed "+transaccionHome.isManaged());
 	}
 	
 	/**
@@ -153,6 +175,8 @@ public class AdministrarTransaccion
 	 */
 	public List<String> autocompletarPromotor(Object nom)
 	{
+		System.out.println(" is managed autocompletar: "+transaccionHome.isManaged());
+		
 		llenarPromotores(); 		// Metodo que carga la informacion de los nombres de las personas
 		String nombre = (String) nom;
 		List<String> result = new ArrayList<String>();
@@ -2409,8 +2433,11 @@ public class AdministrarTransaccion
 	
 	public void cargarTransaccion(int consecutivo){
 		
+		System.out.println(" is managed autocompletar1: "+transaccionHome.isManaged());
 		System.out.println("Num transaccion " + consecutivo );
 		
+	
+		this.nombrePromotor="";
 		transaccionHome.setTransaccionConsecutivo(consecutivo);
 		establecimientoHome.setEstablecimientoCodigounico(transaccionHome.getInstance().getEstablecimiento().getCodigounico());
 		tarjetaHome.setTarjetaNumerotarjeta(transaccionHome.getInstance().getTarjeta().getNumerotarjeta());
@@ -2442,11 +2469,11 @@ public class AdministrarTransaccion
 			String promotorTx = transaccionHome.getInstance().getPromotor();
 			if( promotorTx != null){
 				Promotor pr = entityManager.find(Promotor.class, promotorTx);
-				this.nombrePromotor = pr.getPersonal().getNombre()+" "+pr.getPersonal().getApellido();
+				this.nombrePromotorActual = pr.getPersonal().getNombre()+" "+pr.getPersonal().getApellido();
 			}
 		}
 		
-		
+		System.out.println(" is managed autocompletar2: "+transaccionHome.isManaged());
 		
 	}
 	
@@ -2455,12 +2482,13 @@ public class AdministrarTransaccion
 	{
 		System.out.println("entra a actualizar");
 		System.out.println("actualiza:*******"+this.transaccionHome.getInstance().getPromotor());
-		
-		this.ubicarPromotor();
-		
-		entityManager.merge(transaccionHome.getInstance());
+	
+		//actualiza el promotor en la tabla tarjeta
+		String sql = "update public.transaccion " +
+				"set promotor = '"+transaccionHome.getInstance().getPromotor()+"' where " +
+				" consecutivo = '"+transaccionHome.getInstance().getConsecutivo()+"'";
+		entityManager.createNativeQuery(sql).executeUpdate();
 		entityManager.flush();
-		entityManager.clear();
 	   return "updated";
 		
 	}
