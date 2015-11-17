@@ -10,6 +10,6 @@
       <navigation from-action="#{Reporteador.generarReporte}">
          
    </navigation>
-
+ 
    
 </page>

@@ -13,7 +13,7 @@
    <param name="promotortasaDocumento" value="#{promotortasaHome.promotortasaId.documento}"/>
    <param name="promotortasaCodigopais" value="#{promotortasaHome.promotortasaId.codigopais}"/>
    <param name="promotortasaFecha" value="#{promotortasaHome.promotortasaId.fecha}"/>
-
+ 
 
    <navigation from-action="#{AdministrarPromotor.guardarTasapromotor}">
       <rule if-outcome="persisted">

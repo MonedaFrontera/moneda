@@ -24,7 +24,7 @@
    <param name="empresaFrom"/>
    <param name="empresaNit" value="#{empresaHome.empresaNit}"/>
 
-
+ 
 
 
    <navigation from-action="#{puntoestablecimientoHome.persist}">

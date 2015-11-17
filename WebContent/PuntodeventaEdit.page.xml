@@ -19,7 +19,7 @@
          <redirect view-id="/Puntodeventa.xhtml"/>
       </rule>
    </navigation>
-
+ 
    <navigation from-action="#{puntodeventaHome.update}">
       <rule if-outcome="updated">
          <end-conversation/>

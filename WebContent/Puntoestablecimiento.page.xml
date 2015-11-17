@@ -21,7 +21,7 @@
    <param name="bancocolFrom"/>
    <param name="bancocolCodbanco" value="#{bancocolHome.bancocolCodbanco}"/>
 
-
+ 
 
 
 </page>

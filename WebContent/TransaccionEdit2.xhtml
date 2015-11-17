@@ -317,15 +317,7 @@
 
         <div class="actionButtons">
 
-            <h:commandButton id="saveiii"
-                          value="Generar Detalle"
-                          rendered="false"
-                         action="#{AdministrarFactura.generarDetallefactura()}"/>
-            
-            <h:commandButton id="save"
-                          value="Registrar"
-                         action="#{AdministrarTransaccion.guardarTransaccionFinal()}"
-                       rendered="#{!transaccionHome.managed}"/>
+   
 
             <h:commandButton id="update"
                           value="Actualizar"
@@ -343,12 +335,6 @@
              propagation="end"
                     view="/TransaccionList.xhtml"
                 rendered="#{transaccionHome.managed}"/>
-
-            <s:button id="cancelAdd"
-                   value="Cancelar"
-             propagation="end"
-                    view="/#{empty transaccionFrom ? 'TransaccionList' : transaccionFrom}.xhtml"
-                rendered="#{!transaccionHome.managed}"/>
 
         </div>
         

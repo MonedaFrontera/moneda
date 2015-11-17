@@ -5,6 +5,6 @@
 
    <param name="puntodeventaFrom"/>
    <param name="puntodeventaCodpuntoventa" value="#{puntodeventaHome.puntodeventaCodpuntoventa}"/>
-
+ 
 
 </page>

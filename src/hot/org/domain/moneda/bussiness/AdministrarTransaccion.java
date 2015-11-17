@@ -2487,14 +2487,22 @@ public class AdministrarTransaccion
 		System.out.println("entra a actualizar");
 		System.out.println("actualiza:*******"+this.transaccionHome.getInstance().getPromotor());
 
-	
 		//actualiza el promotor en la tabla tarjeta
 		String sql = "update public.transaccion " +
 				"set promotor = '"+transaccionHome.getInstance().getPromotor()+"' where " +
 				" consecutivo = '"+transaccionHome.getInstance().getConsecutivo()+"'";
 		entityManager.createNativeQuery(sql).executeUpdate();
+		entityManager.clear();
 		entityManager.flush();
-
+		
+		SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy");
+		DecimalFormat dec = new DecimalFormat("###,###.##");
+		AdministrarUsuario.auditarUsuario(39, "Se cambió el promotor:"+this.nombrePromotorActual+
+										" por el promotor:"+this.nombrePromotor +" en la transacción:"+transaccionHome.getInstance().getConsecutivo());
+		
+		facesMessages.add("Se actualizó el promotor de la transacción correctamente");
+		
+		
 	   return "updated";
 		
 	}

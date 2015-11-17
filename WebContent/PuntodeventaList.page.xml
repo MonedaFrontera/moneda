@@ -13,3 +13,4 @@
    <param name="nombre" value="#{puntodeventaList.puntodeventa.nombre}"/>
 
 </page>
+ 
