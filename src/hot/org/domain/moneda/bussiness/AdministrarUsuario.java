@@ -149,33 +149,67 @@ public class AdministrarUsuario
 					sdf.format(new Date()) + "' AND '" +sdf.format(fin)+ "' AND "  +
 					" a.promotor.asesor.documento = '" + identity.getUsername() +"' order by a.fechaInicioViaje").getResultList();
 			
-			//coleccion con las activaciones pasadas sin viaje
-			String sql = "SELECT "+ 
-					"public.activacion.cedula, public.activacion.nombre, "+ //[0]
-					"banco.nombrebanco, activacion.fechainicioviaje, "+     //[1]
-					"public.personal.nombre ||' '||  public.personal.apellido "+
-					"FROM public.activacion "+ 
-					"INNER JOIN public.promotor ON (public.activacion.promotor = public.promotor.documento) "+ 
-					"INNER JOIN public.personal ON (public.promotor.documento = public.personal.documento) "+ 
-					"INNER JOIN public.banco ON (public.activacion.codbanco = public.banco.codbanco) "+
-					"LEFT JOIN ( SELECT public.viaje.* "+
-								"FROM public.viaje "+
-								"WHERE (public.viaje.cedulatarjetahabiente, public.viaje.fechainicio) IN "+ 
-								"(select viaje.cedulatarjetahabiente, max(viaje.fechainicio) from viaje "+ 
-								"group by viaje.cedulatarjetahabiente) "+ 
-					") AS maxviaje ON (public.activacion.cedula = maxviaje.cedulatarjetahabiente) "+ 
-					"WHERE public.activacion.estado = 'AC' AND "+ 
-					"public.activacion.fechainicioviaje < '" + sdf.format(new Date()) + "' AND " + 
-					"(maxviaje.fechainicio IS NULL OR "+
-					 "EXTRACT(YEAR FROM maxviaje.fechainicio) != EXTRACT( YEAR FROM date '" + sdf.format(new Date()) +"') OR "+
-					 "( EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR FROM date '"+ sdf.format(new Date()) +"') AND "+ 
-							 "(maxviaje.cupoinicialviajero IS NULL OR maxviaje.cupoinicialviajero = 0 )) ) AND "+
-					"( EXTRACT(YEAR FROM CURRENT_DATE) - 1900 =  public.activacion.ano ) AND " +		 
-					"public.promotor.asesor= '" + identity.getUsername() +"' GROUP BY "+ 
-					"public.activacion.cedula, public.activacion.nombre,"+
-					"banco.nombrebanco, activacion.fechainicioviaje, "+ 
-					"public.personal.nombre ||' '||  public.personal.apellido "+
-					"order by 4";
+			//coleccion con las activaciones pasadas sin viaje	
+			String sql="SELECT "+
+					   "public.activacion.cedula, "+
+					   "public.activacion.nombre, "+
+					   "banco.nombrebanco, "+
+					   "activacion.fechainicioviaje, "+
+					   "public.personal.nombre ||' '||  public.personal.apellido "+
+					   "FROM "+
+					   "public.activacion "+
+					   "INNER JOIN public.promotor ON ( public.activacion.promotor = public.promotor.documento ) "+
+					   "INNER JOIN public.personal ON ( public.promotor.documento = public.personal.documento ) "+
+					   "INNER JOIN public.banco ON ( public.activacion.codbanco = public.banco.codbanco ) "+
+					   "LEFT JOIN  ( "+
+						  "	SELECT "+
+						  " public.viaje.* "+
+						  " FROM "+
+						  " public.viaje "+
+						  " WHERE "+
+						  " (public.viaje.cedulatarjetahabiente, public.viaje.fechainicio  ) IN ( "+
+						  " select "+
+						  " viaje.cedulatarjetahabiente, "+
+						  " max(viaje.fechainicio) "+
+						  " from "+
+						  " viaje "+
+						  " group by "+
+						  " viaje.cedulatarjetahabiente) "+
+						  ") AS maxviaje ON ( public.activacion.cedula = maxviaje.cedulatarjetahabiente ) "+
+					   "LEFT JOIN tarjetaviaje ON (maxviaje.consecutivo = tarjetaviaje.consecutivoviaje) "+
+					   "LEFT JOIN tarjeta ON ( tarjetaviaje.numerotarjeta = tarjeta.numerotarjeta ) "+
+					   "LEFT JOIN (SELECT "+
+									"transaccion.numerotarjeta, "+
+						            "max(transaccion.fechatx)as fechatx "+
+						            "from "+
+						            "transaccion "+
+						            "group by "+
+						            "transaccion.numerotarjeta) mxtx ON ( mxtx.numerotarjeta = tarjeta.numerotarjeta ) "+
+						"WHERE "+
+						"public.activacion.estado = 'AC' AND "+
+						"public.activacion.fechainicioviaje < '" + sdf.format(new Date()) + "' AND "+
+						     /*Asesor*/
+						"public.promotor.asesor= '" + identity.getUsername() +"' AND "+
+						/*Determina que tenga un viaje creado y valido*/
+						"( "+
+						"(( maxviaje.fechainicio IS NULL OR "+
+						   "EXTRACT(YEAR FROM maxviaje.fechainicio) != EXTRACT( YEAR FROM  date '" + sdf.format(new Date()) + "') OR "+
+						   "(EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "') "+
+						   "AND (maxviaje.cupoinicialviajero IS NULL  OR maxviaje.cupoinicialviajero = 0 )) )  AND "+
+						 "( EXTRACT(YEAR FROM CURRENT_DATE) - 1900  =  public.activacion.ano ) ) "+
+						/* Determina que si tiene un viaje pero no ha facturado  */
+						 "OR "+
+						 "((EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "')) "+
+						 " AND (mxtx.fechatx IS NULL OR mxtx.fechatx NOT BETWEEN maxviaje.fechainicio AND maxviaje.fechafin))) "+
+						"GROUP BY "+
+						"public.activacion.cedula, "+
+						"public.activacion.nombre, "+
+						"banco.nombrebanco, "+
+						"activacion.fechainicioviaje, "+
+						"public.personal.nombre ||' '||  public.personal.apellido "+
+						"order by "+
+						"4";
+			
 			List<Object[]> actSinViaje = entityManager.createNativeQuery(sql).getResultList();
 			
 //			actSinViaje = new ArrayList< Object[] >(0);

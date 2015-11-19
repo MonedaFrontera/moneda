@@ -816,6 +816,11 @@ public class AdministrarActivacion {
 		entityManager.persist(ag);
 
 		activacionHome.getInstance().setGestor(gestorHome.getInstance());
+		
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+		activacionHome.getInstance().setFechamod(hoy);
+		
 		Activacion a = activacionHome.getInstance();
 		entityManager.merge(a);
 		System.out.println("Se agrega en la tabla activagestor");
@@ -944,7 +949,9 @@ public class AdministrarActivacion {
 		}// fin del else externo
 		
 		
-		
+		Date hoy= new Date();
+		activacionHome.getInstance().setUsuariomod(identity.getUsername());
+	    activacionHome.getInstance().setFechamod(hoy);
 
 		Activacion a = activacionHome.getInstance();
 		entityManager.merge(a);
