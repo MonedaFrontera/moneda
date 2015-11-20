@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <page xmlns="http://jboss.com/products/seam/pages"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd"
@@ -56,7 +56,12 @@
       </rule>
    </navigation>
    
-
+   <navigation from-action="#{TestBean.guardarTransaccion()}">
+      <rule if-outcome="persisted">
+         <end-conversation/>
+         <redirect view-id="/TransaccionEdit.xhtml"/>
+      </rule>
+   </navigation>
 
    <navigation from-action="#{AdministrarTransaccion.actualizarTransaccion()}">
       <rule if-outcome="updated">
