@@ -32,6 +32,8 @@ public class Tasadolarparametro implements java.io.Serializable {
 	private BigDecimal tasadolarTac;
 	private Date fechainicio;
 	private Date fechafin;
+	private Date fechamod;
+	private String usuariomod;
 
 	public Tasadolarparametro() {
 	}
@@ -43,7 +45,7 @@ public class Tasadolarparametro implements java.io.Serializable {
 	public Tasadolarparametro(int consecutivo, Franquicia franquicia,
 			Pais pais, Establecimiento establecimiento, Banco banco,
 			String tipocupo, BigDecimal tasadolar, BigDecimal tasadolarTac,
-			Date fechainicio, Date fechafin) {
+			Date fechainicio, Date fechafin, Date fechamod, String usuariomod) {
 		this.consecutivo = consecutivo;
 		this.franquicia = franquicia;
 		this.pais = pais;
@@ -54,6 +56,8 @@ public class Tasadolarparametro implements java.io.Serializable {
 		this.tasadolarTac = tasadolarTac;
 		this.fechainicio = fechainicio;
 		this.fechafin = fechafin;
+		this.fechamod=fechamod;
+		this.usuariomod=usuariomod;
 	}
 
 	@Id
@@ -152,6 +156,26 @@ public class Tasadolarparametro implements java.io.Serializable {
 
 	public void setFechafin(Date fechafin) {
 		this.fechafin = fechafin;
+	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fechamod", length = 29)
+	public Date getFechamod() {
+		return fechamod;
+	}
+
+	public void setFechamod(Date fechamod) {
+		this.fechamod = fechamod;
+	}
+
+	@Column(name = "usuariomod", length = 20)
+	@Length(max = 20)
+	public String getUsuariomod() {
+		return usuariomod;
+	}
+
+	public void setUsuariomod(String usuariomod) {
+		this.usuariomod = usuariomod;
 	}
 
 }

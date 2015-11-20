@@ -22,7 +22,7 @@
 
 			<s:decorate id="codigopaisField" template="layout/edit.xhtml">
                 <ui:define name="label">Pais</ui:define>
-                <h:selectOneMenu id="paisSel"   value="#{establecimientoHome.instance.pais}" required="true" >
+                <h:selectOneMenu id="paisSel"   value="#{establecimientoHome.instance.pais.nombre}" required="true" >
 			<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
 			                    noSelectionLabel="Seleccione..." />
 			     <s:convertEntity />
