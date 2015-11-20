@@ -128,5 +128,17 @@ public class EstablecimientoHome extends EntityHome<Establecimiento> {
 				: new ArrayList<Gravamenestablecimiento>(getInstance()
 						.getGravamenestablecimientos());
 	}
+	
+	public List<Franquiciaestablecimiento> getFranquiciaestablecimientos() {
+		return getInstance() == null ? null
+				: new ArrayList<Franquiciaestablecimiento>(getInstance()
+						.getFranquiciaestablecimientos());
+	}
+
+	public List<Factura> getFacturas() {
+		return getInstance() == null ? null : new ArrayList<Factura>(
+				getInstance().getFacturas());
+	}
+	
 
 }

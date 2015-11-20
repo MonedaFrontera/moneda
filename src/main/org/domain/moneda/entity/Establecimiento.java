@@ -55,7 +55,11 @@ public class Establecimiento implements java.io.Serializable {
 	private Set<Autovoz> autovozs = new HashSet<Autovoz>(0);
 	private Set<Gravamenestablecimiento> gravamenestablecimientos = new HashSet<Gravamenestablecimiento>(
 			0);
+	private Set<Franquiciaestablecimiento> franquiciaestablecimientos = new HashSet<Franquiciaestablecimiento>(
+			0);
+	private Set<Factura> facturas = new HashSet<Factura>(0);
 
+	
 	public Establecimiento() {
 	}
 
@@ -74,11 +78,13 @@ public class Establecimiento implements java.io.Serializable {
 			Set<Tasaeuropromotorparametro> tasaeuropromotorparametros,
 			Set<Tasadolarparametro> tasadolarparametros,
 			Set<Inventario> inventarios,
+			Set<Franquiciaestablecimiento> franquiciaestablecimientos,
 			Set<Tasaeuroparametro> tasaeuroparametros,
 			Set<Establecimientoprecio> establecimientoprecios,
 			Set<Puntoestablecimiento> puntoestablecimientos,
 			Set<Transaccion> transaccions, Set<Autovoz> autovozs,
-			Set<Gravamenestablecimiento> gravamenestablecimientos) {
+			Set<Gravamenestablecimiento> gravamenestablecimientos,
+			Set<Factura> facturas) {
 		this.codigounico = codigounico;
 		this.pais = pais;
 		this.empresa = empresa;
@@ -90,6 +96,7 @@ public class Establecimiento implements java.io.Serializable {
 		this.iva = iva;
 		this.numcuenta = numcuenta;
 		this.facturar = facturar;
+		this.franquiciaestablecimientos = franquiciaestablecimientos;
 		this.tasadolarpromotorparametros = tasadolarpromotorparametros;
 		this.porcentcomisiontxparampromos = porcentcomisiontxparampromos;
 		this.porcentajecomisiontxparams = porcentajecomisiontxparams;
@@ -102,6 +109,7 @@ public class Establecimiento implements java.io.Serializable {
 		this.transaccions = transaccions;
 		this.autovozs = autovozs;
 		this.gravamenestablecimientos = gravamenestablecimientos;
+		this.facturas = facturas;
 	}
 
 	@Id
@@ -328,6 +336,25 @@ public class Establecimiento implements java.io.Serializable {
 	public void setGravamenestablecimientos(
 			Set<Gravamenestablecimiento> gravamenestablecimientos) {
 		this.gravamenestablecimientos = gravamenestablecimientos;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "establecimiento")
+	public Set<Franquiciaestablecimiento> getFranquiciaestablecimientos() {
+		return this.franquiciaestablecimientos;
+	}
+
+	public void setFranquiciaestablecimientos(
+			Set<Franquiciaestablecimiento> franquiciaestablecimientos) {
+		this.franquiciaestablecimientos = franquiciaestablecimientos;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "establecimiento")
+	public Set<Factura> getFacturas() {
+		return this.facturas;
+	}
+
+	public void setFacturas(Set<Factura> facturas) {
+		this.facturas = facturas;
 	}
 
 }
