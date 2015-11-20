@@ -1538,6 +1538,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.tsEuroPromo.setFechafin(this.getFechaFinTemp());
 		this.tsEuroPromo.setTasaeuro( this.getTasaEuroNegTemp() );		
 		this.tsEuroPromo.setTipocupo(this.getTipoCupoTemp());
+		
 		//Genera el consecutivo de la tabla (id del registro)
 		BigInteger conse = (BigInteger)entityManager.createNativeQuery( 
 						"select nextval('tasaeuropromo_consecutivo_seq')").getSingleResult();			
@@ -1582,6 +1583,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.tsEuroParam.setTasaeuro(this.getTasaEuroTemp());
 		this.tsEuroParam.setTasaeuroTac(this.getTasaEuroTacTemp());
 		this.tsEuroParam.setTipocupo(this.getTipoCupoTemp());
+		this.tsEuroParam.setFechamod(new Date());
+		this.tsEuroParam.setUsuariomod(identity.getUsername());
+		
 		//Genera el consecutivo de la tabla (id del registro)
 		BigInteger conse = (BigInteger)entityManager.createNativeQuery( 
 						"select nextval('tasaeuroparam_consecutivo_seq')").getSingleResult();			
@@ -1626,6 +1630,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.tsDolarPromo.setFechafin(this.getFechaFinTemp());
 		this.tsDolarPromo.setTasadolar( this.getTasaDolarNegTemp());
 		this.tsDolarPromo.setTipocupo(this.getTipoCupoTemp());
+		this.tsDolarPromo.setFechamod(new Date());
+		this.tsDolarPromo.setUsuariomod(identity.getUsername());
+		
 		//Genera el consecutivo de la tabla (id del registro)
 		BigInteger conse = (BigInteger)entityManager.createNativeQuery( 
 						"select nextval('tasadolarpromoparam_consecutivo_seq')").getSingleResult();			
@@ -1667,6 +1674,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.tsDolarParam.setTasadolar(this.getTasaDolarTemp());
 		this.tsDolarParam.setTasadolarTac(this.getTasaDolarTacTemp());
 		this.tsDolarParam.setTipocupo(this.getTipoCupoTemp());
+		this.tsDolarParam.setFechamod(new Date());
+		this.tsDolarParam.setUsuariomod(identity.getUsername());
+		
 		//Genera el consecutivo de la tabla (id del registro)
 		BigInteger conse = (BigInteger)entityManager.createNativeQuery( 
 						"select nextval('tasadolarparam_consecutivo_seq')").getSingleResult();			
@@ -1710,6 +1720,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.porcentajePromo.setFechafin(this.getFechaFinTemp());
 		this.porcentajePromo.setPorcentaje(this.getPorcentCt());
 		this.porcentajePromo.setTipocupo(this.getTipoCupoTemp());
+		this.porcentajePromo.setFechamod(new Date());
+		this.porcentajePromo.setUsuariomod(identity.getUsername());
+		
 		//Genera el consecutivo de la tabla (id del registro)
 		BigInteger conse = (BigInteger)entityManager.createNativeQuery( 
 						"select nextval('porcentpromo_consecutivo_seq')").getSingleResult();			
@@ -1749,6 +1762,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.porcentajeGlob.setFechafin(this.getFechaFinTemp());
 		this.porcentajeGlob.setPorcentaje(this.getPorcentCt());
 		this.porcentajeGlob.setTipocupo(this.getTipoCupoTemp());
+		this.porcentajeGlob.setFechamod(new Date());
+		this.porcentajeGlob.setUsuariomod(identity.getUsername());
+		
 		//Genera el consecutivo de la tabla (id del registro)
 		BigInteger conse = (BigInteger)entityManager.createNativeQuery( 
 						"select nextval('porcent_consecutivo_seq')").getSingleResult();			
