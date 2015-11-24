@@ -196,11 +196,11 @@ public class AdministrarUsuario
 						   "EXTRACT(YEAR FROM maxviaje.fechainicio) != EXTRACT( YEAR FROM  date '" + sdf.format(new Date()) + "') OR "+
 						   "(EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "') "+
 						   "AND (maxviaje.cupoinicialviajero IS NULL  OR maxviaje.cupoinicialviajero = 0 )) )  AND "+
-						 "( EXTRACT(YEAR FROM CURRENT_DATE) - 1900  =  public.activacion.ano ) ) "+
+						 "( EXTRACT(YEAR FROM CURRENT_DATE) - 1900  =  public.activacion.ano ) )) "+
 						/* Determina que si tiene un viaje pero no ha facturado  */
-						 "OR "+
-						 "((EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "')) "+
-						 " AND (mxtx.fechatx IS NULL OR mxtx.fechatx NOT BETWEEN maxviaje.fechainicio AND maxviaje.fechafin))) "+
+//						 "OR "+
+//						 "((EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "')) "+
+//						 " AND (mxtx.fechatx IS NULL OR mxtx.fechatx NOT BETWEEN maxviaje.fechainicio AND maxviaje.fechafin)) "+ 
 						"GROUP BY "+
 						"public.activacion.cedula, "+
 						"public.activacion.nombre, "+

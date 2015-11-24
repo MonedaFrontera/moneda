@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import org.domain.moneda.entity.Actestado;
+import org.domain.moneda.entity.Activacion;
 import org.domain.moneda.entity.Asesor;
 import org.domain.moneda.entity.Banco;
 import org.domain.moneda.entity.Establecimiento;
@@ -34,6 +36,7 @@ import org.domain.moneda.entity.Tasadolarparametro;
 import org.domain.moneda.entity.Tasadolarpromotorparametro;
 import org.domain.moneda.entity.Tasaeuroparametro;
 import org.domain.moneda.entity.Tasaeuropromotorparametro;
+import org.domain.moneda.session.ActivacionList;
 import org.domain.moneda.session.BancoHome;
 import org.domain.moneda.session.EstablecimientoHome;
 import org.domain.moneda.session.FranquiciaHome;
@@ -42,7 +45,11 @@ import org.domain.moneda.session.PromotorHome;
 import org.domain.moneda.session.TasabolivarnegociadoHome;
 import org.domain.moneda.session.TasadebolivaroficinaHome;
 import org.domain.moneda.session.TasadolarHome;
+import org.domain.moneda.session.TasadolarparametroList;
 import org.domain.moneda.session.TasadolarpromotorparametroHome;
+import org.domain.moneda.session.TasadolarpromotorparametroList;
+import org.domain.moneda.session.TasaeuroparametroList;
+import org.domain.moneda.session.TasaeuropromotorparametroList;
 import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.jboss.seam.ScopeType;
@@ -54,6 +61,7 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.core.Expressions;
 import org.jboss.seam.core.Expressions.ValueExpression;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.framework.EntityQuery;
 import org.jboss.seam.international.StatusMessages;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Identity;
@@ -161,7 +169,30 @@ public class AdministrarTasa
 	private String pathBandera;
 	
 	private boolean formValido;
-    
+	
+	//Elementos para desplique de los List
+	EntityQuery<Tasadolarpromotorparametro> tdolarPromo = 
+		new EntityQuery<Tasadolarpromotorparametro>();
+	EntityQuery<Tasadolarparametro> tdolarParam = 
+		new EntityQuery<Tasadolarparametro>();
+	EntityQuery<Tasaeuropromotorparametro> teuroPromo= 
+		new EntityQuery<Tasaeuropromotorparametro>();
+	EntityQuery<Tasaeuroparametro> teuroParam = 
+		new EntityQuery<Tasaeuroparametro>();
+	
+	
+	@In(create = true)
+	private TasadolarpromotorparametroList tdolarPromoList;
+	@In(create = true)
+	private TasadolarparametroList tdolarParamList;
+	@In(create = true)
+	private TasaeuropromotorparametroList teuroPromoList;
+	@In(create = true)
+	private TasaeuroparametroList teuroParamList;
+	
+    private String tipoMoneda;
+    private Date fechaConsulta;
+	
 	@In(create = true)
 	@Out
 	private EnviarMailAlertas enviarMailAlertas;
@@ -2447,6 +2478,229 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		return false;
 	}
 
+	
+	//Metodo que administran el List
+	public EntityQuery<Tasadolarpromotorparametro> getTdolarPromo() {
+		return tdolarPromo;
+	}
+
+	public void setTdolarPromo(EntityQuery<Tasadolarpromotorparametro> tdolarPromo) {
+		this.tdolarPromo = tdolarPromo;
+	}
+
+	public EntityQuery<Tasadolarparametro> getTdolarParam() {
+		return tdolarParam;
+	}
+
+	public void setTdolarParam(EntityQuery<Tasadolarparametro> tdolarParam) {
+		this.tdolarParam = tdolarParam;
+	}
+
+	public EntityQuery<Tasaeuropromotorparametro> getTeuroPromo() {
+		return teuroPromo;
+	}
+
+	public void setTeuroPromo(EntityQuery<Tasaeuropromotorparametro> teuroPromo) {
+		this.teuroPromo = teuroPromo;
+	}
+
+	public EntityQuery<Tasaeuroparametro> getTeuroParam() {
+		return teuroParam;
+	}
+
+	public void setTeuroParam(EntityQuery<Tasaeuroparametro> teuroParam) {
+		this.teuroParam = teuroParam;
+	}
+
+	public TasadolarpromotorparametroList getTdolarPromoList() {
+		return tdolarPromoList;
+	}
+
+	public void setTdolarPromoList(TasadolarpromotorparametroList tdolarPromoList) {
+		this.tdolarPromoList = tdolarPromoList;
+	}
+
+	public TasadolarparametroList getTdolarParamList() {
+		return tdolarParamList;
+	}
+
+	public void setTdolarParamList(TasadolarparametroList tdolarParamList) {
+		this.tdolarParamList = tdolarParamList;
+	}
+
+	public TasaeuropromotorparametroList getTeuroPromoList() {
+		return teuroPromoList;
+	}
+
+	public void setTeuroPromoList(TasaeuropromotorparametroList teuroPromoList) {
+		this.teuroPromoList = teuroPromoList;
+	}
+
+	public TasaeuroparametroList getTeuroParamList() {
+		return teuroParamList;
+	}
+
+	public void setTeuroParamList(TasaeuroparametroList teuroParamList) {
+		this.teuroParamList = teuroParamList;
+	}
+
+	public String getTipoMoneda() {
+		return tipoMoneda;
+	}
+
+	public void setTipoMoneda(String tipoMoneda) {
+		this.tipoMoneda = tipoMoneda;
+	}
+	
+	public Date getFechaConsulta() {
+		return fechaConsulta;
+	}
+
+	public void setFechaConsulta(Date fechaConsulta) {
+		this.fechaConsulta = fechaConsulta;
+	}
+
+	public void buscar() {
+//		System.out.println("BUSCANDO..........");
+//		System.out.println(this.getAnioViaje() == null);
+//		System.out.println(this.getAnioViaje() != null);
+//	
+//
+//		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+//				"dd/MM/yyyy");
+//
+//		String sql = "";
+//		
+//		sql = sql + "select activacion from Activacion activacion where 1 = 1 ";
+//		
+//		if( this.getAnioViaje() == null){
+//			System.out.println("ingrese al if de anio");
+//			this.setAnioViaje(115);
+//			sql +=  " and activacion.ano = " + this.anioViaje;
+//		}else{
+//			sql +=  " and activacion.ano = " + this.anioViaje;
+//			
+//		}
+//
+//		if (asesor != null) {
+//			sql = sql + " and activacion.promotor.asesor.documento = '"
+//					+ this.asesor.getDocumento() + "'";
+//		}
+//
+//		if (banco != null) {
+//			sql = sql + " and activacion.banco.codbanco = '"
+//					+ this.banco.getCodbanco() + "'";
+//		}
+//
+//		if (promotorHome.getInstance().getDocumento() != null
+//				&& !promotorHome.getInstance().getDocumento().contentEquals("")) {
+//			sql = sql + " and activacion.promotor.documento = '"
+//					+ promotorHome.getInstance().getDocumento() + "'";
+//		}
+//
+//		if (gestorHome.getInstance().getDocumento() != null
+//				&& !gestorHome.getInstance().getDocumento().contentEquals("")) {
+//			sql = sql + " and activacion.gestor.documento = '"
+//					+ gestorHome.getInstance().getDocumento() + "'";
+//		}
+//
+//		if (this.estado != null) {
+//			sql = sql + " and activacion.actestado.codestado = '"
+//					+ this.estado.getCodestado() + "'";
+//		} else {
+//			if (!b) {
+//				this.estado = entityManager.find(Actestado.class, "RE");
+//				sql = sql + " and activacion.actestado.codestado = 'RE'";
+//				b = true;
+//			}
+//		}
+//
+//		if (this.activacionList.getActivacion().getNombre() != null
+//				&& !this.activacionList.getActivacion().getNombre()
+//						.contentEquals("")) {
+//			sql = sql + " and lower(activacion.nombre) like lower('%"
+//					+ this.activacionList.getActivacion().getNombre() + "%') ";
+//		}
+//
+//		if (this.activacionList.getActivacion().getCedula() != null
+//				&& !this.activacionList.getActivacion().getCedula()
+//						.contentEquals("")) {
+//			sql = sql + " and activacion.cedula = '"
+//					+ this.activacionList.getActivacion().getCedula() + "'";
+//		}
+//
+//		if (identity.hasRole("Asesor")) {
+//			sql = sql + " and activacion.promotor.asesor.documento = '"
+//					+ identity.getUsername() + "'";
+//		}
+//
+//		if (fechainiact != null) {
+//			if (fechafinact != null) {
+//				sql = sql + " and activacion.fechaact between '"
+//						+ sdf.format(fechainiact) + "' and '"
+//						+ sdf.format(fechafinact) + "' ";
+//			} else {
+//				sql = sql + " and activacion.fechaact = '"
+//						+ sdf.format(fechainiact) + "' ";
+//			}
+//		}
+//
+//		if (fechainireg != null) {
+//			if (fechafinreg != null) {
+//				sql = sql + " and activacion.fechareg between '"
+//						+ sdf.format(fechainireg) + "' and '"
+//						+ sdf.format(fechafinreg) + "' ";
+//			} else {
+//				sql = sql + " and activacion.fechareg = '"
+//						+ sdf.format(fechainireg) + "' ";
+//			}
+//		}
+//		// adiciona condicion para la fecha del estado
+//		if (fechainiest != null && this.estado != null) {
+//			if (fechainiest != null) {
+//				sql = sql
+//						+ " and activacion.consecutivo in "
+//						+ "(select v.consecutivo from Vistaactivaciones v where v.estado = '"
+//						+ this.estado.getCodestado()
+//						+ "' and v.fecha between '" + sdf.format(fechainiest)
+//						+ "' and '" + sdf.format(fechafinest) + "') ";
+//			} else {
+//				sql = sql
+//						+ " and activacion.consecutivo in "
+//						+ "(select v.consecutivo from Vistaactivaciones v where v.estado = '"
+//						+ this.estado.getCodestado() + "' and v.fecha = '"
+//						+ sdf.format(fechainiest) + "') ";
+//			}
+//		}
+//
+//		if (fechainicit != null) {
+//			if (fechafincit != null) {
+//				sql = sql + " and activacion.fechacita between '"
+//						+ sdf.format(fechainicit) + "' and '"
+//						+ sdf.format(fechafincit) + "' ";
+//			} else {
+//				sql = sql + " and activacion.fechacita = '"
+//						+ sdf.format(fechainicit) + "' ";
+//			}
+//		}
+//
+//		activacions.setEjbql(sql);
+//
+//		if (activacions.getResultCount() < 25) {
+//			activacions.setFirstResult(0);
+//		}
+//
+//		activacions.setMaxResults(20);
+//		 
+//		
+//		//esta iteracion permite identificar errores 
+//		for( Activacion a: activacions.getResultList()){
+//			System.out.println("Documento Activcion: " + a.getCedula());
+//		}
+
+	}
+
+	
     
     
 }
