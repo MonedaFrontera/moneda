@@ -1814,6 +1814,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			est.setParidad(this.getParidadEstTemp());
 			est.setParidadCliente(this.getParidadClienteTemp());
 			est.setPorcentajeoficina(this.getPorcentOfi());
+			est.setFechamod(new Date());
+			est.setUsuariomod(identity.getUsername());
 			
 			entityManager.persist(est);			
 			entityManager.flush();

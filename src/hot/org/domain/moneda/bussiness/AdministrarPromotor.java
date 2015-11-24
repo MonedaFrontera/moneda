@@ -894,6 +894,7 @@ public class AdministrarPromotor {
 	}
 
 	public String generarReporteFechas(String docupromo) {
+		
 		String path = "";
 		BigDecimal saldoInicial = this.saldoAnteriorPromotor(this
 				.getFechaIniReporte(), docupromo);

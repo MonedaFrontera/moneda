@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
 
 /**
@@ -31,6 +33,8 @@ public class Establecimientoprecio implements java.io.Serializable {
 	private BigDecimal porcentajeoficina;
 	private BigDecimal paridad;
 	private BigDecimal paridadcliente;
+	private Date fechamod;
+	private String usuariomod;
 
 	public Establecimientoprecio() {
 	}
@@ -44,7 +48,7 @@ public class Establecimientoprecio implements java.io.Serializable {
 	public Establecimientoprecio(EstablecimientoprecioId id,
 			Establecimiento establecimiento, Date fechafin,
 			BigDecimal dolaroficina, BigDecimal porcentajeoficina,
-			BigDecimal paridad, BigDecimal paridadcliente) {
+			BigDecimal paridad, BigDecimal paridadcliente, Date fechamod, String usuariomod) {
 		this.id = id;
 		this.establecimiento = establecimiento;
 		this.fechafin = fechafin;
@@ -52,6 +56,8 @@ public class Establecimientoprecio implements java.io.Serializable {
 		this.porcentajeoficina = porcentajeoficina;
 		this.paridad = paridad;
 		this.paridadcliente = paridadcliente;
+		this.fechamod=fechamod;
+		this.usuariomod=usuariomod;
 	}
 
 	@EmbeddedId
@@ -123,5 +129,26 @@ public class Establecimientoprecio implements java.io.Serializable {
 	public void setParidadCliente(BigDecimal paridadcliente) {
 		this.paridadcliente = paridadcliente;
 	}
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fechamod", length = 29)
+	public Date getFechamod() {
+		return fechamod;
+	}
+
+	public void setFechamod(Date fechamod) {
+		this.fechamod = fechamod;
+	}
+
+	@Column(name = "usuariomod", length = 20)
+	@Length(max = 20)
+	public String getUsuariomod() {
+		return usuariomod;
+	}
+
+	public void setUsuariomod(String usuariomod) {
+		this.usuariomod = usuariomod;
+	}
+
 
 }
