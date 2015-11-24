@@ -213,7 +213,9 @@ public class AdministrarEstablecimiento
 			.createQuery(sqlcampos+sql).setMaxResults(100).getResultList();
 					
 			sql = "select sum(t.valortxpesos), sum(t.valortxdolares), " +
-					" sum(t.valortxdolares *ep.dolaroficina)  " + sql;
+					"case when ep.establecimiento.pais.paisiso.codigomoneda = 'EUR' then " +
+					"sum(t.valortxeuros*ep.dolaroficina) else sum( t.valortxdolares*ep.dolaroficina) " +
+					"end " + sql + " group by ep.establecimiento.pais.paisiso.codigomoneda";
 			
 			this.totales = (Object)entityManager
 			.createQuery(sql).setMaxResults(100).getSingleResult();
