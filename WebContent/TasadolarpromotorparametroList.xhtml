@@ -94,16 +94,16 @@
     </h:form>
 
     <rich:panel>
-        <f:facet name="header">Tasadolarpromotorparametro Search Results (#{empty tasadolarpromotorparametroList.resultList ? 0 : (tasadolarpromotorparametroList.paginated ? tasadolarpromotorparametroList.resultCount : tasadolarpromotorparametroList.resultList.size)})</f:facet>
+        <f:facet name="header">Tasadolarpromotorparametro Search Results (#{empty AdministrarTasa.teuroParam.resultList ? 0 : (tasadolarpromotorparametroList.paginated ? AdministrarTasa.teuroParam.resultCount : AdministrarTasa.teuroParam.resultList.size)})</f:facet>
     <div class="results" id="tasadolarpromotorparametroList">
 
     <h:outputText value="The tasadolarpromotorparametro search returned no results."
-               rendered="#{empty tasadolarpromotorparametroList.resultList}"/>
+               rendered="#{empty AdministrarTasa.teuroParam.resultList}"/>
 
     <rich:dataTable id="tasadolarpromotorparametroList"
                 var="_tasadolarpromotorparametro"
-              value="#{tasadolarpromotorparametroList.resultList}"
-           rendered="#{not empty tasadolarpromotorparametroList.resultList}">
+              value="#{AdministrarTasa.teuroParam.resultList}"
+           rendered="#{not empty AdministrarTasa.teuroParam.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">

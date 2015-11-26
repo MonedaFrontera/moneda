@@ -181,14 +181,14 @@ public class AdministrarTasa
 		new EntityQuery<Tasaeuroparametro>();
 	
 	
-	@In(create = true)
+	/*@In(create = true)
 	private TasadolarpromotorparametroList tdolarPromoList;
 	@In(create = true)
 	private TasadolarparametroList tdolarParamList;
 	@In(create = true)
 	private TasaeuropromotorparametroList teuroPromoList;
 	@In(create = true)
-	private TasaeuroparametroList teuroParamList;
+	private TasaeuroparametroList teuroParamList;*/
 	
     private String tipoMoneda;
     private Date fechaConsulta;
@@ -2510,6 +2510,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.teuroParam = teuroParam;
 	}
 
+	/*
 	public TasadolarpromotorparametroList getTdolarPromoList() {
 		return tdolarPromoList;
 	}
@@ -2541,7 +2542,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public void setTeuroParamList(TasaeuroparametroList teuroParamList) {
 		this.teuroParamList = teuroParamList;
 	}
-
+*/
 	public String getTipoMoneda() {
 		return tipoMoneda;
 	}
@@ -2559,143 +2560,42 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 
 	public void buscar() {
-//		System.out.println("BUSCANDO..........");
-//		System.out.println(this.getAnioViaje() == null);
-//		System.out.println(this.getAnioViaje() != null);
-//	
-//
-//		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-//				"dd/MM/yyyy");
-//
-//		String sql = "";
-//		
-//		sql = sql + "select activacion from Activacion activacion where 1 = 1 ";
-//		
-//		if( this.getAnioViaje() == null){
-//			System.out.println("ingrese al if de anio");
-//			this.setAnioViaje(115);
-//			sql +=  " and activacion.ano = " + this.anioViaje;
-//		}else{
-//			sql +=  " and activacion.ano = " + this.anioViaje;
-//			
-//		}
-//
-//		if (asesor != null) {
-//			sql = sql + " and activacion.promotor.asesor.documento = '"
-//					+ this.asesor.getDocumento() + "'";
-//		}
-//
-//		if (banco != null) {
-//			sql = sql + " and activacion.banco.codbanco = '"
-//					+ this.banco.getCodbanco() + "'";
-//		}
-//
-//		if (promotorHome.getInstance().getDocumento() != null
-//				&& !promotorHome.getInstance().getDocumento().contentEquals("")) {
-//			sql = sql + " and activacion.promotor.documento = '"
-//					+ promotorHome.getInstance().getDocumento() + "'";
-//		}
-//
-//		if (gestorHome.getInstance().getDocumento() != null
-//				&& !gestorHome.getInstance().getDocumento().contentEquals("")) {
-//			sql = sql + " and activacion.gestor.documento = '"
-//					+ gestorHome.getInstance().getDocumento() + "'";
-//		}
-//
-//		if (this.estado != null) {
-//			sql = sql + " and activacion.actestado.codestado = '"
-//					+ this.estado.getCodestado() + "'";
-//		} else {
-//			if (!b) {
-//				this.estado = entityManager.find(Actestado.class, "RE");
-//				sql = sql + " and activacion.actestado.codestado = 'RE'";
-//				b = true;
-//			}
-//		}
-//
-//		if (this.activacionList.getActivacion().getNombre() != null
-//				&& !this.activacionList.getActivacion().getNombre()
-//						.contentEquals("")) {
-//			sql = sql + " and lower(activacion.nombre) like lower('%"
-//					+ this.activacionList.getActivacion().getNombre() + "%') ";
-//		}
-//
-//		if (this.activacionList.getActivacion().getCedula() != null
-//				&& !this.activacionList.getActivacion().getCedula()
-//						.contentEquals("")) {
-//			sql = sql + " and activacion.cedula = '"
-//					+ this.activacionList.getActivacion().getCedula() + "'";
-//		}
-//
-//		if (identity.hasRole("Asesor")) {
-//			sql = sql + " and activacion.promotor.asesor.documento = '"
-//					+ identity.getUsername() + "'";
-//		}
-//
-//		if (fechainiact != null) {
-//			if (fechafinact != null) {
-//				sql = sql + " and activacion.fechaact between '"
-//						+ sdf.format(fechainiact) + "' and '"
-//						+ sdf.format(fechafinact) + "' ";
-//			} else {
-//				sql = sql + " and activacion.fechaact = '"
-//						+ sdf.format(fechainiact) + "' ";
-//			}
-//		}
-//
-//		if (fechainireg != null) {
-//			if (fechafinreg != null) {
-//				sql = sql + " and activacion.fechareg between '"
-//						+ sdf.format(fechainireg) + "' and '"
-//						+ sdf.format(fechafinreg) + "' ";
-//			} else {
-//				sql = sql + " and activacion.fechareg = '"
-//						+ sdf.format(fechainireg) + "' ";
-//			}
-//		}
-//		// adiciona condicion para la fecha del estado
-//		if (fechainiest != null && this.estado != null) {
-//			if (fechainiest != null) {
-//				sql = sql
-//						+ " and activacion.consecutivo in "
-//						+ "(select v.consecutivo from Vistaactivaciones v where v.estado = '"
-//						+ this.estado.getCodestado()
-//						+ "' and v.fecha between '" + sdf.format(fechainiest)
-//						+ "' and '" + sdf.format(fechafinest) + "') ";
-//			} else {
-//				sql = sql
-//						+ " and activacion.consecutivo in "
-//						+ "(select v.consecutivo from Vistaactivaciones v where v.estado = '"
-//						+ this.estado.getCodestado() + "' and v.fecha = '"
-//						+ sdf.format(fechainiest) + "') ";
-//			}
-//		}
-//
-//		if (fechainicit != null) {
-//			if (fechafincit != null) {
-//				sql = sql + " and activacion.fechacita between '"
-//						+ sdf.format(fechainicit) + "' and '"
-//						+ sdf.format(fechafincit) + "' ";
-//			} else {
-//				sql = sql + " and activacion.fechacita = '"
-//						+ sdf.format(fechainicit) + "' ";
-//			}
-//		}
-//
-//		activacions.setEjbql(sql);
-//
-//		if (activacions.getResultCount() < 25) {
-//			activacions.setFirstResult(0);
-//		}
-//
-//		activacions.setMaxResults(20);
-//		 
-//		
-//		//esta iteracion permite identificar errores 
-//		for( Activacion a: activacions.getResultList()){
-//			System.out.println("Documento Activcion: " + a.getCedula());
-//		}
+		System.out.println("BUSCANDO EN TASAS GLOBAL LIST..........");
+		
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+				"dd/MM/yyyy");
 
+		String sql = "";
+		
+		if( this.tipoMoneda.equals("EUR")){
+			
+			sql += "select teuro from Tasaeuroparametro teuro where 1 = 1 ";
+			
+			if( this.paisTemp != null){
+				sql += " and teuro.pais.codigopais = '" + this.paisTemp.getCodigopais() + "'";
+			}
+			if( this.getCodMoneda() != null){
+				sql += " and teuro.establecimiento.codigounico = '" + this.getEstaTemp().getCodigounico() + "'";
+			}
+			if( this.getFechaConsulta() != null ){
+				sql += " and teuro.fechainicio = '" +  this.getFechaConsulta() + "'";
+			}
+			if( this.getFrqTemp() !=  null ){
+				sql += " and teuro.franquicia.codfranquicia = '" + this.getFrqTemp().getCodfranquicia() + "'";
+			}
+			if( this.getBancoTemp() != null){
+				sql += " and teuro.banco.codbanco = '" + this.getBancoTemp().getCodbanco() + "'";
+			}
+			
+			this.getTeuroParam().setEjbql(sql);
+			if (this.getTeuroParam().getResultCount() < 25) {
+				this.getTeuroParam().setFirstResult(0);
+			}
+			this.getTeuroParam().setMaxResults(20);	
+			}else{// para dolar
+				
+				
+		}
 	}
 
 	
