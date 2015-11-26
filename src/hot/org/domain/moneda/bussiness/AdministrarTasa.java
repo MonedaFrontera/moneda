@@ -1328,9 +1328,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
 																		"FROM Tasaeuropromotorparametro t "+
 																		"WHERE t.fechafin is null AND "+
-																		"t.tasaeuro<"+ this.getTasaEuroTemp()).getResultList();
+																		"t.tasaeuro<"+ this.getTasaEuroTemp() + " AND " + 
+																		"t.pais.codigopais = '" + this.getPaisTemp().getCodigopais() + "'").getResultList();
 				for(String asesor: documentoAsesor){
-					
+					 
 					List<Object[]> tasaTemp=new ArrayList<Object[]>();
 					
 					for(int i=0; i<te.size(); i++){
@@ -1359,7 +1360,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
 																		"FROM Tasadolarpromotorparametro t "+
 																		"WHERE t.fechafin is null AND "+
-																		"t.tasadolar<"+ this.getTasaDolarTemp()).getResultList();
+																		"t.tasadolar<"+ this.getTasaDolarTemp() + "AND " +
+																		"t.pais.codigopais = '" + this.getPaisTemp().getCodigopais() + "'").getResultList();
 				for(String asesor: documentoAsesor){
 					
 					List<Object[]> tasaTemp=new ArrayList<Object[]>();
