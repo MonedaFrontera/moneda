@@ -1349,10 +1349,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		}
 		
 		
-		// Falta implementar correo de notificaciones para asesoras
+		
 		if(!negociado ){
 			if( euro ){
-				
+				// buscar en tasa euro global
 				//Consulta las tasas y porcentajes para promotores que no se han cerrado y cuyo valor sea menor que la tasa actual Global
 				List<Object[]> te=this.consultarTasasEuroPorcentajesPromotor();
 								
@@ -1380,7 +1380,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					
 				}
 				
-				// buscar en tasa euro global
+				
 			}else{
 				// busca en tasa dolar global
 				
