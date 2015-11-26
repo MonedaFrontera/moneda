@@ -1429,7 +1429,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					"public.porcentcomisiontxparampromo.fechainicio =  public.tasaeuropromotorparametro.fechainicio AND "+
 					" public.tasaeuropromotorparametro.fechafin is NULL AND "+
 					"(public.tasaeuropromotorparametro.tasaeuro<"+this.getTasaEuroTemp()+
-					" OR  public.porcentcomisiontxparampromo.porcentaje<"+this.getPorcentCt()+")"+
+					" OR  public.porcentcomisiontxparampromo.porcentaje<"+this.getPorcentCt()+") AND " +
+					"  public.tasaeuropromotorparametro.codpais='"+this.getPaisTemp().getCodigopais()+"' "+
 					" GROUP BY "+
 					"tasaeuropromotorparametro.consecutivo, "+
 					"public.personal.nombre, "+
@@ -1490,7 +1491,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					"public.porcentcomisiontxparampromo.fechainicio =  public.tasadolarpromotorparametro.fechainicio AND "+
 					" public.tasadolarpromotorparametro.fechafin is NULL AND "+
 					"(public.tasadolarpromotorparametro.tasadolar<"+this.getTasaDolarTemp()+
-					" OR  public.porcentcomisiontxparampromo.porcentaje<"+this.getPorcentCt()+")"+
+					" OR  public.porcentcomisiontxparampromo.porcentaje<"+this.getPorcentCt()+") AND "+
+					" public.tasadolarpromotorparametro.codpais='"+this.getPaisTemp().getCodigopais()+"' "+
 					" GROUP BY "+
 					"tasadolarpromotorparametro.consecutivo, "+
 					"public.personal.nombre, "+
