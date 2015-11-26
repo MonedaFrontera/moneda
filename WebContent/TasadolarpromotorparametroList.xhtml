@@ -13,97 +13,40 @@
     <h:form id="tasadolarpromotorparametroSearch" styleClass="edit">
 
         <rich:simpleTogglePanel label="Tasadolarpromotorparametro Search Filter" switchType="ajax">
-        
-        	<s:decorate id="tipotxField" template="layout/edit.xhtml">
-                <ui:define name="label">Moneda</ui:define>
-                <h:selectOneMenu id="tipotx" value="#{AdministrarTasa.tipoMoneda}" required="true">
-					<f:selectItem itemValue="USD" itemLabel="Dolar"/>
-					<f:selectItem itemValue="EUR" itemLabel="Euro"/>
-				</h:selectOneMenu>   
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Tipocupo</ui:define>
+                <h:inputText id="tipocupo" value="#{tasadolarpromotorparametroList.tasadolarpromotorparametro.tipocupo}"/>
             </s:decorate>
-            
-            <s:decorate id="codigopaisField" template="layout/edit.xhtml">
-                <ui:define name="label">Pais</ui:define>
-                <h:selectOneMenu id="paisSel" value="#{AdministrarTasa.paisTemp}" required="true" >
-				<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
-			                    noSelectionLabel="Seleccione..." />
-			    <s:convertEntity />
-			    <a:support event="onchange" action="#{AdministrarTasa.listarComercios(AdministrarTasa.paisTemp.codigopais)}" 
-			    					reRender="dolarTasas, dolarGlobal, tasadolarField, tasadolarFieldTac, tasadolarFieldOf, dolarGlobalEst,
-                				dolarGlobalEstS, tasadolarFieldNeg, euroTasas, euroGlobal, euroGlobalEst, euroGlobalEstS,
-                				tasaeuroField, tasaeuroFieldTac, tasaeuroFieldOf, tasaeuroFieldNeg, 
-                				banderaImg" ajaxSingle="true"/>
-			</h:selectOneMenu>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{tasadolarpromotorparametroList.restrictionLogicOperator}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
             </s:decorate>
-            
-            <s:decorate id="codigounicoField" template="layout/edit.xhtml">
-                <ui:define name="label">Establecimiento</ui:define>
-                <h:inputText value="#{AdministrarTasa.nomEstable}" id="name" styleClass="textBox" size="50">
-                <a:support event="onblur" action="#{AdministrarTasa.ubicarEstablecimientoTasa()}" ajaxSingle="true"/>
-                </h:inputText><h:graphicImage value="/img/arrow.png"
-                    onclick="#{rich:component('suggestionBoxId')}.callSuggestion(true)"
-                    alt="" />
-				<rich:suggestionbox id="suggestionBoxId" for="name"
-                                        suggestionAction="#{AdministrarTasa.autocompletarEstablecimientoTasas}" var="result"
-                                        tokens="," height="150" width="260" cellpadding="2"
-                                        cellspacing="2"   shadowOpacity="4" shadowDepth="4"
-                                        minChars="1" rules="none" nothingLabel="No se encontro ningun establecimiento">
-                                        <h:column>
-                                            <h:outputText value="#{result}" style="font-style:bold" />
-                                        </h:column>
-                                    </rich:suggestionbox>
-                
-            </s:decorate>
-            
-            <s:decorate id="fecharegistroField" template="layout/edit.xhtml">
-                <ui:define name="label">Fecha</ui:define>
-                <rich:calendar id="fechainireg"
-                          value="#{AdministrarTasa.fechaConsulta}" datePattern="dd/MM/yyyy" />
-            </s:decorate>
-           
-           <s:decorate id="franquiciaField" template="layout/edit.xhtml">
-                <ui:define name="label">Franquicia</ui:define>
-                <h:selectOneMenu id="franquiciaSel" value="#{AdministrarTasa.frqTemp}" required="false" >
-			<s:selectItems value="#{franquiciaList.resultList}" var="franquicia" label="#{franquicia.nombrefranquicia}" 
-			                    noSelectionLabel="Seleccione..." />
-			      <s:convertEntity />
-			      <a:support event="onchange" reRender="franquiciaField" ajaxSingle="true"/>
-			</h:selectOneMenu>
-        	</s:decorate>
-           
-            
-            
-            <s:decorate id="bancoField" template="layout/edit.xhtml">
-                <ui:define name="label">Banco</ui:define>
-                <h:selectOneMenu id="bancoSel" value="#{AdministrarTasa.bancoTemp}" required="false" >
-			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
-			                    noSelectionLabel="Seleccione..." />
-			      <s:convertEntity />
-			      <a:support event="onchange" reRender="bancoField" ajaxSingle="true"/>
-			</h:selectOneMenu>
-        	</s:decorate>
 
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">
             <h:commandButton id="search" value="Search" action="/TasadolarpromotorparametroList.xhtml"/>
-            
             <s:button id="reset" value="Reset" includePageParams="false"/>
         </div>
 
     </h:form>
 
     <rich:panel>
-        <f:facet name="header">Tasadolarpromotorparametro Search Results (#{empty AdministrarTasa.teuroParam.resultList ? 0 : (tasadolarpromotorparametroList.paginated ? AdministrarTasa.teuroParam.resultCount : AdministrarTasa.teuroParam.resultList.size)})</f:facet>
+        <f:facet name="header">Tasadolarpromotorparametro Search Results (#{empty tasadolarpromotorparametroList.resultList ? 0 : (tasadolarpromotorparametroList.paginated ? tasadolarpromotorparametroList.resultCount : tasadolarpromotorparametroList.resultList.size)})</f:facet>
     <div class="results" id="tasadolarpromotorparametroList">
 
     <h:outputText value="The tasadolarpromotorparametro search returned no results."
-               rendered="#{empty AdministrarTasa.teuroParam.resultList}"/>
+               rendered="#{empty tasadolarpromotorparametroList.resultList}"/>
 
     <rich:dataTable id="tasadolarpromotorparametroList"
                 var="_tasadolarpromotorparametro"
-              value="#{AdministrarTasa.teuroParam.resultList}"
-           rendered="#{not empty AdministrarTasa.teuroParam.resultList}">
+              value="#{tasadolarpromotorparametroList.resultList}"
+           rendered="#{not empty tasadolarpromotorparametroList.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
