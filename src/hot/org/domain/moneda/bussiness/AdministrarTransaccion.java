@@ -2497,8 +2497,8 @@ public class AdministrarTransaccion
 		
 		SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy");
 		DecimalFormat dec = new DecimalFormat("###,###.##");
-		AdministrarUsuario.auditarUsuario(39, "Se cambió el promotor:"+this.nombrePromotorActual+
-										" por el promotor:"+this.nombrePromotor +" en la transacción:"+transaccionHome.getInstance().getConsecutivo());
+		AdministrarUsuario.auditarUsuario(39, "Se cambió el promotor:"+this.nombrePromotor+
+										" por el promotor:"+this.nombrePromotorActual +" en la transacción:"+transaccionHome.getInstance().getConsecutivo());
 		
 		facesMessages.add("Se actualizó el promotor de la transacción correctamente");
 		

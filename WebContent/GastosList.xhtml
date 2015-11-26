@@ -127,7 +127,7 @@
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{gastosList}"/>
-                    <ui:param name="propertyLabel" value="Valor"/>
+                    <ui:param name="propertyLabel" value="Concepto"/>
                     <ui:param name="propertyPath" value="gastos.tipogasto.descripcion"/>
                 </ui:include>
             </f:facet>
@@ -144,6 +144,16 @@
             <h:outputText value="#{_gastos.valor}" style="text-align:right"> 
             <f:convertNumber/>
             </h:outputText>                   
+        </h:column>
+          <h:column style="text-align:center">
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{gastosList}"/>
+                    <ui:param name="propertyLabel" value="Tipo de Movimiento"/>
+                    <ui:param name="propertyPath" value="gastos.tipogasto.tipo"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_gastos.tipogasto.tipo==1? 'Credito':'Debito'}"  style="text-align:center;"/>
         </h:column>
         <h:column>
             <f:facet name="header">

@@ -275,8 +275,12 @@
             <f:facet name="header"></f:facet>
             
             <h:commandLink value="Editar" 
-            action="#{AdministrarActivacion.editar(_activacion.consecutivo)}" >
-            	
+            action="#{AdministrarActivacion.editar(_activacion.consecutivo)}" > 	
+            </h:commandLink>
+               #{''}
+            <h:commandLink value="" rendered="#{s:hasRole('Cambiar Promotor')}" 
+            action="#{AdministrarActivacion.solicitarCambioPromotor(_activacion.consecutivo)}" >
+            	<h:graphicImage title="Cambio Promotor" style="border-style:none;" id="cambioPromotor" value="/img/cambio.png" />
             </h:commandLink>
             <rich:toolTip>
             <span style="white-space:nowrap">

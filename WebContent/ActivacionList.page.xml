@@ -30,6 +30,9 @@
          <redirect view-id="/ActivacionEdit.xhtml"/>
    </navigation>
    
+    <navigation from-action="#{AdministrarActivacion.solicitarCambioPromotor(_activacion.consecutivo)}">
+         <redirect view-id="/ActivacionPromotor.xhtml"/>
+   </navigation>
    
 
 </page>

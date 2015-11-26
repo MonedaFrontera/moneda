@@ -367,8 +367,8 @@
         	
         	<s:decorate id="promotor2Field" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
-			<h:inputText value="#{AdministrarActivacion.nombrePromotor}" id="namepromotor" size="50">
-                <a:support event="onblur" action="#{AdministrarActivacion.ubicarPromotor}" ajaxSingle="true"/>
+			<h:inputText value="#{AdministrarActivacion.nombrePromotor}" id="namepromotor" size="50" disabled="#{activacionHome.managed}">
+            <a:support event="onblur" action="#{AdministrarActivacion.ubicarPromotor}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
                     alt="" />

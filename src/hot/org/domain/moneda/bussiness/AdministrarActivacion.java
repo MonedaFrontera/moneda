@@ -6,6 +6,7 @@ import gnu.trove.benchmark.Main;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +51,7 @@ import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.domain.moneda.util.ExpresionesRegulares;
 import org.domain.moneda.util.Reporteador;
+import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -125,6 +127,7 @@ public class AdministrarActivacion {
 	//Cedula
 	private String promotor;
 
+	private String nombrePromotorActual;
 	
 	Actestado estado;
 	Asesor asesor;
@@ -174,7 +177,16 @@ public class AdministrarActivacion {
 	public void setPromotor(String promotor) {
 		this.promotor = promotor;
 	}
+	
+	public String getNombrePromotorActual() {
+		return nombrePromotorActual;
+	}
 
+
+	public void setNombrePromotorActual(String nombrePromotorActual) {
+		this.nombrePromotorActual= nombrePromotorActual;
+	}
+	
 	EntityQuery<Activacion> activacions = new EntityQuery<Activacion>();
 
 	@In(create = true)
@@ -238,6 +250,9 @@ public class AdministrarActivacion {
 	public void setDestinoAnio(String destinoAnio) {
 		this.destinoAnio = destinoAnio;
 	}
+	
+	
+	
 	
 	public void administrarActivacion() {
 		// implement your business logic here
@@ -847,6 +862,30 @@ public class AdministrarActivacion {
 		gestorHome.clearInstance();
 
 	}
+	public String actualizarPromotor()
+	{
+		entityManager.clear();
+		
+		System.out.println("entra a actualizar");
+		System.out.println("actualiza:*******"+this.activacionHome.getInstance().getPromotor().getDocumento());
+
+		//actualiza el promotor en la tabla tarjeta
+		String sql = "update public.activacion " +
+				"set promotor = '"+activacionHome.getInstance().getPromotor().getDocumento()+"' where " +
+				" consecutivo = '"+activacionHome.getInstance().getConsecutivo()+"'";
+		entityManager.createNativeQuery(sql).executeUpdate();
+		entityManager.clear();
+		entityManager.flush();
+		
+		AdministrarUsuario.auditarUsuario(40, "Se cambió el promotor:"+this.nombrePromotor+
+										" por el promotor:"+this.nombrePromotorActual +" en la transacción:"+activacionHome.getInstance().getConsecutivo());
+		
+		facesMessages.add("Se actualizó el promotor de la activacion correctamente");
+		
+		
+	   return "updated";
+		
+	}
 
 	public void guardarEstado() {
 		System.out.print("Entregada al Gestor:");
@@ -974,11 +1013,11 @@ public class AdministrarActivacion {
 		activacionHome.setInstance(act);
 		this.setDestinoAnio("Destino " + activacionHome.getInstance().getDestino());
 		
-		this.nombrePromotor=(activacionHome.getInstance().getPromotor()
-				.getPersonal().getNombre()
-				+ " "
-				+ activacionHome.getInstance().getPromotor().getPersonal()
-						.getApellido());
+		String promotorTx = activacionHome.getInstance().getPromotor().getDocumento();
+		if( promotorTx != null){
+			Promotor pr = entityManager.find(Promotor.class, promotorTx);
+			this.nombrePromotor= pr.getPersonal().getNombre()+" "+pr.getPersonal().getApellido();
+		}
 		if (activacionHome.getInstance().getGestor() != null) {
 			this.nombre = activacionHome.getInstance().getGestor()
 					.getPersonal().getNombre()
@@ -987,6 +1026,18 @@ public class AdministrarActivacion {
 							.getApellido();
 		}
 
+	}
+	
+	@Begin(join=true)
+	public void solicitarCambioPromotor(int consecutivo){
+		llenarPromotores();
+		this.nombrePromotor = "";
+		activacionHome.setActivacionConsecutivo(consecutivo);
+		this.setDestinoAnio("Destino " + activacionHome.getInstance().getDestino());
+		this.nombrePromotorActual= activacionHome.getInstance().getPromotor()
+		.getPersonal().getNombre() + " " + activacionHome.getInstance().getPromotor()
+		.getPersonal().getApellido();
+		
 	}
 
 	public List<Object> obsActivacion() {
@@ -1372,7 +1423,7 @@ public class AdministrarActivacion {
 	public String actualizarActivacion() {
 	
 		 entityManager.clear();
-		    log.info("Actualizacion del Viaje "
+		    log.info("Actualizacion de la activacion "
 		        + activacionHome.getInstance().getCedula());
 		    System.out.println("********entra a actualizar");
 		    Date hoy= new Date();
@@ -1385,6 +1436,7 @@ public class AdministrarActivacion {
 		    activacionHome.getInstance().setActestado(act);
 		    
 		    System.out.println("******entra a actualizar actestado");
+		    
 		    Promotor p=activacionHome.getInstance().getPromotor();
 		    activacionHome.getInstance().setPromotor(p);
 		    
@@ -1407,7 +1459,6 @@ public class AdministrarActivacion {
 		if (pr != null) {
 			promotorHome.setPromotorDocumento(pr.getDocumento());
 			promotorHome.setInstance(pr);
-
 			activacionHome.getInstance().setPromotor(pr); 
 		}
 	}
