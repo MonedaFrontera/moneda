@@ -160,7 +160,11 @@ public class AdministrarTasa
 	
 	private String pathBandera;
 	
+	Date fecha = null;
+	
 	private boolean formValido;
+	
+	private String tipoMoneda;
     
 	@In(create = true)
 	@Out
@@ -175,8 +179,14 @@ public class AdministrarTasa
 		this.listaTasadebolivaroficina = listaTasadebolivaroficina;
 	}
 	
-	Date fecha = null;
-	
+	public String getTipoMoneda() {
+		return tipoMoneda;
+	}
+
+	public void setTipoMoneda(String tipoMoneda) {
+		this.tipoMoneda = tipoMoneda;
+	}
+
 	public Date getFecha() {
 		return fecha;
 	}
