@@ -30,7 +30,7 @@ public class Viaje implements java.io.Serializable {
 	private int consecutivo;
 	private Date fechainicio;
 	private Date fechafin;
-	private Integer cupoinicialviajero;
+	private Integer cupoinicialviajero; 
 	private Integer cupoinicialinternet;
 	private Integer cupoviajero;
 	private Integer cupointernet;
