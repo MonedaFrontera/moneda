@@ -325,6 +325,7 @@ public class AdministrarPersonal {
 			pr.setArrastrador(promotorHome.getInstance().getArrastrador());
 			pr.setComisionarrastrador(promotorHome.getInstance()
 					.getComisionarrastrador());
+			pr.setTac(promotorHome.getInstance().getTac());
 			/*
 			 * Se realiza la persistencia del objeto Promotor
 			 */

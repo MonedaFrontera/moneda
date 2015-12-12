@@ -65,7 +65,7 @@
       <navigation from-action="#{AdministrarTasa.guardarTasaDolarParam}">
       <rule if-outcome="persisted">
          <end-conversation/>
-         <redirect view-id="/TasadolarpromotorparametroList.xhtml"/>
+         <redirect view-id="/home.xhtml"/>
       </rule>
    </navigation>
 
