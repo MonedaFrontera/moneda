@@ -13,12 +13,7 @@ import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 
 /**
- * @author Luis Fernando Ortiz Vera | @lfernandortiz
- *         <p>
- *         La clase <code>ExpresionesRegulares</code> contiene metodos
- *         <code>static</code> para manipular cadenas y patrones. Tambien
- *         contiene metodos para validar cadenas.
- *         </p>
+ * 
  */
 
 @Name("ExpresionesRegulares")

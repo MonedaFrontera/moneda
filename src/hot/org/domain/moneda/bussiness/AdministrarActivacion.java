@@ -449,7 +449,8 @@ public class AdministrarActivacion {
 		
 		if( this.getAnioViaje() == null){
 			System.out.println("ingrese al if de anio");
-			this.setAnioViaje(115);
+			Integer anioActual = this.anioActual();
+			this.setAnioViaje(anioActual);
 			sql +=  " and activacion.ano = " + this.anioViaje;
 		}else{
 			sql +=  " and activacion.ano = " + this.anioViaje;
@@ -1557,6 +1558,18 @@ public class AdministrarActivacion {
 		    lista = resultList;
 		    }
 	 
+	  public Integer anioActual(){
+		  Calendar c = Calendar.getInstance();
+		  Integer year = 0;
+		  int month = c.get(Calendar.MONTH);
+		  int day = c.get(Calendar.DAY_OF_MONTH);
+		  
+		  if(day > 10 & month == 12 ){
+			   return year = c.get(Calendar.YEAR) + 1 ;
+		  }else{
+			   return year = c.get(Calendar.YEAR);
+		  }
+	  }
 	  
 	
 	

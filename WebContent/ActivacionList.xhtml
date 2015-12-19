@@ -100,8 +100,8 @@
                 <ui:define name="label">Viaje</ui:define>
                 <h:selectOneMenu id="anoViaje" value="#{AdministrarActivacion.anioViaje}" 
                  required="true">
+                    <f:selectItem itemValue="116" itemLabel="2016"/>
                     <f:selectItem itemValue="115" itemLabel="2015"/>
-                    <f:selectItem itemValue="114" itemLabel="2014"/>
                     <a:support event="onchange" reRender="anoViajeField" ajaxSingle="true"/>
 					<rich:toolTip>
 					<span style="white-space:nowrap">

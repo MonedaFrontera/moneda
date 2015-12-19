@@ -30,7 +30,6 @@ import org.jboss.seam.log.Log;
 
 /**
  *
- * @author Luis Fernando Ortiz Vera
  */
 @Name("ValidarTarjeta")
 @Scope(SESSION)
