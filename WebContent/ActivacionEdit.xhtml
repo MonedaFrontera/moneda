@@ -316,7 +316,7 @@
                 <h:selectOneMenu id="anoViaje" value="#{activacionHome.instance.ano}" 
                  required="true">
                  	<f:selectItem itemValue="" itemLabel="Seleccione.."/>
-                    <f:selectItem itemValue="115" itemLabel="2015"/> 
+                    <f:selectItem itemValue="116" itemLabel="2016"/> 
 					<a:support event="onchange" reRender="anoViajeField" ajaxSingle="true"/>
 					<rich:toolTip>
 					<span style="white-space:nowrap">
@@ -398,7 +398,7 @@
 			<s:decorate id="bancoField" template="layout/edit.xhtml">
                 <ui:define name="label">Banco</ui:define>
                 <h:selectOneMenu id="bancoSel" value="#{activacionHome.instance.banco}" required="true" >
-			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			<s:selectItems value="#{AdministrarActivacion.bancoList}" var="banco" label="#{banco.nombrebanco}" 
 			                    noSelectionLabel="Seleccione..." />
 			      <s:convertEntity />
 			      <a:support event="onchange" reRender="bancoField,claveBanco,divingresoCadivi, 

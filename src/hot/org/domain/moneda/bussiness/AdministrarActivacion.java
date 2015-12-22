@@ -2,11 +2,8 @@ package org.domain.moneda.bussiness;
 
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
-import gnu.trove.benchmark.Main;
-
 import java.io.IOException;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,17 +25,12 @@ import org.domain.moneda.entity.Activagestor;
 import org.domain.moneda.entity.ActivagestorId;
 import org.domain.moneda.entity.Asesor;
 import org.domain.moneda.entity.Banco;
-import org.domain.moneda.entity.Cita;
-import org.domain.moneda.entity.CitaId;
-import org.domain.moneda.entity.Cne;
 import org.domain.moneda.entity.Estadoactivacion;
 import org.domain.moneda.entity.EstadoactivacionId;
 import org.domain.moneda.entity.Gestor;
 import org.domain.moneda.entity.Observacion;
 import org.domain.moneda.entity.ObservacionId;
-import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Promotor;
-import org.domain.moneda.entity.Tarjeta;
 import org.domain.moneda.session.ActivacionHome;
 import org.domain.moneda.session.ActivacionList;
 import org.domain.moneda.session.ActivagestorHome;
@@ -46,7 +38,6 @@ import org.domain.moneda.session.EstadoactivacionHome;
 import org.domain.moneda.session.GestorHome;
 import org.domain.moneda.session.ObservacionHome;
 import org.domain.moneda.session.PromotorHome;
-import org.domain.moneda.session.TarjetaList;
 import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.domain.moneda.util.ExpresionesRegulares;
@@ -135,6 +126,26 @@ public class AdministrarActivacion {
 	
 	Boolean b = false;
 	Boolean a = false;
+	
+	private List<Banco> bancoList ;
+
+	
+	public List<Banco> bancoList(){
+		return 
+			entityManager.createQuery("select b.nombrebanco from Banco b " +
+									  "where b.codbanco = 'BDT' or b.codbanco = 'BB' " + 
+									  "or b.codbanco = 'BDV' or b.codbanco = 'IND' order by 1  ").getResultList();
+		
+	}
+	
+	
+	public List<Banco> getBancoList() {
+		return bancoList;
+	}
+
+	public void setBancoList(List<Banco> bancoList) {
+		this.bancoList = bancoList;
+	}
 
 	public String getObservacionReg() {
 		return observacionReg;
