@@ -77,7 +77,7 @@
         	<s:decorate id="ibancoField" template="layout/edit.xhtml">
                 <ui:define name="label">Banco</ui:define>
                 <h:selectOneMenu id="ibancoSel" value="#{AdministrarActivacion.banco}" >
-			<s:selectItems value="#{bancoList.resultList}" var="banco" label="#{banco.nombrebanco}" 
+			<s:selectItems value="#{AdministrarActivacion.bancoList()}" var="banco" label="#{banco.nombrebanco}" 
 			                    noSelectionLabel="Seleccione..." />
 			                    
 			      <s:convertEntity />
