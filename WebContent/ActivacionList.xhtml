@@ -274,13 +274,14 @@
         <rich:column styleClass="action">
             <f:facet name="header"></f:facet>
             
-            <h:commandLink value="Editar" 
-            action="#{AdministrarActivacion.editar(_activacion.consecutivo)}" > 	
+            <h:commandLink value="" 
+            action="#{AdministrarActivacion.editar(_activacion.consecutivo)}" > 
+            <h:graphicImage title="Editar Activacion" style="border-style:none;" id="verTarjeta" value="/img/edit.png" />	
             </h:commandLink>
-               #{''}
+               #{''}#{''}
             <h:commandLink value="" rendered="#{s:hasRole('Cambiar Promotor')}" 
             action="#{AdministrarActivacion.solicitarCambioPromotor(_activacion.consecutivo)}" >
-            	<h:graphicImage title="Cambio Promotor" style="border-style:none;" id="cambioPromotor" value="/img/cambio.png" />
+            	<h:graphicImage title="Cambio Promotor de Activacion" style="border-style:none;" id="cambioPromotor" value="/img/cambio.png" />
             </h:commandLink>
             <rich:toolTip>
             <span style="white-space:nowrap">

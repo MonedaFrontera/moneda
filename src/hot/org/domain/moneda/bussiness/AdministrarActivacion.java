@@ -130,11 +130,12 @@ public class AdministrarActivacion {
 	private List<Banco> bancoList ;
 
 	
-	public List<Banco> bancoList(){
+	public List<Banco> bancoList() {
+		
 		return 
-			entityManager.createQuery("select b.nombrebanco from Banco b " +
+			entityManager.createQuery("select b from Banco b " +
 									  "where b.codbanco = 'BDT' or b.codbanco = 'BB' " + 
-									  "or b.codbanco = 'BDV' or b.codbanco = 'IND' order by 1  ").getResultList();
+									  "or b.codbanco = 'BDV' or b.codbanco = 'IND'").getResultList();
 		
 	}
 	

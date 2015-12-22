@@ -398,7 +398,7 @@
 			<s:decorate id="bancoField" template="layout/edit.xhtml">
                 <ui:define name="label">Banco</ui:define>
                 <h:selectOneMenu id="bancoSel" value="#{activacionHome.instance.banco}" required="true" >
-			<s:selectItems value="#{AdministrarActivacion.bancoList}" var="banco" label="#{banco.nombrebanco}" 
+			<s:selectItems value="#{AdministrarActivacion.bancoList()}" var="banco" label="#{banco.nombrebanco}" 
 			                    noSelectionLabel="Seleccione..." />
 			      <s:convertEntity />
 			      <a:support event="onchange" reRender="bancoField,claveBanco,divingresoCadivi, 
