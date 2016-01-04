@@ -132,6 +132,7 @@ public class AdministrarActivacion {
 	
 	public List<Banco> bancoList() {
 		
+		
 		return 
 			entityManager.createQuery("select b from Banco b " +
 									  "where b.codbanco = 'BDT' or b.codbanco = 'BB' " + 

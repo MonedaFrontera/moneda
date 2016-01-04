@@ -2366,7 +2366,7 @@ public class AdministrarTransaccion
 			//Reinicio variables para el ciclo
 			builder = null;
 				//reinicio de consulta base.
-			queryStringEuro = "select t from Tasadolarpromotorparametro t where " +
+			queryStringEuro = "select t from Porcentcomisiontxparampromo t where " +
 					"t.pais.codigopais = '" + pais.getCodigopais() + "' and " +
 					"t.promotor.documento = '" + promotor.getDocumento() + "' and " +
 					"t.fechainicio >= '" + transaccionHome.getInstance().getFechatx() + "' and " +
