@@ -81,10 +81,6 @@ public class PersonalHome extends EntityHome<Personal> {
 		return isIdDefined() ? getInstance() : null;
 	}
 
-	public List<Comisionhistorico> getComisionhistoricos() {
-		return getInstance() == null ? null : new ArrayList<Comisionhistorico>(
-				getInstance().getComisionhistoricos());
-	}
 	
 	public List<Gastos> getGastoses() {
 		return getInstance() == null ? null : new ArrayList<Gastos>(

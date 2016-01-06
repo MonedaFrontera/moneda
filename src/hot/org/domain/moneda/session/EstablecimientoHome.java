@@ -107,12 +107,6 @@ public class EstablecimientoHome extends EntityHome<Establecimiento> {
 						.getEstablecimientoprecios());
 	}
 
-	public List<Puntoestablecimiento> getPuntoestablecimientos() {
-		return getInstance() == null ? null
-				: new ArrayList<Puntoestablecimiento>(getInstance()
-						.getPuntoestablecimientos());
-	}
-
 	public List<Transaccion> getTransaccions() {
 		return getInstance() == null ? null : new ArrayList<Transaccion>(
 				getInstance().getTransaccions());

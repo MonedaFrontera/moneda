@@ -34,8 +34,6 @@ public class Paisiso implements java.io.Serializable {
 	private Boolean estado;
 	private String pathBanderasExtracto;
 	private String pathBanderaGui;
-	private Set<Tasabolivartransferpais> tasabolivartransferpaises = new HashSet<Tasabolivartransferpais>(
-			0);
 	private Set<Pais> paises = new HashSet<Pais>(0);
 
 	public Paisiso() {
@@ -50,7 +48,6 @@ public class Paisiso implements java.io.Serializable {
 			String codigo31663Es, String codigomoneda, String nombreMoneda,
 			String pathBanderaRelativo, String pathBanderaAbsoluta,
 			Boolean estado, String pathBanderasExtracto,
-			Set<Tasabolivartransferpais> tasabolivartransferpaises,
 			Set<Pais> paises) {
 		this.codigopais = codigopais;
 		this.nombrepaisEs = nombrepaisEs;
@@ -65,7 +62,6 @@ public class Paisiso implements java.io.Serializable {
 		this.pathBanderaAbsoluta = pathBanderaAbsoluta;
 		this.estado = estado;
 		this.pathBanderasExtracto = pathBanderasExtracto;
-		this.tasabolivartransferpaises = tasabolivartransferpaises;
 		this.paises = paises;
 	}
 
@@ -199,17 +195,7 @@ public class Paisiso implements java.io.Serializable {
 	public void setPathBanderasExtracto(String pathBanderasExtracto) {
 		this.pathBanderasExtracto = pathBanderasExtracto;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paisiso")
-	public Set<Tasabolivartransferpais> getTasabolivartransferpaises() {
-		return this.tasabolivartransferpaises;
-	}
-
-	public void setTasabolivartransferpaises(
-			Set<Tasabolivartransferpais> tasabolivartransferpaises) {
-		this.tasabolivartransferpaises = tasabolivartransferpaises;
-	}
-
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paisiso")
 	public Set<Pais> getPaises() {
 		return this.paises;

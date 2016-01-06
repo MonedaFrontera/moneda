@@ -97,9 +97,4 @@ public class TarjetaHome extends EntityHome<Tarjeta> {
 				getInstance().getAutovozs());
 	}
 	
-	public List<Solicitudtarjeta> getSolicitudtarjetas() {
-		return getInstance() == null ? null : new ArrayList<Solicitudtarjeta>(
-				getInstance().getSolicitudtarjetas());
-	}
-	
 }

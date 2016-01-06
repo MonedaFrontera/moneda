@@ -49,8 +49,6 @@ public class Establecimiento implements java.io.Serializable {
 			0);
 	private Set<Establecimientoprecio> establecimientoprecios = new HashSet<Establecimientoprecio>(
 			0);
-	private Set<Puntoestablecimiento> puntoestablecimientos = new HashSet<Puntoestablecimiento>(
-			0);
 	private Set<Transaccion> transaccions = new HashSet<Transaccion>(0);
 	private Set<Autovoz> autovozs = new HashSet<Autovoz>(0);
 	private Set<Gravamenestablecimiento> gravamenestablecimientos = new HashSet<Gravamenestablecimiento>(
@@ -81,7 +79,6 @@ public class Establecimiento implements java.io.Serializable {
 			Set<Franquiciaestablecimiento> franquiciaestablecimientos,
 			Set<Tasaeuroparametro> tasaeuroparametros,
 			Set<Establecimientoprecio> establecimientoprecios,
-			Set<Puntoestablecimiento> puntoestablecimientos,
 			Set<Transaccion> transaccions, Set<Autovoz> autovozs,
 			Set<Gravamenestablecimiento> gravamenestablecimientos,
 			Set<Factura> facturas) {
@@ -105,7 +102,6 @@ public class Establecimiento implements java.io.Serializable {
 		this.inventarios = inventarios;
 		this.tasaeuroparametros = tasaeuroparametros;
 		this.establecimientoprecios = establecimientoprecios;
-		this.puntoestablecimientos = puntoestablecimientos;
 		this.transaccions = transaccions;
 		this.autovozs = autovozs;
 		this.gravamenestablecimientos = gravamenestablecimientos;
@@ -298,16 +294,6 @@ public class Establecimiento implements java.io.Serializable {
 	public void setEstablecimientoprecios(
 			Set<Establecimientoprecio> establecimientoprecios) {
 		this.establecimientoprecios = establecimientoprecios;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "establecimiento")
-	public Set<Puntoestablecimiento> getPuntoestablecimientos() {
-		return this.puntoestablecimientos;
-	}
-
-	public void setPuntoestablecimientos(
-			Set<Puntoestablecimiento> puntoestablecimientos) {
-		this.puntoestablecimientos = puntoestablecimientos;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "establecimiento")

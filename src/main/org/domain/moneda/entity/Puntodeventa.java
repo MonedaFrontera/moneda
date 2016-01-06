@@ -22,10 +22,7 @@ public class Puntodeventa implements java.io.Serializable {
 
 	private String codpuntoventa;
 	private String nombre;
-	private Set<Puntoestablecimiento> puntoestablecimientos = new HashSet<Puntoestablecimiento>(
-			0);
-	private Set<Personaltipoproceso> personaltipoprocesos = new HashSet<Personaltipoproceso>(
-			0);
+	
 
 	public Puntodeventa() {
 	}
@@ -34,13 +31,10 @@ public class Puntodeventa implements java.io.Serializable {
 		this.codpuntoventa = codpuntoventa;
 	}
 
-	public Puntodeventa(String codpuntoventa, String nombre,
-			Set<Personaltipoproceso> personaltipoprocesos,
-			Set<Puntoestablecimiento> puntoestablecimientos) {
+	public Puntodeventa(String codpuntoventa, String nombre) {
 		this.codpuntoventa = codpuntoventa;
 		this.nombre = nombre;
-		this.puntoestablecimientos = puntoestablecimientos;
-		this.personaltipoprocesos = personaltipoprocesos;
+		
 	}
 
 	@Id
@@ -65,24 +59,6 @@ public class Puntodeventa implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "puntodeventa")
-	public Set<Puntoestablecimiento> getPuntoestablecimientos() {
-		return this.puntoestablecimientos;
-	}
 
-	public void setPuntoestablecimientos(
-			Set<Puntoestablecimiento> puntoestablecimientos) {
-		this.puntoestablecimientos = puntoestablecimientos;
-	}
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "puntodeventa")
-	public Set<Personaltipoproceso> getPersonaltipoprocesos() {
-		return this.personaltipoprocesos;
-	}
-
-	public void setPersonaltipoprocesos(
-			Set<Personaltipoproceso> personaltipoprocesos) {
-		this.personaltipoprocesos = personaltipoprocesos;
-	}
 
 }

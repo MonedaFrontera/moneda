@@ -40,12 +40,7 @@ public class PaisisoHome extends EntityHome<Paisiso> {
 	public Paisiso getDefinedInstance() {
 		return isIdDefined() ? getInstance() : null;
 	}
-
-	public List<Tasabolivartransferpais> getTasabolivartransferpaises() {
-		return getInstance() == null ? null
-				: new ArrayList<Tasabolivartransferpais>(getInstance()
-						.getTasabolivartransferpaises());
-	}
+	
 
 	public List<Pais> getPaises() {
 		return getInstance() == null ? null : new ArrayList<Pais>(getInstance()

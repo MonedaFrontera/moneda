@@ -38,10 +38,6 @@ public class Personal implements java.io.Serializable {
 	private String correo;
 	private String correoalternativo;
 	private Date fechanac;
-	private Set<Comisionhistorico> comisionhistoricos = new HashSet<Comisionhistorico>(
-			0);
-	private Set<Personaltipoproceso> personaltipoprocesos = new HashSet<Personaltipoproceso>(
-			0);
 	private Arrastrador arrastrador;
 	private Administrativo administrativo;
 	private Promotor promotor;
@@ -64,8 +60,8 @@ public class Personal implements java.io.Serializable {
 			String nombre, String apellido, String celular, String telefono,
 			String pinbb, String direccion, String correo,
 			String correoalternativo, Date fechanac,
-			Set<Comisionhistorico> comisionhistoricos, 
-			Set<Personaltipoproceso> personaltipoprocesos, Arrastrador arrastrador,
+			
+			Arrastrador arrastrador,
 			Administrativo administrativo, Promotor promotor, Asesor asesor, 
 			Set<Gastos> gastoses, Set<Saldo> saldos, Gestor gestor, Date ultmactualizacion, Boolean correosalerta) {
 		this.documento = documento;
@@ -80,10 +76,9 @@ public class Personal implements java.io.Serializable {
 		this.correo = correo;
 		this.correoalternativo = correoalternativo;
 		this.fechanac = fechanac;
-		this.comisionhistoricos = comisionhistoricos;
+		
 		this.arrastrador = arrastrador;
 		this.administrativo = administrativo;
-		this.personaltipoprocesos = personaltipoprocesos;
 		this.promotor = promotor;
 		this.asesor = asesor;
 		this.gastoses = gastoses;
@@ -226,15 +221,6 @@ public class Personal implements java.io.Serializable {
 		this.fechanac = fechanac;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "personal")
-	public Set<Comisionhistorico> getComisionhistoricos() {
-		return this.comisionhistoricos;
-	}
-
-	public void setComisionhistoricos(Set<Comisionhistorico> comisionhistoricos) {
-		this.comisionhistoricos = comisionhistoricos;
-	}
-
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "personal")
 	//@Length(max = 15)
 	public Arrastrador getArrastrador() {
@@ -282,16 +268,6 @@ public class Personal implements java.io.Serializable {
 
 	public void setGestor(Gestor gestor) {
 		this.gestor = gestor;
-	}
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "personal")
-	public Set<Personaltipoproceso> getPersonaltipoprocesos() {
-		return this.personaltipoprocesos;
-	}
-
-	public void setPersonaltipoprocesos(
-			Set<Personaltipoproceso> personaltipoprocesos) {
-		this.personaltipoprocesos = personaltipoprocesos;
 	}
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "personal")

@@ -41,24 +41,5 @@ public class MonedaHome extends EntityHome<Moneda> {
 		return isIdDefined() ? getInstance() : null;
 	}
 
-	public List<Paridadmoneda> getParidadmonedasForCodmonedadestino() {
-		return getInstance() == null ? null : new ArrayList<Paridadmoneda>(
-				getInstance().getParidadmonedasForCodmonedadestino());
-	}
-
-	public List<Paridadmoneda> getParidadmonedasForCodmonedaorigen() {
-		return getInstance() == null ? null : new ArrayList<Paridadmoneda>(
-				getInstance().getParidadmonedasForCodmonedaorigen());
-	}
-
-	public List<Paridadmoneda> getParidadmonedasForCodmonedadestino_1() {
-		return getInstance() == null ? null : new ArrayList<Paridadmoneda>(
-				getInstance().getParidadmonedasForCodmonedadestino_1());
-	}
-
-	public List<Paridadmoneda> getParidadmonedasForCodmonedaorigen_1() {
-		return getInstance() == null ? null : new ArrayList<Paridadmoneda>(
-				getInstance().getParidadmonedasForCodmonedaorigen_1());
-	}
-
+	
 }

@@ -46,8 +46,6 @@ public class Tarjeta implements java.io.Serializable {
 			0);
 	private Set<Tarjetaviaje> tarjetaviajes = new HashSet<Tarjetaviaje>(0);
 	private Set<Autovoz> autovozs = new HashSet<Autovoz>(0);
-	private Set<Solicitudtarjeta> solicitudtarjetas = new HashSet<Solicitudtarjeta>(
-			0);
 	private Boolean tac;
 
 	public Tarjeta() {
@@ -83,8 +81,7 @@ public class Tarjeta implements java.io.Serializable {
 			Set<Depositostarjeta> depositostarjetas,
 			Set<Tarjetaviaje> tarjetaviajes,
 			Set<Autovoz> autovozs,
-			String usuariomod, Date fechamod,
-			Set<Solicitudtarjeta> solicitudtarjetas) {
+			String usuariomod, Date fechamod) {
 		this.numerotarjeta = numerotarjeta;
 		this.promotor = promotor;
 		this.franquicia = franquicia;
@@ -104,7 +101,6 @@ public class Tarjeta implements java.io.Serializable {
 		this.autovozs = autovozs;
 		this.usuariomod = usuariomod;
 		this.fechamod = fechamod;
-		this.solicitudtarjetas = solicitudtarjetas;
 		this.tac = tac;
 	}
 
@@ -304,14 +300,6 @@ public class Tarjeta implements java.io.Serializable {
 		this.usuariomod = usuariomod;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tarjeta")
-	public Set<Solicitudtarjeta> getSolicitudtarjetas() {
-		return this.solicitudtarjetas;
-	}
-
-	public void setSolicitudtarjetas(Set<Solicitudtarjeta> solicitudtarjetas) {
-		this.solicitudtarjetas = solicitudtarjetas;
-	}
 	
 	@Column(name = "tac")
 	public Boolean getTac() {

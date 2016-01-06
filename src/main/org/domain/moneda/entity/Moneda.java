@@ -22,14 +22,7 @@ public class Moneda implements java.io.Serializable {
 
 	private String codigomoneda;
 	private String nombreMoneda;
-	private Set<Paridadmoneda> paridadmonedasForCodmonedadestino = new HashSet<Paridadmoneda>(
-			0);
-	private Set<Paridadmoneda> paridadmonedasForCodmonedaorigen = new HashSet<Paridadmoneda>(
-			0);
-	private Set<Paridadmoneda> paridadmonedasForCodmonedadestino_1 = new HashSet<Paridadmoneda>(
-			0);
-	private Set<Paridadmoneda> paridadmonedasForCodmonedaorigen_1 = new HashSet<Paridadmoneda>(
-			0);
+	
 
 	public Moneda() {
 	}
@@ -38,17 +31,10 @@ public class Moneda implements java.io.Serializable {
 		this.codigomoneda = codigomoneda;
 	}
 
-	public Moneda(String codigomoneda, String nombreMoneda,
-			Set<Paridadmoneda> paridadmonedasForCodmonedadestino,
-			Set<Paridadmoneda> paridadmonedasForCodmonedaorigen,
-			Set<Paridadmoneda> paridadmonedasForCodmonedadestino_1,
-			Set<Paridadmoneda> paridadmonedasForCodmonedaorigen_1) {
+	public Moneda(String codigomoneda, String nombreMoneda) {
 		this.codigomoneda = codigomoneda;
 		this.nombreMoneda = nombreMoneda;
-		this.paridadmonedasForCodmonedadestino = paridadmonedasForCodmonedadestino;
-		this.paridadmonedasForCodmonedaorigen = paridadmonedasForCodmonedaorigen;
-		this.paridadmonedasForCodmonedadestino_1 = paridadmonedasForCodmonedadestino_1;
-		this.paridadmonedasForCodmonedaorigen_1 = paridadmonedasForCodmonedaorigen_1;
+		
 	}
 
 	@Id
@@ -73,44 +59,5 @@ public class Moneda implements java.io.Serializable {
 		this.nombreMoneda = nombreMoneda;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "monedaByCodmonedadestino")
-	public Set<Paridadmoneda> getParidadmonedasForCodmonedadestino() {
-		return this.paridadmonedasForCodmonedadestino;
-	}
-
-	public void setParidadmonedasForCodmonedadestino(
-			Set<Paridadmoneda> paridadmonedasForCodmonedadestino) {
-		this.paridadmonedasForCodmonedadestino = paridadmonedasForCodmonedadestino;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "monedaByCodmonedaorigen")
-	public Set<Paridadmoneda> getParidadmonedasForCodmonedaorigen() {
-		return this.paridadmonedasForCodmonedaorigen;
-	}
-
-	public void setParidadmonedasForCodmonedaorigen(
-			Set<Paridadmoneda> paridadmonedasForCodmonedaorigen) {
-		this.paridadmonedasForCodmonedaorigen = paridadmonedasForCodmonedaorigen;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "monedaByCodmonedadestino")
-	public Set<Paridadmoneda> getParidadmonedasForCodmonedadestino_1() {
-		return this.paridadmonedasForCodmonedadestino_1;
-	}
-
-	public void setParidadmonedasForCodmonedadestino_1(
-			Set<Paridadmoneda> paridadmonedasForCodmonedadestino_1) {
-		this.paridadmonedasForCodmonedadestino_1 = paridadmonedasForCodmonedadestino_1;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "monedaByCodmonedaorigen")
-	public Set<Paridadmoneda> getParidadmonedasForCodmonedaorigen_1() {
-		return this.paridadmonedasForCodmonedaorigen_1;
-	}
-
-	public void setParidadmonedasForCodmonedaorigen_1(
-			Set<Paridadmoneda> paridadmonedasForCodmonedaorigen_1) {
-		this.paridadmonedasForCodmonedaorigen_1 = paridadmonedasForCodmonedaorigen_1;
-	}
-
+	
 }

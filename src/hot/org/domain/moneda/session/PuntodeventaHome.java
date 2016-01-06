@@ -41,10 +41,5 @@ public class PuntodeventaHome extends EntityHome<Puntodeventa> {
 		return isIdDefined() ? getInstance() : null;
 	}
 
-	public List<Puntoestablecimiento> getPuntoestablecimientos() {
-		return getInstance() == null ? null
-				: new ArrayList<Puntoestablecimiento>(getInstance()
-						.getPuntoestablecimientos());
-	}
-
+	
 }
