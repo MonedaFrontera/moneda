@@ -389,57 +389,6 @@
 <rich:tabPanel switchType="ajax" rendered="#{personalHome.managed}">
 
     
-    <rich:tab label="Historicos de Comision" rendered="#{not empty personalHome.comisionhistoricos}">
-        <h:form styleClass="association" id="comisionhistoricosChildren">
-
-            <h:outputText value="No hay Comisiones asociadas a este Promotor."
-                       rendered="#{empty personalHome.comisionhistoricos}"/>
-
-            <rich:dataTable value="#{personalHome.comisionhistoricos}"
-                           var="_comisionhistorico"
-                      rendered="#{not empty personalHome.comisionhistoricos}"
-                    rowClasses="rvgRowOne,rvgRowTwo"
-                            id="comisionhistoricosTable">
-                <rich:column sortBy="#{_comisionhistorico.id.documento}">
-                    <f:facet name="header">Documento</f:facet>
-                    <h:outputText value="#{_comisionhistorico.id.documento}"/>
-                </rich:column>
-                <rich:column sortBy="#{_comisionhistorico.id.fechainicio}">
-                    <f:facet name="header">Fecha Inicio</f:facet>
-                    <h:outputText value="#{_comisionhistorico.id.fechainicio}">
-                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                    </h:outputText>
-                </rich:column>
-                <rich:column sortBy="#{_comisionhistorico.fechafin}">
-                    <f:facet name="header">Fechafin</f:facet>
-                    <h:outputText value="#{_comisionhistorico.fechafin}">
-                        <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                    </h:outputText>
--                </rich:column>
-                <rich:column sortBy="#{_comisionhistorico.valor}">
-                    <f:facet name="header">Valor</f:facet>
-                    <h:outputText value="#{_comisionhistorico.valor}">
-                        <f:convertNumber/>
-                    </h:outputText>
-                </rich:column>
-            </rich:dataTable>
-
-        </h:form>
-
-        <f:subview rendered="#{personalHome.managed}" id="comisionhistoricos">
-        <div class="actionButtons">
-            <s:button id="addcomisionhistorico"
-                   value="Registrar comision"
-                    view="/ComisionhistoricoEdit.xhtml"
-             propagation="none">
-                 <f:param name="personalDocumento"
-                         value="#{personalHome.instance.documento}"/>
-                 <f:param name="comisionhistoricoFrom" value="Personal"/>
-            </s:button>
-        </div>
-        </f:subview>
-    </rich:tab>
-    
     <rich:tab label="Historico de Comision por Pais">
         
     <h:form styleClass="association" id="promotorcomisiontxesChildren">

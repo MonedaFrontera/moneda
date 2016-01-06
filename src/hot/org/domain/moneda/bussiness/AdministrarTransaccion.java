@@ -126,7 +126,6 @@ public class AdministrarTransaccion
 	public AdministrarTransaccion  () {
 		
 	}
-
 	
 	public String getNombrePromotor() {
 		return nombrePromotor;
