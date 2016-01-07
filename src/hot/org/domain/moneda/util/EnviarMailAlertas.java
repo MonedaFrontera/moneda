@@ -1551,7 +1551,7 @@ public class EnviarMailAlertas {
 			props.setProperty("mail.smtp.host", "192.168.1.6");
 			props.setProperty("mail.smtp.port", "25");
 			props.setProperty("mail.smtp.user",
-					"clientes-noreply@monedafrontera.com");
+					"notificaciones@monedafrontera.com");
 			props.setProperty("mail.smtp.auth", "true");
 			props.put("mail.transport.protocol.", "smtp");
 
@@ -1563,7 +1563,7 @@ public class EnviarMailAlertas {
 			// se compone el mensaje (Asunto, cuerpo del mensaje y direccion origen)
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(
-			"clientes-noreply@monedafrontera.com"));
+			"notificaciones@monedafrontera.com"));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(asesor.getPersonal().getCorreo()));
 			message.setSubject("CAMBIO DE TASAS GLOBALES");
 			message.setContent(doc.html(), "text/html; charset=utf-8");
@@ -1571,7 +1571,7 @@ public class EnviarMailAlertas {
 
 			// Lo enviamos.
 			Transport t = session.getTransport("smtp");
-			t.connect("clientes-noreply@monedafrontera.com", "Carlos0411");
+			t.connect("notificaciones@monedafrontera.com", "Carlos0411");
 			t.sendMessage(message, message.getAllRecipients());
 
 			// Cierre de la conexion
