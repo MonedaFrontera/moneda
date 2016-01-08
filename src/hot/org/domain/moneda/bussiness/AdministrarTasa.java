@@ -1180,8 +1180,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		}			
 		
 		// Valida que se haya seleccionado un establecimiento
-		System.out.println(this.getTasaEuroOfTemp() != null);
-		System.out.println(this.getTasaDolarOfTemp() != null);
 		if((this.getTasaDolarOfTemp() != null || this.getTasaEuroOfTemp() != null) &&
 				this.getEstaTemp() == null ){
 			facesMessages.addToControl("name",	
@@ -1328,11 +1326,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		}
 		
 		
-		// Falta implementar correo de notificaciones para asesoras
+		// Correo de notificaciones para asesoras
 		if(!negociado ){
 			if( euro ){
 				
-				//Consulta las tasas y porcentajes para promotores que no se han cerrado y cuyo valor sea menor que la tasa actual Global
+				//Consulta las tasas y porcentajes para promotores que no 
+				//se han cerrado y cuyo valor sea menor que la tasa actual Global
 				List<Object[]> te=this.consultarTasasEuroPorcentajesPromotor();
 								
 				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
