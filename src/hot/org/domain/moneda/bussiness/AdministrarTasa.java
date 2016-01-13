@@ -91,6 +91,8 @@ public class AdministrarTasa
     
     List<Tasadolar> listaTasadolar = new ArrayList<Tasadolar>();
     
+    List<Tasadolar> tasaDolarList = new ArrayList<Tasadolar>();
+    
     List<Tasabolivarnegociado> listaTasabolivarnegociado = new ArrayList<Tasabolivarnegociado>();
     
     @In(create=true) @Out 
@@ -99,8 +101,7 @@ public class AdministrarTasa
     @In(create=true) @Out
     AdministrarUsuario AdministrarUsuario;
     
-	//comentario
-    
+	
 	/************************************************
      * Entidades a ingresar en la clase de negocio	*
      ************************************************/
@@ -712,7 +713,85 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		}
     	listaTasabolivarnegociado = entityManager.createQuery(sql).setMaxResults(30).getResultList();
     }
+	
+	//Metodos del nuevo modelo de Dolar
 
+	public List<Tasadolar> getTasaDolarList() {
+		return tasaDolarList;
+	}
+
+	public void setTasaDolarList(List<Tasadolar> tasaDolarList) {
+		this.tasaDolarList = tasaDolarList;
+	}
+
+	//Metodo de busqueda
+	public void tasaDolarBuscar(){
+		
+		System.out.println("Buscando Tasa Dolar Global");
+		
+		String pais = this.paisTemp.getPaisiso().getCodigomoneda();
+		
+		if( pais.equals("EUR")){
+			Tasaeuroparametro tasaEuroParametro = null;			
+			try{
+				String queryString = 
+					"select tsp from Tasaeuroparametro tsp where tsp.fechainicio != null and " +
+					"tsp.fechainicio = '"+ this.getFechaIniTemp() +"' and tsp.pais.codigopais = '" + 
+					this.paisTemp.getCodigopais() +"'";
+				//Establecimiento
+				if( this.getPromoTemp() != null ){
+					queryString += " and tsp.promotor.documento = '" + this.getPromoTemp().getDocumento() + "'";
+				}else{
+					queryString += " and tsp.promotor.documento =  null";
+				}
+				//Franquicia 
+				if( this.getEstaTemp() != null ){
+					queryString += " and tsp.establecimiento.codigounico= '" +
+										this.getEstaTemp().getCodigounico() + "'";
+				}else{
+					queryString += " and tsp.establecimiento.codigounico = null";
+				}
+				//Banco
+				if( this.getFrqTemp() != null ){
+					queryString += " and tsp.franquicia.codfranquicia = '" +
+										this.getFrqTemp().getCodfranquicia() + "'";
+				}else{
+					queryString += " and tsp.franquicia.codfranquicia = null";
+					
+				}
+				
+				tasaEuroParametro = (Tasaeuroparametro) 
+										entityManager.createQuery(queryString).getSingleResult();
+						
+			}catch( NoResultException e ){
+				//Por implementar...
+			}			
+			
+		}else{
+			
+		}
+		
+	
+		
+		String sql = "select t from Tasadolar t where 1=1 ";
+		
+		java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd/MM/yyyy");
+		
+		if(this.fecha != null){
+			sql = sql + " and t.id.fecha = '"+sdf.format(fecha)+"'";
+		}
+		
+		if(this.pais!=null){
+			sql = sql + " and t.id.codigopais = '"+this.pais.getCodigopais()+"'";
+		}
+		
+		sql = sql + " order by t.id.fecha desc ";
+    	listaTasadolar = entityManager.createQuery(sql).setMaxResults(30).getResultList();
+    }
+	
+	
+	
+	
 	public List<Tasadolar> getListaTasadolar() {
 		return listaTasadolar;
 	}
