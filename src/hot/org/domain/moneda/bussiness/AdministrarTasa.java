@@ -99,7 +99,8 @@ public class AdministrarTasa
     @In(create=true) @Out
     AdministrarUsuario AdministrarUsuario;
     
-	
+	//comentario
+    
 	/************************************************
      * Entidades a ingresar en la clase de negocio	*
      ************************************************/
