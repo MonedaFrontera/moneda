@@ -727,11 +727,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	//Metodo de busqueda
 	public void tasaDolarBuscar(){
 		
-		System.out.println("Buscando Tasa Dolar Global");
+		System.out.println("Buscando Tasa Global");
 		
 		String pais = this.paisTemp.getPaisiso().getCodigomoneda();
 		
 		if( pais.equals("EUR")){
+			//Busca la tasa de Euro Global de la consulta del List
 			Tasaeuroparametro tasaEuroParametro = null;			
 			try{
 				String queryString = 
@@ -739,19 +740,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					"tsp.fechainicio = '"+ this.getFechaIniTemp() +"' and tsp.pais.codigopais = '" + 
 					this.paisTemp.getCodigopais() +"'";
 				//Establecimiento
-				if( this.getPromoTemp() != null ){
-					queryString += " and tsp.promotor.documento = '" + this.getPromoTemp().getDocumento() + "'";
+				if( this.getNomEstable() != null ){
+					queryString += " and tsp.establecimiento.nombreestable =  '" + this.getNomEstable() + "'";
 				}else{
-					queryString += " and tsp.promotor.documento =  null";
+					queryString += " and tsp.establecimiento.nombreestable =  null ";
 				}
 				//Franquicia 
-				if( this.getEstaTemp() != null ){
-					queryString += " and tsp.establecimiento.codigounico= '" +
-										this.getEstaTemp().getCodigounico() + "'";
-				}else{
-					queryString += " and tsp.establecimiento.codigounico = null";
-				}
-				//Banco
 				if( this.getFrqTemp() != null ){
 					queryString += " and tsp.franquicia.codfranquicia = '" +
 										this.getFrqTemp().getCodfranquicia() + "'";
@@ -759,16 +753,58 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.franquicia.codfranquicia = null";
 					
 				}
+				//Banco
+				if( this.getBancoTemp() != null ){
+					queryString += " and tsp.banco.codbanco = '" +
+										this.getBancoTemp().getCodbanco() + "'";
+				}else{
+					queryString += " and tsp.banco.codbanco = = null";
+					
+				}
 				
 				tasaEuroParametro = (Tasaeuroparametro) 
 										entityManager.createQuery(queryString).getSingleResult();
+				
 						
 			}catch( NoResultException e ){
 				//Por implementar...
-			}			
-			
+			}	
 		}else{
-			
+			//Busca la tasa de Dolar Global de la consulta del List
+			Tasadolarparametro tasaEuroParametro = null;			
+			try{
+				String queryString = 
+					"select tsp from Tasadolarparametro tsp where tsp.fechainicio != null and " +
+					"tsp.fechainicio = '"+ this.getFechaIniTemp() +"' and tsp.pais.codigopais = '" + 
+					this.paisTemp.getCodigopais() +"'";
+				//Establecimiento
+				if( this.getNomEstable() != null ){
+					queryString += " and tsp.establecimiento.nombreestable =  '" + this.getNomEstable() + "'";
+				}else{
+					queryString += " and tsp.establecimiento.nombreestable =  null ";
+				}
+				//Franquicia 
+				if( this.getFrqTemp() != null ){
+					queryString += " and tsp.franquicia.codfranquicia = '" +
+										this.getFrqTemp().getCodfranquicia() + "'";
+				}else{
+					queryString += " and tsp.franquicia.codfranquicia = null";
+					
+				}
+				//Banco
+				if( this.getBancoTemp() != null ){
+					queryString += " and tsp.banco.codbanco = '" +
+										this.getBancoTemp().getCodbanco() + "'";
+				}else{
+					queryString += " and tsp.banco.codbanco = = null";
+					
+				}
+				
+				tasaEuroParametro = (Tasadolarparametro) 
+										entityManager.createQuery(queryString).getSingleResult();
+		} catch (Exception e) {
+
+			}
 		}
 		
 	
