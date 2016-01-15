@@ -86,15 +86,15 @@
     </h:form>
 
     <rich:panel>
-        <f:facet name="header">Tasadolarpromotorparametro Search Results (#{empty tasadolarpromotorparametroList.resultList ? 0 : (tasadolarpromotorparametroList.paginated ? tasadolarpromotorparametroList.resultCount : tasadolarpromotorparametroList.resultList.size)})</f:facet>
+    <f:facet name="header">Resultado de la Busqueda de Tasa Globales</f:facet>
     <div class="results" id="tasadolarpromotorparametroList">
 
-    <h:outputText value="The tasadolarpromotorparametro search returned no results."
-               rendered="#{empty tasadolarpromotorparametroList.resultList}"/>
+    <h:outputText value="El criterio de busqueda no arrojo ningun resultado."
+               	  rendered="#{empty tasadolarpromotorparametroList.resultList}"/>
 
     <rich:dataTable id="tasadolarpromotorparametroList"
                 	var="_tasadolarpromotorparametro"
-              		value="#{tasadolarpromotorparametroList.resultList}"
+              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaDolarList : null}"
            			rendered="#{not empty tasadolarpromotorparametroList.resultList}">
         <h:column>
             <f:facet name="header">

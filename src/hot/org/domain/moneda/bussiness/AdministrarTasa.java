@@ -91,7 +91,9 @@ public class AdministrarTasa
     
     List<Tasadolar> listaTasadolar = new ArrayList<Tasadolar>();
     
-    List<Tasadolar> tasaDolarList = new ArrayList<Tasadolar>();
+    //Coleccion de dolar y euro para paginas List
+    private List<Tasadolarparametro> tasaDolarList = new ArrayList<Tasadolarparametro>();
+    private List<Tasaeuroparametro> tasaEuroList = new ArrayList<Tasaeuroparametro>();
     
     List<Tasabolivarnegociado> listaTasabolivarnegociado = new ArrayList<Tasabolivarnegociado>();
     
@@ -716,12 +718,20 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	//Metodos del nuevo modelo de Dolar
 
-	public List<Tasadolar> getTasaDolarList() {
+	public List<Tasadolarparametro> getTasaDolarList() {
 		return tasaDolarList;
 	}
 
-	public void setTasaDolarList(List<Tasadolar> tasaDolarList) {
+	public void setTasaDolarList(List<Tasadolarparametro> tasaDolarList) {
 		this.tasaDolarList = tasaDolarList;
+	}
+	
+	public List<Tasaeuroparametro> getTasaEuroList() {
+		return tasaEuroList;
+	}
+
+	public void setTasaEuroList(List<Tasaeuroparametro> tasaEuroList) {
+		this.tasaEuroList = tasaEuroList;
 	}
 
 	//Metodo de busqueda
@@ -733,7 +743,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		if( pais.equals("EUR")){
 			//Busca la tasa de Euro Global de la consulta del List
-			Tasaeuroparametro tasaEuroParametro = null;			
 			try{
 				String queryString = 
 					"select tsp from Tasaeuroparametro tsp where tsp.fechainicio != null and " +
@@ -750,8 +759,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.franquicia.codfranquicia = '" +
 										this.getFrqTemp().getCodfranquicia() + "'";
 				}else{
-					queryString += " and tsp.franquicia.codfranquicia = null";
-					
+					queryString += " and tsp.franquicia.codfranquicia = null";					
 				}
 				//Banco
 				if( this.getBancoTemp() != null ){
@@ -761,17 +769,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.banco.codbanco = = null";
 					
 				}
-				
-				tasaEuroParametro = (Tasaeuroparametro) 
-										entityManager.createQuery(queryString).getSingleResult();
-				
-						
+				this.setTasaDolarList(entityManager.createQuery(queryString).getResultList());		
 			}catch( NoResultException e ){
 				//Por implementar...
 			}	
 		}else{
 			//Busca la tasa de Dolar Global de la consulta del List
-			Tasadolarparametro tasaEuroParametro = null;			
 			try{
 				String queryString = 
 					"select tsp from Tasadolarparametro tsp where tsp.fechainicio != null and " +
@@ -789,7 +792,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 										this.getFrqTemp().getCodfranquicia() + "'";
 				}else{
 					queryString += " and tsp.franquicia.codfranquicia = null";
-					
 				}
 				//Banco
 				if( this.getBancoTemp() != null ){
@@ -799,30 +801,11 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.banco.codbanco = = null";
 					
 				}
-				
-				tasaEuroParametro = (Tasadolarparametro) 
-										entityManager.createQuery(queryString).getSingleResult();
+				this.setTasaDolarList( entityManager.createQuery(queryString).getResultList() );
 		} catch (Exception e) {
 
 			}
-		}
-		
-	
-		
-		String sql = "select t from Tasadolar t where 1=1 ";
-		
-		java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd/MM/yyyy");
-		
-		if(this.fecha != null){
-			sql = sql + " and t.id.fecha = '"+sdf.format(fecha)+"'";
-		}
-		
-		if(this.pais!=null){
-			sql = sql + " and t.id.codigopais = '"+this.pais.getCodigopais()+"'";
-		}
-		
-		sql = sql + " order by t.id.fecha desc ";
-    	listaTasadolar = entityManager.createQuery(sql).setMaxResults(30).getResultList();
+		}	
     }
 	
 	
