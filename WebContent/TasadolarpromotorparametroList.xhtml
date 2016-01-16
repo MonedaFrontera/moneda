@@ -20,8 +20,12 @@
                 <h:selectOneMenu id="paisSel" value="#{AdministrarTasa.paisTemp}" required="true" >
 				<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
 			                    noSelectionLabel="Seleccione..." />
-			<s:convertEntity />
-			    
+
+			    <s:convertEntity />
+			    <a:support event="onchange" 
+			    		   action="#{AdministrarTasa.listarComercios(AdministrarTasa.paisTemp.codigopais)}" 
+			    		   ajaxSingle="true"/>
+
 			</h:selectOneMenu>
             </s:decorate>
             
