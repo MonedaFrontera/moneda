@@ -8,6 +8,7 @@
 	<action execute="#{AdministrarActivacion.buscar()}"/>
 
  -->
+   <begin-conversation join="true" flush-mode="MANUAL"/>
 
    <param name="firstResult" value="#{tasadolarpromotorparametroList.firstResult}"/>
    <param name="sort" value="#{tasadolarpromotorparametroList.orderColumn}"/>

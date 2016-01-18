@@ -548,16 +548,21 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	}catch(Exception e){
     		facesMessages.add("Se ha presentado un error al intentar registrar la tasa de bolivar, verifique la informacion");
     	}
-    	
-    	
-    	
     }
     
-    @In Identity identity;
+    @In Identity identity;    
+    private List<String> lista = new ArrayList<String>();
     
-    List<String> lista = new ArrayList<String>();
-    
-    public void llenarPromotores(){
+       
+    public List<String> getLista() {
+		return lista;
+	}
+
+	public void setLista(List<String> lista) {
+		this.lista = lista;
+	}
+
+	public void llenarPromotores(){
 		entityManager.clear();
 		String sql = "";
 		
@@ -741,10 +746,18 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public void tasaDolarBuscar(){
 		
 		System.out.println("Buscando Tasa Global");
+		System.out.println("Parametros de Consulta");
+		System.out.println("Pais: " + this.getPaisTemp().getNombre());
+		System.out.println("Fecha:" + this.getFechaIniTemp());
+		System.out.println("Establecimiento: " + this.getEstaTemp().getNombreestable());
+		System.out.println("Franquicia: " + this.getFrqTemp().getNombrefranquicia());
+		System.out.println("Banco: " + this.getBancoTemp().getNombrebanco());
+		
 		
 		String pais = this.paisTemp.getPaisiso().getCodigomoneda();
 		
 		if( pais.equals("EUR")){
+			System.out.println("Buscando Euros...");
 			//Busca la tasa de Euro Global de la consulta del List
 			try{
 				String queryString = 
@@ -777,6 +790,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				//Por implementar...
 			}	
 		}else{
+			System.out.println("Buscando Dolares....");
 			//Busca la tasa de Dolar Global de la consulta del List
 			try{
 				String queryString = 
@@ -1127,6 +1141,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public void ubicarEstablecimientoTasa()
 	{
+		
 		entityManager.clear();			
 		List<Establecimiento> e = (ArrayList)entityManager
 		.createQuery("select e from Establecimiento e where trim(e.nombreestable) = " +
@@ -1146,10 +1161,11 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		List<String> resultList = entityManager.createQuery(" select e.nombreestable from Establecimiento e " +  
 				"where e.pais.codigopais = '" + 
 				this.getPaisTemp().getCodigopais()+"'" ).getResultList();
-		lista = resultList;
+	    this.setLista( resultList );
 	}
 	
 	public List<String> autocompletarEstablecimientoTasas(Object nomEst) {
+		
 		long t1 = System.currentTimeMillis();
 
 		llenarEstablcimiento();
