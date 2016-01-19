@@ -1223,7 +1223,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	/**
 	 * Graba los parametros de liquidacion de las transacciones como
 	 * Tasa Dolar, Tasa Euro, porcentajes de comision y paridad de monedas
-	 * @return
+	 * @return 
 	 */
 	public String guardarTasaDolarParam(){			
 		
@@ -1337,9 +1337,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		// Proceso de persistencia de las tasas
 		
-		Boolean euro = false;	    // Variable de control
-		Boolean negociado = false; // Variable de control
-		Boolean estbto = false;
+		Boolean euro = false;	    // Variable de control Moneda
+		Boolean negociado = false;  // Variable de control tipo de Tasa
+		Boolean estbto = false;		// Variable de control 
 		String mensaje= null;
 		
 		//1. Determina si se graba dolar o euros
@@ -1355,20 +1355,18 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		//3. Variable para parametros del comercio
 		if( this.getEstaTemp() != null && this.getPromoTemp() == null ){
 			estbto = true;
-		}
+		}		
 		
-		System.out.println("EURO: " + euro);
-		System.out.println("NEGOCIADO: " + negociado);
-		
-		System.out.println("");
+		log.info("EURO: " + euro);
+		log.info("NEGOCIADO: " + negociado);
 
 		//3. Proceso de persistencia negociado o global con base en el paso 2
-		// Primero Identifica que no exista esa tasa para esa misma fecha y parametros
-		// Segundo Cierra las Tasas anteriores vigentes
-		// Tercero Realiza el proceso de persistencia
+		// Primero. Identifica que no exista esa tasa para esa misma fecha y parametros
+		// Segundo. Cierra las Tasas anteriores vigentes
+		// Tercero. Realiza el proceso de persistencia
 		if( negociado ){
 			if( euro ){
-				System.out.println("EURO NEGOCIADO PROMOTOR");
+				log.info("EURO NEGOCIADO PROMOTOR");
 				if (this.buscarEuroActualPromotor()){							
 					facesMessages.addToControl("name",
 						"Ya se encuentra grabada la tasa para "
@@ -1384,7 +1382,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				}
 				mensaje = this.grabarTasaEuroPromotor(); 
 			}else{
-				System.out.println("DOLAR NEGOCIADO PROMOTOR");
+				log.info("DOLAR NEGOCIADO PROMOTOR");
 				if( this.buscarDolarActualPromotor()){
 					facesMessages.addToControl("name",
 							"Ya se encuentra grabada la tasa para "
@@ -1403,7 +1401,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		}else{
 			if( euro ){
 				
-				System.out.println("EURO GENERAL");					
+				log.info("EURO GENERAL");					
 				if(buscarEuroActualGlobal()){
 					facesMessages.addToControl("name", "Ya se encuentra grabada la tasa para " +
 							"esta fecha y establecimiento");
@@ -1417,7 +1415,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				}
 				mensaje = this.grabarTasaEuroGlobal();				
 			}else{
-				System.out.println("DOLAR GENERAL");
+				log.info("DOLAR GENERAL");
 				if( this.buscarDolarActualGlobal()){
 					facesMessages.addToControl("name",
 							"Ya se encuentra grabada la tasa para "
@@ -1439,10 +1437,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			if( this.getPorcentOfi() != null ){
 				this.cerrarParametrosComercio();
 				mensaje = this.grabarPrecioComercio( euro );
-				System.out.println("DESPUES DE GRABAR EL PRECIO DEL ESTABLECIMIENTO");
+				log.info("DESPUES DE GRABAR EL PRECIO DEL ESTABLECIMIENTO");
 			}
 		}
-		
 		
 		// Correo de notificaciones para asesoras
 		if(!negociado ){
@@ -1458,11 +1455,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 																		"t.tasaeuro<"+ this.getTasaEuroTemp() + " AND " + 
 																		"t.pais.codigopais = '" + this.getPaisTemp().getCodigopais() + "'").getResultList();
 				for(String asesor: documentoAsesor){
-					 
 					List<Object[]> tasaTemp=new ArrayList<Object[]>();
-					
-					for(int i=0; i<te.size(); i++){
-						
+					for(int i=0; i<te.size(); i++){						
 						if(te.get(i)[8].equals(asesor)){
 							tasaTemp.add(te.get(i));							
 						}	
@@ -1473,28 +1467,20 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					if(tasaTemp.size()>0){
 					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("euro", ases, tasaTemp, this.getTasaEuroTemp(), this.getPorcentCt());
 					}
-					tasaTemp=null;
-					
+					tasaTemp=null;					
 				}
-				
-				// buscar en tasa euro global
 			}else{
 				// busca en tasa dolar global
-				
 				//Consulta las tasas y porcentajes para promotores que no se han cerrado y cuyo valor sea menor que la tasa actual Global
 				List<Object[]> te=this.consultarTasasDolarPorcentajesPromotor();
-								
 				List<String> documentoAsesor= entityManager.createQuery("SELECT DISTINCT t.promotor.asesor.documento "+
 																		"FROM Tasadolarpromotorparametro t "+
 																		"WHERE t.fechafin is null AND "+
 																		"t.tasadolar<"+ this.getTasaDolarTemp() + "AND " +
 																		"t.pais.codigopais = '" + this.getPaisTemp().getCodigopais() + "'").getResultList();
 				for(String asesor: documentoAsesor){
-					
 					List<Object[]> tasaTemp=new ArrayList<Object[]>();
-					
-					for(int i=0; i<te.size(); i++){
-						
+					for(int i=0; i<te.size(); i++){						
 						if(te.get(i)[8].equals(asesor)){
 							tasaTemp.add(te.get(i));							
 						}	
@@ -1505,13 +1491,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					if(tasaTemp.size()>0){
 					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("dolar", ases, tasaTemp, this.getTasaDolarTemp(), this.getPorcentCt());
 					}
-					tasaTemp=null;
-					
-				}
-				
+					tasaTemp=null;					
+				}				
 			}
 		}
-		
 		//5. Proceso de auditoria
 		return mensaje;
 	}
@@ -2095,8 +2078,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarTasaDolarGlobal(){
 		try {
-			System.out.println("");
-			System.out.println("Cerrando Tasa Dolar Global");
+			log.info("Cerrando Tasa Dolar Global");
 			
 			Tasadolarparametro tDolarGlobal = null;
 			try{
