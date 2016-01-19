@@ -13,7 +13,7 @@
 
     <h:form id="tasadolarpromotorparametroSearch" styleClass="edit">
 
-        <rich:simpleTogglePanel label="Tasadolarpromotorparametro Search Filter" switchType="ajax">
+        <rich:simpleTogglePanel label="Tasa Cambiaria Global | Filtros de busqueda" switchType="ajax">
 
 			<s:decorate id="codigopaisField" template="layout/edit.xhtml">
                 <ui:define name="label">Pais</ui:define>
@@ -91,21 +91,21 @@
     <div class="results" id="tasadolarpromotorparametroList">
 
     <h:outputText value="El criterio de busqueda no arrojo ningun resultado."
-               	  rendered="#{empty tasadolarpromotorparametroList.resultList}"/>
+               	  rendered="#{empty AdministrarTasa.tasaDolarList || empty AdministrarTasa.tasaEuroList }"/>
 
     <rich:dataTable id="tasadolarpromotorparametroList"
                 	var="_tasadolarpromotorparametro"
-              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaDolarList : null}"
+              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaDolarList : AdministrarTasa.tasaDolarList }"
            			rendered="#{not empty tasadolarpromotorparametroList.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Consecutivo"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.consecutivo"/>
-                </ui:include>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaDolarList : AdministrarTasa.tasaDolarList}"/>
+                    <ui:param name="propertyLabel" value="Fecha"/>
+                    <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasadolarparametro.fechainicio : tasaeuroparametro.fechaIni}"/>
+                </ui:include>					  
             </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.consecutivo}"/>
+            <h:outputText value="#{_tasadolarpromotorparametro.fechaInicio}"/>
         </h:column>
         <h:column>
             <f:facet name="header">

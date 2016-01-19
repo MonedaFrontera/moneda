@@ -69,7 +69,7 @@ public class AdministrarTasa
 
     public void administrarTasa()
     {
-        // implement your business logic here
+    	// implement your business logic here
         log.info("AdministrarTasa.administrarTasa() action called");
         statusMessages.add("administrarTasa");
     } 
@@ -229,7 +229,7 @@ public class AdministrarTasa
     
     public void editarTasadolar(Date fecha, String codpais){
     	
-    	System.out.println("Edicion Tasa Dolar");
+    	log.info("Edicion Tasa Dolar");
     	llenarPromotores() ;
     	
     	Tasadolar td = (Tasadolar)entityManager
@@ -423,7 +423,7 @@ public class AdministrarTasa
     
 public void editarTasabolivaroficina(Date fecha, String tipo){
     	
-    	System.out.println("Edicion Tasa Dolar Bolivar");
+    	log.info("Edicion Tasa Dolar Bolivar");
     	
     	
     	Tasadebolivaroficina td = (Tasadebolivaroficina)entityManager
@@ -439,20 +439,20 @@ public void editarTasabolivaroficina(Date fecha, String tipo){
 
 public void editarTasabolivarnegociado(Date fecha, String tipo, String documento){
 	
-	System.out.println("Edicion Tasa Dolar Bolivar");
+	log.info("Edicion Tasa Dolar Bolivar");
 	
 	
 	Tasabolivarnegociado td = (Tasabolivarnegociado)entityManager
 	.createQuery("select t from Tasabolivarnegociado t where t.id.fecha = '"+fecha+"' and t.id.tipo = '"+tipo+"' " +
 			"and t.id.documento='"+documento+"'")
 	.getSingleResult();
-	System.out.println("1");
+	log.info("1");
 	if (td!=null)
 	tasabolivarnegociadoHome.setTasabolivarnegociadoId(td.getId());
 	
-	System.out.println("2");
-	System.out.println(tasabolivarnegociadoHome.getInstance().getId().getDocumento());
-	System.out.println("3");
+	log.info("2");
+	log.info(tasabolivarnegociadoHome.getInstance().getId().getDocumento());
+	log.info("3");
 	
 }
     
@@ -485,7 +485,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	    	    	"d.depositopesos = round(d.valordeposito*"+tasabolivarnegociadoHome
 	    	    	.getInstance().getPreciobolivar()+")";
 
-    		System.out.println(" ***************** SQL " + sql);
+    		log.info(" ***************** SQL " + sql);
     		
     		/*
 	    	    +
@@ -507,7 +507,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	    	    
     	    	    " t.documento = '" + promotorHome.getPromotorDocumento() + "')";
     		
-    		System.out.println(" ***************** SQL " + sql);
+    		log.info(" ***************** SQL " + sql);
     		entityManager.createNativeQuery(sql).executeUpdate();
     	}
     	
@@ -630,7 +630,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			}		
 		}
 		long t2 = System.currentTimeMillis() - t1;
-		System.out.println(">>>Tiempo total de la busqueda: " + t2 + "ms");		
+		log.info(">>>Tiempo total de la busqueda: " + t2 + "ms");		
 		return result;
 	}    private String nombre = "";
 
@@ -661,7 +661,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		Promotor pr = CargarObjetos.ubicarPromotor(this.nombre);
 		
 		if(pr!=null){
-			System.out.println("Promotor " + pr.getDocumento());
+			log.info("Promotor " + pr.getDocumento());
 			promotorHome.setPromotorDocumento(pr.getDocumento());
 			promotorHome.setInstance(pr);
 			
@@ -701,9 +701,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public void buscarTasaBolivarnegociado(){
 		String sql = "select t from Tasabolivarnegociado t where 1=1 ";
 		
-		System.out.println("*-*-*-*-*-*-*-* Tasa Bolivar Negociado " + this.nombre);
+		log.info("*-*-*-*-*-*-*-* Tasa Bolivar Negociado " + this.nombre);
 		
-		System.out.println("*-*-*-*-*-*-*-* Tasa Bolivar Negociado " + promotorHome.getInstance().getDocumento());
+		log.info("*-*-*-*-*-*-*-* Tasa Bolivar Negociado " + promotorHome.getInstance().getDocumento());
 		
 		
 		java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd/MM/yyyy");
@@ -745,30 +745,28 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	//Metodo de busqueda
 	public void tasaDolarBuscar(){
 		
-		System.out.println("Buscando Tasa Global");
-		System.out.println("Parametros de Consulta");
-		System.out.println("Pais: " + this.getPaisTemp().getNombre());
-		System.out.println("Fecha:" + this.getFechaIniTemp());
-		System.out.println("Establecimiento: " + this.getEstaTemp().getNombreestable());
-		System.out.println("Franquicia: " + this.getFrqTemp().getNombrefranquicia());
-		System.out.println("Banco: " + this.getBancoTemp().getNombrebanco());
+		log.info("Buscando Tasa Global");
+//		log.info("Parametros de Consulta");
+//		log.info("Pais: " + this.getPaisTemp().getNombre());
+//		log.info("Fecha:" + this.getFechaIniTemp());
+//		log.info("Establecimiento: " + this.getEstaTemp().getNombreestable());
+//		log.info("Franquicia: " + this.getFrqTemp().getNombrefranquicia());
+//		log.info("Banco: " + this.getBancoTemp().getNombrebanco());
 		
-		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String pais = this.paisTemp.getPaisiso().getCodigomoneda();
 		
 		if( pais.equals("EUR")){
-			System.out.println("Buscando Euros...");
-			//Busca la tasa de Euro Global de la consulta del List
+			log.info("Buscando Euros...");
+			//Busca la tasa de Euro Global de la consulta del componente List
 			try{
 				String queryString = 
 					"select tsp from Tasaeuroparametro tsp where tsp.fechainicio != null and " +
-					"tsp.fechainicio = '"+ this.getFechaIniTemp() +"' and tsp.pais.codigopais = '" + 
+					"tsp.fechainicio = '"+ sdf.format(this.getFechaIniTemp()) +"' and tsp.pais.codigopais = '" + 
 					this.paisTemp.getCodigopais() +"'";
 				//Establecimiento
-				if( this.getNomEstable() != null ){
+				if( this.getNomEstable() != null && !this.getNomEstable().equals("") ){
 					queryString += " and tsp.establecimiento.nombreestable =  '" + this.getNomEstable() + "'";
-				}else{
-					queryString += " and tsp.establecimiento.nombreestable =  null ";
 				}
 				//Franquicia 
 				if( this.getFrqTemp() != null ){
@@ -787,21 +785,23 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				}
 				this.setTasaDolarList(entityManager.createQuery(queryString).getResultList());		
 			}catch( NoResultException e ){
-				//Por implementar...
+				e.printStackTrace();
 			}	
 		}else{
-			System.out.println("Buscando Dolares....");
-			//Busca la tasa de Dolar Global de la consulta del List
+			log.info("Buscando Tasa Dolar...");
+			//Busca la tasa de Dolar Global de la consulta del componente List
 			try{
 				String queryString = 
 					"select tsp from Tasadolarparametro tsp where tsp.fechainicio != null and " +
-					"tsp.fechainicio = '"+ this.getFechaIniTemp() +"' and tsp.pais.codigopais = '" + 
+					"tsp.fechainicio = '"+ sdf.format(this.getFechaIniTemp()) +"' and tsp.pais.codigopais = '" + 
 					this.paisTemp.getCodigopais() +"'";
 				//Establecimiento
-				if( this.getNomEstable() != null ){
+				log.info(this.getNomEstable());
+				log.info(!this.getNomEstable().equals(""));
+				log.info(this.getNomEstable() != null);
+				
+				if( this.getNomEstable() != null && !this.getNomEstable().equals("")){
 					queryString += " and tsp.establecimiento.nombreestable =  '" + this.getNomEstable() + "'";
-				}else{
-					queryString += " and tsp.establecimiento.nombreestable =  null ";
 				}
 				//Franquicia 
 				if( this.getFrqTemp() != null ){
@@ -815,12 +815,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.banco.codbanco = '" +
 										this.getBancoTemp().getCodbanco() + "'";
 				}else{
-					queryString += " and tsp.banco.codbanco = = null";
+					queryString += " and tsp.banco.codbanco =  null";
 					
 				}
 				this.setTasaDolarList( entityManager.createQuery(queryString).getResultList() );
 		} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}	
     }
@@ -1122,7 +1122,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			}		
 		}
 		long t2 = System.currentTimeMillis() - t1;
-		System.out.println(">>>Tiempo total de la busqueda: " + t2 + "ms");		
+		log.info(">>>Tiempo total de la busqueda: " + t2 + "ms");		
 	
 		return result;
 	}
@@ -1201,20 +1201,20 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			}		
 		}
 		long t2 = System.currentTimeMillis() - t1;
-		System.out.println(">>>Tiempo total de la busqueda: " + t2 + "ms");	
+		log.info(">>>Tiempo total de la busqueda: " + t2 + "ms");	
 	return result;
 	}
 	
 	public void listarComercios( String codPaisT){
 		this.llenarEstablcimiento();
 		Pais paisT = entityManager.find(Pais.class, codPaisT);
-		System.out.println("Estableciendo codigo moneda.....");
+		log.info("Estableciendo codigo moneda.....");
 		
 		this.setCodMoneda(paisT.getPaisiso().getCodigomoneda().trim());
 		this.setPathBandera( "img/flags" + 
 								paisT.getPaisiso().getPathBanderaGui());
 		
-		System.out.println("PATH BANDERA: " + this.getPathBandera());
+		log.info("PATH BANDERA: " + this.getPathBandera());
 	}
 	
 	
@@ -1638,9 +1638,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	private String grabarTasaEuroPromotor(){
 		
-		System.out.println("");
-		System.out.println("GRABANDO TASA EURO PROMOTOR");
-		System.out.println("");
+		log.info("");
+		log.info("GRABANDO TASA EURO PROMOTOR");
+		log.info("");
 		
 		this.tsEuroPromo = new Tasaeuropromotorparametro();
 		this.tsEuroPromo.setPais(this.getPaisTemp());
@@ -1683,9 +1683,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	private String grabarTasaEuroGlobal(){
 		
-		System.out.println("");
-		System.out.println("GRABANDO TASA EURO GENERAL");
-		System.out.println("");
+		log.info("");
+		log.info("GRABANDO TASA EURO GENERAL");
+		log.info("");
 		
 		this.tsEuroParam = new Tasaeuroparametro();
 		this.tsEuroParam.setPais(this.getPaisTemp());
@@ -1730,9 +1730,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	private String grabarTasaDolarPromotor(){	
 		
-		System.out.println("");
-		System.out.println("GRABANDO TASA DOLAR PROMOTOR");
-		System.out.println("");
+		log.info("");
+		log.info("GRABANDO TASA DOLAR PROMOTOR");
+		log.info("");
 		
 		this.tsDolarPromo = new Tasadolarpromotorparametro();
 		this.tsDolarPromo.setPais(this.getPaisTemp());
@@ -1820,9 +1820,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 * 
 	 */
 	private void grabarComisionNegociada(){
-		System.out.println("");
-		System.out.println("GRABANDO PORCENTAJE PARA EL PROMOTOR ");
-		System.out.println("");
+		log.info("");
+		log.info("GRABANDO PORCENTAJE PARA EL PROMOTOR ");
+		log.info("");
 		
 		this.porcentajePromo = new Porcentcomisiontxparampromo();
 		this.porcentajePromo.setPais(this.getPaisTemp());
@@ -1863,9 +1863,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	private void grabarComisionGlobal(){
 		
-		System.out.println("");
-		System.out.println("GRABANDO PORCENTAJE GLOBAL");
-		System.out.println("");
+		log.info("");
+		log.info("GRABANDO PORCENTAJE GLOBAL");
+		log.info("");
 		
 		this.porcentajeGlob = new Porcentajecomisiontxparam();
 		this.porcentajeGlob.setPais(this.getPaisTemp());
@@ -1906,9 +1906,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public String grabarPrecioComercio(Boolean moneda){
 		
-		System.out.println("");
-		System.out.println("GRABANDO PORCENTAJE Y DOLAR DEL COMERCIO");
-		System.out.println("");
+		log.info("");
+		log.info("GRABANDO PORCENTAJE Y DOLAR DEL COMERCIO");
+		log.info("");
 
 		EstablecimientoprecioId idEst;
 		idEst = new  EstablecimientoprecioId( 
@@ -1954,7 +1954,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarTasaEuroGlobal(){
 		try {
-			System.out.println("Cerrando Tasa Euro Global");
+			log.info("Cerrando Tasa Euro Global");
 			
 			Tasaeuroparametro tEuroGlobal = null;
 			try{
@@ -2013,7 +2013,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarTasaEuroPromotor(){
 		try {
-			System.out.println("Cerrando Tasa Euro Promotor");
+			log.info("Cerrando Tasa Euro Promotor");
 			
 			Tasaeuropromotorparametro tEuroPromotor = null;
 			try{
@@ -2064,7 +2064,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				entityManager.merge(tEuroPromotor);
 				entityManager.flush();
 				entityManager.clear();
-				System.out.println("EURO PORMOTOR CERRADA");
+				log.info("EURO PORMOTOR CERRADA");
 			}
 		}catch (ParseException e) {
 			e.printStackTrace();
@@ -2138,7 +2138,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarTasaDolarPromotor(){
 		try {
-			System.out.println("Cerrando Tasa Dolar Promotor");
+			log.info("Cerrando Tasa Dolar Promotor");
 			
 			Tasadolarpromotorparametro tDolarPr = null;
 			try{
@@ -2201,8 +2201,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarComisionNegociada(){
 		try {
-			System.out.println("");
-			System.out.println("Cerrando Comision Negociada");
+			log.info("");
+			log.info("Cerrando Comision Negociada");
 			
 			Porcentcomisiontxparampromo comiPromo = null;
 			try{
@@ -2266,8 +2266,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarComisionGlobal(){
 		try {
-			System.out.println("");
-			System.out.println("Cerrando Porcentaje Global");
+			log.info("");
+			log.info("Cerrando Porcentaje Global");
 			
 			Porcentajecomisiontxparam porcentajeGlob = null;
 			try{
@@ -2328,8 +2328,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarParametrosComercio(){
 		try {
-			System.out.println("");
-			System.out.println("CerrandoParametros Establecimiento");
+			log.info("");
+			log.info("CerrandoParametros Establecimiento");
 			
 			Establecimientoprecio  estPrecio = null;
 			try{
@@ -2343,8 +2343,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			}				
 			if( estPrecio != null ){
 				
-				System.out.println( estPrecio != null );
-				System.out.println("ESTABLECIMIENTO: " + 
+				log.info( estPrecio != null );
+				log.info("ESTABLECIMIENTO: " + 
 						estPrecio.getEstablecimiento().getNombreestable());
 				
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -2373,8 +2373,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public boolean buscarEuroActualGlobal(){	
 		
-		System.out.println("");
-		System.out.println("Buscando Tasa Euro Global para esta fecha");
+		log.info("");
+		log.info("Buscando Tasa Euro Global para esta fecha");
 		
 		Tasaeuroparametro tEuroGlobal = null;
 		try{
@@ -2418,8 +2418,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public boolean buscarEuroActualPromotor(){		
 		
-		System.out.println("");
-		System.out.println("Buscando Tasa Euro Promotor para esta fecha");
+		log.info("");
+		log.info("Buscando Tasa Euro Promotor para esta fecha");
 		
 		Tasaeuropromotorparametro tEuroPromotor = null;
 		try{
@@ -2468,8 +2468,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public boolean buscarDolarActualGlobal(){	
 		
-		System.out.println("");
-		System.out.println("Buscando Tasa Dolar Global para esta fecha");
+		log.info("");
+		log.info("Buscando Tasa Dolar Global para esta fecha");
 		
 		Tasadolarparametro tDolarGlobal = null;
 		try{
@@ -2514,8 +2514,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public boolean buscarDolarActualPromotor(){		
 		
-		System.out.println("");
-		System.out.println("Buscando Tasa Dolar Promotor para esta fecha");
+		log.info("");
+		log.info("Buscando Tasa Dolar Promotor para esta fecha");
 		
 		Tasadolarpromotorparametro tDolarPromo = null;
 		try{
