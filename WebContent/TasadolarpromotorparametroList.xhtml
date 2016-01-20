@@ -95,14 +95,14 @@
 
     <rich:dataTable id="tasadolarpromotorparametroList"
                 	var="_tasadolarpromotorparametro"
-              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaEuroList : AdministrarTasa.tasaDolarList }"
+              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaEuroList : AdministrarTasa.tasaDolarList}"  
            			rendered="#{not empty tasadolarpromotorparametroList.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaEuroList : AdministrarTasa.tasaDolarList }"/>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaEuroList : AdministrarTasa.tasaDolarList}"/>
                     <ui:param name="propertyLabel" value="Fecha"/>
-                    
+                    <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.fechainicio  : tasadolarparametro.fechainicio }"/>
                 </ui:include>					  
             </f:facet>
             <h:outputText value="#{_tasadolarpromotorparametro.fechainicio}"/>
