@@ -91,118 +91,23 @@
     <div class="results" id="tasadolarpromotorparametroList">
 
     <h:outputText value="El criterio de busqueda no arrojo ningun resultado."
-               	  rendered="#{empty AdministrarTasa.tasaDolarList || empty AdministrarTasa.tasaEuroList }"/>
+               	  rendered="#{empty AdministrarTasa.tasaDolarList &amp;&amp; empty AdministrarTasa.tasaEuroList }"/>
 
     <rich:dataTable id="tasadolarpromotorparametroList"
                 	var="_tasadolarpromotorparametro"
-              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaDolarList : AdministrarTasa.tasaDolarList }"
+              		value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaEuroList : AdministrarTasa.tasaDolarList }"
            			rendered="#{not empty tasadolarpromotorparametroList.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaDolarList : AdministrarTasa.tasaDolarList}"/>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? AdministrarTasa.tasaEuroList : AdministrarTasa.tasaDolarList }"/>
                     <ui:param name="propertyLabel" value="Fecha"/>
-                    <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasadolarparametro.fechainicio : tasaeuroparametro.fechaIni}"/>
+                    
                 </ui:include>					  
             </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.fechaInicio}"/>
+            <h:outputText value="#{_tasadolarpromotorparametro.fechainicio}"/>
         </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Promotor documento"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.promotor.documento"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.promotor.documento}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Franquicia codfranquicia"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.franquicia.codfranquicia"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.franquicia.codfranquicia}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Pais codigopais"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.pais.codigopais"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.pais.codigopais}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Establecimiento codigounico"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.establecimiento.codigounico"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.establecimiento.codigounico}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Banco codbanco"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.banco.codbanco"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.banco.codbanco}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Tipocupo"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.tipocupo"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.tipocupo}"/>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Tasadolar"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.tasadolar"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.tasadolar}">
-                <f:convertNumber/>
-            </h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Fechainicio"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.fechainicio"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.fechainicio}">
-                <s:convertDateTime type="both" dateStyle="short"/>
-            </h:outputText>
-        </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{tasadolarpromotorparametroList}"/>
-                    <ui:param name="propertyLabel" value="Fechafin"/>
-                    <ui:param name="propertyPath" value="tasadolarpromotorparametro.fechafin"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_tasadolarpromotorparametro.fechafin}">
-                <s:convertDateTime type="both" dateStyle="short"/>
-            </h:outputText>
-        </h:column>
+            
         <rich:column styleClass="action">
             <f:facet name="header">Action</f:facet>
             <s:link view="/#{empty from ? 'Tasadolarpromotorparametro' : from}.xhtml"

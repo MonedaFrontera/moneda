@@ -780,7 +780,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.banco.codbanco = '" +
 										this.getBancoTemp().getCodbanco() + "'";
 				}else{
-					queryString += " and tsp.banco.codbanco = = null";
+					queryString += " and tsp.banco.codbanco = null";
 					
 				}
 				this.setTasaDolarList(entityManager.createQuery(queryString).getResultList());		

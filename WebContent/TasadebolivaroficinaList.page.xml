@@ -12,10 +12,7 @@
    
    
    <navigation from-action="#{AdministrarTasa.editarTasabolivaroficina(_tasadebolivaroficina.id.fecha, _tasadebolivaroficina.id.tipo)}">
-      
-
          <redirect view-id="/TasadebolivaroficinaEdit.xhtml"/>
-      
    </navigation>
 
 
