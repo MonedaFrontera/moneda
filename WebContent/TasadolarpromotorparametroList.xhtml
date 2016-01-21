@@ -161,7 +161,25 @@
             <h:outputText value="#{empty AdministrarTasa.tasaDolarList ? _tasadolarpromotorparametro.tasaeuroTac : _tasadolarpromotorparametro.tasadolarTac  }"/>
         </h:column>
         
-        
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Tasadolarpromotorparametro' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="tasadolarpromotorparametroViewId">
+                <f:param name="tasadolarpromotorparametroConsecutivo"
+                        value="#{_tasadolarpromotorparametro.consecutivo}"/>
+            </s:link>
+            #{' '} 
+            <s:link view="/TasadolarpromotorparametroEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="tasadolarpromotorparametroEdit"
+                rendered="#{empty from}">
+                <f:param name="tasadolarpromotorparametroConsecutivo"
+                        value="#{_tasadolarpromotorparametro.consecutivo}"/>
+            </s:link>
+        </rich:column>
     </rich:dataTable>
 
     </div>
