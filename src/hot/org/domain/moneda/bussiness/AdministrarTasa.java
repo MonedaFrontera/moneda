@@ -227,6 +227,12 @@ public class AdministrarTasa
 		tasadolarHome.persist();
     }
     
+    
+    public void editarTasaGlobal(Integer consecutivo){
+    	
+    }
+    
+    
     public void editarTasadolar(Date fecha, String codpais){
     	
     	log.info("Edicion Tasa Dolar");
@@ -240,6 +246,8 @@ public class AdministrarTasa
     	
     	pais = td.getPais();
     }
+    
+    
     
     
     public void actualizarTasaDolar(){
