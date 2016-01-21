@@ -758,7 +758,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		if( pais.equals("EUR")){
 			log.info("Buscando Euros...");
-			//Busca la tasa de Euro Global de la consulta del componente List
+			//Busca la tasa de EURO Global de la consulta del componente List
 			try{
 				String queryString = 
 					"select tsp from Tasaeuroparametro tsp where tsp.fechainicio != null and " +
@@ -783,13 +783,13 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.banco.codbanco = null";
 					
 				}
-				this.setTasaDolarList(entityManager.createQuery(queryString).getResultList());		
+				this.setTasaEuroList(entityManager.createQuery(queryString).getResultList());		
 			}catch( NoResultException e ){
 				e.printStackTrace();
 			}	
 		}else{
 			log.info("Buscando Tasa Dolar...");
-			//Busca la tasa de Dolar Global de la consulta del componente List
+			//Busca la tasa de DOLAR Global de la consulta del componente List
 			try{
 				String queryString = 
 					"select tsp from Tasadolarparametro tsp where tsp.fechainicio != null and " +

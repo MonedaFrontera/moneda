@@ -100,7 +100,7 @@
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuropromotorparametroList : tasadolarpromotorparametroList}"/>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
                     <ui:param name="propertyLabel" value="Fecha"/>
                     <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.fechainicio  : tasadolarparametro.fechainicio}"/>
                 </ui:include>					  
@@ -110,7 +110,7 @@
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuropromotorparametroList : tasadolarpromotorparametroList}"/>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
                     <ui:param name="propertyLabel" value="Establecimiento"/>
                     <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.establecimiento.nombreestable  : tasadolarparametro.establecimiento.nombreestable}"/>
                 </ui:include>					  
@@ -120,7 +120,7 @@
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuropromotorparametroList : tasadolarpromotorparametroList}"/>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
                     <ui:param name="propertyLabel" value="Franquicia"/>
                     <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.franquicia.nombrefranquicia  : tasadolarparametro.franquicia.nombrefranquicia}"/>
                 </ui:include>					  
@@ -130,12 +130,32 @@
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuropromotorparametroList : tasadolarpromotorparametroList}"/>
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
                     <ui:param name="propertyLabel" value="Banco"/>
                     <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.banco.nombrebanco  : tasadolarparametro.banco.nombrebanco}"/>
                 </ui:include>					  
             </f:facet>
             <h:outputText value="#{_tasadolarpromotorparametro.banco.nombrebanco}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
+                    <ui:param name="propertyLabel" value="Tasa Cliente"/>
+                    <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.tasaeuro  : tasadolarparametro.tasadolar}"/>
+                </ui:include>					  
+            </f:facet>
+            <h:outputText value="#{empty AdministrarTasa.tasaDolarList ? _tasadolarpromotorparametro.tasaeuro : _tasadolarpromotorparametro.tasadolar  }"/>
+        </h:column>
+         <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
+                    <ui:param name="propertyLabel" value="Tasa Cliente"/>
+                    <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.tasaeuroTac  : tasadolarparametro.tasadolarTac}"/>
+                </ui:include>					  
+            </f:facet>
+            <h:outputText value="#{empty AdministrarTasa.tasaDolarList ? _tasadolarpromotorparametro.tasaeuroTac : _tasadolarpromotorparametro.tasadolarTac  }"/>
         </h:column>
         
         <rich:column styleClass="action">
