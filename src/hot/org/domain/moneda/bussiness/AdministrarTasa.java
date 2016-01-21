@@ -416,9 +416,14 @@ public class AdministrarTasa
     	this.setFechaIniTemp(null);
     	this.setPaisTemp(null);
     	
+    	this.setTasaDolarList(null);
+    	this.setTasaEuroList(null);
+    	
     	this.pais = null;
     	this.fecha = null;
     	this.listaTasadolar =null;
+    	
+    	entityManager.flush();
     	
     	
     	
@@ -753,18 +758,14 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		log.info("Buscando Tasa Global");
 		
-		log.info("Limpiando cache...");
-		this.setTasaDolarList(null);
-		this.setTasaEuroList(null);
-		
-		entityManager.clear();
-		
 //		log.info("Parametros de Consulta");
 //		log.info("Pais: " + this.getPaisTemp().getNombre());
 //		log.info("Fecha:" + this.getFechaIniTemp());
 //		log.info("Establecimiento: " + this.getEstaTemp().getNombreestable());
 //		log.info("Franquicia: " + this.getFrqTemp().getNombrefranquicia());
 //		log.info("Banco: " + this.getBancoTemp().getNombrebanco());
+		
+			
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String pais = this.paisTemp.getPaisiso().getCodigomoneda();
