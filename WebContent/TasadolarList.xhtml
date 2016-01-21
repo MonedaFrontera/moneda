@@ -61,7 +61,7 @@
 
     <h:outputText value="La busqueda de la Tasa de Dolares no retorno resultados."
                rendered="#{empty AdministrarTasa.listaTasadolar}"/>
-<h:form>
+	<h:form>
     <rich:dataTable id="tasadolarList"
                 var="_tasadolar"
               value="#{AdministrarTasa.listaTasadolar}"
@@ -131,7 +131,7 @@
             </h:commandLink>
         </rich:column>
     </rich:dataTable>
-</h:form>
+    </h:form>
     </div>
     </rich:panel>
 
