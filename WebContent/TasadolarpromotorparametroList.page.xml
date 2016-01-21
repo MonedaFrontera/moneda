@@ -19,7 +19,7 @@
    <param name="tipocupo" value="#{tasadolarpromotorparametroList.tasadolarpromotorparametro.tipocupo}"/>
 
 	<navigation from-action="#{AdministrarTasa.editarTasaGlobal(_tasadolarpromotorparametro.consecutivo)}">
-         <redirect view-id="/TasadolarEdit.xhtml"/>
+         <redirect view-id="/TasadolarpromotorparametroEdit.xhtml"/>
    </navigation>
 	
 </page>

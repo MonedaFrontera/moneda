@@ -87,7 +87,7 @@
                          reRender="panelResultado,tasadolarpromotorparametroSearch"/>
         </div>
 
-    </h:form>
+    
 
     <rich:panel id="panelResultado">
     <f:facet name="header">Resultado de la Busqueda de Tasa Globales</f:facet>
@@ -160,29 +160,17 @@
             </f:facet>
             <h:outputText value="#{empty AdministrarTasa.tasaDolarList ? _tasadolarpromotorparametro.tasaeuroTac : _tasadolarpromotorparametro.tasadolarTac  }"/>
         </h:column>
-        
+                
         <rich:column styleClass="action">
-            <f:facet name="header">Action</f:facet>
-            <s:link view="/#{empty from ? 'Tasadolarpromotorparametro' : from}.xhtml"
-                   value="#{empty from ? 'View' : 'Select'}"
-             propagation="#{empty from ? 'none' : 'default'}"
-                      id="tasadolarpromotorparametroViewId">
-                <f:param name="tasadolarpromotorparametroConsecutivo"
-                        value="#{_tasadolarpromotorparametro.consecutivo}"/>
-            </s:link>
-            #{' '} 
-            <s:link view="/TasadolarpromotorparametroEdit.xhtml"
-                   value="Edit"
-             propagation="none"
-                      id="tasadolarpromotorparametroEdit"
-                rendered="#{empty from}">
-                <f:param name="tasadolarpromotorparametroConsecutivo"
-                        value="#{_tasadolarpromotorparametro.consecutivo}"/>
-            </s:link>
+            <f:facet name="header">Acciones</f:facet>
+            <h:commandLink value="" action="#{AdministrarTasa.editarTasaGlobal(_tasadolarpromotorparametro.consecutivo)}" >
+            	<h:graphicImage title="Editar Tasa" style="border-style:none;" id="verTasa" value="/img/edit.png" />
+            </h:commandLink>
         </rich:column>
     </rich:dataTable>
-
+ 	</h:form>
     </div>
+    
     </rich:panel>
 
     <div class="tableControl">
