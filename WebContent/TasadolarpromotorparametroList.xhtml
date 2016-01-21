@@ -81,12 +81,15 @@
             <h:commandButton id="Buscar" 
             				 value="Buscar" 
             				 action="#{AdministrarTasa.tasaDolarBuscar()}"/>
-            <s:button id="reset" value="Reset" includePageParams="false"/>
+             <h:commandButton id="limpiarn" 
+                          value="Limpiar"
+                         action="#{AdministrarTasa.limpiarTasadolar()}"
+                         reRender="panelResultado,tasadolarpromotorparametroSearch"/>
         </div>
 
     </h:form>
 
-    <rich:panel>
+    <rich:panel id="panelResultado">
     <f:facet name="header">Resultado de la Busqueda de Tasa Globales</f:facet>
     <div class="results" id="tasadolarpromotorparametroList">
 
@@ -151,7 +154,7 @@
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametroList : tasadolarparametroList}"/>
-                    <ui:param name="propertyLabel" value="Tasa Cliente"/>
+                    <ui:param name="propertyLabel" value="Tasa TAC"/>
                     <ui:param name="propertyPath" value="#{empty AdministrarTasa.tasaDolarList ? tasaeuroparametro.tasaeuroTac  : tasadolarparametro.tasadolarTac}"/>
                 </ui:include>					  
             </f:facet>

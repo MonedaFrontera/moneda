@@ -410,6 +410,12 @@ public class AdministrarTasa
     }
     
     public void limpiarTasadolar(){
+    	this.setBancoTemp(null);
+    	this.setFrqTemp(null);
+    	this.setEstaTemp(null);
+    	this.setFechaIniTemp(null);
+    	this.setPaisTemp(null);
+    	
     	this.pais = null;
     	this.fecha = null;
     	this.listaTasadolar =null;
@@ -746,6 +752,13 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public void tasaDolarBuscar(){
 		
 		log.info("Buscando Tasa Global");
+		
+		log.info("Limpiando cache...");
+		this.setTasaDolarList(null);
+		this.setTasaEuroList(null);
+		
+		entityManager.clear();
+		
 //		log.info("Parametros de Consulta");
 //		log.info("Pais: " + this.getPaisTemp().getNombre());
 //		log.info("Fecha:" + this.getFechaIniTemp());
@@ -796,10 +809,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					"tsp.fechainicio = '"+ sdf.format(this.getFechaIniTemp()) +"' and tsp.pais.codigopais = '" + 
 					this.paisTemp.getCodigopais() +"'";
 				//Establecimiento
-				log.info(this.getNomEstable());
-				log.info(!this.getNomEstable().equals(""));
-				log.info(this.getNomEstable() != null);
-				
 				if( this.getNomEstable() != null && !this.getNomEstable().equals("")){
 					queryString += " and tsp.establecimiento.nombreestable =  '" + this.getNomEstable() + "'";
 				}
@@ -822,7 +831,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}	
+		}
+		log.info("TasaDolarList Vacio...? -> " +
+				(this.getTasaDolarList() != null ? this.getTasaDolarList().isEmpty() : "null" ) );
     }
 	
 	
