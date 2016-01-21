@@ -413,8 +413,10 @@ public class AdministrarTasa
     	this.setBancoTemp(null);
     	this.setFrqTemp(null);
     	this.setEstaTemp(null);
+    	this.setNomEstable("");
     	this.setFechaIniTemp(null);
     	this.setPaisTemp(null);
+    	
     	
     	this.setTasaDolarList(null);
     	this.setTasaEuroList(null);
@@ -754,7 +756,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 
 	//Metodo de busqueda
-	public void tasaDolarBuscar(){
+	public String tasaDolarBuscar(){
 		
 		log.info("Buscando Tasa Global");
 		
@@ -764,8 +766,19 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 //		log.info("Establecimiento: " + this.getEstaTemp().getNombreestable());
 //		log.info("Franquicia: " + this.getFrqTemp().getNombrefranquicia());
 //		log.info("Banco: " + this.getBancoTemp().getNombrebanco());
-		
+		// Valida que se haya elegido un pais
+		if( this.getPaisTemp() == null || this.getPaisTemp().equals("") ){
+			facesMessages.addToControl("paisSel",
+					"Se debe seleccionar un pais");
+				return null;
+		}			
+		// Valida que se haya seleccionado la fecha
+		if( this.getFechaIniTemp() == null){
+			facesMessages.addToControl("fechainicio",	
+			"Se debe seleccionar una fecha para esta tasa");
+			return null;
 			
+		}			
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		String pais = this.paisTemp.getPaisiso().getCodigomoneda();
@@ -797,10 +810,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					queryString += " and tsp.banco.codbanco = null";
 					
 				}
-				this.setTasaEuroList(entityManager.createQuery(queryString).getResultList());		
+				this.setTasaEuroList(entityManager.createQuery(queryString).getResultList());
+				return "Busqueda Exitosa";
 			}catch( NoResultException e ){
 				e.printStackTrace();
 			}	
+			return "Busqueda Finalizada";
 		}else{
 			log.info("Buscando Tasa Dolar...");
 			//Busca la tasa de DOLAR Global de la consulta del componente List
@@ -829,12 +844,15 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					
 				}
 				this.setTasaDolarList( entityManager.createQuery(queryString).getResultList() );
+				return "Busqueda Exitosa";
 		} catch (Exception e) {
 				e.printStackTrace();
-			}
 		}
-		log.info("TasaDolarList Vacio...? -> " +
-				(this.getTasaDolarList() != null ? this.getTasaDolarList().isEmpty() : "null" ) );
+			
+		return "Busqueda Finalizada";
+		}//fin del else
+		
+			
     }
 	
 	
