@@ -228,7 +228,24 @@ public class AdministrarTasa
     }
     
     
-    public void editarTasaGlobal(Integer consecutivo){
+    public void editarTasaGlobal(Integer consecutivo, String moneda){
+    	log.info("Edicion Tasa Global..");
+    	System.out.println("Consecutivo Recibido: " + consecutivo);
+    	System.out.println("Moneda Recibida:" + moneda);
+    	
+    	//1. Determinar la moneda Euros o Dolares a Editar
+    	
+    	//2. Obtener las entidades:Tasaeuroparametro o Tasadolarparametro
+    	//						   Establecimientoprecio 
+    	// 						   Porcentajecomisiontxparam
+    	
+    	//3. Establezco los metodos Setter de los campos del formulario
+    	
+    	
+    }
+    
+    
+    public void actualizarTasasGlobal(){
     	
     }
     
@@ -246,7 +263,6 @@ public class AdministrarTasa
     	
     	pais = td.getPais();
     }
-    
     
     
     
