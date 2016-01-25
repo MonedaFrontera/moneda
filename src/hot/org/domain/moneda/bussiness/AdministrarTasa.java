@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,13 +36,17 @@ import org.domain.moneda.entity.Tasaeuroparametro;
 import org.domain.moneda.entity.Tasaeuropromotorparametro;
 import org.domain.moneda.session.BancoHome;
 import org.domain.moneda.session.EstablecimientoHome;
+import org.domain.moneda.session.EstablecimientoprecioHome;
 import org.domain.moneda.session.FranquiciaHome;
 import org.domain.moneda.session.PaisHome;
+import org.domain.moneda.session.PorcentajecomisiontxparamHome;
 import org.domain.moneda.session.PromotorHome;
 import org.domain.moneda.session.TasabolivarnegociadoHome;
 import org.domain.moneda.session.TasadebolivaroficinaHome;
 import org.domain.moneda.session.TasadolarHome;
+import org.domain.moneda.session.TasadolarparametroHome;
 import org.domain.moneda.session.TasadolarpromotorparametroHome;
+import org.domain.moneda.session.TasaeuroparametroHome;
 import org.domain.moneda.util.CargarObjetos;
 import org.domain.moneda.util.EnviarMailAlertas;
 import org.jboss.seam.ScopeType;
@@ -123,6 +126,19 @@ public class AdministrarTasa
     
     @In(create=true) @Out 
     TasadolarpromotorparametroHome tasadolarpromotorparametroHome;
+    
+    @In(create=true) @Out 
+    TasaeuroparametroHome  tasaeuroparametroHome;
+   
+    @In(create=true) @Out 
+    TasadolarparametroHome tasadolarparametroHome;
+   
+    @In(create=true) @Out 
+    EstablecimientoprecioHome establecimientoprecioHome;
+   
+    @In(create=true) @Out 
+    PorcentajecomisiontxparamHome porcentajecomisiontxparamHome;
+	
 
     
     List<String> listaString = new ArrayList<String>();
@@ -199,15 +215,50 @@ public class AdministrarTasa
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
+	
+	public TasaeuroparametroHome getTasaeuroparametroHome() {
+		return tasaeuroparametroHome;
+	}
+
+	public void setTasaeuroparametroHome(TasaeuroparametroHome tasaeuroparametroHome) {
+		this.tasaeuroparametroHome = tasaeuroparametroHome;
+	}
+
+	public TasadolarparametroHome getTasadolarparametroHome() {
+		return tasadolarparametroHome;
+	}
+
+	public void setTasadolarparametroHome(
+			TasadolarparametroHome tasadolarparametroHome) {
+		this.tasadolarparametroHome = tasadolarparametroHome;
+	}
+
+	public EstablecimientoprecioHome getEstablecimientoprecioHome() {
+		return establecimientoprecioHome;
+	}
+
+	public void setEstablecimientoprecioHome(
+			EstablecimientoprecioHome establecimientoprecioHome) {
+		this.establecimientoprecioHome = establecimientoprecioHome;
+	}
+
+	public PorcentajecomisiontxparamHome getPorcentajecomisiontxparamHome() {
+		return porcentajecomisiontxparamHome;
+	}
+
+	public void setPorcentajecomisiontxparamHome(
+			PorcentajecomisiontxparamHome porcentajecomisiontxparamHome) {
+		this.porcentajecomisiontxparamHome = porcentajecomisiontxparamHome;
+	}
 
 	public void buscarTasaBolivarOficina(){
 		String sql = "select t from Tasadebolivaroficina t where 1=1 ";
 		
 		java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd/MM/yyyy");
 		
-		if(this.fecha != null){
+		if(this.fecha != null)
 			sql = sql + " and t.id.fecha = '"+sdf.format(fecha)+"'";
-		}
+		
 		
 		if(!this.tipo.contentEquals("")){
 			sql = sql + " and t.id.tipo = '"+this.tipo+"'";
@@ -224,30 +275,10 @@ public class AdministrarTasa
 		ValueExpression mensaje;
 		tasadolarHome.setCreatedMessage(
 				expressions.createValueExpression("Se ha registrado la tasa de dolar para el " + sdf.format(tasadolarHome.getInstance().getId().getFecha()) + " de forma exitosa"));
-		tasadolarHome.persist();
+		tasadolarHome.persist();		
+		
     }
     
-    
-    public void editarTasaGlobal(Integer consecutivo, String moneda){
-    	log.info("Edicion Tasa Global..");
-    	System.out.println("Consecutivo Recibido: " + consecutivo);
-    	System.out.println("Moneda Recibida:" + moneda);
-    	
-    	//1. Determinar la moneda Euros o Dolares a Editar
-    	
-    	//2. Obtener las entidades:Tasaeuroparametro o Tasadolarparametro
-    	//						   Establecimientoprecio 
-    	// 						   Porcentajecomisiontxparam
-    	
-    	//3. Establezco los metodos Setter de los campos del formulario
-    	
-    	
-    }
-    
-    
-    public void actualizarTasasGlobal(){
-    	
-    }
     
     
     public void editarTasadolar(Date fecha, String codpais){
@@ -783,14 +814,11 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public String tasaDolarBuscar(){
 		
 		log.info("Buscando Tasa Global");
+		log.info("Limpiando cache...");
+		this.setTasaDolarList(null);
+		this.setTasaEuroList(null);
 		
-//		log.info("Parametros de Consulta");
-//		log.info("Pais: " + this.getPaisTemp().getNombre());
-//		log.info("Fecha:" + this.getFechaIniTemp());
-//		log.info("Establecimiento: " + this.getEstaTemp().getNombreestable());
-//		log.info("Franquicia: " + this.getFrqTemp().getNombrefranquicia());
-//		log.info("Banco: " + this.getBancoTemp().getNombrebanco());
-		// Valida que se haya elegido un pais
+	
 		if( this.getPaisTemp() == null || this.getPaisTemp().equals("") ){
 			facesMessages.addToControl("paisSel",
 					"Se debe seleccionar un pais");
@@ -880,15 +908,70 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     }
 	
 	
-	
-	
 	public List<Tasadolar> getListaTasadolar() {
 		return listaTasadolar;
 	}
 
+	
 	public void setListaTasadolar(List<Tasadolar> listaTasadolar) {
 		this.listaTasadolar = listaTasadolar;
 	}
+	
+	
+	public void editarTasaGlobal(Integer consecutivo, String moneda){
+    	log.info("Edicion Tasa Global..");
+    	System.out.println("Consecutivo Recibido: " + consecutivo);
+    	System.out.println("Moneda Recibida:" + moneda);
+    	
+    	//1. Determinar la moneda Euros o Dolares a Editar
+    	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
+    	//						    b. Establecimientoprecio 
+    	// 						    c. Porcentajecomisiontxparam
+    	if(moneda.equals("EUR")){  
+    		//a.
+    		Tasaeuroparametro tsp = entityManager.find(Tasaeuroparametro.class, consecutivo);
+    		//b.
+    		Establecimientoprecio estPrecio = 
+    			entityManager.find(Establecimientoprecio.class, 
+    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), tsp.getFechainicio()));
+    		String queryString = "select p from Porcentajecomisiontxparam p where " +
+    							 "p.fechainicio = '" + tsp.getFechainicio() + "'  " +
+    							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
+    							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
+    							 "and p.franquicia.codfranquicia = '" + tsp.getFranquicia().getCodfranquicia() + "' " +  
+    							 "and p.banco.codbanco = '" + tsp.getBanco().getCodbanco() + "' ";
+    		//c.
+    		Porcentajecomisiontxparam porcentaje = 
+    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString);
+    		
+    		
+    	}else{//Caso para Dolar
+    		//a.
+    		Tasadolarparametro tsp = entityManager.find(Tasadolarparametro.class, consecutivo);
+    		//b.
+    		Establecimientoprecio estPrecio = 
+    			entityManager.find(Establecimientoprecio.class, 
+    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), tsp.getFechainicio()));
+    		String queryString = "select p from Porcentajecomisiontxparam p where " +
+    							 "p.fechainicio = '" + tsp.getFechainicio() + "'  " +
+    							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
+    							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
+    							 "and p.franquicia.codfranquicia = '" + tsp.getFranquicia().getCodfranquicia() + "' " +  
+    							 "and p.banco.codbanco = '" + tsp.getBanco().getCodbanco() + "' ";
+    		//c.
+    		Porcentajecomisiontxparam porcentaje = 
+    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString);
+    	}
+    	//3. Establezco los metodos Setter de los campos del formulario
+    	
+    	
+    	
+    }
+    
+    
+    public void actualizarTasasGlobal(){
+    	
+    }
 	
 	public void buscarTasadolar(){
 		String sql = "select t from Tasadolar t where 1=1 ";
