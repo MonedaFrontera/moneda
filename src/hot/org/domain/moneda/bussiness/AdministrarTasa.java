@@ -920,14 +920,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 	
 	
-	public void editarTasaGlobal(Integer consecutivo, String moneda) throws ParseException{
-		
-    	
+	public void editarTasaGlobal(Integer consecutivo, String moneda) 
+													throws ParseException{	
 		log.info("Edicion Tasa Global..");
-    	System.out.println("Consecutivo Recibido: " + consecutivo);
-    	System.out.println("Moneda Recibida:" + moneda);
-    	
-    	
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
     	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
@@ -965,7 +960,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		this.setPorcentCt(porcentaje.getPorcentaje());
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
     		this.setParidadClienteTemp(estPrecio.getParidadCliente());
-    		
+    		//Auditoria
     		AdministrarUsuario.auditarUsuario(41, "Consulto Tasa Euro para el Establecimiento: " +this.getEstaTemp().getNombreestable() +
     				" En la fecha: " + sdf.format(tsp.getFechainicio()));
     		
@@ -1001,14 +996,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		this.setPorcentCt(porcentaje.getPorcentaje());
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
     		this.setParidadClienteTemp(estPrecio.getParidadCliente());
-    		
+    		//Auditoria
     		AdministrarUsuario.auditarUsuario(41, "Consulto Tasa de Dolar para el Establecimiento: " +this.getEstaTemp().getNombreestable() +
     				" En la fecha: " + sdf.format(tsp.getFechainicio()));
-    		
     	}
-    	
-    	//Implementar Auditoria Consulto el detalle de la tasa de dolar 
-    	
     }
 	
     
