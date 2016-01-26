@@ -1040,6 +1040,7 @@ public class AdministrarTarjeta
     		return true;
     		}
     	}//fin del if externo
+    	
     	return false;
     }
     
@@ -1560,7 +1561,6 @@ public class AdministrarTarjeta
 		List< Activacion > act = entityManager.createQuery("select a from Activacion a where" +
 				" a.cedula = '" + cedula + "' and " +
 						" EXTRACT( YEAR FROM a.fechaInicioViaje)  =  EXTRACT( YEAR FROM CURRENT_DATE)").getResultList();
-		
 		if( !act.isEmpty())
 		{
 			tarjetaHome.getInstance().setFechainicio(act.get(0).getFechaInicioViaje());

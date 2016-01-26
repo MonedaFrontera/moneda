@@ -12,4 +12,8 @@
    <param name="codtipogasto" value="#{tipogastoList.tipogasto.codtipogasto}"/>
    <param name="descripcion" value="#{tipogastoList.tipogasto.descripcion}"/>
 
+
+ <navigation  from-action="#{AdministrarTasa.redirect()}">
+         <redirect view-id="/TipogastoEdit.xhtml"/> 
+   </navigation>
 </page>

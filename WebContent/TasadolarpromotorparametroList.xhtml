@@ -163,7 +163,7 @@
                 
         <rich:column styleClass="action">
             <f:facet name="header">Acciones</f:facet>
-            <h:commandLink value="" action="#{AdministrarTasa.editarTasaGlobal(_tasadolarpromotorparametro.consecutivo, AdministrarTasa.paisTemp.paisiso.codigomoneda )}" >
+            <h:commandLink value="" action="#{AdministrarTasa.redirect()}" >
             	<h:graphicImage title="Editar Tasa" style="border-style:none;" id="verTasa" value="/img/edit.png" />
             </h:commandLink>
         </rich:column>

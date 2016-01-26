@@ -489,20 +489,22 @@ public class AdministrarTasa
 
     
     
-public void editarTasabolivaroficina(Date fecha, String tipo){
-    	
-    	log.info("Edicion Tasa Dolar Bolivar");
-    	
-    	
-    	Tasadebolivaroficina td = (Tasadebolivaroficina)entityManager
-		.createQuery("select t from Tasadebolivaroficina t where t.id.fecha = '"+fecha+"' and t.id.tipo = '"+tipo+"'")
-		.getSingleResult();
-    	
-    	tasadebolivaroficinaHome.setTasadebolivaroficinaId(new TasadebolivaroficinaId(fecha,tipo));
-    	
-    	
-    	
-    }
+
+	public void editarTasabolivaroficina(Date fecha, String tipo) {
+
+		log.info("Edicion Tasa Dolar Bolivar");
+
+		Tasadebolivaroficina td = (Tasadebolivaroficina) entityManager
+				.createQuery(
+						"select t from Tasadebolivaroficina t where t.id.fecha = '"
+								+ fecha + "' and t.id.tipo = '" + tipo + "'")
+				.getSingleResult();
+
+		tasadebolivaroficinaHome
+				.setTasadebolivaroficinaId(new TasadebolivaroficinaId(fecha,
+						tipo));
+
+	}
 
 
 public void editarTasabolivarnegociado(Date fecha, String tipo, String documento){
@@ -919,9 +921,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	
 	public void editarTasaGlobal(Integer consecutivo, String moneda) throws ParseException{
+		
     	log.info("Edicion Tasa Global..");
     	System.out.println("Consecutivo Recibido: " + consecutivo);
     	System.out.println("Moneda Recibida:" + moneda);
+    	
+    	tasadolarpromotorparametroHome.setInstance(new Tasadolarpromotorparametro() );
     	
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
@@ -993,16 +998,19 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		
     	}
     	
-    	
-    	
+    	//Implementar Auditoria Consulto el detalle de la tasa de dolar 
     	
     }
     
+	
+	
     
     public void actualizarTasasGlobal(){
     	
     }
 	
+    
+    
 	public void buscarTasadolar(){
 		String sql = "select t from Tasadolar t where 1=1 ";
 		
@@ -2727,6 +2735,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		return false;
 	}
 
+	public void redirect(){
+		System.out.println("ya");
+	}
     
     
 }
