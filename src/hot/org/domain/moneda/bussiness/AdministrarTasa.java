@@ -139,7 +139,7 @@ public class AdministrarTasa
     @In(create=true) @Out 
     PorcentajecomisiontxparamHome porcentajecomisiontxparamHome;
 	
-
+    private Boolean managedTasa = true;
     
     List<String> listaString = new ArrayList<String>();
     
@@ -249,6 +249,15 @@ public class AdministrarTasa
 	public void setPorcentajecomisiontxparamHome(
 			PorcentajecomisiontxparamHome porcentajecomisiontxparamHome) {
 		this.porcentajecomisiontxparamHome = porcentajecomisiontxparamHome;
+	}
+	
+	
+	public Boolean getManagedTasa() {
+		return managedTasa;
+	}
+
+	public void setManagedTasa(Boolean managedTasa) {
+		this.managedTasa = managedTasa;
 	}
 
 	public void buscarTasaBolivarOficina(){
@@ -919,10 +928,22 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.listaTasadolar = listaTasadolar;
 	}
 	
+	public void establecerBotones(){
+		System.out.println("Ejecutando boton");
+	}
 	
+	/**
+	 * Metodo llamado desde el List para editar un registro de 
+	 * TasadolarpromotorparametroList
+	 * 
+	 * @param consecutivo
+	 * @param moneda
+	 * @throws ParseException
+	 */
 	public void editarTasaGlobal(Integer consecutivo, String moneda) 
 													throws ParseException{	
 		log.info("Edicion Tasa Global..");
+		this.setManagedTasa(false); 
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
     	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
@@ -1004,7 +1025,14 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
     
     public void actualizarTasasGlobal(){
+    	//1.Crea los objetos del contexto actual
     	
+    	//2.Update a los daots
+    	
+    	//3.Auditoria
+    	
+    	//5.Set null a todos los objetos
+    	this.setManagedTasa(true);
     }
 	
     

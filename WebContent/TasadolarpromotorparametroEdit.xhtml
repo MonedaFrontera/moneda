@@ -317,18 +317,12 @@
         	<h:commandButton id="save"
                           value="Guardar"
                          action="#{AdministrarTasa.guardarTasaDolarParam}"
-                       rendered="#{!tasadolarpromotorparametroHome.managed}"/>
+                       rendered="#{AdministrarTasa.managedTasa}"/>
             <h:commandButton id="update"
-                          value="Save"
-                         action="#{tasadolarpromotorparametroHome.update}"
-                       rendered="#{tasadolarpromotorparametroHome.managed}"/>
-
-            <h:commandButton id="delete"
-                          value="Delete"
-                         action="#{tasadolarpromotorparametroHome.remove}"
-                      immediate="true"
-                       rendered="#{tasadolarpromotorparametroHome.managed}"/>
-
+                          value="Actualizar"
+                         action="#{AdministrarTasa.actualizarTasasGlobal()}"
+                       rendered="#{AdministrarTasa.managedTasa==false}"/>
+                       
             <s:button id="cancelEdit"
                    value="Cancel"
              propagation="end"
