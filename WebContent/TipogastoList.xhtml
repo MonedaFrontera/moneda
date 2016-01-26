@@ -83,14 +83,15 @@
         </h:column>
         <rich:column styleClass="action">
             <f:facet name="header">Action</f:facet>
-            <h:form>
-            <rich:column styleClass="action">
-            <f:facet name="header">Acciones</f:facet>
-            <h:commandLink value="" action="#{AdministrarTasa.redirect()}" >
-            	<h:graphicImage title="Editar Tasa" style="border-style:none;" id="verTasa" value="/img/edit.png" />
-            </h:commandLink>
-        </rich:column>
-        </h:form>
+            
+            <s:link view="/TipogastoEdit.xhtml"
+                   value="Editar"
+             propagation="none"
+                      id="tipogastoEdit"
+                rendered="#{empty from}">
+                <f:param name="tipogastoCodtipogasto"
+                        value="#{_tipogasto.codtipogasto}"/>
+            </s:link>
         </rich:column>
     </rich:dataTable>
 

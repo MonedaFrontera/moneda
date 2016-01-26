@@ -922,11 +922,11 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public void editarTasaGlobal(Integer consecutivo, String moneda) throws ParseException{
 		
-    	log.info("Edicion Tasa Global..");
+    	
+		log.info("Edicion Tasa Global..");
     	System.out.println("Consecutivo Recibido: " + consecutivo);
     	System.out.println("Moneda Recibida:" + moneda);
     	
-    	tasadolarpromotorparametroHome.setInstance(new Tasadolarpromotorparametro() );
     	
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
@@ -953,6 +953,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		//3. Establezco los metodos Setter de los campos del formulario
     		this.setPaisTemp(tsp.getPais());
     		this.setEstaTemp(tsp.getEstablecimiento());
+    		this.setNomEstable(this.getEstaTemp().getNombreestable());
     		this.setFrqTemp(tsp.getFranquicia());
     		this.setBancoTemp(tsp.getBanco());
     		this.setTipoCupoTemp(tsp.getTipocupo());
@@ -985,13 +986,14 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		//3. Establezco los metodos Setter de los campos del formulario
     		this.setPaisTemp(tsp.getPais());
     		this.setEstaTemp(tsp.getEstablecimiento());
+    		this.setNomEstable(this.getEstaTemp().getNombreestable());
     		this.setFrqTemp(tsp.getFranquicia());
     		this.setBancoTemp(tsp.getBanco());
     		this.setTipoCupoTemp(tsp.getTipocupo());
     		this.setFechaIniTemp(tsp.getFechainicio());
-    		this.setTasaEuroTemp(tsp.getTasadolar());
-    		this.setTasaEuroTacTemp(tsp.getTasadolarTac());
-    		this.setTasaEuroOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
+    		this.setTasaDolarTemp(tsp.getTasadolar());
+    		this.setTasaDolarTacTemp(tsp.getTasadolarTac());
+    		this.setTasaDolarOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
     		this.setPorcentCt(porcentaje.getPorcentaje());
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
     		this.setParidadClienteTemp(estPrecio.getParidad());
@@ -1000,9 +1002,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	
     	//Implementar Auditoria Consulto el detalle de la tasa de dolar 
     	
+    	
+    	
     }
-    
-	
 	
     
     public void actualizarTasasGlobal(){

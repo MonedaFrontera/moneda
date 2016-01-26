@@ -204,17 +204,7 @@ public class AdministrarPromotor {
 			              "and " +
 			            "g.personal.documento = '"+documento+"' ").getSingleResult();
 
-		/*
-		 * gastostotal =entityManager.createQuery(
-		 * "SELECT sum(case when g.tipogasto.tipo = '1' then g.valor else 0 end) as tdebito, "
-		 * +
-		 * "sum(case when g.tipogasto.tipo = '2' then g.valor else 0 end) as tcredito"
-		 * + " FROM Gastos g " +
-		 * 
-		 * "WHERE g.fecha = '"+sdf.format(fecha)+"' and " +
-		 * "g.personal.documento = '"+documento+"' ").getSingleResult();
-		 */
-
+		
 		System.out.println("Inicio de Consulta>>");
 		balances = entityManager.createNativeQuery("SELECT " +
 				  "tarjeta.numerotarjeta, " +  //0
@@ -420,7 +410,7 @@ public class AdministrarPromotor {
 	                        "and (transacciones.promotor = '" + documento + "' or " +
 	                  "depositos.promotor = '" + documento + "') ) tot").getSingleResult();
 	      
-		System.out.println("LA CONSULTA ANTERIOR ES LA DE LA GUI");
+		
 		AdministrarUsuario.auditarUsuario(17, "Consulto balance de promotor "
 				+ documento + " en la fecha " + sdf.format(this.fecha) + "");
 
