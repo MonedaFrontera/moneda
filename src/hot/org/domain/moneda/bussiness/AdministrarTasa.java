@@ -942,14 +942,15 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), 
     									   						sdf.parse(sdf.format( tsp.getFechainicio()))));
     		String queryString = "select p from Porcentajecomisiontxparam p where " +
-    							 "p.fechainicio = '" + tsp.getFechainicio() + "'  " +
+    							 "p.fechainicio = '" + sdf.format(tsp.getFechainicio()) + "'  " +
     							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
     							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
-    							 "and p.franquicia.codfranquicia = '" + tsp.getFranquicia().getCodfranquicia() + "' " +  
-    							 "and p.banco.codbanco = '" + tsp.getBanco().getCodbanco() + "' ";
+    							 "and p.franquicia.codfranquicia " + (tsp.getFranquicia() == null ? " is null " : "'"+ tsp.getFranquicia().getCodfranquicia() +"'" ) + 
+    							 "and p.banco.codbanco " + (tsp.getBanco() == null ? " is null" : "'" + tsp.getBanco().getCodbanco() +"'") ;
     		//c.
+    		System.out.println("Paridad: "+estPrecio.getParidadCliente());
     		Porcentajecomisiontxparam porcentaje = 
-    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString);
+    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString).getSingleResult();
     		//3. Establezco los metodos Setter de los campos del formulario
     		this.setPaisTemp(tsp.getPais());
     		this.setEstaTemp(tsp.getEstablecimiento());
@@ -963,7 +964,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		this.setTasaEuroOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
     		this.setPorcentCt(porcentaje.getPorcentaje());
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
-    		this.setParidadClienteTemp(estPrecio.getParidad());
+    		this.setParidadClienteTemp(estPrecio.getParidadCliente());
     		
     	}else{//Caso para Dolar
     		//a.
@@ -996,7 +997,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		this.setTasaDolarOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
     		this.setPorcentCt(porcentaje.getPorcentaje());
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
-    		this.setParidadClienteTemp(estPrecio.getParidad());
+    		this.setParidadClienteTemp(estPrecio.getParidadCliente());
     		
     	}
     	
