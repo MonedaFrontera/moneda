@@ -923,7 +923,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	System.out.println("Consecutivo Recibido: " + consecutivo);
     	System.out.println("Moneda Recibida:" + moneda);
     	
-    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/)yyyy");
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
     	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
     	//						    b. Establecimientoprecio 
@@ -963,25 +963,20 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		//a.
     		Tasadolarparametro tsp = entityManager.find(Tasadolarparametro.class, consecutivo);
     		//b.
-    		
-    		System.out.println( sdf.parse(sdf.format( tsp.getFechainicio())) );
-    		
     		Establecimientoprecio estPrecio = 
     			entityManager.find(Establecimientoprecio.class, 
     							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), 
     									   						sdf.parse(sdf.format( tsp.getFechainicio()))));
-    		System.out.println("Tabla EstablecimientoPrecio:" + estPrecio.getId().getCodigounico());
     		String queryString = "select p from Porcentajecomisiontxparam p where " +
-    							 "p.fechainicio = '" + sdf.parse(sdf.format(tsp.getFechainicio())) + "'  " +
+    							 "p.fechainicio = '" + sdf.format(tsp.getFechainicio()) + "'  " +
     							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
     							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
-    							 "and p.franquicia.codfranquicia = '" + (tsp.getFranquicia() == null ? "null" : tsp.getFranquicia().getCodfranquicia()) + "' " +  
-    							 "and p.banco.codbanco = '" + (tsp.getBanco() == null ? "null" : tsp.getBanco().getCodbanco()) + "' ";
-    		
-    		System.out.println(queryString);
+    							 "and p.franquicia.codfranquicia " + (tsp.getFranquicia() == null ? " is null " : "'"+ tsp.getFranquicia().getCodfranquicia() +"'" ) + 
+    							 "and p.banco.codbanco " + (tsp.getBanco() == null ? " is null" : "'" + tsp.getBanco().getCodbanco() +"'") ;
     		//c.
     		Porcentajecomisiontxparam porcentaje = 
-    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString);
+    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString).getSingleResult();
+    		
     		//3. Establezco los metodos Setter de los campos del formulario
     		this.setPaisTemp(tsp.getPais());
     		this.setEstaTemp(tsp.getEstablecimiento());
