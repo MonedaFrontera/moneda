@@ -966,6 +966,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
     		this.setParidadClienteTemp(estPrecio.getParidadCliente());
     		
+    		AdministrarUsuario.auditarUsuario(41, "Consulto Tasa Euro para el Establecimiento: " +this.getEstaTemp().getNombreestable() +
+    				" En la fecha: " + sdf.format(tsp.getFechainicio()));
+    		
     	}else{//Caso para Dolar
     		//a.
     		Tasadolarparametro tsp = entityManager.find(Tasadolarparametro.class, consecutivo);
@@ -999,11 +1002,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
     		this.setParidadClienteTemp(estPrecio.getParidadCliente());
     		
+    		AdministrarUsuario.auditarUsuario(41, "Consulto Tasa de Dolar para el Establecimiento: " +this.getEstaTemp().getNombreestable() +
+    				" En la fecha: " + sdf.format(tsp.getFechainicio()));
+    		
     	}
     	
     	//Implementar Auditoria Consulto el detalle de la tasa de dolar 
-    	
-    	
     	
     }
 	
