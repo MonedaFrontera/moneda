@@ -918,11 +918,12 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 	
 	
-	public void editarTasaGlobal(Integer consecutivo, String moneda){
+	public void editarTasaGlobal(Integer consecutivo, String moneda) throws ParseException{
     	log.info("Edicion Tasa Global..");
     	System.out.println("Consecutivo Recibido: " + consecutivo);
     	System.out.println("Moneda Recibida:" + moneda);
     	
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/)yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
     	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
     	//						    b. Establecimientoprecio 
@@ -933,7 +934,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		//b.
     		Establecimientoprecio estPrecio = 
     			entityManager.find(Establecimientoprecio.class, 
-    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), tsp.getFechainicio()));
+    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), 
+    									   						sdf.parse(sdf.format( tsp.getFechainicio()))));
     		String queryString = "select p from Porcentajecomisiontxparam p where " +
     							 "p.fechainicio = '" + tsp.getFechainicio() + "'  " +
     							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
@@ -943,26 +945,59 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     		//c.
     		Porcentajecomisiontxparam porcentaje = 
     						(Porcentajecomisiontxparam) entityManager.createQuery(queryString);
-    		
+    		//3. Establezco los metodos Setter de los campos del formulario
+    		this.setPaisTemp(tsp.getPais());
+    		this.setEstaTemp(tsp.getEstablecimiento());
+    		this.setFrqTemp(tsp.getFranquicia());
+    		this.setBancoTemp(tsp.getBanco());
+    		this.setTipoCupoTemp(tsp.getTipocupo());
+    		this.setFechaIniTemp(tsp.getFechainicio());
+    		this.setTasaEuroTemp(tsp.getTasaeuro());
+    		this.setTasaEuroTacTemp(tsp.getTasaeuroTac());
+    		this.setTasaEuroOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
+    		this.setPorcentCt(porcentaje.getPorcentaje());
+    		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
+    		this.setParidadClienteTemp(estPrecio.getParidad());
     		
     	}else{//Caso para Dolar
     		//a.
     		Tasadolarparametro tsp = entityManager.find(Tasadolarparametro.class, consecutivo);
     		//b.
+    		
+    		System.out.println( sdf.parse(sdf.format( tsp.getFechainicio())) );
+    		
     		Establecimientoprecio estPrecio = 
     			entityManager.find(Establecimientoprecio.class, 
-    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), tsp.getFechainicio()));
+    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), 
+    									   						sdf.parse(sdf.format( tsp.getFechainicio()))));
+    		System.out.println("Tabla EstablecimientoPrecio:" + estPrecio.getId().getCodigounico());
     		String queryString = "select p from Porcentajecomisiontxparam p where " +
-    							 "p.fechainicio = '" + tsp.getFechainicio() + "'  " +
+    							 "p.fechainicio = '" + sdf.parse(sdf.format(tsp.getFechainicio())) + "'  " +
     							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
     							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
-    							 "and p.franquicia.codfranquicia = '" + tsp.getFranquicia().getCodfranquicia() + "' " +  
-    							 "and p.banco.codbanco = '" + tsp.getBanco().getCodbanco() + "' ";
+    							 "and p.franquicia.codfranquicia = '" + (tsp.getFranquicia() == null ? "null" : tsp.getFranquicia().getCodfranquicia()) + "' " +  
+    							 "and p.banco.codbanco = '" + (tsp.getBanco() == null ? "null" : tsp.getBanco().getCodbanco()) + "' ";
+    		
+    		System.out.println(queryString);
     		//c.
     		Porcentajecomisiontxparam porcentaje = 
     						(Porcentajecomisiontxparam) entityManager.createQuery(queryString);
+    		//3. Establezco los metodos Setter de los campos del formulario
+    		this.setPaisTemp(tsp.getPais());
+    		this.setEstaTemp(tsp.getEstablecimiento());
+    		this.setFrqTemp(tsp.getFranquicia());
+    		this.setBancoTemp(tsp.getBanco());
+    		this.setTipoCupoTemp(tsp.getTipocupo());
+    		this.setFechaIniTemp(tsp.getFechainicio());
+    		this.setTasaEuroTemp(tsp.getTasadolar());
+    		this.setTasaEuroTacTemp(tsp.getTasadolarTac());
+    		this.setTasaEuroOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
+    		this.setPorcentCt(porcentaje.getPorcentaje());
+    		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
+    		this.setParidadClienteTemp(estPrecio.getParidad());
+    		
     	}
-    	//3. Establezco los metodos Setter de los campos del formulario
+    	
     	
     	
     	
