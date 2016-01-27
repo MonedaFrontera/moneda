@@ -175,6 +175,7 @@ public class AdministrarTasa
 	private Tasaeuroparametro tsEuroParam;
 	private Tasadolarpromotorparametro tsDolarPromo;		
 	private Tasadolarparametro tsDolarParam;
+	private Establecimientoprecio estPrecio;
 	
 	private Porcentcomisiontxparampromo porcentajePromo;
 	private Porcentajecomisiontxparam porcentajeGlob;
@@ -252,6 +253,38 @@ public class AdministrarTasa
 	}
 	
 	
+	public Tasaeuroparametro getTsEuroParam() {
+		return tsEuroParam;
+	}
+
+	public void setTsEuroParam(Tasaeuroparametro tsEuroParam) {
+		this.tsEuroParam = tsEuroParam;
+	}
+
+	public Tasadolarparametro getTsDolarParam() {
+		return tsDolarParam;
+	}
+
+	public void setTsDolarParam(Tasadolarparametro tsDolarParam) {
+		this.tsDolarParam = tsDolarParam;
+	}
+
+	public Establecimientoprecio getEstPrecio() {
+		return estPrecio;
+	}
+
+	public void setEstPrecio(Establecimientoprecio estPrecio) {
+		this.estPrecio = estPrecio;
+	}
+
+	public Porcentajecomisiontxparam getPorcentajeGlob() {
+		return porcentajeGlob;
+	}
+
+	public void setPorcentajeGlob(Porcentajecomisiontxparam porcentajeGlob) {
+		this.porcentajeGlob = porcentajeGlob;
+	}
+
 	public Boolean getManagedTasa() {
 		return managedTasa;
 	}
@@ -943,83 +976,84 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public void editarTasaGlobal(Integer consecutivo, String moneda) 
 													throws ParseException{	
 		log.info("Edicion Tasa Global..");
+		this.setTipoMoneda(moneda);
 		this.setManagedTasa(false); 
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     	//1. Determinar la moneda Euros o Dolares a Editar
     	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
     	//						    b. Establecimientoprecio 
     	// 						    c. Porcentajecomisiontxparam
-    	if(moneda.equals("EUR")){  
+    	if(this.getTipoMoneda().equals("EUR")){  
     		//a.
-    		Tasaeuroparametro tsp = entityManager.find(Tasaeuroparametro.class, consecutivo);
+    		this.setTsEuroParam( entityManager.find(Tasaeuroparametro.class, consecutivo) );
     		//b.
-    		Establecimientoprecio estPrecio = 
+    		this.setEstPrecio(
     			entityManager.find(Establecimientoprecio.class, 
-    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), 
-    									   						sdf.parse(sdf.format( tsp.getFechainicio()))));
+    							   new EstablecimientoprecioId( this.getTsEuroParam().getEstablecimiento().getCodigounico(), 
+    									   						sdf.parse(sdf.format( this.getTsEuroParam().getFechainicio())))));
     		String queryString = "select p from Porcentajecomisiontxparam p where " +
-    							 "p.fechainicio = '" + sdf.format(tsp.getFechainicio()) + "'  " +
-    							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
-    							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
-    							 "and p.franquicia.codfranquicia " + (tsp.getFranquicia() == null ? " is null " : "'"+ tsp.getFranquicia().getCodfranquicia() +"'" ) + 
-    							 "and p.banco.codbanco " + (tsp.getBanco() == null ? " is null" : "'" + tsp.getBanco().getCodbanco() +"'") ;
+    							 "p.fechainicio = '" + sdf.format(this.getTsEuroParam().getFechainicio()) + "'  " +
+    							 "and p.pais.codigopais = '" + this.getTsEuroParam().getPais().getCodigopais() + "' " +
+    							 "and p.establecimiento.codigounico = '" + this.getTsEuroParam().getEstablecimiento().getCodigounico()+ "' " +
+    							 "and p.franquicia.codfranquicia " + (this.getTsEuroParam().getFranquicia() == null ? " is null " : "'"+ this.getTsEuroParam().getFranquicia().getCodfranquicia() +"'" ) + 
+    							 "and p.banco.codbanco " + (this.getTsEuroParam().getBanco() == null ? " is null" : "'" + this.getTsEuroParam().getBanco().getCodbanco() +"'") ;
     		//c.
     		System.out.println("Paridad: "+estPrecio.getParidadCliente());
-    		Porcentajecomisiontxparam porcentaje = 
-    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString).getSingleResult();
+    		this.setPorcentajeGlob(
+    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString).getSingleResult());
     		//3. Establezco los metodos Setter de los campos del formulario
-    		this.setPaisTemp(tsp.getPais());
-    		this.setEstaTemp(tsp.getEstablecimiento());
+    		this.setPaisTemp(this.getTsEuroParam().getPais());
+    		this.setEstaTemp(this.getTsEuroParam().getEstablecimiento());
     		this.setNomEstable(this.getEstaTemp().getNombreestable());
-    		this.setFrqTemp(tsp.getFranquicia());
-    		this.setBancoTemp(tsp.getBanco());
-    		this.setTipoCupoTemp(tsp.getTipocupo());
-    		this.setFechaIniTemp(tsp.getFechainicio());
-    		this.setTasaEuroTemp(tsp.getTasaeuro());
-    		this.setTasaEuroTacTemp(tsp.getTasaeuroTac());
-    		this.setTasaEuroOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
-    		this.setPorcentCt(porcentaje.getPorcentaje());
-    		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
-    		this.setParidadClienteTemp(estPrecio.getParidadCliente());
+    		this.setFrqTemp(this.getTsEuroParam().getFranquicia());
+    		this.setBancoTemp(this.getTsEuroParam().getBanco());
+    		this.setTipoCupoTemp(this.getTsEuroParam().getTipocupo());
+    		this.setFechaIniTemp(this.getTsEuroParam().getFechainicio());
+    		this.setTasaEuroTemp(this.getTsEuroParam().getTasaeuro());
+    		this.setTasaEuroTacTemp(this.getTsEuroParam().getTasaeuroTac());
+    		this.setTasaEuroOfTemp(this.getEstPrecio().getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
+    		this.setPorcentCt(this.getPorcentajeGlob().getPorcentaje());
+    		this.setPorcentOfi(this.getEstPrecio().getPorcentajeoficina());
+    		this.setParidadClienteTemp(this.getEstPrecio().getParidadCliente());
     		//Auditoria
     		AdministrarUsuario.auditarUsuario(41, "Consulto Tasa Euro para el Establecimiento: " +this.getEstaTemp().getNombreestable() +
-    				" En la fecha: " + sdf.format(tsp.getFechainicio()));
+    				" En la fecha: " + sdf.format(this.getTsEuroParam().getFechainicio()));
     		
     	}else{//Caso para Dolar
     		//a.
-    		Tasadolarparametro tsp = entityManager.find(Tasadolarparametro.class, consecutivo);
+    		this.setTsDolarParam( entityManager.find(Tasadolarparametro.class, consecutivo));
     		//b.
-    		Establecimientoprecio estPrecio = 
+    		this.setEstPrecio(
     			entityManager.find(Establecimientoprecio.class, 
-    							   new EstablecimientoprecioId( tsp.getEstablecimiento().getCodigounico(), 
-    									   						sdf.parse(sdf.format( tsp.getFechainicio()))));
+    							   new EstablecimientoprecioId( this.getTsDolarParam().getEstablecimiento().getCodigounico(), 
+    									   						sdf.parse(sdf.format( this.getTsDolarParam().getFechainicio())))));
     		String queryString = "select p from Porcentajecomisiontxparam p where " +
-    							 "p.fechainicio = '" + sdf.format(tsp.getFechainicio()) + "'  " +
-    							 "and p.pais.codigopais = '" + tsp.getPais().getCodigopais() + "' " +
-    							 "and p.establecimiento.codigounico = '" + tsp.getEstablecimiento().getCodigounico()+ "' " +
-    							 "and p.franquicia.codfranquicia " + (tsp.getFranquicia() == null ? " is null " : "'"+ tsp.getFranquicia().getCodfranquicia() +"'" ) + 
-    							 "and p.banco.codbanco " + (tsp.getBanco() == null ? " is null" : "'" + tsp.getBanco().getCodbanco() +"'") ;
+    							 "p.fechainicio = '" + sdf.format(this.getTsDolarParam().getFechainicio()) + "'  " +
+    							 "and p.pais.codigopais = '" + this.getTsDolarParam().getPais().getCodigopais() + "' " +
+    							 "and p.establecimiento.codigounico = '" + this.getTsDolarParam().getEstablecimiento().getCodigounico()+ "' " +
+    							 "and p.franquicia.codfranquicia " + (this.getTsDolarParam().getFranquicia() == null ? " is null " : "'"+ this.getTsDolarParam().getFranquicia().getCodfranquicia() +"'" ) + 
+    							 "and p.banco.codbanco " + (this.getTsDolarParam().getBanco() == null ? " is null" : "'" + this.getTsDolarParam().getBanco().getCodbanco() +"'") ;
     		//c.
-    		Porcentajecomisiontxparam porcentaje = 
-    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString).getSingleResult();
+    		this.setPorcentajeGlob(
+    						(Porcentajecomisiontxparam) entityManager.createQuery(queryString).getSingleResult());
     		
     		//3. Establezco los metodos Setter de los campos del formulario
-    		this.setPaisTemp(tsp.getPais());
-    		this.setEstaTemp(tsp.getEstablecimiento());
+    		this.setPaisTemp(this.getTsDolarParam().getPais());
+    		this.setEstaTemp(this.getTsDolarParam().getEstablecimiento());
     		this.setNomEstable(this.getEstaTemp().getNombreestable());
-    		this.setFrqTemp(tsp.getFranquicia());
-    		this.setBancoTemp(tsp.getBanco());
-    		this.setTipoCupoTemp(tsp.getTipocupo());
-    		this.setFechaIniTemp(tsp.getFechainicio());
-    		this.setTasaDolarTemp(tsp.getTasadolar());
-    		this.setTasaDolarTacTemp(tsp.getTasadolarTac());
-    		this.setTasaDolarOfTemp(estPrecio.getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
-    		this.setPorcentCt(porcentaje.getPorcentaje());
-    		this.setPorcentOfi(estPrecio.getPorcentajeoficina());
-    		this.setParidadClienteTemp(estPrecio.getParidadCliente());
+    		this.setFrqTemp(this.getTsDolarParam().getFranquicia());
+    		this.setBancoTemp(this.getTsDolarParam().getBanco());
+    		this.setTipoCupoTemp(this.getTsDolarParam().getTipocupo());
+    		this.setFechaIniTemp(this.getTsDolarParam().getFechainicio());
+    		this.setTasaDolarTemp(this.getTsDolarParam().getTasadolar());
+    		this.setTasaDolarTacTemp(this.getTsDolarParam().getTasadolarTac());
+    		this.setTasaDolarOfTemp(this.getEstPrecio().getDolaroficina());//El campo es dolar pero graba datos de Euro tambien
+    		this.setPorcentCt(this.getPorcentajeGlob().getPorcentaje());
+    		this.setPorcentOfi(this.getEstPrecio().getPorcentajeoficina());
+    		this.setParidadClienteTemp(this.getEstPrecio().getParidadCliente());
     		//Auditoria
     		AdministrarUsuario.auditarUsuario(41, "Consulto Tasa de Dolar para el Establecimiento: " +this.getEstaTemp().getNombreestable() +
-    				" En la fecha: " + sdf.format(tsp.getFechainicio()));
+    				" En la fecha: " + sdf.format(this.getTsDolarParam().getFechainicio()));
     	}
     }
 	
@@ -1027,7 +1061,19 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     public void actualizarTasasGlobal(){
     	//1.Crea los objetos del contexto actual
     	
-    	//2.Update a los daots
+    	
+    	if(this.getTipoMoneda().equals("EUR")){
+    		//Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
+    		
+        	//						    b. Establecimientoprecio 
+        	// 						    c. Porcentajecomisiontxparam
+    		
+    	}else{
+    		//1. Determinar la moneda Euros o Dolares a Editar
+        	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
+        	//						    b. Establecimientoprecio 
+        	// 						    c. Porcentajecomisiontxparam
+    	}
     	
     	//3.Auditoria
     	
@@ -1669,7 +1715,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					this.enviarMailAlertas.enviarEmailAlertaTasaPromotor("euro", ases, tasaTemp, this.getTasaEuroTemp(), this.getPorcentCt());
 					}
 					tasaTemp=null;					
-				}
+				}//fin del for
 			}else{
 				// busca en tasa dolar global
 				//Consulta las tasas y porcentajes para promotores que no se han cerrado y cuyo valor sea menor que la tasa actual Global
@@ -2529,7 +2575,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 */
 	public void cerrarParametrosComercio(){
 		try {
-			log.info("");
 			log.info("CerrandoParametros Establecimiento");
 			
 			Establecimientoprecio  estPrecio = null;
