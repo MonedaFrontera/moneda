@@ -29,7 +29,7 @@
 			<s:decorate id="codigopaisField" template="layout/edit.xhtml">
                 <ui:define name="label">Pais</ui:define>
                 <h:selectOneMenu id="paisSel" value="#{AdministrarTasa.paisTemp}" required="true" >
-				<s:selectItems value="#{paisList.resultList}" var="pais" label="#{pais.nombre}" 
+				<s:selectItems value="#{AdministrarTasa.paisList()}" var="pais" label="#{pais.nombre}" 
 			                    noSelectionLabel="Seleccione..." />
 			    <s:convertEntity />
 			    <a:support event="onchange" action="#{AdministrarTasa.listarComercios(AdministrarTasa.paisTemp.codigopais)}" 
@@ -321,7 +321,7 @@
             <h:commandButton id="update"
                           value="Actualizar"
                          action="#{AdministrarTasa.actualizarTasasGlobal()}"
-                       rendered="#{AdministrarTasa.managedTasa==false}"/>
+                       rendered="#{AdministrarTasa.managedTasa}"/>
                        
             <s:button id="cancelEdit"
                    value="Cancel"

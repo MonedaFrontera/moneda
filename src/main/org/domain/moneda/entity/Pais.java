@@ -108,7 +108,7 @@ public class Pais implements java.io.Serializable {
 		this.paisiso = paisiso;
 	}
 
-	@Column(name = "nombre", length = 25)
+	@Column(name = "nombre", length = 45)
 	@Length(max = 25)
 	public String getNombre() {
 		return this.nombre;

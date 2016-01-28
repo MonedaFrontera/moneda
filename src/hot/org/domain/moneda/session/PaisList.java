@@ -9,7 +9,7 @@ import java.util.Arrays;
 @Name("paisList")
 public class PaisList extends EntityQuery<Pais> {
 
-	private static final String EJBQL = "select pais from Pais pais where pais.estado = 1";
+	private static final String EJBQL = "select pais from Pais pais";
 
 	private static final String[] RESTRICTIONS = {
 			"lower(pais.codigopais) like lower(concat(#{paisList.pais.codigopais},'%'))",

@@ -95,6 +95,8 @@ public class AdministrarTasa
     
     List<Tasadolar> listaTasadolar = new ArrayList<Tasadolar>();
     
+    private List<Pais> paisList = new ArrayList<Pais>();
+     
     //Coleccion de dolar y euro para paginas List
     private List<Tasadolarparametro> tasaDolarList = new ArrayList<Tasadolarparametro>();
     private List<Tasaeuroparametro> tasaEuroList = new ArrayList<Tasaeuroparametro>();
@@ -291,6 +293,14 @@ public class AdministrarTasa
 
 	public void setManagedTasa(Boolean managedTasa) {
 		this.managedTasa = managedTasa;
+	}
+	
+	public List<Pais> getPaisList() {
+		return paisList;
+	}
+
+	public void setPaisList(List<Pais> paisList) {
+		this.paisList = paisList;
 	}
 
 	public void buscarTasaBolivarOficina(){
@@ -986,6 +996,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	if(this.getTipoMoneda().equals("EUR")){  
     		//a.
     		this.setTsEuroParam( entityManager.find(Tasaeuroparametro.class, consecutivo) );
+    		this.getTasaeuroparametroHome().setInstance(this.getTsEuroParam());
+    		
     		//b.
     		this.setEstPrecio(
     			entityManager.find(Establecimientoprecio.class, 
@@ -1064,7 +1076,22 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	
     	if(this.getTipoMoneda().equals("EUR")){
     		//Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
+    		System.out.println("Actualizando Tasa Euros.......");
+    		System.out.println("Actualizando Establecimiento: " + 
+    				this.getTsEuroParam().getEstablecimiento().getNombreestable());
     		
+    		this.getTasaeuroparametroHome().getInstance().setConsecutivo(this.getTsEuroParam().getConsecutivo());
+    		this.getTasaeuroparametroHome().getInstance().setTasaeuro(this.getTasaEuroTemp());
+    		
+    		
+    		System.out.println("Est.. edi " +
+    				this.getTasaeuroparametroHome().getInstance().getEstablecimiento().getNombreestable());
+    		System.out.println("Nueva Tasa Varible del Formul: " + this );
+    		System.out.println("Nueva Tasa Objeto Persistente: " + this.getTasaeuroparametroHome().getInstance().getTasaeuro());
+    		
+    		String mensaje = this.tasaeuroparametroHome.update();
+    		
+    		System.out.println(mensaje);
         	//						    b. Establecimientoprecio 
         	// 						    c. Porcentajecomisiontxparam
     		
@@ -1117,6 +1144,11 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.listaTasabolivarnegociado = null;
 	}
 	
+	
+	public List<Pais> paisList(){
+		return 
+		entityManager.createQuery("select pais from Pais pais where pais.estado = 1").getResultList();
+	}
 	
    //Getter and Setter variables del formulario
    

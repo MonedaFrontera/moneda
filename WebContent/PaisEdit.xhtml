@@ -39,15 +39,20 @@
             <s:decorate id="nombreField" template="layout/edit.xhtml">
                 <ui:define name="label">Nombre</ui:define>
                 <h:inputText id="nombre"
-                           size="25"
-                      maxlength="25"
+                           size="45"
+                      maxlength="45"
                           value="#{paisHome.instance.nombre}">
                     <a:support event="onblur" reRender="nombreField"
                     action="#{AdministrarPais.nombreMayuscula(paisHome.instance.nombre)}"                    
                      ajaxSingle="true"/>
                 </h:inputText>
             </s:decorate>
-
+			
+			<s:decorate id="estadoField" template="layout/edit.xhtml">
+                <ui:define name="label">Activo</ui:define>
+                <h:selectBooleanCheckbox id="paisActivo"
+                                      value="#{paisHome.instance.estado}"/>
+            </s:decorate>
 
             <div style="clear:both">
                 <span class="required">*</span>
