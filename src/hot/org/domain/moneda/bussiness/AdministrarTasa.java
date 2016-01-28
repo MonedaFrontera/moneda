@@ -1147,7 +1147,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public List<Pais> paisList(){
 		return 
-		entityManager.createQuery("select pais from Pais pais where pais.estado = 1").getResultList();
+		entityManager.createQuery(
+				"select pais from Pais pais where pais.estado = 1 order by pais.nombre").getResultList();
 	}
 	
    //Getter and Setter variables del formulario

@@ -49,8 +49,8 @@
             </s:decorate>
 			
 			<s:decorate id="estadoField" template="layout/edit.xhtml">
-                <ui:define name="label">Activo</ui:define>
-                <h:selectBooleanCheckbox id="paisActivo"
+                <ui:define name="label">Estado</ui:define>
+                <h:selectBooleanCheckbox id="estado"
                                       value="#{paisHome.instance.estado}"/>
             </s:decorate>
 
@@ -62,6 +62,8 @@
         </rich:panel>
 
         <div class="actionButtons">
+        
+        	
 
             <h:commandButton id="save"
                           value="Guardar"

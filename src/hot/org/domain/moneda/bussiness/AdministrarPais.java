@@ -39,6 +39,8 @@ public class AdministrarPais {
     @In(create=true) @Out 
 	private PaisHome paisHome;
     
+    private Boolean estado;
+    
     public void administrarPais()
     {
         // implement your business logic here
@@ -103,7 +105,23 @@ public class AdministrarPais {
     }
     
     
-    public String guardar(){
+    public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
+	}
+	
+	public void activarPais(){
+		if(this.getEstado()){
+			paisHome.getInstance().setEstado(true);
+		}else{
+			paisHome.getInstance().setEstado(false);
+		}
+	}
+
+	public String guardar(){
     	/*
     	java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("dd/MM/yyyy");
 		
@@ -155,9 +173,7 @@ public class AdministrarPais {
     
     // Pasa a mayuscula la primera letra del nombre - elimina espacios
 	public void nombreMayuscula(String nombre) {
-		System.out.println(">>>>>NOMBRE DE PAIS RECIBIDO: " + nombre);
 		String nombreTemp = ExpresionesRegulares.eliminarEspacios(nombre, true);
-		System.out.println(">>>>>NOMBRE DE PAIS EDITADO : " + nombreTemp);
 		paisHome.getInstance().setNombre(nombreTemp);
 		
 	}
@@ -167,7 +183,6 @@ public class AdministrarPais {
 		
 		Paisiso paisIso = entityManager.find( 
 				Paisiso.class, paisHome.getInstance().getCodigopais().substring(0, 2));
-		
 		paisHome.getInstance().setPaisiso( paisIso);
 		String nombreTemp = ExpresionesRegulares.eliminarEspacios(paisHome.getInstance().getNombre(), true);
 		paisHome.getInstance().setNombre(nombreTemp);
@@ -181,10 +196,13 @@ public class AdministrarPais {
 	
    public String actualizarPais(){
 	   
-	   String nombreTemp = ExpresionesRegulares.eliminarEspacios(paisHome.getInstance().getNombre(), true);
-		paisHome.getInstance().setNombre(nombreTemp);
-		entityManager.persist(paisHome.getInstance());
-		entityManager.flush();
+	    String nombreTemp = ExpresionesRegulares.eliminarEspacios(paisHome.getInstance().getNombre(), true);
+	    String queryString = "update public.pais set " + 
+	    " nombre= '" + paisHome.getInstance().getNombre().trim() + "', "+ 
+	    " estado= " + (paisHome.getInstance().getEstado() ? "1" : "0" )+
+	    " where public.pais.codigopais = '" + paisHome.getInstance().getCodigopais() +"'";
+	    System.out.println("QueryString: " + queryString );
+	    entityManager.createNativeQuery(queryString).executeUpdate();
 		entityManager.clear();
 	   return "updated";
    }
