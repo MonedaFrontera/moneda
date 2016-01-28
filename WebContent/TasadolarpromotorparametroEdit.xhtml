@@ -319,9 +319,9 @@
                          action="#{AdministrarTasa.guardarTasaDolarParam}"
                        rendered="#{AdministrarTasa.managedTasa}"/>
             <h:commandButton id="update"
-                          value="Actualizar"
+                           value="Actualizar"
                          action="#{AdministrarTasa.actualizarTasasGlobal()}"
-                       rendered="#{AdministrarTasa.managedTasa}"/>
+                       rendered="#{AdministrarTasa.managedTasa==false}"/>
                        
             <s:button id="cancelEdit"
                    value="Cancel"

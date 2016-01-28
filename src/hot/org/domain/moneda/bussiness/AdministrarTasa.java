@@ -1445,44 +1445,53 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 	
 	public List<String> autocompletarEstablecimientoTasas(Object nomEst) {
-		
-		long t1 = System.currentTimeMillis();
-
-		llenarEstablcimiento();
-		String nombre = (String) nomEst;
 		List<String> result = new ArrayList<String>();
-		StringTokenizer tokens = new StringTokenizer(nombre.toLowerCase());
-		StringBuilder bldr = new StringBuilder();//builder usado para formar el patron
-		
-		// creamos el patron para la busqueda
-		int lengthToken = nombre.split("\\s+").length;// longitud de palabras
-														// en el nombre
-		int cont = 1;
-		while (tokens.hasMoreTokens()) {			
-			if (cont == lengthToken && lengthToken == 1) {
-				bldr.append(".*").append(tokens.nextToken()).append(".*");
-			} else {
-				if (cont++ < lengthToken--) {
+		try {
+			long t1 = System.currentTimeMillis();
+
+			llenarEstablcimiento();
+			String nombre = (String) nomEst;
+			
+			StringTokenizer tokens = new StringTokenizer(nombre.toLowerCase());
+			StringBuilder bldr = new StringBuilder();//builder usado para formar el patron
+			
+			// creamos el patron para la busqueda
+			int lengthToken = nombre.split("\\s+").length;// longitud de palabras
+															// en el nombre
+			int cont = 1;
+			while (tokens.hasMoreTokens()) {			
+				if (cont == lengthToken && lengthToken == 1) {
 					bldr.append(".*").append(tokens.nextToken()).append(".*");
-					lengthToken--;
 				} else {
-					bldr.append(tokens.nextToken()).append(".*");
+					if (cont++ < lengthToken--) {
+						bldr.append(".*").append(tokens.nextToken()).append(".*");
+						lengthToken--;
+					} else {
+						bldr.append(tokens.nextToken()).append(".*");
+					}
 				}
-			}
-		}		
-		Pattern p = Pattern.compile(bldr.toString().trim());
-		Matcher match;		
-		// realiza la busqueda
-		for (String establecimiento : lista) {			
-			match = p.matcher(establecimiento.toLowerCase());
-			boolean b = match.find();
-			if (b) {
-				result.add(establecimiento);				
 			}		
+			Pattern p = Pattern.compile(bldr.toString().trim());
+			Matcher match;		
+			// realiza la busqueda
+			for (String establecimiento : lista) {			
+				match = p.matcher(establecimiento.toLowerCase());
+				boolean b = match.find();
+				if (b) {
+					result.add(establecimiento);				
+				}		
+			}
+			long t2 = System.currentTimeMillis() - t1;
+			log.info(">>>Tiempo total de la busqueda: " + t2 + "ms");	
+			
+		} catch (Exception e) {
+			result = null;
+			e.printStackTrace();
+			facesMessages.addToControl("paisSel",
+			"Se debe seleccionar un pais");
+		return null;
 		}
-		long t2 = System.currentTimeMillis() - t1;
-		log.info(">>>Tiempo total de la busqueda: " + t2 + "ms");	
-	return result;
+		return result;
 	}
 	
 	public void listarComercios( String codPaisT){
@@ -1506,6 +1515,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	 * @return 
 	 */
 	public String guardarTasaDolarParam(){			
+		
+		//Dos Tipos de Validaciones Global y Negociado
 		
 		// Valida que se haya elegido un pais
 		if( this.getPaisTemp() == null || this.getPaisTemp().equals("") ){
