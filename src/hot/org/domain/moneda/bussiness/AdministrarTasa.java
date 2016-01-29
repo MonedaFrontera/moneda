@@ -1518,6 +1518,14 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		//Dos Tipos de Validaciones Global y Negociado
 		
+		// Proceso de persistencia de las tasas
+		
+		Boolean euro = false;	    // Variable de control Moneda
+		Boolean negociado = false;  // Variable de control tipo de Tasa
+		Boolean estbto = false;		// Variable de control 
+		String mensaje= null;
+		
+		
 		// Valida que se haya elegido un pais
 		if( this.getPaisTemp() == null || this.getPaisTemp().equals("") ){
 			facesMessages.addToControl("paisSel",
@@ -1529,118 +1537,99 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 			facesMessages.addToControl("fechainicio",	
 			"Se debe seleccionar una fecha para esta tasa");
 			return null;
-			
 		}
-		// Valida que se haya ingresado las tasas y porcentajes para estableicimiento
-		if( this.getPaisTemp().getPaisiso().getCodigomoneda().equals("EUR")){
-			if( this.getTasaEuroOfTemp() == null && this.getTasaEuroNegTemp() == null ){
-				facesMessages.addToControl("tasaeurorOf",	
-				"Se debe ingresar la tasa de euro para la oficina");
-				return null;
-			}
-			if(this.getTasaEuroTacTemp() == null && this.getTasaEuroNegTemp() == null){
-				facesMessages.addToControl("tasaeuroTac",	
-				"Se debe ingresar la tasa de euro para clientes TAC");
-				return null;
-			}					
-			if(this.getTasaEuroTemp() == null && this.getTasaEuroNegTemp() == null ){					
-				facesMessages.addToControl("tasaEuro",	
-				"Se debe ingresar la tasa de euro para clientes");
-				return null;
-			}	
-			//Valida el porcentaje de oficna y cliente 
-			if( this.getPorcentCt() == null && this.getTasaEuroNegTemp() == null ){
-				facesMessages.addToControl("porcentClient",	
-				"Se debe ingresar la tasa de porcentaje  para cliente");
-				return null;
-			}
-			if( this.getPorcentOfi()== null  && this.getTasaEuroNegTemp() == null){
-				facesMessages.addToControl("porcentOf",	
-				"Se debe ingresar la tasa de porcentaje para oficina");
-				return null;
-			}
-		}else{
-			if( this.getTasaDolarOfTemp() == null && this.getTasaDolarNegTemp() == null ){
-				facesMessages.addToControl("tasadolarOf",	
-				"Se debe ingresar la tasa de dolar para la oficina");
-				return null;
-			}
-			if(this.getTasaDolarTacTemp() == null && this.getTasaDolarNegTemp() == null ){
-				facesMessages.addToControl("tasadolarTac",	
-				"Se debe ingresar la tasa de dolar para clientes TAC");
-				return null;
-			}					
-			if(this.getTasaDolarTemp() == null && this.getTasaDolarNegTemp() == null ){					
-				facesMessages.addToControl("tasadolar",	
-				"Se debe ingresar la tasa de dolar para clientes");
-				return null;
-			}
-			//Valida el porcentaje de oficna y cliente 
-			if( this.getPorcentCt() == null && this.getTasaDolarNegTemp() == null ){
-				facesMessages.addToControl("porcentClient",	
-				"Se debe ingresar la tasa de porcentaje  para cliente");
-				return null;
-			}
-			if( this.getPorcentOfi()== null && this.getTasaDolarNegTemp() == null ){
-				facesMessages.addToControl("porcentOf",	
-				"Se debe ingresar la tasa de porcentaje para oficina");
-				return null;
-			}
-		}			
-		
-		// Valida que se haya seleccionado un establecimiento
-		if((this.getTasaDolarOfTemp() != null || this.getTasaEuroOfTemp() != null) &&
-				this.getEstaTemp() == null ){
-			facesMessages.addToControl("name",	
-				"Se debe seleccionar el establecimiento");
-				return null;
-		}
-		// Valida los parametros de euro negociado para promotor
-		if( this.getPromoTemp() != null && 
-				this.getPaisTemp().getPaisiso().getCodigomoneda().equals("EUR") ){
-			if( this.getPorcentCt() == null){
-				facesMessages.addToControl("porcentClient",	
-				"Se debe ingresar la tasa de porcentaje  para cliente");
-				return null;					
-			}
-			if(this.getTasaEuroNegTemp() == null){
-				facesMessages.addToControl("tasaeurorNeg",	
-				"Se debe ingresar la tasa de euro  para cliente");
-				return null;
-				
-			}
-		}
-		// Valida los parametros de dolar negociado para promotor
-		if( this.getPromoTemp() != null && 
-				this.getPaisTemp().getPaisiso().getCodigomoneda().equals("USD") ){
-			if( this.getPorcentCt() == null){
-				facesMessages.addToControl("porcentClient",	
-				"Se debe ingresar la tasa de porcentaje  para cliente");
-				return null;					
-			}
-			if(this.getTasaDolarNegTemp() == null){
-				facesMessages.addToControl("tasadolarNeg",	
-				"Se debe ingresar la tasa de euro  para cliente");
-				return null;
-				
-			}
-		}
-		
-		// Proceso de persistencia de las tasas
-		
-		Boolean euro = false;	    // Variable de control Moneda
-		Boolean negociado = false;  // Variable de control tipo de Tasa
-		Boolean estbto = false;		// Variable de control 
-		String mensaje= null;
-		
 		//1. Determina si se graba dolar o euros
 		if( this.getCodMoneda().equals("EUR")){
 			euro = true;
 		}
-		
 		//2. Determina si es tasa negociada para cliente o global
 		if( this.getPromoTemp() != null ){
 			negociado = true;
+		}
+		
+		
+		if( negociado ){//Validacion de campos para Parametros Negociado
+			// Valida los parametros de euro negociado para promotor
+			if( euro){
+				if( this.getPorcentCt() == null && this.getTasaEuroNegTemp() == null ){
+					facesMessages.addToControl("porcentClient",	
+					"Se debe ingresar la tasa de porcentaje  para cliente");
+					facesMessages.addToControl("tasaeurorNeg",	
+					"Se debe ingresar la tasa de euro  para cliente");
+					return null;					
+				}else{
+					if( this.getPorcentCt() == null && this.getTasaDolarNegTemp() == null){
+						facesMessages.addToControl("porcentClient",	
+						"Se debe ingresar la tasa de porcentaje  para cliente");
+						facesMessages.addToControl("tasadolarNeg",	
+						"Se debe ingresar la tasa de euro  para cliente");
+						return null;					
+					}
+				}
+			}
+		}else{//Validacion de campos para Parametros Global			
+			if(euro){
+				if( this.getTasaEuroOfTemp() == null && this.getTasaEuroNegTemp() == null ){
+					facesMessages.addToControl("tasaeurorOf",	
+					"Se debe ingresar la tasa de euro para la oficina");
+					return null;
+				}
+				if(this.getTasaEuroTacTemp() == null && this.getTasaEuroNegTemp() == null){
+					facesMessages.addToControl("tasaeuroTac",	
+					"Se debe ingresar la tasa de euro para clientes TAC");
+					return null;
+				}					
+				if(this.getTasaEuroTemp() == null && this.getTasaEuroNegTemp() == null ){					
+					facesMessages.addToControl("tasaEuro",	
+					"Se debe ingresar la tasa de euro para clientes");
+					return null;
+				}	
+				//Valida el porcentaje de oficna y cliente 
+				if( this.getPorcentCt() == null && this.getTasaEuroNegTemp() == null ){
+					facesMessages.addToControl("porcentClient",	
+					"Se debe ingresar la tasa de porcentaje  para cliente");
+					return null;
+				}
+				if( this.getPorcentOfi()== null  && this.getTasaEuroNegTemp() == null){
+					facesMessages.addToControl("porcentOf",	
+					"Se debe ingresar la tasa de porcentaje para oficina");
+					return null;
+				}
+			}else{
+				if( this.getTasaDolarOfTemp() == null && this.getTasaDolarNegTemp() == null ){
+					facesMessages.addToControl("tasadolarOf",	
+					"Se debe ingresar la tasa de dolar para la oficina");
+					return null;
+				}
+				if(this.getTasaDolarTacTemp() == null && this.getTasaDolarNegTemp() == null ){
+					facesMessages.addToControl("tasadolarTac",	
+					"Se debe ingresar la tasa de dolar para clientes TAC");
+					return null;
+				}					
+				if(this.getTasaDolarTemp() == null && this.getTasaDolarNegTemp() == null ){					
+					facesMessages.addToControl("tasadolar",	
+					"Se debe ingresar la tasa de dolar para clientes");
+					return null;
+				}
+				//Valida el porcentaje de oficna y cliente 
+				if( this.getPorcentCt() == null && this.getTasaDolarNegTemp() == null ){
+					facesMessages.addToControl("porcentClient",	
+					"Se debe ingresar la tasa de porcentaje  para cliente");
+					return null;
+				}
+				if( this.getPorcentOfi()== null && this.getTasaDolarNegTemp() == null ){
+					facesMessages.addToControl("porcentOf",	
+					"Se debe ingresar la tasa de porcentaje para oficina");
+					return null;
+				}				
+				// Valida que se haya seleccionado un establecimiento
+				if((this.getTasaDolarOfTemp() != null || this.getTasaEuroOfTemp() != null) &&
+						this.getEstaTemp() == null ){
+					facesMessages.addToControl("name",	
+						"Se debe seleccionar el establecimiento");
+						return null;
+				}
+			}
 		}
 		
 		//3. Variable para parametros del comercio
