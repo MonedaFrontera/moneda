@@ -2,6 +2,7 @@ package org.domain.moneda.bussiness;
 
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
@@ -26,7 +27,6 @@ import org.domain.moneda.entity.EstablecimientoprecioId;
 import org.domain.moneda.entity.Franquicia;
 import org.domain.moneda.entity.Gravamenestablecimiento;
 import org.domain.moneda.entity.Pais;
-import org.domain.moneda.entity.Paisiso;
 import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Porcentajecomisiontx;
 import org.domain.moneda.entity.Porcentajecomisiontxparam;
@@ -2022,6 +2022,7 @@ public class AdministrarTransaccion
 		}	
 		return tasaDolar;
 	}
+	
 	
 	
 	private Float getTasaDolarGlobal(){

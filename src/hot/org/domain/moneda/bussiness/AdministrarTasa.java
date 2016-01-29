@@ -167,6 +167,7 @@ public class AdministrarTasa
     
     private BigDecimal porcentCt;
     private BigDecimal porcentOfi;
+    private BigDecimal porcentTac;
 
     private BigDecimal paridadEstTemp;
     private BigDecimal paridadClienteTemp;

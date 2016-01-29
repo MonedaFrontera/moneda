@@ -264,6 +264,16 @@
 						</h:inputText>
 					</s:decorate>
 					
+					<s:decorate id="porcentFieldClt" template="layout/edit.xhtml">
+						<ui:define name="label">Porcentaje Cliente</ui:define>
+						<h:inputText id="porcentClient"
+			  					 value="#{AdministrarTasa.porcentCt}"
+			   					 size="13">
+		  				<a:support event="onblur" reRender="porcentFieldClt" 
+		  								bypassUpdates="true" ajaxSingle="true"/>
+						</h:inputText>
+					</s:decorate>
+					
 					<s:decorate id="porcentFieldOf" rendered="#{AdministrarTasa.promoTemp == null}" template="layout/edit.xhtml">
 						<ui:define name="label">Porcentaje Oficina</ui:define>
 						<h:inputText id="porcentOf"
