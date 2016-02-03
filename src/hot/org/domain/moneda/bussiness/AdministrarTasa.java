@@ -1078,21 +1078,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
     	if(this.getTipoMoneda().equals("EUR")){
     		//Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
     		System.out.println("Actualizando Tasa Euros.......");
-    		System.out.println("Actualizando Establecimiento: " + 
-    				this.getTsEuroParam().getEstablecimiento().getNombreestable());
-    		
-    		this.getTasaeuroparametroHome().getInstance().setConsecutivo(this.getTsEuroParam().getConsecutivo());
-    		this.getTasaeuroparametroHome().getInstance().setTasaeuro(this.getTasaEuroTemp());
     		
     		
-    		System.out.println("Est.. edi " +
-    				this.getTasaeuroparametroHome().getInstance().getEstablecimiento().getNombreestable());
-    		System.out.println("Nueva Tasa Varible del Formul: " + this );
-    		System.out.println("Nueva Tasa Objeto Persistente: " + this.getTasaeuroparametroHome().getInstance().getTasaeuro());
-    		
-    		String mensaje = this.tasaeuroparametroHome.update();
-    		
-    		System.out.println(mensaje);
+
         	//						    b. Establecimientoprecio 
         	// 						    c. Porcentajecomisiontxparam
     		
@@ -1101,6 +1089,8 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
         	//2. Obtener las entidades: a. Tasaeuroparametro o Tasadolarparametro 
         	//						    b. Establecimientoprecio 
         	// 						    c. Porcentajecomisiontxparam
+    		
+    		System.out.println("Actualizando Tasa DOLARES.......");
     	}
     	
     	//3.Auditoria
@@ -1288,6 +1278,14 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 
 	public void setPorcentOfi(BigDecimal porcentOfi) {
 		this.porcentOfi = porcentOfi;
+	}
+	
+	public BigDecimal getPorcentTac() {
+		return porcentTac;
+	}
+
+	public void setPorcentTac(BigDecimal porcentTac) {
+		this.porcentTac = porcentTac;
 	}
 
 	public BigDecimal getParidadEstTemp() {
@@ -1518,6 +1516,20 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	public String guardarTasaDolarParam(){			
 		
 		//Dos Tipos de Validaciones Global y Negociado
+		Boolean euro = false;	    // Variable de control Moneda
+		Boolean negociado = false;  // Variable de control tipo de Tasa
+		Boolean estbto = false;		// Variable de control 
+		String mensaje= null;
+		
+		//1. Determina si se graba dolar o euros
+		if( this.getCodMoneda().equals("EUR")){
+			euro = true;
+		}
+		
+		//2. Determina si es tasa negociada para cliente o global
+		if( this.getPromoTemp() != null ){
+			negociado = true;
+		}
 		
 		// Valida que se haya elegido un pais
 		if( this.getPaisTemp() == null || this.getPaisTemp().equals("") ){
@@ -1525,13 +1537,48 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					"Se debe seleccionar un pais");
 				return null;
 		}			
+		
 		// Valida que se haya seleccionado la fecha
 		if( this.getFechaIniTemp() == null){
 			facesMessages.addToControl("fechainicio",	
 			"Se debe seleccionar una fecha para esta tasa");
 			return null;
+		}
+		
+		//3. Variable para parametros del comercio
+		if( this.getEstaTemp() != null && this.getPromoTemp() == null ){
+			estbto = true;
+		}
+		
+		//Validaciones de campos de formularios para global y negociado
+		if( negociado ){
+			//Validaciones para negociado
+		}else{//Validaciones para oficina			
+			
+			if(euro){
+				
+			}else{//Validaciones para el dolar
+				if ((this.getTasaDolarOfTemp() == null && this.getTasaDolarNegTemp() == null)
+						|| (this.getPorcentOfi() == null && this.getTasaDolarNegTemp() == null)) {
+					facesMessages
+							.addToControl("tasadolarOf",
+									"Se debe ingresar la tasa de dolar o el porcentaje para la oficina");
+					facesMessages
+							.addToControl("porcentOf",
+									"Se debe ingresar la tasa de dolar o el porcentaje para la oficina");
+					return null;
+				} else {
+					// valido si se va a grabar % o $
+					
+				}
+				
+			}
 			
 		}
+		
+		
+		
+		
 		// Valida que se haya ingresado las tasas y porcentajes para estableicimiento
 		if( this.getPaisTemp().getPaisiso().getCodigomoneda().equals("EUR")){
 			if( this.getTasaEuroOfTemp() == null && this.getTasaEuroNegTemp() == null ){
@@ -1629,25 +1676,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		// Proceso de persistencia de las tasas
 		
-		Boolean euro = false;	    // Variable de control Moneda
-		Boolean negociado = false;  // Variable de control tipo de Tasa
-		Boolean estbto = false;		// Variable de control 
-		String mensaje= null;
-		
-		//1. Determina si se graba dolar o euros
-		if( this.getCodMoneda().equals("EUR")){
-			euro = true;
-		}
-		
-		//2. Determina si es tasa negociada para cliente o global
-		if( this.getPromoTemp() != null ){
-			negociado = true;
-		}
-		
-		//3. Variable para parametros del comercio
-		if( this.getEstaTemp() != null && this.getPromoTemp() == null ){
-			estbto = true;
-		}		
+				
 		
 		log.info("EURO: " + euro);
 		log.info("NEGOCIADO: " + negociado);
@@ -1791,7 +1820,10 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		return mensaje;
 
 	}
-	
+
+	private boolean esGlobal(){
+		return true;
+	}
 	
 	private List<Object[]> consultarTasasEuroPorcentajesPromotor(){
 		
@@ -2168,6 +2200,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		this.porcentajeGlob.setFechainicio(this.getFechaIniTemp());
 		this.porcentajeGlob.setFechafin(this.getFechaFinTemp());
 		this.porcentajeGlob.setPorcentaje(this.getPorcentCt());
+		this.porcentajeGlob.setPorcentajeTac(this.getPorcentTac());
 		this.porcentajeGlob.setTipocupo(this.getTipoCupoTemp());
 		this.porcentajeGlob.setFechamod(new Date());
 		this.porcentajeGlob.setUsuariomod(identity.getUsername());

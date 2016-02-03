@@ -15,18 +15,18 @@
         <rich:simpleTogglePanel label="Saldo Search Filter" switchType="ajax">
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Documento</ui:define>
-                <h:inputText id="documento" value="#{saldoList.saldo.id.documento}"/>
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="documento" value="#{saldoList.nombre}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Usuariomod</ui:define>
-                <h:inputText id="usuariomod" value="#{saldoList.saldo.usuariomod}"/>
+                <ui:define name="label">Apellido</ui:define>
+                <h:inputText id="usuariomod" value="#{saldoList.apellido}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">Match</ui:define>
-                <h:selectOneRadio id="logic" value="#{saldoList.restrictionLogicOperator}" styleClass="radio">
+                <h:selectOneRadio id="logic" value="#{saldoList.apellido}" styleClass="radio">
                     <f:selectItem itemLabel="All" itemValue="and"/>
                     <f:selectItem itemLabel="Any" itemValue="or"/>
                 </h:selectOneRadio>
@@ -35,8 +35,8 @@
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">
-            <h:commandButton id="search" value="Search" action="/SaldoList.xhtml"/>
-            <s:button id="reset" value="Reset" includePageParams="false"/>
+            <h:commandButton id="search" value="Buscar" action="/SaldoList.xhtml"/>
+            <s:button id="reset" value="Cancel" includePageParams="false"/>
         </div>
 
     </h:form>
@@ -185,7 +185,7 @@
         <s:button view="/SaldoEdit.xhtml"
                     id="create"
            propagation="none"
-                 value="Create saldo">
+                 value="Crear Saldo Incial">
             <f:param name="saldoDocumento"/>
             <f:param name="saldoFecha"/>
         </s:button>

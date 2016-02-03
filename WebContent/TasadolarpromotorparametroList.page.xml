@@ -21,6 +21,8 @@
 	<navigation from-action="#{AdministrarTasa.editarTasaGlobal(_tasadolarpromotorparametro.consecutivo, AdministrarTasa.paisTemp.paisiso.codigomoneda )}">
          <redirect view-id="/TasadolarpromotorparametroEdit.xhtml"/>
    </navigation>
+   
+  
 	
 </page>
 
