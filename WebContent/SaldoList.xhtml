@@ -23,7 +23,7 @@
                 <ui:define name="label">Apellido</ui:define>
                 <h:inputText id="usuariomod" value="#{saldoList.apellido}"/>
             </s:decorate>
-
+	<!-- 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">Match</ui:define>
                 <h:selectOneRadio id="logic" value="#{saldoList.apellido}" styleClass="radio">
@@ -31,7 +31,7 @@
                     <f:selectItem itemLabel="Any" itemValue="or"/>
                 </h:selectOneRadio>
             </s:decorate>
-
+ 	-->
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">
@@ -46,12 +46,12 @@
     <div class="results" id="saldoList">
 
     <h:outputText value="The saldo search returned no results."
-               rendered="#{empty saldoList.resultList}"/>
+               rendered="#{empty AdministrarSaldo.enviosList}"/>
 
     <rich:dataTable id="saldoList"
                 var="_saldo"
-              value="#{saldoList.resultList}"
-           rendered="#{not empty saldoList.resultList}">
+              value="#{AdministrarSaldo.enviosList}"
+           rendered="#{not empty AdministrarSaldo.enviosList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
@@ -78,11 +78,11 @@
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{saldoList}"/>
-                    <ui:param name="propertyLabel" value="Personal documento"/>
-                    <ui:param name="propertyPath" value="saldo.personal.documento"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="saldo.personal.nombre"/>
                 </ui:include>
             </f:facet>
-            <h:outputText value="#{_saldo.personal.documento}"/>
+            <h:outputText value="#{_saldo.personal.nombre}"/>
         </h:column>
         <h:column>
             <f:facet name="header">

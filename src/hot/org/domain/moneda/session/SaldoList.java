@@ -8,17 +8,15 @@ import java.util.Arrays;
 @Name("saldoList")
 public class SaldoList extends EntityQuery<Saldo> {
 
-	private static final String EJBQL = "select saldo from Saldo saldo";
-	
-	private  String nombre;
-	private  String apellido;
+	private static final String EJBQL = "select saldo from Saldo saldo where " +
+			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%')) ";
 
-	private final String[] RESTRICTIONS = {
-			"lower("+ getNombre() +") like lower(concat(#{saldoList.saldo.personal.nombre},'%'))",
-			"lower("+ getApellido()+") like lower(concat(#{saldoList.saldo.personal.apellido},'%'))", };
+	private static final String[] RESTRICTIONS = {
+			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%'))",
+			"lower(saldo.personal.apellido) like lower(concat(#{saldoList.apellido},'%'))", };
 
 	private Saldo saldo;
-
+		
 	public SaldoList() {
 		saldo = new Saldo();
 		saldo.setId(new SaldoId());
@@ -27,25 +25,10 @@ public class SaldoList extends EntityQuery<Saldo> {
 		setMaxResults(25);
 	}
 
-	public  Saldo getSaldo() {
+	public Saldo getSaldo() {
 		return saldo;
 	}
 
-	public  String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public  String getApellido() {
-		return apellido;
-	}
-
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
 	
 	
 }
