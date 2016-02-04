@@ -16,12 +16,12 @@
 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">Nombre</ui:define>
-                <h:inputText id="documento" value="#{saldoList.nombre}"/>
+                <h:inputText id="documento" value="#{AdministrarSaldo.nombre}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
                 <ui:define name="label">Apellido</ui:define>
-                <h:inputText id="usuariomod" value="#{saldoList.apellido}"/>
+                <h:inputText id="usuariomod" value="#{AdministrarSaldo.apellido}"/>
             </s:decorate>
 	<!-- 
             <s:decorate template="layout/display.xhtml">
@@ -35,27 +35,27 @@
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">
-            <h:commandButton id="search" value="Buscar" action="/SaldoList.xhtml"/>
+            <h:commandButton id="search" value="Buscar" action="#{AdministrarSaldo.buscarSaldo()}"/>
             <s:button id="reset" value="Cancel" includePageParams="false"/>
         </div>
 
     </h:form>
 
     <rich:panel>
-        <f:facet name="header">Saldo Search Results (#{empty saldoList.resultList ? 0 : (saldoList.paginated ? saldoList.resultCount : saldoList.resultList.size)})</f:facet>
+        <f:facet name="header">Saldo Search Results (#{empty AdministrarSaldo.saldoList.resultList ? 0 : (AdministrarSaldo.saldoList.paginated? AdministrarSaldo.saldoList.resultCount : AdministrarSaldo.saldoList.resultList.size)})</f:facet>
     <div class="results" id="saldoList">
 
     <h:outputText value="The saldo search returned no results."
-               rendered="#{empty AdministrarSaldo.enviosList}"/>
+               rendered="#{empty AdministrarSaldo.saldoList.resultList}"/>
 
     <rich:dataTable id="saldoList"
                 var="_saldo"
-              value="#{AdministrarSaldo.enviosList}"
-           rendered="#{not empty AdministrarSaldo.enviosList}">
+              value="#{AdministrarSaldo.saldoList.resultList}"
+           rendered="#{not empty AdministrarSaldo.saldoList.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{saldoList}"/>
+                    <ui:param name="entityList" value="AdministrarSaldo.saldoList}"/>
                     <ui:param name="propertyLabel" value="Documento"/>
                     <ui:param name="propertyPath" value="saldo.id.documento"/>
                 </ui:include>
