@@ -2,6 +2,7 @@ package org.domain.moneda.bussiness;
 
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -24,6 +25,8 @@ public class AdministrarSaldo {
 	
 	
 	private EntityQuery<Saldo> saldoList = new EntityQuery<Saldo>();
+	
+	private List<String> restrictions = new ArrayList<String>() ;
 	
 	private String nombre;
 	private String apellido;
@@ -53,18 +56,23 @@ public class AdministrarSaldo {
 	}
 
 	public void buscarSaldo(){
+		System.out.println("Ingrese a buscar...");
 		
-		String queryString = "select s from Saldo where 1=1 ";
+		String queryString = "select s from Saldo ";
 		
 		if( !this.getNombre().equals("") && this.getNombre()!= null ){
-			queryString += "and lower(s.personal.nombre) like '%" + this.getNombre().toLowerCase().trim() + "'%";
+			restrictions.add("and lower(s.personal.nombre) like '%" + 
+					this.getNombre().toLowerCase().trim() + "'%" );
 		}
 		
 		if( !this.getApellido().equals("") && this.getApellido() != null ){
-			queryString += "and lower(s.personal.apellido) like '%" +this.getApellido().toLowerCase().trim() +"'%";
+			restrictions.add("and lower(s.personal.apellido) like '%" + 
+					this.getApellido().toLowerCase().trim() +"'%");
 		}
-		
 		saldoList.setEjbql(queryString);
+		saldoList.setRestrictionExpressionStrings(restrictions);
+		
+		System.out.println("EJBQL: " + saldoList.getEjbql());
 		
 		if(saldoList.getResultCount() < 25)
 			saldoList.setFirstResult(0);
