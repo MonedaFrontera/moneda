@@ -82,7 +82,7 @@
                     <ui:param name="propertyPath" value="saldo.personal.documento"/>
                 </ui:include>
             </f:facet>
-            <h:outputText value="#{_saldo.personal.documento}"/>
+            <h:outputText value="#{_saldo.personal.nombre.concat(' ').concat(_saldo.personal.apellido)}"/>
         </h:column>
         <h:column>
             <f:facet name="header">
