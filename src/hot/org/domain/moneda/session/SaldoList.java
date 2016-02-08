@@ -15,6 +15,7 @@ public class SaldoList extends EntityQuery<Saldo> {
 			"lower(saldo.usuariomod) like lower(concat(#{saldoList.saldo.usuariomod},'%'))", };
 
 	private Saldo saldo;
+	private String nombre;
 
 	public SaldoList() {
 		saldo = new Saldo();
