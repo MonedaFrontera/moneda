@@ -15,47 +15,35 @@
         <rich:simpleTogglePanel label="Saldo Search Filter" switchType="ajax">
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Documento</ui:define>
-                <h:inputText id="documento" value="#{saldoList.saldo.id.documento}"/>
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="documento" value="#{AdministrarSaldo.nombre}"/>
             </s:decorate>
 
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Usuariomod</ui:define>
-                <h:inputText id="usuariomod" value="#{saldoList.saldo.usuariomod}"/>
-            </s:decorate>
-
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Match</ui:define>
-                <h:selectOneRadio id="logic" value="#{saldoList.restrictionLogicOperator}" styleClass="radio">
-                    <f:selectItem itemLabel="All" itemValue="and"/>
-                    <f:selectItem itemLabel="Any" itemValue="or"/>
-                </h:selectOneRadio>
-            </s:decorate>
 
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">
-            <h:commandButton id="search" value="Search" action="/SaldoList.xhtml"/>
-            <s:button id="reset" value="Reset" includePageParams="false"/>
+            <h:commandButton id="search" value="Buscar" action="#{AdministrarSaldo.buscarSaldo()}"/>
+            <s:button id="reset" value="Cancel" includePageParams="false"/>
         </div>
 
     </h:form>
 
     <rich:panel>
-        <f:facet name="header">Saldo Search Results (#{empty saldoList.resultList ? 0 : (saldoList.paginated ? saldoList.resultCount : saldoList.resultList.size)})</f:facet>
+        <f:facet name="header">Saldo Search Results (#{empty AdministrarSaldo.saldoList.resultList ? 0 : (AdministrarSaldo.saldoList.paginated? AdministrarSaldo.saldoList.resultCount : AdministrarSaldo.saldoList.resultList.size)})</f:facet>
     <div class="results" id="saldoList">
 
     <h:outputText value="The saldo search returned no results."
-               rendered="#{empty saldoList.resultList}"/>
+               rendered="#{empty AdministrarSaldo.saldoList.resultList}"/>
 
     <rich:dataTable id="saldoList"
                 var="_saldo"
-              value="#{saldoList.resultList}"
-           rendered="#{not empty saldoList.resultList}">
+              value="#{AdministrarSaldo.saldoList.resultList}"
+           rendered="#{not empty AdministrarSaldo.saldoList.resultList}">
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{saldoList}"/>
+                    <ui:param name="entityList" value="AdministrarSaldo.saldoList}"/>
                     <ui:param name="propertyLabel" value="Documento"/>
                     <ui:param name="propertyPath" value="saldo.id.documento"/>
                 </ui:include>
@@ -78,11 +66,15 @@
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{saldoList}"/>
-                    <ui:param name="propertyLabel" value="Personal documento"/>
-                    <ui:param name="propertyPath" value="saldo.personal.documento"/>
+                    <ui:param name="propertyLabel" value="Nombre"/>
+                    <ui:param name="propertyPath" value="saldo.personal.nombre"/>
                 </ui:include>
             </f:facet>
+<<<<<<< HEAD
             <h:outputText value="#{_saldo.personal.nombre.concat(' ').concat(_saldo.personal.apellido)}"/>
+=======
+            <h:outputText value="#{_saldo.personal.nombre}"/>
+>>>>>>> ea238845acf6b89127e977906343ed9710d46aa7
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -185,7 +177,7 @@
         <s:button view="/SaldoEdit.xhtml"
                     id="create"
            propagation="none"
-                 value="Create saldo">
+                 value="Crear Saldo Incial">
             <f:param name="saldoDocumento"/>
             <f:param name="saldoFecha"/>
         </s:button>

@@ -26,7 +26,6 @@ import org.domain.moneda.entity.EstablecimientoprecioId;
 import org.domain.moneda.entity.Franquicia;
 import org.domain.moneda.entity.Gravamenestablecimiento;
 import org.domain.moneda.entity.Pais;
-import org.domain.moneda.entity.Paisiso;
 import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Porcentajecomisiontx;
 import org.domain.moneda.entity.Porcentajecomisiontxparam;
@@ -1360,6 +1359,7 @@ public class AdministrarTransaccion
 			System.out.println("DE PESOS A DOLARES (Caso Colombia)....");
 			//liquida de Pesos a Dolar
 			transaccionHome.getInstance().setValortxpesos( valorTX );
+			//se debe cambiar, por valor con decimales
 			float dolares = Math.round(((100*transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))/100);
 			System.out.println("Dolares: " + dolares);
 			transaccionHome.getInstance().setValortxdolares(new BigDecimal(dolares));
@@ -2022,6 +2022,7 @@ public class AdministrarTransaccion
 		}	
 		return tasaDolar;
 	}
+	
 	
 	
 	private Float getTasaDolarGlobal(){

@@ -77,5 +77,14 @@
          <redirect view-id="/TasadolarpromotorparametroList.xhtml"/>
       </rule>
    </navigation>
+   
+   <navigation from-action="#{AdministrarTasa.actualizarTasasGlobal()}">
+      <rule if-outcome="updated">
+         <end-conversation/>
+         <redirect view-id="/TasadolarpromotorparametroList.xhtml"/>
+      </rule>
+   </navigation>
+   
+   
 
 </page>

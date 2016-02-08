@@ -18,6 +18,10 @@ import org.hibernate.validator.NotNull;
 @Table(name = "calendario")
 public class Calendario implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	
 	private Date fecha;
 	private short anio;
 	private short mes;

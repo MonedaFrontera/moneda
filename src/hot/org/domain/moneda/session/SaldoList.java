@@ -8,14 +8,14 @@ import java.util.Arrays;
 @Name("saldoList")
 public class SaldoList extends EntityQuery<Saldo> {
 
-	private static final String EJBQL = "select saldo from Saldo saldo";
+	private static final String EJBQL = "select saldo from Saldo saldo where " +
+			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%')) ";
 
 	private static final String[] RESTRICTIONS = {
-			"lower(saldo.id.documento) like lower(concat(#{saldoList.saldo.id.documento},'%'))",
-			"lower(saldo.usuariomod) like lower(concat(#{saldoList.saldo.usuariomod},'%'))", };
+			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%'))",
+			"lower(saldo.personal.apellido) like lower(concat(#{saldoList.apellido},'%'))", };
 
 	private Saldo saldo;
-	private String nombre;
 
 	public SaldoList() {
 		saldo = new Saldo();
@@ -28,4 +28,7 @@ public class SaldoList extends EntityQuery<Saldo> {
 	public Saldo getSaldo() {
 		return saldo;
 	}
+
+	
+	
 }
