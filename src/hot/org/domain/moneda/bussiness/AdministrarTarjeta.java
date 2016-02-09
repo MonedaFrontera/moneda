@@ -520,6 +520,8 @@ public class AdministrarTarjeta
     			return new DecimalFormat("€ #,###,##0").format(t);
     		}else{
     			if( "COP".equals(tipoMoneda)){
+    				//cambiar por una consulta
+    				
     				t = tx.getValortxpesos().divide(tx.getValortxdolares(), 2, RoundingMode.HALF_UP);
     				return new DecimalFormat("USD #,###,##0").format(t);
     			}else{
