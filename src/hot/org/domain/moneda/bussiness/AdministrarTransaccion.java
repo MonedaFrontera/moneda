@@ -1359,9 +1359,13 @@ public class AdministrarTransaccion
 			System.out.println("DE PESOS A DOLARES (Caso Colombia)....");
 			//liquida de Pesos a Dolar
 			transaccionHome.getInstance().setValortxpesos( valorTX );
+
 			//se debe cambiar, por valor con decimales
-			float dolares = Math.round(((100*transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))/100);
-			System.out.println("Dolares: " + dolares);
+			float dolares = this.round(
+					new Float(((transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))),2);
+			
+			System.out.println("Dolares>>>: " + (transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar));
+
 			transaccionHome.getInstance().setValortxdolares(new BigDecimal(dolares));
 		}
 		
@@ -2761,40 +2765,17 @@ public class AdministrarTransaccion
 	}//fin del parche
 	
 	
+	public float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+	
+	
 }// fin de la clase AdministrarTransaccion
 
 
 
-/**	
-		BigDecimal comision = new BigDecimal(0);//comision de la TX
-		BigDecimal pcomision = new BigDecimal(0);//porcentaje cobrado en la TX
-		
-		//Busca el % de comision correspondiente al pias del establecimiento para la transaccion
-		//teniendo encuenta los niveles de precedencia contenidos en el cuadro 
-		// http://www.monedafrontera.com:8080/tech/precedencias.jsp
-		String queryStringComision = " select t from Porcentcomisiontxparampromo t where " +
-						"t.pais.codigopais = '" + pais.getCodigopais() + "' and " +
-						"t.promotor.documento = '" + promotor.getDocumento() + "' and " +
-						"t.fechainicio >= '" + transaccionHome.getInstance().getFechatx() + "' and " +
-						"(t.fechafin <= '" + transaccionHome.getInstance().getFechatx() + "' or t.fechafin is null ) ";
-
-		List<Porcentcomisiontxparampromo> listComiPromo = 
-								entityManager.createQuery(queryStringComision).getResultList();
-
-		if (!listComiPromo.isEmpty()) {// Se hace la busqueda del Euro
-			System.out.println("BUSCANDO % PARA PROMOTOR");
-			//tasaEuro = this.getTasaEuroPromotor();
-
-			// si hay tasa negociada para el pais actual pero no coincide ningun
-			// parametro se direcciona a busaqueda de tasa global
-			if (tasaEuro == 0f) {
-				//tasaEuro = this.getTasaEuroGlobal();
-			}
-		} else {// Se hace la busqueda para el Euro Global
-			System.out.println("BUSCANDO % GLOBAL");
-			//tasaEuro = this.getTasaEuroGlobal();
-		}
 
 
 
-*/
