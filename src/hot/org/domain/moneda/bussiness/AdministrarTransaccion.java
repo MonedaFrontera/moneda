@@ -1362,9 +1362,9 @@ public class AdministrarTransaccion
 
 			//se debe cambiar, por valor con decimales
 			float dolares = this.round(
-					new Float(((transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))),2);
+					new Float(((transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))),3);
 			
-			System.out.println("Dolares>>>: " + (transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar));
+			System.out.println("Dolares>>>+: " +  dolares);
 
 			transaccionHome.getInstance().setValortxdolares(new BigDecimal(dolares));
 		}
