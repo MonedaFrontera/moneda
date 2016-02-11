@@ -1232,6 +1232,7 @@ public class EnviarMailAlertas {
 			InternetAddress[] addressTo = new InternetAddress[to.length];
 			for (int i = 0; i < to.length; i++) {
 				addressTo[i] = new InternetAddress(to[i]);
+				System.out.println("DIRECIONES DE CORREO: " + to[i]);
 			}
 
 			MimeMessage message = new MimeMessage(session);

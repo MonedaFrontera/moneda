@@ -1289,11 +1289,7 @@ public class AdministrarTransaccion
 					System.out.println("5. BUSQUEDA EN TASA DE DOLAR GLOBAL EN ELSE.....");
 					if(pais.getCodigopais().equals("CO")){//Tasa de dolar para Colombia
 						System.out.println("6. BUSQUEDA EN TASA DE DOLAR PARA COLOMBIA.....");
-						Tasadolar td = (Tasadolar) entityManager.createQuery("select td from Tasadolar td " +
-								"where td.id.codigopais = '" + pais.getCodigopais() + "' and " +
-								" td.id.fecha = '"+ sdf.format(transaccionHome.getInstance().getFechatx())+"'")
-								.getSingleResult();
-						tasaDolar = td.getTasa().floatValue();
+						tasaDolar = this.getTasaDolarGlobal(); //----------------------------------------->
 					}else{
 						System.out.println("7. BUSQUEDA EN TASA DE DOLAR GLOBAL.....");
 						if( tasaDolar == 0f ){ tasaDolar = this.getTasaDolarGlobal();}	
@@ -1362,9 +1358,9 @@ public class AdministrarTransaccion
 
 			//se debe cambiar, por valor con decimales
 			float dolares = this.round(
-					new Float(((transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))),2);
+					new Float(((transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar))),3);
 			
-			System.out.println("Dolares>>>: " + (transaccionHome.getInstance().getValortxpesos().floatValue()/tasaDolar));
+			System.out.println("Dolares>>>+: " +  dolares);
 
 			transaccionHome.getInstance().setValortxdolares(new BigDecimal(dolares));
 		}
@@ -2764,6 +2760,20 @@ public class AdministrarTransaccion
 		return rows;
 	}//fin del parche
 	
+
+	/**
+	 * Metodo de precision decimal para valores float
+	 * @param d
+	 * @param decimalPlace
+	 * @return
+	 */
+	public float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+	
+
 	
 }// fin de la clase AdministrarTransaccion
 

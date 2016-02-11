@@ -498,10 +498,8 @@ public class AdministrarTarjeta
 	 * Retorna la tasa de dolar para el detalle de las Tx en la interfaz TarjetaEdit.xhtml
 	 * Este nuevo metodo trae la tasa de dolar, con base en el dolar liquidado en el momento
 	 * de la transaccion, y no los de las tablas de dolar negociado y global.
-	 * @param fecha
-	 * @param codpais
-	 * @param documento
-	 * @return tasa dolar del dia
+	 * @param consecutivo
+	 *
 	 */
     public String tasaDolarNew(int consecutivo){
     	try{
@@ -511,7 +509,7 @@ public class AdministrarTarjeta
     		Transaccion tx = (Transaccion) entityManager.createQuery(
     				"from Transaccion t where t.consecutivo = " + consecutivo).getSingleResult();
     		
-    		//2. Con el objeto Transaccion obtengo el establecimiento > pais > moneda y 
+    		//2. Con el objeto Transaccion obtengo el establecimiento > pais > moneda  
     		//   para determinar la operacion que retorna la tasa de cambio 
     		//   de Dolar o Euro
     		String tipoMoneda = tx.getEstablecimiento().getPais().getPaisiso().getCodigomoneda();
