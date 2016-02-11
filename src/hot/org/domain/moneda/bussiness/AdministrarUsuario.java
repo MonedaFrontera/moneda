@@ -215,6 +215,9 @@ public class AdministrarUsuario
 //			actSinViaje = new ArrayList< Object[] >(0);
 //			actProx = new ArrayList< Activacion>(0);
 			
+			System.out.println("Sin Viaje: " +  actSinViaje.isEmpty() );
+			System.out.println("Proximas: " +  actProx.isEmpty()  );
+			
 			if( !actProx.isEmpty() || !actSinViaje.isEmpty() ){
 				Asesor asesora =  (Asesor) entityManager.createQuery(
 						"select a from Asesor a " + "where a.documento = '"

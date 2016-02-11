@@ -1569,15 +1569,9 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 					return null;
 				} else {
 					// valido si se va a grabar % o $
-					
 				}
-				
 			}
-			
 		}
-		
-		
-		
 		
 		// Valida que se haya ingresado las tasas y porcentajes para estableicimiento
 		if( this.getPaisTemp().getPaisiso().getCodigomoneda().equals("EUR")){
@@ -1676,8 +1670,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		
 		// Proceso de persistencia de las tasas
 		
-				
-		
 		log.info("EURO: " + euro);
 		log.info("NEGOCIADO: " + negociado);
 
@@ -1693,8 +1685,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 						"Ya se encuentra grabada la tasa para "
 								+ "esta fecha y promotor");
 					return null;
-				}
-				
+				}				
 				this.cerrarTasaEuroPromotor();
 				this.cerrarComisionNegociada();
 				
@@ -1709,8 +1700,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 							"Ya se encuentra grabada la tasa para "
 									+ "esta fecha y promotor");
 						return null;
-				}
-				
+				}				
 				this.cerrarTasaDolarPromotor();
 				this.cerrarComisionNegociada();
 				
@@ -1720,8 +1710,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				mensaje = this.grabarTasaDolarPromotor(); 
 			}
 		}else{
-			if( euro ){
-				
+			if( euro ){				
 				log.info("EURO GENERAL");					
 				if(buscarEuroActualGlobal()){
 					facesMessages.addToControl("name", "Ya se encuentra grabada la tasa para " +
@@ -2743,7 +2732,6 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public boolean buscarEuroActualPromotor(){		
 		
-		log.info("");
 		log.info("Buscando Tasa Euro Promotor para esta fecha");
 		
 		Tasaeuropromotorparametro tEuroPromotor = null;
@@ -2793,7 +2781,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	
 	public boolean buscarDolarActualGlobal(){	
 		
-		log.info("");
+		
 		log.info("Buscando Tasa Dolar Global para esta fecha");
 		
 		Tasadolarparametro tDolarGlobal = null;
