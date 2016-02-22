@@ -19,7 +19,19 @@
                 <h:inputText id="documento" value="#{AdministrarSaldo.nombre}"/>
             </s:decorate>
 
-
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Apellido</ui:define>
+                <h:inputText id="usuariomod" value="#{AdministrarSaldo.apellido}"/>
+            </s:decorate>
+	<!-- 
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Match</ui:define>
+                <h:selectOneRadio id="logic" value="#{saldoList.apellido}" styleClass="radio">
+                    <f:selectItem itemLabel="All" itemValue="and"/>
+                    <f:selectItem itemLabel="Any" itemValue="or"/>
+                </h:selectOneRadio>
+            </s:decorate>
+ 	-->
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">
@@ -70,11 +82,7 @@
                     <ui:param name="propertyPath" value="saldo.personal.nombre"/>
                 </ui:include>
             </f:facet>
-<<<<<<< HEAD
-            <h:outputText value="#{_saldo.personal.nombre.concat(' ').concat(_saldo.personal.apellido)}"/>
-=======
             <h:outputText value="#{_saldo.personal.nombre}"/>
->>>>>>> ea238845acf6b89127e977906343ed9710d46aa7
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -184,5 +192,4 @@
     </s:div>
 
 </ui:define>
-
 </ui:composition>
