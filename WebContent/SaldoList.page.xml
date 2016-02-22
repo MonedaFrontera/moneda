@@ -3,11 +3,6 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.2.xsd">
 
-
-	<begin-conversation join="true" flush-mode="MANUAL"/>
-	
-	<action execute="#{AdministrarSaldo.buscarSaldo()}"/>
-	
    <param name="firstResult" value="#{saldoList.firstResult}"/>
    <param name="sort" value="#{saldoList.orderColumn}"/>
    <param name="dir" value="#{saldoList.orderDirection}"/>
@@ -16,5 +11,4 @@
    <param name="from"/>
    <param name="documento" value="#{saldoList.saldo.id.documento}"/>
    <param name="usuariomod" value="#{saldoList.saldo.usuariomod}"/>
-
 </page>
