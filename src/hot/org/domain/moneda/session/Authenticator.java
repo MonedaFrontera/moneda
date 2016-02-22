@@ -114,18 +114,14 @@ public class Authenticator {
 				}else{
 					if( validaUsuarioLogin( this.currentIpSession ) ){ //Aca valida que no se inicie sesion en mas 
 						   											   //de un host en menos del tiempo de una session
-						logginCorrecto();// acciones a realizar si es correctoel loggin
-										
+						logginCorrecto();// acciones a realizar si es correctoel loggin										
 					} else {
 						// si no es la misma ip aca compara que se halla
 						// presentado un Desbloqueo para el mismo dia
-						if ( desbloqueo() ) {
-							
+						if ( desbloqueo() ) {							
 							logginCorrecto();// acciones a realizar si es
-											 //correcto el loggin
-							
-						} else {// se bloquea el usuario
-							
+											 //correcto el loggin							
+						} else {// se bloquea el usuario							
 							autentica = false;
 							user.setActivo(false);
 							entityManager.persist(user);
@@ -161,7 +157,6 @@ public class Authenticator {
 		cargaRoles();//en este metodo se establece autentica true
 		procesosLoginAsesor();
 		AdministrarUsuario.auditarUsuarioLogin(0, "Ingreso Correcto", this.currentIpSession );
-		
 	}
 
 	public Boolean desbloqueo(){

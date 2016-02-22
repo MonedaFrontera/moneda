@@ -808,8 +808,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 		}
 		
 		*/
-		
-		
+				
 	}
 	
 	public List<Tasabolivarnegociado> getListaTasabolivarnegociado() {

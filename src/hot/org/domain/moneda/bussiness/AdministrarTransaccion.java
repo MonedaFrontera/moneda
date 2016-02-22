@@ -2773,7 +2773,6 @@ public class AdministrarTransaccion
         return bd.floatValue();
     }
 	
-
 	
 }// fin de la clase AdministrarTransaccion
 
