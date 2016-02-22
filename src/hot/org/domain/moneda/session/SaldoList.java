@@ -8,8 +8,7 @@ import java.util.Arrays;
 @Name("saldoList")
 public class SaldoList extends EntityQuery<Saldo> {
 
-	private static final String EJBQL = "select saldo from Saldo saldo where " +
-			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%')) ";
+	private static final String EJBQL = "select saldo from Saldo saldo ";
 
 	private static final String[] RESTRICTIONS = {
 			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%'))",
