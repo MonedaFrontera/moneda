@@ -158,6 +158,14 @@
 		</h:selectOneMenu>
 		</s:decorate>
 
+
+		 <s:decorate id="tacField" template="layout/edit.xhtml" >
+                <ui:define name="label">Promotor TAC</ui:define>
+                <h:selectBooleanCheckbox id="tac" 
+                					  value="#{promotorHome.instance.tac}"/>
+                                      <a:support event="onclick" reRender="tacField" ajaxSingle="true"/>
+                                      
+ 		</s:decorate>
 		  
 
 		  <s:decorate id="comisionviajeroField" template="layout/edit.xhtml">

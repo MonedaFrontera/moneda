@@ -289,8 +289,8 @@ public class AdministrarPersonal {
 	}
 
 	public void registrarPromotor() {
-		log.info("Registrar Promotor");	
 		
+		log.info("Registrar Promotor");			
 			/*
 			 * Registra la informacion de la persona en la base de datos
 			 */
@@ -319,13 +319,14 @@ public class AdministrarPersonal {
 
 					return;
 				}
-			}
-			
+			}			
 			pr.setComisionviajero(promotorHome.getInstance().getComisionviajero());
 			pr.setArrastrador(promotorHome.getInstance().getArrastrador());
 			pr.setComisionarrastrador(promotorHome.getInstance()
 					.getComisionarrastrador());
 			pr.setTac(promotorHome.getInstance().getTac());
+			
+			
 			/*
 			 * Se realiza la persistencia del objeto Promotor
 			 */
