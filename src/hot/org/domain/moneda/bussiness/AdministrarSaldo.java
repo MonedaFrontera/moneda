@@ -58,9 +58,10 @@ public class AdministrarSaldo {
 	public void buscarSaldo(){
 		System.out.println("Ingrese a buscar...");
 		
-		String queryString = "select s from Saldo ";
+		String queryString = "select s from Saldo where ";
 		
 		if( !this.getNombre().equals("") && this.getNombre()!= null ){
+			
 			restrictions.add("and lower(s.personal.nombre) like '%" + 
 					this.getNombre().toLowerCase().trim() + "'%" );
 		}

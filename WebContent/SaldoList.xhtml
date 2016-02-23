@@ -15,8 +15,8 @@
         <rich:simpleTogglePanel label="Saldo Search Filter" switchType="ajax">
 
             <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Documento</ui:define>
-                <h:inputText id="documento" value="#{saldoList.saldo.id.documento}"/>
+                <ui:define name="label">Nombre</ui:define>
+                <h:inputText id="documento" value="#{saldoList.nombre}"/>
             </s:decorate>
 
             <s:decorate template="layout/display.xhtml">
@@ -56,11 +56,11 @@
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
                     <ui:param name="entityList" value="#{saldoList}"/>
-                    <ui:param name="propertyLabel" value="Documento"/>
-                    <ui:param name="propertyPath" value="saldo.id.documento"/>
+                    <ui:param name="propertyLabel" value="Promotor"/>
+                    <ui:param name="propertyPath" value="saldo.personal.nombre"/>
                 </ui:include>
             </f:facet>
-            <h:outputText value="#{_saldo.id.documento}"/>
+            <h:outputText value="#{_saldo.personal.nombre.concat(' ').concat(_saldo.personal.apellido)}"/>
         </h:column>
         <h:column>
             <f:facet name="header">
@@ -71,19 +71,10 @@
                 </ui:include>
             </f:facet>
             <h:outputText value="#{_saldo.id.fecha}">
-                <s:convertDateTime type="date" dateStyle="short"/>
+                <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
             </h:outputText>
         </h:column>
-        <h:column>
-            <f:facet name="header">
-                <ui:include src="layout/sort.xhtml">
-                    <ui:param name="entityList" value="#{saldoList}"/>
-                    <ui:param name="propertyLabel" value="Personal documento"/>
-                    <ui:param name="propertyPath" value="saldo.personal.documento"/>
-                </ui:include>
-            </f:facet>
-            <h:outputText value="#{_saldo.personal.documento}"/>
-        </h:column>
+        
         <h:column>
             <f:facet name="header">
                 <ui:include src="layout/sort.xhtml">
