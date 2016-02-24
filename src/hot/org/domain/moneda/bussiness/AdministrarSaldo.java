@@ -58,23 +58,20 @@ public class AdministrarSaldo {
 	public void buscarSaldo(){
 		System.out.println("Ingrese a buscar...");
 		
-		String queryString = "select s from Saldo where ";
+		String queryString =
+			"select saldo from Saldo saldo where year( saldo.id.fecha ) = year( current_date() ) ";
 		
 		if( !this.getNombre().equals("") && this.getNombre()!= null ){
-			
-			restrictions.add("and lower(s.personal.nombre) like '%" + 
-					this.getNombre().toLowerCase().trim() + "'%" );
+			queryString += " and lower(saldo.personal.nombre) like '%" + 
+							this.getNombre().toLowerCase().trim() + "%'" ;
 		}
 		
 		if( !this.getApellido().equals("") && this.getApellido() != null ){
-			restrictions.add("and lower(s.personal.apellido) like '%" + 
-					this.getApellido().toLowerCase().trim() +"'%");
+			queryString += "and lower(saldo.personal.apellido) like '%" + 
+					this.getApellido().toLowerCase().trim() +"'%";
 		}
 		saldoList.setEjbql(queryString);
-		saldoList.setRestrictionExpressionStrings(restrictions);
-		
 		System.out.println("EJBQL: " + saldoList.getEjbql());
-		
 		if(saldoList.getResultCount() < 25)
 			saldoList.setFirstResult(0);
 		
