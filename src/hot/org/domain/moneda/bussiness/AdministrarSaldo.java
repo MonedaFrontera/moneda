@@ -1,5 +1,5 @@
-package org.domain.moneda.bussiness;
 
+package org.domain.moneda.bussiness;
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.domain.moneda.entity.Saldo;
+import org.domain.moneda.session.SaldoList;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
@@ -22,7 +23,6 @@ public class AdministrarSaldo {
 	
 	@In
 	private EntityManager entityManager;
-	
 	
 	private EntityQuery<Saldo> saldoList = new EntityQuery<Saldo>();
 	
@@ -56,28 +56,33 @@ public class AdministrarSaldo {
 	}
 
 	public void buscarSaldo(){
-		System.out.println("Ingrese a buscar...");
-		
-		String queryString =
-			"select saldo from Saldo saldo where year( saldo.id.fecha ) = year( current_date() ) ";
-		
-		if( !this.getNombre().equals("") && this.getNombre()!= null ){
-			queryString += " and lower(saldo.personal.nombre) like '%" + 
-							this.getNombre().toLowerCase().trim() + "%'" ;
+		try {
+			entityManager.clear();
+			System.out.println("Ingrese a buscar...");
+			String queryString =
+				"select saldo from Saldo saldo where year(saldo.id.fecha) = year(current_date()) ";
+			
+			System.out.println("Algunos cambios-->");		
+
+			System.out.println(this.getNombre() == null);	
+			
+			if ( this.getNombre() != null && !this.getNombre().equals("")  ) {
+				queryString += " and lower(saldo.personal.nombre) like '%"
+									+ this.getNombre().toLowerCase().trim() + "%'";
+			}		
+			if( this.getApellido() != null && !this.getApellido().equals("")   ){
+				queryString += "and lower(saldo.personal.apellido) like '%" + 
+						this.getApellido().toLowerCase().trim() +"%'";
+			}				
+			saldoList.setEjbql(queryString);
+			System.out.println("EJBQL: " + saldoList.getEjbql()); 
+			if(saldoList.getResultCount() < 25)
+				saldoList.setFirstResult(0);
+			saldoList.setMaxResults(25);
+		}	
+		 catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		if( !this.getApellido().equals("") && this.getApellido() != null ){
-			queryString += "and lower(saldo.personal.apellido) like '%" + 
-					this.getApellido().toLowerCase().trim() +"'%";
-		}
-		saldoList.setEjbql(queryString);
-		System.out.println("EJBQL: " + saldoList.getEjbql());
-		if(saldoList.getResultCount() < 25)
-			saldoList.setFirstResult(0);
-		
-		saldoList.setMaxResults(25);
-		
 	}
 	
-
 }

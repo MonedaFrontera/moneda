@@ -7,31 +7,27 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:rich="http://richfaces.org/rich"
     template="layout/template.xhtml">
-
 <ui:define name="body">
 
     <h:form id="saldoSearch" styleClass="edit">
 
         <rich:simpleTogglePanel label="Saldo Search Filter" switchType="ajax">
 
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Nombre</ui:define>
-                <h:inputText id="documento" value="#{saldoList.nombre}"/>
-            </s:decorate>
+            <s:decorate id="decoNombre"  template="layout/edit.xhtml">
+						<ui:define name="label">Nombre</ui:define>
+						<h:inputText id="nombrePromo"
+			  					 value="#{AdministrarSaldo.nombre}">
+		  				</h:inputText>
+			</s:decorate>
+			
+			 <s:decorate id="decoApellido"  template="layout/edit.xhtml">
+						<ui:define name="label">Apellido</ui:define>
+						<h:inputText id="apellidoPromo"
+			  					 value="#{AdministrarSaldo.apellido}">
+		  				</h:inputText>
+			</s:decorate>
+            
 
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Apellido</ui:define>
-                <h:inputText id="usuariomod" value="#{saldoList.apellido}"/>
-            </s:decorate>
-<!-- 
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">Match</ui:define>
-                <h:selectOneRadio id="logic" value="#{saldoList.restrictionLogicOperator}" styleClass="radio">
-                    <f:selectItem itemLabel="All" itemValue="and"/>
-                    <f:selectItem itemLabel="Any" itemValue="or"/>
-                </h:selectOneRadio>
-            </s:decorate>
- -->
         </rich:simpleTogglePanel>
 
         <div class="actionButtons">

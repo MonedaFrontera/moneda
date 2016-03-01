@@ -451,12 +451,14 @@ public class AdministrarTarjeta
     }
     
 	/**
-	 * Retorna la tasa de dolar para el detalle de las Tx
+	 * Retorna la tasa de dolar para el detalle de las Tx, para obtener
+	 * esta informacion utilice el metodo tasaDolarNew( int consecutivo )
 	 * @param fecha
 	 * @param codpais
 	 * @param documento
 	 * @return tasa dolar del dia
 	 */
+	@Deprecated
     public BigDecimal tasaDolar(Date fecha, String codpais, String documento){
     	try{
     		BigDecimal t = BigDecimal.ZERO;
@@ -2090,8 +2092,7 @@ public class AdministrarTarjeta
 	}
 	
 	//Aplica filtros de busquda para TajetaList
-    public void busqueda(){    	
-    	
+    public void busqueda(){    	    	
     	entityManager.clear();
     	//tarjetas.clear();
     	
@@ -2165,7 +2166,7 @@ public class AdministrarTarjeta
     
    
     
-public void ubicarPromotorList(){
+    public void ubicarPromotorList(){
     	System.out.println("1");
     	//Promotor pr = CargarObjetos.ubicarPromotor(this.nombre);
     	System.out.println("2");

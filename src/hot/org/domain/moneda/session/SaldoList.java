@@ -14,7 +14,6 @@ public class SaldoList extends EntityQuery<Saldo> {
 	private String apellido;
 
 	private static final String[] RESTRICTIONS = {
-			//"year( saldo.id.fecha ) = year( current_date() )",
 			"lower(saldo.personal.nombre) like lower(concat(#{saldoList.nombre},'%'))",
 			"lower(saldo.personal.apellido) like lower(concat(#{saldoList.apellido},'%'))"};
 
