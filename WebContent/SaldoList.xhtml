@@ -32,7 +32,7 @@
 
         <div class="actionButtons">
             <h:commandButton id="search" value="Buscar" action="#{AdministrarSaldo.buscarSaldo()}"/>
-            <s:button id="reset" value="Reset" includePageParams="false"/>
+            <s:button id="reset" value="Limpiar" includePageParams="false"/>
         </div>
 
     </h:form>
@@ -43,7 +43,7 @@
 
     <h:outputText value="The saldo search returned no results."
                rendered="#{empty AdministrarSaldo.saldoList.resultList}"/>
-
+	<h:form>
     <rich:dataTable id="saldoList"
                 var="_saldo"
               value="#{AdministrarSaldo.saldoList.resultList}"
@@ -106,29 +106,13 @@
             </h:outputText>
         </h:column>
         <rich:column styleClass="action">
-            <f:facet name="header">Action</f:facet>
-            <s:link view="/#{empty from ? 'Saldo' : from}.xhtml"
-                   value="#{empty from ? 'View' : 'Select'}"
-             propagation="#{empty from ? 'none' : 'default'}"
-                      id="saldoViewId">
-                <f:param name="saldoDocumento"
-                        value="#{_saldo.id.documento}"/>
-                <f:param name="saldoFecha"
-                        value="#{_saldo.id.fecha}"/>
-            </s:link>
-            #{' '}
-            <s:link view="/SaldoEdit.xhtml"
-                   value="Edit"
-             propagation="none"
-                      id="saldoEdit"
-                rendered="#{empty from}">
-                <f:param name="saldoDocumento"
-                        value="#{_saldo.id.documento}"/>
-                <f:param name="saldoFecha"
-                        value="#{_saldo.id.fecha}"/>
-            </s:link>
+            <f:facet name="header">Acciones</f:facet>
+            <h:commandLink value="" action="#{AdministrarSaldo.editarSaldo(_saldo.id)}" >
+            	<h:graphicImage title="Editar Saldo" style="border-style:none;" id="verSaldo" value="/img/edit.png" />
+            </h:commandLink>
         </rich:column>
     </rich:dataTable>
+    </h:form>
 
     </div>
     </rich:panel>
@@ -172,7 +156,7 @@
         <s:button view="/SaldoEdit.xhtml"
                     id="create"
            propagation="none"
-                 value="Create saldo">
+                 value="Crear Saldo Inicial">
             <f:param name="saldoDocumento"/>
             <f:param name="saldoFecha"/>
         </s:button>

@@ -17,4 +17,8 @@
    <param name="documento" value="#{saldoList.saldo.id.documento}"/>
    <param name="usuariomod" value="#{saldoList.saldo.usuariomod}"/>
 
+	<navigation from-action="#{AdministrarSaldo.editarSaldo(_saldo.id)}">
+         <redirect view-id="/SaldoEdit.xhtml"/>
+   </navigation>
+	
 </page>

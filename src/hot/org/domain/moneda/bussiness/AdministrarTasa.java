@@ -976,7 +976,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 	}
 	
 	/**
-	 * Metodo llamado desde el List para editar un registro de 
+	 * Metodo invocado desde el List para editar un registro de 
 	 * TasadolarpromotorparametroList
 	 * 
 	 * @param consecutivo

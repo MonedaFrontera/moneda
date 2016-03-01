@@ -19,7 +19,7 @@
 
             <s:decorate id="promotorField" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
-			<h:inputText value="#{AdministrarPromotor.nombre}" id="namepromotor" size="50">
+			<h:inputText value="#{AdministrarSaldo.nombrePromotor}" id="namepromotor" size="50">
                 <a:support event="onblur" action="#{AdministrarPromotor.ubicarPersonal()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
@@ -71,12 +71,12 @@
 
             <h:commandButton id="save"
                           value="Guardar"
-                         action="#{saldoHome.persist}"
+                         action="#{AdministrarSaldo.guardarSaldoInicial()}"
                        rendered="#{!saldoHome.managed}"/>
 
             <h:commandButton id="update"
                           value="Actualizar"
-                         action="#{saldoHome.update}"
+                         action="#{AdministrarSaldo.actualizarSaldo()}"
                        rendered="#{saldoHome.managed}"/>
 
             <h:commandButton id="delete"
