@@ -20,12 +20,12 @@
             <s:decorate id="promotorField" template="layout/edit.xhtml">
                 <ui:define name="label">Promotor</ui:define>		
 			<h:inputText value="#{AdministrarSaldo.nombrePromotor}" id="namepromotor" size="50">
-                <a:support event="onblur" action="#{AdministrarPromotor.ubicarPersonal()}" ajaxSingle="true"/>
+                <a:support event="onblur" action="#{AdministrarSaldo.ubicarPromotor()}" ajaxSingle="true"/>
                 </h:inputText><h:graphicImage value="/img/arrow.png"
                     onclick="#{rich:component('tarjetahabienteBoxId')}.callSuggestion(true)"
                     alt="" />
 			<rich:suggestionbox id="tarjetahabienteBoxId" for="namepromotor"
-                                        suggestionAction="#{AdministrarPromotor.autocompletar}" var="result"
+                                        suggestionAction="#{AdministrarSaldo.autocompletar}" var="result"
                                         tokens="," height="150" width="260" cellpadding="2"
                                         cellspacing="2"   shadowOpacity="4" shadowDepth="4"
                                         minChars="1" rules="none" nothingLabel="No se encontro ningun promotor con estos datos">
@@ -41,7 +41,6 @@
             <s:decorate id="fechaField" template="layout/edit.xhtml">
                 <ui:define name="label">Fecha</ui:define>
                 <rich:calendar id="fecha"
-                       disabled="#{saldoHome.managed}"
                        required="true"
                           value="#{saldoHome.instance.id.fecha}" datePattern="dd/MM/yyyy" />
             </s:decorate>

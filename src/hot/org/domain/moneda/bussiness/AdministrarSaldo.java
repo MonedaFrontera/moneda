@@ -2,6 +2,7 @@ package org.domain.moneda.bussiness;
 
 import static org.jboss.seam.ScopeType.CONVERSATION;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 
 import org.domain.moneda.entity.Personal;
+import org.domain.moneda.entity.Promotor;
 import org.domain.moneda.entity.Saldo;
 import org.domain.moneda.entity.SaldoId;
 import org.domain.moneda.session.PersonalHome;
@@ -18,10 +20,14 @@ import org.domain.moneda.session.PromotorHome;
 import org.domain.moneda.session.SaldoHome;
 import org.domain.moneda.util.CargarObjetos;
 import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.framework.EntityQuery;
+import org.jboss.seam.international.StatusMessages;
+import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Identity;
 
 
@@ -48,6 +54,13 @@ public class AdministrarSaldo {
 	
 	@In
 	Identity identity;
+	@Logger
+	private Log log;
+	
+	 @In 
+	 private FacesMessages facesMessages;
+	 @In 
+	 StatusMessages statusMessages; 
 	
 	private String nombre;
 	private String apellido;
@@ -111,14 +124,10 @@ public class AdministrarSaldo {
 	public void buscarSaldo(){
 		try {
 			entityManager.clear();
-			System.out.println("Ingrese a buscar...");
+			log.info("Buscando saldo inicial..");
 			String queryString =
 				"select saldo from Saldo saldo where year(saldo.id.fecha) = year(current_date()) ";
-			
-			System.out.println("Algunos cambios-->");		
-
-			System.out.println(this.getNombre() == null);	
-			
+						
 			if ( this.getNombre() != null && !this.getNombre().equals("")  ) {
 				queryString += " and lower(saldo.personal.nombre) like '%"
 									+ this.getNombre().toLowerCase().trim() + "%'";
@@ -168,18 +177,15 @@ public class AdministrarSaldo {
 	
 	
 	
-	public void ubicarPersonal() {
-		Personal pr = CargarObjetos.ubicarPersonal(this.nombre);
-		System.out.println("Nombre " + this.nombre);
-		// System.out.println("Doc " + pr.getDocumento());
-		if (pr != null) {
-			personalHome.setPersonalDocumento(pr.getDocumento());
-			personalHome.setInstance(pr);
+	//Metodos de servicio para la Vista		
+	public void ubicarPromotor(){
+		Promotor pr = CargarObjetos.ubicarPromotor(this.getNombrePromotor());
+		if(pr!=null){
+			
 			promotorHome.setPromotorDocumento(pr.getDocumento());
-			saldoHome.getInstance().setPersonal(personalHome.getInstance());
-			saldoHome.getInstance().getId().setDocumento(
-					personalHome.getInstance().getDocumento());
-			saldoHome.getInstance().setUsuariomod(identity.getUsername());
+			promotorHome.setInstance(pr);
+			
+			
 		}
 	}
 	
@@ -204,7 +210,6 @@ public class AdministrarSaldo {
 		StringTokenizer tokens = new StringTokenizer(nombre.toLowerCase());
 		StringBuilder bldr = new StringBuilder();// builder usado para formar el
 												 // patron
-
 		long t1 = System.currentTimeMillis();
 		// creamos el patron para la busqueda
 		int lengthToken = nombre.split("\\s+").length;// longitud de palabras
@@ -239,8 +244,25 @@ public class AdministrarSaldo {
 	}
 	
 	
-	
+	/**
+	 * Guarda un saldo inicial
+	 * @return
+	 */
 	public String guardarSaldoInicial(){
+		//valida que no exista 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String queryString = "select s from Saldo s where s.id.documento = '"+ 
+								this.promotorHome.getInstance().getDocumento() + 
+								"'  and year(saldo.id.fecha) = year(current_date())";
+		
+		System.out.println("Cedula del promotor: " + this.promotorHome.getInstance().getDocumento() );
+		Saldo saldoTemp = null;
+		saldoTemp = (Saldo) entityManager.createQuery(queryString).getSingleResult();
+		if( saldoTemp != null){
+			statusMessages.add("Ya se encuentra grabado un saldo inicial para este promotor en la fecha " +
+					sdf.format(saldoTemp.getSaldo()) + " por valor de " + saldoTemp.getSaldo());
+			return null;
+		}
 		
 	
 		
@@ -250,7 +272,6 @@ public class AdministrarSaldo {
 	
 	
 	public String actualizarSaldo(){
-		
 		
 		
 		return "";
