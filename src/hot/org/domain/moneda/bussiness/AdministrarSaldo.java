@@ -259,8 +259,8 @@ public class AdministrarSaldo {
 		Saldo saldoTemp = null;
 		saldoTemp = (Saldo) entityManager.createQuery(queryString).getSingleResult();
 		if( saldoTemp != null){
-			statusMessages.add("Ya se encuentra grabado un saldo inicial para este promotor en la fecha " +
-					sdf.format(saldoTemp.getSaldo()) + " por valor de " + saldoTemp.getSaldo());
+			statusMessages.add("Ya se encuentra grabado un saldo inicial para este promotor en la fecha: " +
+					sdf.format(saldoTemp.getId().getFecha()) + ", por valor de: " + saldoTemp.getSaldo());
 			return null;
 		}
 		

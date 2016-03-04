@@ -19,10 +19,12 @@ import java.util.regex.Pattern;
 import javax.persistence.EntityManager;
 import javax.xml.rpc.encoding.Deserializer;
 
+import org.apache.commons.io.IOUtils;
 import org.domain.moneda.entity.Activacion;
 import org.domain.moneda.entity.Banco;
 import org.domain.moneda.entity.Bindb;
 import org.domain.moneda.entity.Depositostarjeta;
+import org.domain.moneda.entity.Dolartoday;
 import org.domain.moneda.entity.Franquicia;
 import org.domain.moneda.entity.Personal;
 import org.domain.moneda.entity.Porcentajecomisiontx;
@@ -1457,6 +1459,7 @@ public class AdministrarTarjeta
 		try {
 			//url de BinList.net que recibe el bin a consultar
 			String uri = "http://www.binlist.net/json/" + binTc;
+			System.out.println("URL json: " +  uri);
 			URL url = new URL(uri);
 			URLConnection uc = url.openConnection();
 			
@@ -1470,7 +1473,7 @@ public class AdministrarTarjeta
 	        BufferedReader  reader = new BufferedReader(new InputStreamReader(uc.getInputStream()));
             StringBuffer buffer = new StringBuffer();
             int read;
-            char[] chars = new char[1024];
+            char[] chars = new char[2048];
             while ((read = reader.read(chars)) != -1)
                 buffer.append(chars, 0, read);
 			
@@ -1487,6 +1490,28 @@ public class AdministrarTarjeta
 		}
 		
 		return null;
+	}
+	
+	
+	public BinJson getBinData( String binTc){
+		BinJson bin = null;// DTO bin dolar a devolver
+		
+        try {
+        	log.info("Obteniendo datos desde servicio Rest BinList.net");           
+            
+            String url = "http://www.binlist.net/json/" + binTc;
+            
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(BinJson.class, new BinJsonDeserializer());
+            Gson gson = gsonBuilder.create();
+            bin = gson.fromJson(IOUtils.toString(new URL(url)), BinJson.class);
+            return bin;
+
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+        }
+        return bin;
 	}
 	
 
