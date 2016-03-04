@@ -15,26 +15,32 @@ public class BinJsonDeserializer implements JsonDeserializer<BinJson>  {
 	public BinJson deserialize(JsonElement json , Type arg1,
 			JsonDeserializationContext arg2) throws JsonParseException {
 		
+		
 		// Recibe el JSon BinList.net: http://www.binlist.net/json/{bin}
 		// lo asigna a un objeto JsonObject este sera nuestro objeto
 		// Json principal
-		JsonObject jsonDToday = json.getAsJsonObject();
+		JsonObject jsonBinList = json.getAsJsonObject();
 		
 		
-		// obtengo el miembro tipo objeto JSon  _timestamp que contiene el epoch
-		// y lo asigno a una varibalbe JsonObject al igual que los demas
-		// miembros tipo objetos del Json principal.
-		// Los nombres de las comillas es como aparecen textualmente en el Json.
-		JsonObject jsonEpoch = jsonDToday.getAsJsonObject("_timestamp");
+		final String bin = 	jsonBinList.get("bin").getAsString();
+		final String brand = jsonBinList.get("brand").getAsString();
+		final String country_code = jsonBinList.get("country_code").getAsString();
+		final String country_name = jsonBinList.get("country_name").getAsString();
+		final String bank = jsonBinList.get("bank").getAsString();
+		final String card_type = jsonBinList.get("card_type").getAsString();
+		final String card_category = jsonBinList.get("card_category").getAsString();
 		
-
-		// del objeto Json "_timestamp" obtengo la variable epoch
-		// se multiplica por mil para quedar en milisegundo 
-		// y se asigna a una variable primitiva java
-		JsonElement jEpoch = jsonEpoch.get("epoch");
-		long epoch = jEpoch.getAsLong() * 1000;
+		BinJson binList = new BinJson();
+		binList.setBin(bin);
+		binList.setBrand(brand);
+		binList.setCountry_code(country_code);
+		binList.setCountry_name(country_name);
+		binList.setBank(bank);
+		binList.setCard_type(card_type);
+		binList.setCard_category(card_category);
+				
 		
-		return null;
+		return binList;
 	}
 
 }

@@ -1368,10 +1368,10 @@ public class AdministrarTarjeta
 			    				bancoEmisor = binAlerta.get(0).getNombrebanco();
 			    			}
 			    			//Sino se encuentra el pais en la base de Moneda, se hace una consulta 
-			    			//externa  por medio de Web Services (Rest Api - JSon) a BinList.net
+			    			//externa  por medio de Web Services (Rest) a BinList.net
 			    			if( paisBancoEmisor.equals("Indeterminado") || paisBancoEmisor.equals("")){
 			    				
-			    				datosBin = getBinJson( tarjetabin );//aca se hace la consulta por Rest
+			    				datosBin = getBinData( tarjetabin );//aca se hace la consulta por Rest
 			    				
 			    				if( datosBin.getCountry_name() != null ){
 			    					paisBancoEmisor = datosBin.getCountry_name().toUpperCase();	
@@ -1506,7 +1506,6 @@ public class AdministrarTarjeta
             Gson gson = gsonBuilder.create();
             bin = gson.fromJson(IOUtils.toString(new URL(url)), BinJson.class);
             return bin;
-
         } catch (Exception e) {
             
             e.printStackTrace();
