@@ -1454,11 +1454,14 @@ public class AdministrarTarjeta
 	 * Url BinList.net: http://www.binlist.net/json/{bin}
 	 * @param binTc bin de la tarjeta a consultar
 	 * @return BinJson 
+	 * @deprecated
 	 * 
 	 */
 	public BinJson getBinJson( String binTc)
 	{
 		try {
+			
+			log.info("METODO ANTERIOR"); 
 			//url de BinList.net que recibe el bin a consultar
 			String uri = "https://binlist.net/json/" + binTc;
 			System.out.println("URL json: " +  uri);
@@ -1494,11 +1497,25 @@ public class AdministrarTarjeta
 		return null;
 	}
 	
-	
+	/**
+	 * Devuelve un objeto BinJson que contiene toda la informacion del bin
+	 * de la tarjeta, por medio de Web Sevices de BinList.net.<br/> 
+	 * Para este tipo de Deserializacion no es necesario
+	 * crear una implementacion de {@link Deserializer}
+	 * ya que el objeto en Java contiene los mismos nombre de atributos que 
+	 * el objeto JSon.
+	 * Url BinList.net: https://binlist.net/json/{bin}
+	 * @param binTc bin de la tarjeta a consultar
+	 * @return BinJson 
+	 * 
+	 *   
+	 */
 	public BinJson getBinData( String binTc){
-		BinJson bin = null;// DTO bin dolar a devolver		
-		//4342587000733431 tarjetas que no son de Venezuela para pruebas
+			
+		//4342587000733431 tarjetas para pruebas
 		//5463403212001304
+		
+		BinJson bin = null;// DTO bin dolar a devolver	
 		
         try {
         	log.info("Obteniendo datos desde servicio Rest BinList.net");           
@@ -1508,10 +1525,8 @@ public class AdministrarTarjeta
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(BinJson.class, new BinJsonDeserializer());
             gsonBuilder.disableHtmlEscaping();
+            System.out.println(">>"+ IOUtils.toString(new URL(url)));            
             Gson gson = gsonBuilder.create();
-            
-            System.out.println(">>"+IOUtils.toString(new URL(url)));
-            
             bin = gson.fromJson(IOUtils.toString(new URL(url)), BinJson.class);
             return bin;
         } catch (Exception e) {
