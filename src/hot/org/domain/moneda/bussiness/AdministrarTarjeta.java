@@ -58,6 +58,8 @@ import org.jboss.seam.security.Identity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Name("AdministrarTarjeta") 
 @Scope(ScopeType.CONVERSATION)
@@ -1371,7 +1373,7 @@ public class AdministrarTarjeta
 			    			//externa  por medio de Web Services (Rest) a BinList.net
 			    			if( paisBancoEmisor.equals("Indeterminado") || paisBancoEmisor.equals("")){
 			    				
-			    				datosBin = getBinData( tarjetabin );//aca se hace la consulta por Rest
+			    				datosBin = this.getBinData( tarjetabin );//aca se hace la consulta por Rest
 			    				
 			    				if( datosBin.getCountry_name() != null ){
 			    					paisBancoEmisor = datosBin.getCountry_name().toUpperCase();	
@@ -1458,13 +1460,13 @@ public class AdministrarTarjeta
 	{
 		try {
 			//url de BinList.net que recibe el bin a consultar
-			String uri = "http://www.binlist.net/json/" + binTc;
+			String uri = "https://binlist.net/json/" + binTc;
 			System.out.println("URL json: " +  uri);
 			URL url = new URL(uri);
 			URLConnection uc = url.openConnection();
 			
 			//propiedad del cabecero necesaria para obtner una respuesta legible
-			//del flugo
+			//del flujo
 			uc.addRequestProperty("User-Agent", 
 	        "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
 	        uc.connect();
@@ -1473,7 +1475,7 @@ public class AdministrarTarjeta
 	        BufferedReader  reader = new BufferedReader(new InputStreamReader(uc.getInputStream()));
             StringBuffer buffer = new StringBuffer();
             int read;
-            char[] chars = new char[2048];
+            char[] chars = new char[1024];
             while ((read = reader.read(chars)) != -1)
                 buffer.append(chars, 0, read);
 			
@@ -1494,16 +1496,22 @@ public class AdministrarTarjeta
 	
 	
 	public BinJson getBinData( String binTc){
-		BinJson bin = null;// DTO bin dolar a devolver
+		BinJson bin = null;// DTO bin dolar a devolver		
+		//4342587000733431 tarjetas que no son de Venezuela para pruebas
+		//5463403212001304
 		
         try {
         	log.info("Obteniendo datos desde servicio Rest BinList.net");           
             
-            String url = "http://www.binlist.net/json/" + binTc;
+            String url = "https://binlist.net/json/" + binTc;
             
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(BinJson.class, new BinJsonDeserializer());
+            gsonBuilder.disableHtmlEscaping();
             Gson gson = gsonBuilder.create();
+            
+            System.out.println(">>"+IOUtils.toString(new URL(url)));
+            
             bin = gson.fromJson(IOUtils.toString(new URL(url)), BinJson.class);
             return bin;
         } catch (Exception e) {
@@ -1512,6 +1520,7 @@ public class AdministrarTarjeta
         }
         return bin;
 	}
+	
 	
 
 	public void grabarNuevoBin( BinJson binJson)
