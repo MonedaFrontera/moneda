@@ -39,7 +39,7 @@
       </rule>
    </navigation>
 
-   <navigation from-action="#{saldoHome.update}">
+   <navigation from-action="#{AdministrarSaldo.actualizarSaldo()}">
       <rule if-outcome="updated">
          <end-conversation/>
          <redirect view-id="/SaldoList.xhtml"/>

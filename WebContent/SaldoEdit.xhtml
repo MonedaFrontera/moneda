@@ -87,14 +87,7 @@
             <s:button id="cancelEdit"
                    value="Cancelar"
              propagation="end"
-                    view="/Saldo.xhtml"
-                rendered="#{saldoHome.managed}"/>
-
-            <s:button id="cancelAdd"
-                   value="Cancelar"
-             propagation="end"
-                    view="/#{empty saldoFrom ? 'SaldoList' : saldoFrom}.xhtml"
-                rendered="#{!saldoHome.managed}"/>
+                    view="/SaldoList.xhtml" />
 
         </div>
     </h:form>

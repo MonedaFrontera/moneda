@@ -163,6 +163,8 @@ public class AdministrarSaldo {
 			this.personalHome.setInstance(this.saldoHome.getInstance().getPersonal());
 			this.setNombrePromotor(this.personalHome.getInstance().getNombre()+ " " + 
 								this.personalHome.getInstance().getApellido());
+			this.promotorHome.setInstance(entityManager.find(
+					Promotor.class, this.personalHome.getInstance().getDocumento()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -282,11 +284,27 @@ public class AdministrarSaldo {
 	}
 	
 	
-	
+	/**
+	 * Actualiza el saldo inicial del promotor
+	 * @return
+	 */
 	public String actualizarSaldo(){
+		log.info("Actualizando saldo del promotor");
+		this.saldoHome.getInstance().setId(
+				new SaldoId(this.promotorHome.getInstance().getDocumento(), 
+						this.saldoHome.getInstance().getId().getFecha()
+						));
+		this.saldoHome.getInstance().setPersonal(
+				entityManager.find(Personal.class, promotorHome.getInstance().getDocumento()));
+		this.saldoHome.getInstance().setUsuariomod(this.identity.getUsername());
+		this.saldoHome.getInstance().setFechamod(new Date());
+		this.saldoHome.update();
+		entityManager.clear();
+		//limpiando campos del form List
+		this.setNombre("");
+		this.setApellido("");
 		
-		
-		return "";
+		return "updated";
 	}
 	
 	
