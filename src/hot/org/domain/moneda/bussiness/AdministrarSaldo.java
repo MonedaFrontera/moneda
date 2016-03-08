@@ -4,6 +4,7 @@ import static org.jboss.seam.ScopeType.CONVERSATION;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -56,6 +57,7 @@ public class AdministrarSaldo {
 	Identity identity;
 	@Logger
 	private Log log;
+	
 	
 	 @In 
 	 private FacesMessages facesMessages;
@@ -154,7 +156,7 @@ public class AdministrarSaldo {
 			//Obtengo el objeto de la base
 			Saldo saldo = entityManager.find(Saldo.class, id);
 			
-			//establezco el objeto en el Home(
+			//establezco el objeto en el Home
 			this.setSaldoHomeInstance(saldo);
 			this.getSaldoHome().getInstance().setId(id);
 			//estableciendo el promotor
@@ -245,28 +247,38 @@ public class AdministrarSaldo {
 	
 	
 	/**
-	 * Guarda un saldo inicial
+	 * Guarda  saldo inicial para el promotor 
 	 * @return
 	 */
 	public String guardarSaldoInicial(){
-		//valida que no exista 
+		//valida que no exista  saldo inicial para el periodo actual
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		List<Saldo > saldoTemp = new ArrayList<Saldo>();
 		String queryString = "select s from Saldo s where s.id.documento = '"+ 
 								this.promotorHome.getInstance().getDocumento() + 
 								"'  and year(saldo.id.fecha) = year(current_date())";
 		
-		System.out.println("Cedula del promotor: " + this.promotorHome.getInstance().getDocumento() );
-		Saldo saldoTemp = null;
-		saldoTemp = (Saldo) entityManager.createQuery(queryString).getSingleResult();
-		if( saldoTemp != null){
+		log.info("Validando saldo inicial : " + this.promotorHome.getInstance().getDocumento() );
+		
+		saldoTemp = entityManager.createQuery(queryString).getResultList();
+		if( !saldoTemp.isEmpty()){
 			statusMessages.add("Ya se encuentra grabado un saldo inicial para este promotor en la fecha: " +
-					sdf.format(saldoTemp.getId().getFecha()) + ", por valor de: " + saldoTemp.getSaldo());
+					sdf.format(saldoTemp.get(0).getId().getFecha()) + ", por valor de: " + saldoTemp.get(0).getSaldo());
 			return null;
-		}
-		
-	
-		
-		return "persisted";
+		}else{
+			this.saldoHome.getInstance().setId(
+					new SaldoId(this.promotorHome.getInstance().getDocumento(), 
+							this.saldoHome.getInstance().getId().getFecha()
+							));
+			this.saldoHome.getInstance().setPersonal(
+					entityManager.find(Personal.class, promotorHome.getInstance().getDocumento()));
+			this.saldoHome.getInstance().setUsuariomod(this.identity.getUsername());
+			this.saldoHome.getInstance().setFechamod(new Date());
+			this.saldoHome.persist();
+			entityManager.flush();
+			
+			return "persisted";
+		}	
 	}
 	
 	

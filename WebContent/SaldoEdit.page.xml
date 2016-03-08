@@ -32,7 +32,7 @@
 
 
 
-   <navigation from-action="#{saldoHome.persist}">
+   <navigation from-action="#{AdministrarSaldo.guardarSaldoInicial()}">
       <rule if-outcome="persisted">
          <end-conversation/>
          <redirect view-id="/SaldoList.xhtml"/>
