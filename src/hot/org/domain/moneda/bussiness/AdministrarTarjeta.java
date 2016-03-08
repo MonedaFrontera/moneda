@@ -1497,6 +1497,7 @@ public class AdministrarTarjeta
 		return null;
 	}
 	
+	
 	/**
 	 * Devuelve un objeto BinJson que contiene toda la informacion del bin
 	 * de la tarjeta, por medio de Web Sevices de BinList.net.<br/> 
@@ -1525,7 +1526,6 @@ public class AdministrarTarjeta
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(BinJson.class, new BinJsonDeserializer());
             gsonBuilder.disableHtmlEscaping();
-            System.out.println(">>"+ IOUtils.toString(new URL(url)));            
             Gson gson = gsonBuilder.create();
             bin = gson.fromJson(IOUtils.toString(new URL(url)), BinJson.class);
             return bin;
