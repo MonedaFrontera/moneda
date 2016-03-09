@@ -886,6 +886,31 @@ public class AdministrarPromotor {
 	public String generarReporteFechas(String docupromo) {
 		
 		String path = "";
+		Date fechaIniTemp = null;
+		//1. se determina la fecha del saldo inicial para el promotor en el periodo actual
+		try {
+			fechaIniTemp = this.getFechaSaldoIncial(docupromo);
+			
+			if(fechaIniTemp != null){
+				//2. si la fecha inicio de la consulta es menor o igual a la fecha del saldo inicial
+				//   la fecha inicial de la consulta se cambiara al dia siguiente del saldo inicial 
+				System.out.println("FECHA ANTERIOR>>>" + this.getFechaIniReporte().before(fechaIniTemp) );
+				System.out.println("FECHA MISMO DIA>>" +  this.getFechaIniReporte().equals(fechaIniTemp));
+				if( this.getFechaIniReporte().before(fechaIniTemp) || this.getFechaIniReporte().equals(fechaIniTemp)){
+					System.out.println("ingrese al if");
+					
+					//Establezco la fecha inicio de la consulta a un dia despues de la 
+					//fecha del saldo inicial
+					this.cambiarFechaInicioConsulta( fechaIniTemp );
+				}
+			}else{
+				//accion si no tiene saldo inicial el promotor
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		BigDecimal saldoInicial = this.saldoAnteriorPromotor(this
 				.getFechaIniReporte(), docupromo);
 
@@ -949,7 +974,48 @@ public class AdministrarPromotor {
 		}
 		return saldoAnterior;
 	}
+	
+	
+	/**
+	 * Cambia la fecha inicial de la consulta a un dia despues de la 
+	 * fecha del saldo inicial del promotor
+	 * @param fechaSaldoIni
+	 */
+	private void cambiarFechaInicioConsulta(Date fechaSaldoIni){
+		
+		Date fechaIniTemp;
 
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fechaSaldoIni);
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		fechaIniTemp = calendar.getTime();
+		
+		System.out.println("Nueva fecha de consulta Inicial" + fechaIniTemp );
+		this.setFechaIniReporte(fechaIniTemp);
+		
+	}
+	
+	/**
+	 * Proporciona la fecha del saldo inicial del promotor para el periodo actual.
+	 * Si no cuenta con un saldo inicial retorna null.
+	 * @param docupromo
+	 * @return
+	 */
+	private Date getFechaSaldoIncial(String docupromo){
+		
+		Date fechaIniTemp = null;
+		String queryString =
+			"select saldo.id.fecha from Saldo saldo where year(saldo.id.fecha) = year(current_date()) " +
+			"and  saldo.id.documento = '" + docupromo + "'";
+		try {
+			fechaIniTemp = (Date) entityManager.createQuery(queryString).getSingleResult() ;
+		} catch (Exception e) {
+			log.info("No se hallo saldo inicial para el promotor " + docupromo);
+		}
+		return fechaIniTemp;
+	}
+
+	
 	public void enviarBalanceOutlook(Date param1, Object param2, Object param3,
 			Object param4, Object param5, Object param5a, String nombre) {
 		URI uri = null;

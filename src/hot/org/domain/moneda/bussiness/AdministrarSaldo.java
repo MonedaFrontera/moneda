@@ -68,6 +68,8 @@ public class AdministrarSaldo {
 	private String apellido;
 	private String nombrePromotor;
 	
+	private Date fechaPK ;
+	
 	private EntityQuery<Saldo> saldoList = new EntityQuery<Saldo>();	
 	private List<String> lista = new ArrayList<String>();
 	
@@ -123,6 +125,14 @@ public class AdministrarSaldo {
 		this.lista = lista;
 	}
 
+	public Date getFechaPK() {
+		return fechaPK;
+	}
+
+	public void setFechaPK(Date fechaPK) {
+		this.fechaPK = fechaPK;
+	}
+
 	public void buscarSaldo(){
 		try {
 			entityManager.clear();
@@ -155,6 +165,7 @@ public class AdministrarSaldo {
 		try {
 			//Obtengo el objeto de la base
 			Saldo saldo = entityManager.find(Saldo.class, id);
+			this.setFechaPK(saldo.getId().getFecha());
 			
 			//establezco el objeto en el Home
 			this.setSaldoHomeInstance(saldo);
@@ -289,25 +300,28 @@ public class AdministrarSaldo {
 	 * @return
 	 */
 	public String actualizarSaldo(){
-		log.info("Actualizando saldo del promotor");
-		this.saldoHome.getInstance().setId(
-				new SaldoId(this.promotorHome.getInstance().getDocumento(), 
-						this.saldoHome.getInstance().getId().getFecha()
-						));
-		this.saldoHome.getInstance().setPersonal(
-				entityManager.find(Personal.class, promotorHome.getInstance().getDocumento()));
-		this.saldoHome.getInstance().setUsuariomod(this.identity.getUsername());
-		this.saldoHome.getInstance().setFechamod(new Date());
-		this.saldoHome.update();
-		entityManager.clear();
-		//limpiando campos del form List
-		this.setNombre("");
-		this.setApellido("");
+		log.info("Actualizando saldo del promotor-------");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
-		return "updated";
+		String nativeQuery = "update public.saldo set " +
+				"fecha = '"+ sdf.format(this.saldoHome.getInstance().getId().getFecha()) +"', " + 
+				"saldo = "+ this.saldoHome.getInstance().getSaldo() + ", " +
+				"usuariomod = '" + this.identity.getUsername() + "', " + 
+				"fechamod = '" + sdf.format(new Date()) +"' " +
+				"where public.saldo.documento = '" + this.promotorHome.getInstance().getDocumento()+ "' and " +
+				"public.saldo.fecha = '" + sdf.format(this.fechaPK) +"' " ;
+		int reg = entityManager.createNativeQuery(nativeQuery).executeUpdate();
+		if(reg == 1){
+			log.info("Total de registros actualizado " + reg);
+			this.setNombre("");
+			this.setApellido("");
+			entityManager.clear();
+			return "updated";
+		}else{
+			statusMessages.add("No se puede actualizar este saldo, contacte al adminstrador del sistema o valide la informacion " +
+					" que esta ingresando");
+			return null;
+		}
 	}
-	
-	
-	
 	
 }
