@@ -270,6 +270,7 @@ public class AdministrarSaldo {
 		String queryString = "select s from Saldo s where s.id.documento = '"+ 
 								this.promotorHome.getInstance().getDocumento() + 
 								"'  and year(saldo.id.fecha) = year(current_date())";
+		System.out.println(queryString);
 		
 		log.info("Validando saldo inicial : " + this.promotorHome.getInstance().getDocumento() );
 		

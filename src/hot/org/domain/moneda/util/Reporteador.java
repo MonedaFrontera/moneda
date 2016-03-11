@@ -31,10 +31,12 @@ import org.domain.moneda.entity.Asesor;
 import org.domain.moneda.session.ReportesHome;
 import org.domain.moneda.session.TarjetaHome;
 import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.log.Log;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
@@ -50,6 +52,9 @@ import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 @Scope(CONVERSATION)
 public class Reporteador {
 	 
+	@Logger
+	private Log log;
+	
 	@In	
 	private EntityManager entityManager;
 	
@@ -298,6 +303,70 @@ public class Reporteador {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Genera reporte en PDF recibiendo parametros de longitud variable.
+	 * Elipsis http://docs.oracle.com/javase/1.5.0/docs/guide/language/varargs.html
+	 * Se envia los parametros del reporte y el nombre del reporte.
+	 * @param nombreReporte
+	 * @param params
+	 * @return
+	 */
+	public String generarReportePDFElipsis( String nombreReporte, Object...params){
+		
+		//Se establece el nombre del reporte
+		this.setNombrereporte(nombreReporte);
+		
+		//Nombre y ubicacion del reporte a utlizar
+		String documento = "/ReportesMoneda/"+this.getNombrereporte()+".jasper";
+		
+		log.info("[Path] " + documento);		
+		long inicio = System.currentTimeMillis();
+		String doc = this.getNombrereporte()+inicio+".pdf"; 
+		//Destino y nombre del reporte en el servidor
+		String destFileNamePdf = path + doc;
+		Map parameters = new HashMap();
+		for(int i = 0; i< params.length ; i++){
+			parameters.put("param"+ (i+1), params[i]);
+			log.info("param"+ (i+1)  + ": " + params[i]);
+		}
+		try {
+
+			UtilidadesBD u = new UtilidadesBD();
+			
+			log.info("Creando Conexion...");
+			Connection c = u.obtenerConnection();
+			
+			log.info("Creando el reporte: "+documento);
+			JasperPrint jasperPrint = 
+						JasperFillManager.fillReport(documento,  parameters, c);
+			
+			log.info("Exportando el informe...");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, destFileNamePdf);
+			
+			c.close();
+			u.mostrarFormato(path,doc);//
+			
+			return destFileNamePdf;
+
+		} catch (SQLException e) {
+//			e.printStackTrace();
+			System.err.println(e.getMessage());
+			return null;
+		} catch (JRException e) {
+//			e.printStackTrace();
+			System.err.println(e.getMessage());
+			return null;
+		} catch (IOException e) {
+//			e.printStackTrace();
+			System.err.println(e.getMessage());
+			return null;
+		}	
+		
+		
+		
+	}
+	
 	
 	public String generarReportePDF(Object param1, Object param2, 
 									Object param3, Object param4, 
@@ -659,20 +728,7 @@ public class Reporteador {
 	}//fin del metodo formatearTarjetaSistemas
 	
 	
-	
-	/*
-	public String formatearTarjeta(String numero)
-	{
-		String numeroformateado = null;
-		
-			numeroformateado =  numero.substring(0, numero.length()-12) + " " +
-			numero.substring(numero.length()-12, numero.length()-8) + " " +
-			numero.substring(numero.length()-8, numero.length()-4) + " " +
-			numero.substring(numero.length()-4, numero.length());			
-		
-		return numeroformateado; 
-	}//fin del metodo formatearTarjeta
-	*/
+
 	
 	
 	public void salida(Date Fechini, Date Fechafin)

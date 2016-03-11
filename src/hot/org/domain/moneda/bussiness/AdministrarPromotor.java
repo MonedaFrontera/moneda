@@ -103,6 +103,9 @@ public class AdministrarPromotor {
 	BigDecimal saldoini = BigDecimal.ZERO;
 	Float totalDolaresViaje = 0f;
 	BigDecimal sicad1 = BigDecimal.ZERO;
+	
+	private Date fechaSaldoPromotor;
+	
 
 	public Object getGastostotal() {
 		return gastostotal;
@@ -152,6 +155,14 @@ public class AdministrarPromotor {
 
 	public void setSicad1(BigDecimal sicad1) {
 		this.sicad1 = sicad1;
+	}
+	
+		public Date getFechaSaldoPromotor() {
+		return fechaSaldoPromotor;
+	}
+
+	public void setFechaSaldoPromotor(Date fechaSaldoPromotor) {
+		this.fechaSaldoPromotor = fechaSaldoPromotor;
 	}
 
 	public void balanceTarjetas(String documento) {
@@ -886,56 +897,57 @@ public class AdministrarPromotor {
 	public String generarReporteFechas(String docupromo) {
 		
 		String path = "";
-		Date fechaIniTemp = null;
+		Boolean wSaldo = false;
+		String mensajeSaldo = "";
+		Saldo saldoInicial = this.getSaldoIncial(docupromo);
+		BigDecimal vrSaldoAnterior = BigDecimal.ZERO;
+				
 		//1. se determina la fecha del saldo inicial para el promotor en el periodo actual
-		try {
-			fechaIniTemp = this.getFechaSaldoIncial(docupromo);
-			
-			if(fechaIniTemp != null){
-				//2. si la fecha inicio de la consulta es menor o igual a la fecha del saldo inicial
-				//   la fecha inicial de la consulta se cambiara al dia siguiente del saldo inicial 
-				System.out.println("FECHA ANTERIOR>>>" + this.getFechaIniReporte().before(fechaIniTemp) );
-				System.out.println("FECHA MISMO DIA>>" +  this.getFechaIniReporte().equals(fechaIniTemp));
-				if( this.getFechaIniReporte().before(fechaIniTemp) || this.getFechaIniReporte().equals(fechaIniTemp)){
-					System.out.println("ingrese al if");
+		try {	
+			System.out.println("FECHA SALDO INICIAL: " + saldoInicial.getId().getFecha());
+			if(saldoInicial != null){
+				
+				this.setFechaSaldoPromotor( saldoInicial.getId().getFecha() );
+				//2. si la fecha inicio de la consulta es menor o 
+				//igual a la fecha del saldo inicial la fecha inicial 
+				//de la consulta se cambiara al dia siguiente del saldo inicial 
+				if( this.getFechaIniReporte().before(this.getFechaSaldoPromotor()) || 
+						this.getFechaIniReporte().equals(this.getFechaSaldoPromotor())){
+					log.info("Cambiando la fecha inicio de la consulta");
 					
 					//Establezco la fecha inicio de la consulta a un dia despues de la 
 					//fecha del saldo inicial
-					this.cambiarFechaInicioConsulta( fechaIniTemp );
+					this.cambiarFechaInicioConsulta( this.getFechaSaldoPromotor() );
+					wSaldo = true ;
 				}
 			}else{
-				//accion si no tiene saldo inicial el promotor
+				mensajeSaldo =  "El promotor no tiene saldo inicial " +
+						"registrado para este periodo, la informacion del reporte puede ser imprecisa.";
 				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		BigDecimal saldoInicial = this.saldoAnteriorPromotor(this
-				.getFechaIniReporte(), docupromo);
-
+		log.info("Fecha Inireporte antes del saldo: " + 
+				this.getFechaIniReporte());
+		
+		if(wSaldo){
+			vrSaldoAnterior = saldoInicial.getSaldo();
+		}else{
+			vrSaldoAnterior =this.saldoAnteriorPromotor(this.getFechaIniReporte(), 
+					docupromo);
+		}
 		String reporte = "ExtractoGeneralPromotor";
-
-		// Map parameters = new HashMap();
-		//		
-		// parameters.put("param1", this.getFechaIniReporte());
-		// parameters.put("param2", docupromo);
-		// parameters.put("param3", saldoInicial);
-		// parameters.put("param4", this.getFechaFinReporte());
-		// parameters.put("param5", identity.getUsername());
-		//		
-		// Set< String > claves = parameters.keySet();
-		// TreeSet< String > clavesOrdenadas = new TreeSet< String >( claves );
-		// for( String clave: clavesOrdenadas){
-		// System.out.println(clave+": "+ parameters.get(clave));
-		// }
-
-		Usuario user = entityManager
-				.find(Usuario.class, identity.getUsername());
-
-		path = Reporteador.generarReportePDFNombre(this.getFechaIniReporte(),
-				docupromo, saldoInicial, this.getFechaFinReporte(), user
-						.getNombre(), reporte);
+		Usuario user = entityManager.find(Usuario.class, identity.getUsername());
+		//Genera el reporte
+		path = Reporteador.generarReportePDFElipsis(reporte,
+													this.getFechaIniReporte(),
+													docupromo, 
+													vrSaldoAnterior, 
+													this.getFechaFinReporte(), 
+													user.getNombre(),
+													mensajeSaldo);
 
 		this.setFechaIniReporte(null);
 		this.setFechaFinReporte(null);
@@ -949,19 +961,16 @@ public class AdministrarPromotor {
 		try {
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-			Date fechaSaldo;
-
+			Date fechaIniTemp;
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(fecha);
+			calendar.setTime(this.getFechaIniReporte());
 			calendar.add(Calendar.DAY_OF_YEAR, -1);
-			fechaSaldo = sdf.parse(sdf.format(calendar.getTime()));
-			System.out.println("FECHA CONSULTA SALDO:  "
-					+ sdf.format(fechaSaldo));
-
+			fechaIniTemp = calendar.getTime();
+			
+			//la funcion saldofecha (sql) me retorna el saldo a la fecha anterior ingresada
 			String queryString = "select saldofecha( '"
-					+ sdf.format(fechaSaldo) + "' , '" + documento + "')";
-
+					+ sdf.format(fechaIniTemp) + "' , '" + documento + "')";
+			
 			saldoAnterior = (BigDecimal) entityManager.createNativeQuery(
 					queryString).getSingleResult();
 
@@ -984,13 +993,13 @@ public class AdministrarPromotor {
 	private void cambiarFechaInicioConsulta(Date fechaSaldoIni){
 		
 		Date fechaIniTemp;
-
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(fechaSaldoIni);
 		calendar.add(Calendar.DAY_OF_YEAR, 1);
 		fechaIniTemp = calendar.getTime();
 		
-		System.out.println("Nueva fecha de consulta Inicial" + fechaIniTemp );
+		log.info("Nueva fecha de consulta Inicial: " + sdf.format(fechaIniTemp) );
 		this.setFechaIniReporte(fechaIniTemp);
 		
 	}
@@ -1001,18 +1010,22 @@ public class AdministrarPromotor {
 	 * @param docupromo
 	 * @return
 	 */
-	private Date getFechaSaldoIncial(String docupromo){
+	private Saldo getSaldoIncial(String docupromo){
 		
-		Date fechaIniTemp = null;
+		Saldo saldoInicial = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String date = sdf.format(this.getFechaIniReporte());
 		String queryString =
-			"select saldo.id.fecha from Saldo saldo where year(saldo.id.fecha) = year(current_date()) " +
+			"select saldo from Saldo saldo where year(saldo.id.fecha) = year(date('"+ date +"')) " +
 			"and  saldo.id.documento = '" + docupromo + "'";
 		try {
-			fechaIniTemp = (Date) entityManager.createQuery(queryString).getSingleResult() ;
+			saldoInicial = (Saldo) entityManager.createQuery(queryString)
+												.getSingleResult() ;
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.info("No se hallo saldo inicial para el promotor " + docupromo);
 		}
-		return fechaIniTemp;
+		return saldoInicial;
 	}
 
 	
