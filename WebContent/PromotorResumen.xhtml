@@ -190,11 +190,11 @@ AdministrarPromotor.gastostotal[1]-AdministrarPromotor.gastostotal[0]
                          
 			<h:commandButton id="save"
                           value="Generar Balance en PDF"
-                         action="#{Reporteador.generarBalancePromotor(AdministrarPromotor.fecha,
+                         action="#{Reporteador.generarReportePDFElipsis('ExtractoDiarioPromotor1', AdministrarPromotor.fecha,
                          											personalHome.instance.documento,
                          	AdministrarPromotor.saldoini + AdministrarPromotor.balancesfecha[4] - 
                          	AdministrarPromotor.balancesfecha[1] + AdministrarPromotor.gastosfecha[1]- 
-                         	AdministrarPromotor.gastosfecha[0], null, null, null, 'ExtractoDiarioPromotor1')}"
+                         	AdministrarPromotor.gastosfecha[0])}"
                        
                        rendered="#{!tarjetaHome.managed}"/>
                        

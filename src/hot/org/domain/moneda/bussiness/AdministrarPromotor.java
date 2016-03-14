@@ -904,9 +904,7 @@ public class AdministrarPromotor {
 				
 		//1. se determina la fecha del saldo inicial para el promotor en el periodo actual
 		try {	
-			log.info("FECHA DEL SALDO INICIAL: " + 
-					(saldoInicial != null? saldoInicial.getId().getFecha()
-										 :"NO HAY SALDOINICIAL PARA EL PERIODO CONSULTADO" ));
+			
 			if(saldoInicial != null){
 				
 				this.setFechaSaldoPromotor( saldoInicial.getId().getFecha() );
