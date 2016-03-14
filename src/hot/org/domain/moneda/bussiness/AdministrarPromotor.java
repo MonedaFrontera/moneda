@@ -859,8 +859,8 @@ public class AdministrarPromotor {
 
 			String documento = "/ReportesMoneda/" + nombrereporte + ".jasper";
 
-			path = Reporteador.generarReportePDFNombre6(param1, param2, param3,
-					param4, param5, param5a, nombre);
+			path = Reporteador.generarReportePDFElipsis(nombre,param1, param2, param3,
+					param4, param5, param5a);
 			EnviarMail.enviarReporteMail(promotor, path, fecha);
 		} else {
 			facesMessages
@@ -961,6 +961,7 @@ public class AdministrarPromotor {
 		try {
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
 			Date fechaIniTemp;
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(this.getFechaIniReporte());
@@ -1046,8 +1047,8 @@ public class AdministrarPromotor {
 																		// booleano
 
 			String documento = "ReportesMoneda\\" + nombrereporte + ".jasper";
-			path = Reporteador.generarReportePDFNombre6(param1, param2, param3,
-					param4, param5, param5a, nombre);
+			path = Reporteador.generarReportePDFElipsis(nombre,param1, param2, param3,
+					param4, param5, param5a);
 
 			String mensaje = "Hola "
 					+ promotor.getPersonal().getNombre()
@@ -1292,14 +1293,12 @@ public class AdministrarPromotor {
 		BigDecimal bolivar = this.getTasabolivar();
 		String documentoProm = this.promotorHome.getInstance().getDocumento();
 		BigDecimal saldo = this.getSaldoinforme();
-		Usuario user = entityManager
-		.find(Usuario.class, identity.getUsername());
-		System.out.println(trm + "*******" + bolivar + "*****" + documentoProm
-				+ "******" + saldo);
+		Usuario user = entityManager.find(Usuario.class, identity.getUsername());
+		
 
 		// Se genera el reporte
-		Reporteador.generarReportePDFNombre2(trm, bolivar, documentoProm, this
-				.getSicad1(), user.getNombre(), saldo, nombreReporte);
+		Reporteador.generarReportePDFElipsis(nombreReporte,trm, bolivar, documentoProm, this
+				.getSicad1(), user.getNombre(), saldo );
 	}
 
 	/**

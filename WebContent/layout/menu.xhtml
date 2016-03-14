@@ -367,30 +367,6 @@
      </rich:menuItem>
      </rich:dropDownMenu>
      
-     <!-- Menu Herramientas -->
-     <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"
-		rendered="#{s:hasRole('Utilizar Herramientas')}">
-        <f:facet name="label" rendered="#{}">Herramientas</f:facet>
-		
-		<rich:menuItem rendered="#{s:hasRole('Consultar Bin Tarjeta')}">
-    	<s:link view="/BindbList.xhtml"
-           	value="Buscar Bin Tarjeta"
-           	id="BinbaseId"           	
-			includePageParams="false" 
-     		propagation="none"/>
-        </rich:menuItem> 
-        
-        <rich:menuItem rendered="#{s:hasRole('Consultar Cedula CNE')}">
-    	<s:link view="/CneList.xhtml"
-           	value="Consultar CNE"
-           	id="CNEId"           	
-			includePageParams="false"
-			icon="img/finder.png"
-     		propagation="none"/>
-        </rich:menuItem>         
-     
-     </rich:dropDownMenu>    
-    
     <rich:dropDownMenu showDelay="250" hideDelay="0" submitMode="none"
 		rendered="#{s:hasRole('Generar Reportes')}">
         <f:facet name="label" rendered="#{}">Reportes</f:facet>

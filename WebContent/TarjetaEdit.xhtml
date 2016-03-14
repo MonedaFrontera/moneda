@@ -542,7 +542,7 @@
     		
             <h:commandLink target="_blank" id="extractoT2" style="border: none; text-decoration: none;"
             			   rendered="#{tarjetaHome.managed}"
-            action="#{Reporteador.generarReportePDFNombre(tarjetaHome.instance.numerotarjeta, null, null, null,null, 'ExtractoTajeta2_v5')}">   
+            action="#{Reporteador.generarReportePDFElipsis('ExtractoTajeta2_v5',tarjetaHome.instance.numerotarjeta)}">   
             	<h:commandButton id="save0032" value="Imprimir Extracto" />
             </h:commandLink>
             

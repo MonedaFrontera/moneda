@@ -643,9 +643,8 @@ public class AdministrarActivacion {
 			}
 		}
 
-		return Reporteador.generarReporteActivaciones(promotor, gestor, asesor,
-				banco, estado, rusad, fechaInicio, fechaFin, documentos,
-				"ActivacionesConsulta");
+		return Reporteador.generarReportePDFElipsis("ActivacionesConsulta", promotor, gestor, asesor,
+				banco, estado, rusad, fechaInicio, fechaFin, documentos);
 
 	}
 

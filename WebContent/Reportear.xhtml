@@ -83,7 +83,7 @@
             						   Reporteador.nombrereporte=='transferenciasconsolidado'||
             						   Reporteador.nombrereporte=='tasasgrabadasgeneral'  }" 
             target="_blank" id="next003" 
-            action="#{Reporteador.generarReportePDF(Reporteador.fechainicio, Reporteador.fechafin, null, null, null)}">   
+            action="#{Reporteador.generarReportePDFElipsis('',Reporteador.fechainicio, Reporteador.fechafin)}">   
             	<h:commandButton id="save003" value="Generar Reporte" />
             </h:commandLink>
             
@@ -94,7 +94,7 @@
             </h:commandLink>
             <h:commandLink rendered="#{Reporteador.nombrereporte=='reporte006' ||Reporteador.nombrereporte=='mrwpendientes'}" 
             target="_blank" id="next006" 
-            action="#{Reporteador.generarReportePDF('', null, null, null, null)}">   
+            action="#{Reporteador.generarReportePDFElipsis('', '')}">   
             	<h:commandButton id="save006" value="Generar Reporte" />
             </h:commandLink>
             

@@ -348,9 +348,8 @@
                     view="/TarjetaaList.xhtml"/>
 
             <h:commandLink target="_blank" id="extractoT2" style="border: none; text-decoration: none;"
-            action="#{Reporteador.generarReportePDFNombre(tarjetaHome.instance.numerotarjeta, 
-            AdministrarTarjeta.viajeactual.fechainicio, AdministrarTarjeta.viajeactual.fechafin, 
-            null,null, 'ExtractoTajeta3')}">   
+            action="#{Reporteador.generarReportePDFElipsis('ExtractoTajeta3', tarjetaHome.instance.numerotarjeta, 
+            AdministrarTarjeta.viajeactual.fechainicio, AdministrarTarjeta.viajeactual.fechafin)}">   
             	<h:commandButton id="save0032" value="Imprimir Extracto" />
             </h:commandLink>
     		
