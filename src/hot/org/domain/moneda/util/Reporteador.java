@@ -152,7 +152,8 @@ public class Reporteador {
 			log.info("Exportando el informe...");
 			JasperExportManager.exportReportToPdfFile(jasperPrint, destFileNamePdf);			
 			c.close();
-			u.mostrarFormato(path,doc);//			
+			u.mostrarFormato(path,doc);//
+			this.setNombrereporte(null);
 			return destFileNamePdf;
 		} catch (SQLException e) {
 			e.printStackTrace();

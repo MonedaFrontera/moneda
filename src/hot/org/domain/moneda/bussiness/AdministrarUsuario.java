@@ -183,6 +183,7 @@ public class AdministrarUsuario
 						            "max(transaccion.fechatx)as fechatx "+
 						            "from "+
 						            "transaccion "+
+						            "WHERE EXTRACT(YEAR FROM transaccion.fechatx) = EXTRACT ( YEAR FROM CURRENT_DATE) " +
 						            "group by "+
 						            "transaccion.numerotarjeta) mxtx ON ( mxtx.numerotarjeta = tarjeta.numerotarjeta ) "+
 						"WHERE "+
@@ -191,16 +192,16 @@ public class AdministrarUsuario
 						     /*Asesor*/
 						"public.promotor.asesor= '" + identity.getUsername() +"' AND "+
 						/*Determina que tenga un viaje creado y valido*/
-						"( "+
-						"(( maxviaje.fechainicio IS NULL OR "+
-						   "EXTRACT(YEAR FROM maxviaje.fechainicio) != EXTRACT( YEAR FROM  date '" + sdf.format(new Date()) + "') OR "+
-						   "(EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "') "+
-						   "AND (maxviaje.cupoinicialviajero IS NULL  OR maxviaje.cupoinicialviajero = 0 )) )  AND "+
-						 "( EXTRACT(YEAR FROM CURRENT_DATE) - 1900  =  public.activacion.ano ) )) "+
+						 "("+
+						 "(( maxviaje.fechainicio IS NULL OR "+
+						   "EXTRACT(YEAR FROM maxviaje.fechainicio) != EXTRACT( YEAR FROM  date ('"+sdf.format(new Date())+"')) OR"+
+						   "(EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date ('"+sdf.format(new Date())+"'))"+
+						   " AND (maxviaje.cupoinicialviajero IS NULL  OR maxviaje.cupoinicialviajero = 0 )) )  AND"+
+						 "( EXTRACT(YEAR FROM date('"+sdf.format(new Date())+"')) - 1900 =  public.activacion.ano ) )"+
 						/* Determina que si tiene un viaje pero no ha facturado  */
-//						 "OR "+
-//						 "((EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT( YEAR  FROM  date '" + sdf.format(new Date()) + "')) "+
-//						 " AND (mxtx.fechatx IS NULL OR mxtx.fechatx NOT BETWEEN maxviaje.fechainicio AND maxviaje.fechafin)) "+ 
+						" OR "+
+						" (( EXTRACT(YEAR FROM maxviaje.fechainicio) = EXTRACT(YEAR FROM date ('"+sdf.format(new Date())+"')) and (EXTRACT(YEAR FROM  date('"+sdf.format(new Date())+"')) - 1900 =  public.activacion.ano) )"+
+						"   AND (mxtx.fechatx IS NULL OR mxtx.fechatx NOT BETWEEN maxviaje.fechainicio AND maxviaje.fechafin))) " +
 						"GROUP BY "+
 						"public.activacion.cedula, "+
 						"public.activacion.nombre, "+
@@ -210,10 +211,9 @@ public class AdministrarUsuario
 						"order by "+
 						"4";
 			
+			System.out.println(sql);
 			List<Object[]> actSinViaje = entityManager.createNativeQuery(sql).getResultList();
 			
-//			actSinViaje = new ArrayList< Object[] >(0);
-//			actProx = new ArrayList< Activacion>(0);
 			
 			System.out.println("Sin Viaje: " +  actSinViaje.isEmpty() );
 			System.out.println("Proximas: " +  actProx.isEmpty()  );

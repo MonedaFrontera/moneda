@@ -1293,7 +1293,8 @@ public class AdministrarPromotor {
 		BigDecimal bolivar = this.getTasabolivar();
 		String documentoProm = this.promotorHome.getInstance().getDocumento();
 		BigDecimal saldo = this.getSaldoinforme();
-		Usuario user = entityManager.find(Usuario.class, identity.getUsername());
+		Usuario user = 
+			entityManager.find(Usuario.class, identity.getUsername());
 		
 
 		// Se genera el reporte
