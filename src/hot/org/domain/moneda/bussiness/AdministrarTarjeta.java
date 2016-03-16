@@ -2140,7 +2140,7 @@ public class AdministrarTarjeta
 	}
 	
 	//Aplica filtros de busquda para TajetaList
-    public void busqueda(){    	    	
+    public void busqueda(){    	
     	entityManager.clear();
     	//tarjetas.clear();
     	
@@ -2153,61 +2153,71 @@ public class AdministrarTarjeta
     	 * Sin Viaje:	"s"
     	 * */
     	
-    	System.out.println("Estado Inicial: " + this.getEstado() );	
-		
-    	String sql = "";
-		 
-		if(!this.getEstado().contentEquals("b") && !this.getEstado().contentEquals("a") ){			
-			sql = sql + "select tarjeta from Tarjeta tarjeta where 1 = 1 ";
-		}else{			
-			sql = sql + "select tarjeta from Tarjeta tarjeta, Tarjetaviaje tv, Viaje v " +
-					"where tv.tarjeta.numerotarjeta = tarjeta.numerotarjeta and " +
-					"tv.viaje.consecutivo = v.consecutivo and " +
-					"tarjeta.fechainicio = v.fechainicio ";
-		}
-		
-		if(tarjetaList.getTarjeta().getNumerotarjeta() != null && 
-				!tarjetaList.getTarjeta().getNumerotarjeta().contentEquals("")) {
-			sql = sql + " and lower(tarjeta.numerotarjeta) like lower(concat('%',concat('"+tarjetaList.getTarjeta().getNumerotarjeta()+"','%')))";
-		}
-		//reemplazado por el trim para los espacios en los nombres de promotor
-		if(tarjetaList.getNombre()!=null && !tarjetaList.getNombre().contentEquals("")){
-			sql = sql + " and replace(trim(tarjeta.promotor.personal.nombre)||' '||trim(tarjeta.promotor.personal.apellido),' ','') " +
-					"= replace(trim('"+tarjetaList.getNombre()+"'),' ','')";
+    	try {
+    		System.out.println("Estado Inicial: " + this.getEstado() );	
+    		
+        	String sql = "";
+    		 
+    		if(!this.getEstado().contentEquals("b") && !this.getEstado().contentEquals("a") ){			
+    			sql = sql + "select tarjeta from Tarjeta tarjeta where 1 = 1 ";
+    		}else{			
+    			sql = sql + "select tarjeta from Tarjeta tarjeta, Tarjetaviaje tv, Viaje v " +
+    					"where tv.tarjeta.numerotarjeta = tarjeta.numerotarjeta and " +
+    					"tv.viaje.consecutivo = v.consecutivo and " +
+    					"tarjeta.fechainicio = v.fechainicio ";
+    		}
+    		
+    		if(tarjetaList.getTarjeta().getNumerotarjeta() != null && 
+    				!tarjetaList.getTarjeta().getNumerotarjeta().contentEquals("")) {
+    			sql = sql + " and lower(tarjeta.numerotarjeta) like lower(concat('%',concat('"+tarjetaList.getTarjeta().getNumerotarjeta()+"','%')))";
+    		}
+    		//reemplazado por el trim para los espacios en los nombres de promotor
+    		if(tarjetaList.getNombre()!=null && !tarjetaList.getNombre().contentEquals("")){
+    			sql = sql + " and replace(trim(tarjeta.promotor.personal.nombre)||' '||trim(tarjeta.promotor.personal.apellido),' ','') " +
+    					"= replace(trim('"+tarjetaList.getNombre()+"'),' ','')";
+    			
+    		}
+    		
+    		if(tarjetaList.getTarjeta().getTarjetahabiente() != null && 
+    				!tarjetaList.getTarjeta().getTarjetahabiente().contentEquals("")) {
+    			sql = sql + " and lower(tarjeta.tarjetahabiente) like " +
+    					"lower(concat('%',concat('"+tarjetaList.getTarjeta().getTarjetahabiente()+"','%')))";
+    		}
+    		
+    		
+    		if(tarjetaList.getDocasesor() != null && 
+    				!tarjetaList.getDocasesor().contentEquals("")) {
+    			sql = sql + " and tarjeta.promotor.asesor.documento like concat('"+tarjetaList.getDocasesor()+"','%')";
+    		}		
+    		
+    		if (this.getEstado().contentEquals("a")){
+    			sql = sql + " and( now() between tarjeta.fechainicio and tarjeta.fechafin) and tv.estado = 1";
+    		}else if (this.getEstado().contentEquals("b")){
+    			sql = sql + " and tv.estado = 0 ";
+    		}else if (this.getEstado().contentEquals("f")){
+    			sql = sql + " and now() > tarjeta.fechafin";
+    		}else if (this.getEstado().contentEquals("s")){
+    			sql = sql + " and tarjeta.fechafin is null";
+    		}else{
+    			//tarjetas.setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
+    		}
+    		
+    		tarjetas.setEjbql(sql);
+    		
+    		if(tarjetas.getResultCount()<25){
+    			tarjetas.setFirstResult(0);
+    		}
+    		
+    		tarjetas.setMaxResults(25);
+			
+		} catch (Exception e) {
+			
+			tarjetaList.getTarjeta().setNumerotarjeta("");
+			facesMessages.add("Ingrese valores validos para la busqueda.");
 			
 		}
-		
-		if(tarjetaList.getTarjeta().getTarjetahabiente() != null && 
-				!tarjetaList.getTarjeta().getTarjetahabiente().contentEquals("")) {
-			sql = sql + " and lower(tarjeta.tarjetahabiente) like " +
-					"lower(concat('%',concat('"+tarjetaList.getTarjeta().getTarjetahabiente()+"','%')))";
-		}
-		
-		
-		if(tarjetaList.getDocasesor() != null && 
-				!tarjetaList.getDocasesor().contentEquals("")) {
-			sql = sql + " and tarjeta.promotor.asesor.documento like concat('"+tarjetaList.getDocasesor()+"','%')";
-		}		
-		
-		if (this.getEstado().contentEquals("a")){
-			sql = sql + " and( now() between tarjeta.fechainicio and tarjeta.fechafin) and tv.estado = 1";
-		}else if (this.getEstado().contentEquals("b")){
-			sql = sql + " and tv.estado = 0 ";
-		}else if (this.getEstado().contentEquals("f")){
-			sql = sql + " and now() > tarjeta.fechafin";
-		}else if (this.getEstado().contentEquals("s")){
-			sql = sql + " and tarjeta.fechafin is null";
-		}else{
-			//tarjetas.setRestrictionExpressionStrings(Arrays.asList(RESTRICTIONS));
-		}
-		
-		tarjetas.setEjbql(sql);
-		
-		if(tarjetas.getResultCount()<25){
-			tarjetas.setFirstResult(0);
-		}
-		
-		tarjetas.setMaxResults(25);
+    	
+    	
 		
     }
     

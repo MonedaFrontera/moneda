@@ -104,6 +104,9 @@ public class AdministrarTransaccion
 	private AdministrarFactura	AdministrarFactura;
 	
 	@In(create=true) @Out 
+	private AdministrarTarjeta	AdministrarTarjeta;
+	
+	@In(create=true) @Out 
 	AutovozHome autovozHome;
 
 	@In(create=true) @Out 
@@ -2450,12 +2453,11 @@ public class AdministrarTransaccion
 	 * @param consecutivo
 	 * @param vControl
 	 */
-	public void cargarTransaccion(int consecutivo){
+	public void cargarTransaccion(int consecutivo, String vControl){
 
 		System.out.println("Num transaccion " + consecutivo );
 		
-		
-	
+		this.setVControl(vControl);	
 		this.nombrePromotor="";
 		transaccionHome.setTransaccionConsecutivo(consecutivo);
 		establecimientoHome.setEstablecimientoCodigounico(transaccionHome.getInstance().getEstablecimiento().getCodigounico());
@@ -2522,6 +2524,32 @@ public class AdministrarTransaccion
 		
 		
 		return "updated";
+		
+	}
+	
+	
+	public void actualizarTransaccion2()
+	{
+		entityManager.clear();
+		
+		System.out.println("entra a actualizar");
+		System.out.println("actualiza:*******"+this.transaccionHome.getInstance().getPromotor());
+
+		//actualiza el promotor en la tabla tarjeta
+		String sql = "update public.transaccion " +
+				"set promotor = '"+transaccionHome.getInstance().getPromotor()+"' where " +
+				" consecutivo = '"+transaccionHome.getInstance().getConsecutivo()+"'";
+		entityManager.createNativeQuery(sql).executeUpdate();
+		entityManager.clear();
+		entityManager.flush();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy");
+		DecimalFormat dec = new DecimalFormat("###,###.##");
+		AdministrarUsuario.auditarUsuario(39, "Se cambió el promotor:"+this.nombrePromotor+
+										" por el promotor:"+this.nombrePromotorActual +" en la transacción:"+transaccionHome.getInstance().getConsecutivo());
+		
+		facesMessages.add("Se actualizó el promotor de la transacción correctamente");
+		this.AdministrarTarjeta.editarTarjeta(transaccionHome.getInstance().getTarjeta().getNumerotarjeta());
 		
 	}
 	

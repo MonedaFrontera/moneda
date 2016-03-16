@@ -682,7 +682,7 @@
             	<f:facet name="header">Editar Tx</f:facet>
             	<h:commandLink value="Editar" 
             				ajaxSingle="true"
-            				action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo)}"
+            				action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo, 'tarjetaEdit')}"
             				rendered="#{s:hasRole('Editar Transaccion')}">
             </h:commandLink>
         	</rich:column>

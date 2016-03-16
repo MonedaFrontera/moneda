@@ -69,9 +69,7 @@
          <redirect view-id="/TransaccionList.xhtml"/>
       </rule>
    </navigation>
-   
-   
-   
+    
    <navigation from-action="#{AdministrarTransaccion.eliminarTransaccion}">
       <rule if-outcome="removed">
          <end-conversation/>
@@ -84,6 +82,10 @@
          <end-conversation/>
          <redirect view-id="/TransaccionList.xhtml"/>
       </rule>
+   </navigation>
+   
+   <navigation from-action="#{AdministrarTransaccion.actualizarTransaccion2()}">
+         <redirect view-id="/TarjetaEdit.xhtml"/>
    </navigation>
 
 </page>

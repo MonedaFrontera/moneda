@@ -15,7 +15,7 @@
    <param name="numfactura" value="#{transaccionList.transaccion.numfactura}"/>
    <param name="fecha" value="#{transaccionList.transaccion.fechatx}"/>
 	
-	<navigation from-action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo)}">
+	<navigation from-action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo,'transaccionList')}">
          <redirect view-id="/TransaccionEdit2.xhtml"/>
    </navigation>
    

@@ -322,7 +322,12 @@
             <h:commandButton id="update"
                           value="Actualizar"
                          action="#{AdministrarTransaccion.actualizarTransaccion()}"
-                       rendered="true"/>
+                       rendered="#{AdministrarTransaccion.VControl.equals('transaccionList')}"/>
+                       
+            <h:commandButton id="updateEdit"
+                          value="Actualizar"
+                         action="#{AdministrarTransaccion.actualizarTransaccion2()}"
+                       rendered="#{AdministrarTransaccion.VControl.equals('tarjetaEdit')}"/>
 
             <h:commandButton id="delete"
                           value="Eliminar"

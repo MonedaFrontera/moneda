@@ -32,7 +32,7 @@
    <param name="bancoFrom"/>
    <param name="bancoCodbanco" value="#{bancoHome.bancoCodbanco}"/>
 
-   <navigation from-action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo)}">
+   <navigation from-action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo, 'tarjetaEdit')}">
          <redirect view-id="/TransaccionEdit2.xhtml"/>
    </navigation>
 
