@@ -120,8 +120,18 @@ public class AdministrarTransaccion
 	private String nombrePromotor;
 	
 	private String nombrePromotorActual;
+	
+	private String vControl;
 
 	
+	public String getVControl() {
+		return vControl;
+	}
+
+	public void setVControl(String control) {
+		vControl = control;
+	}
+
 	public AdministrarTransaccion  () {
 		
 	}
@@ -2434,9 +2444,16 @@ public class AdministrarTransaccion
 	
 		
 
+	/**
+	 * transaccionList, tarjetaEdit
+	 * 
+	 * @param consecutivo
+	 * @param vControl
+	 */
 	public void cargarTransaccion(int consecutivo){
 
 		System.out.println("Num transaccion " + consecutivo );
+		
 		
 	
 		this.nombrePromotor="";
@@ -2503,9 +2520,11 @@ public class AdministrarTransaccion
 		facesMessages.add("Se actualizó el promotor de la transacción correctamente");
 		
 		
-	   return "updated";
+		
+		return "updated";
 		
 	}
+	
 	
 	@End
 	public String eliminarTransaccion()

@@ -2852,5 +2852,18 @@ public class AdministrarTarjeta
 		
 	}
 	
+	 public String obtenerPromotrTx( String docuPromo){
+		 String nombrePromotor = null;
+		 try {
+			 String queryString = "select personal.nombre||' '|| personal.apellido " +
+		  		"from Personal personal where " +
+		  		"personal.documento = '" + docuPromo + "'";
+			 nombrePromotor = (String) entityManager.createQuery(queryString).getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		  return nombrePromotor;
+	  }
+	
 	
 }

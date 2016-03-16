@@ -628,6 +628,12 @@
                     <h:outputText value="#{_transaccion.fechatx}">
                         <s:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                     </h:outputText>
+                    <rich:toolTip>
+                    	<span style="white-space:nowrap">
+                    		Transaccion asignada al promotor<br />
+                    		<strong>#{AdministrarTarjeta.obtenerPromotrTx(_transaccion.promotor)}</strong>
+                    	</span>
+                    </rich:toolTip>
                 </rich:column>
                 <rich:column sortBy="#{_transaccion.numfactura}" style="text-align:center" >
                     <f:facet name="header">Num Factura</f:facet>
@@ -672,9 +678,15 @@
                     </h:outputText>
 					</f:facet>
                 </rich:column>
+            <rich:column styleClass="action" rendered="#{s:hasRole('Editar Transaccion')}">
+            	<f:facet name="header">Editar Tx</f:facet>
+            	<h:commandLink value="Editar" 
+            				ajaxSingle="true"
+            				action="#{AdministrarTransaccion.cargarTransaccion(_transaccion.consecutivo)}"
+            				rendered="#{s:hasRole('Editar Transaccion')}">
+            </h:commandLink>
+        	</rich:column>
             </rich:dataTable>
-            
-
         </h:form>
 
         <f:subview rendered="#{tarjetaHome.managed}" id="transaccions">

@@ -70,6 +70,8 @@
       </rule>
    </navigation>
    
+   
+   
    <navigation from-action="#{AdministrarTransaccion.eliminarTransaccion}">
       <rule if-outcome="removed">
          <end-conversation/>
