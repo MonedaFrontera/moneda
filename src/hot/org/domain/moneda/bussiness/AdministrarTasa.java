@@ -1600,6 +1600,11 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				"Se debe ingresar la tasa de porcentaje para oficina");
 				return null;
 			}
+			if( this.getParidadClienteTemp() == null || this.getParidadClienteTemp().equals("")){
+				facesMessages.addToControl("paridadClient",	
+				"Se debe ingresar la paridad cambiaria");
+				return null;
+			}
 		}else{
 			if( this.getTasaDolarOfTemp() == null && this.getTasaDolarNegTemp() == null ){
 				facesMessages.addToControl("tasadolarOf",	
@@ -1627,6 +1632,7 @@ public void editarTasabolivarnegociado(Date fecha, String tipo, String documento
 				"Se debe ingresar la tasa de porcentaje para oficina");
 				return null;
 			}
+			
 		}			
 		
 		// Valida que se haya seleccionado un establecimiento
