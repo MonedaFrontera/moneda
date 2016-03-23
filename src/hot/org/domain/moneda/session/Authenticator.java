@@ -186,11 +186,9 @@ public class Authenticator {
 			Identity.instance().addRole(s);
 			this.autentica = true; 
 		}		
-		Personal p = entityManager.find(Personal.class, credentials
-				.getUsername());
-		if (p != null)
-			AdministrarVariable.setNombreusuario(p.getNombre());
-
+				
+		AdministrarVariable.setNombreusuario(user.getNombre());
+		
 		if (asesor) {
 			sql = "select a from Asesor a where a.documento='"
 					+ credentials.getUsername() + "'";

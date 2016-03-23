@@ -243,7 +243,7 @@
         
         	<s:decorate id="arrastrador_1Field" template="layout/edit.xhtml"
         	rendered="#{s:hasRole('Asociar Arrastrador')}">
-                <ui:define name="label">Arrastrador</ui:define>
+                <ui:define name="label">Impulsador</ui:define>
                 <h:selectOneMenu id="arrastradorSel" value="#{promotorHome.instance.arrastrador}" required="true" 
                 disabled ="#{!s:hasRole('Registrar Personal')}">
 			<s:selectItems value="#{arrastradorList.resultList}" var="arrastrador" label="#{arrastrador.personal.nombre} #{arrastrador.personal.apellido}"
