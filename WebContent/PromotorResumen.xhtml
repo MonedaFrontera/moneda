@@ -97,7 +97,7 @@
             </s:decorate>
            
            <s:decorate id="fechatxField" template="layout/edit.xhtml">
-                <ui:define name="label">Fecha Transaccion</ui:define>
+                <ui:define name="label">Fecha Consulta</ui:define>
                 <rich:calendar id="fechatx"
                        required="true"
                           value="#{AdministrarPromotor.fecha}" 
@@ -260,7 +260,7 @@ AdministrarPromotor.gastostotal[1]-AdministrarPromotor.gastostotal[0]
                 </rich:column>
                 
                 <rich:column style="text-align:right">
-                    <f:facet name="header">Avances o Compras</f:facet>
+                    <f:facet name="header">Transaccion</f:facet>
                     <h:outputText value="#{_balance[12]}">
 					<f:convertNumber pattern="$ #,###"/> </h:outputText>
 					<f:facet style= "text-align:right" name="footer">
@@ -271,7 +271,7 @@ AdministrarPromotor.gastostotal[1]-AdministrarPromotor.gastostotal[0]
                 </rich:column>
                 
                 <rich:column style="text-align:right">
-                    <f:facet name="header">Total Menos Comision</f:facet>
+                    <f:facet name="header">Tx Menos Comision</f:facet>
                     <h:outputText value="#{_balance[14]}">
 					<f:convertNumber pattern="$ #,###"/> </h:outputText>
 					<f:facet name="footer">
